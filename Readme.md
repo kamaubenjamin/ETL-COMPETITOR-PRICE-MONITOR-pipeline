@@ -73,29 +73,6 @@ The pipeline:
 
 ## 📂 Project Structure
 
-etl-banking-pipeline/
-│
-├── src/
-│   ├── __init__.py
-│   ├── main.py
-│   ├── extract.py
-│   ├── transform.py
-│   ├── load.py
-│   ├── utils.py
-│   └── config.py
-│
-├── data/
-│   ├── raw/
-│   └── processed/
-│
-├── logs/
-│   └── code_log.txt
-│
-├── tests/
-│
-├── requirements.txt
-├── README.md
-└── .gitignore
 
 
 ## 🚀 How to Run
