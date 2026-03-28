@@ -1,4 +1,4 @@
-from .extract import extract
+from src.extract import extract
 from .transform import transform
 from .load import load_to_csv, load_to_db
 from .utils import log_progress, run_query
