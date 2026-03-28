@@ -73,17 +73,30 @@ The pipeline:
 
 ## 📂 Project Structure
 
-```
-.
-├── banks_project.py
-├── exchange_rates.csv
-├── Banks.db
-├── Largest_banks_transformed.csv
-├── code_log.txt
-└── README.md
-```
+etl-banking-pipeline/
+│
+├── src/
+│   ├── __init__.py
+│   ├── main.py
+│   ├── extract.py
+│   ├── transform.py
+│   ├── load.py
+│   ├── utils.py
+│   └── config.py
+│
+├── data/
+│   ├── raw/
+│   └── processed/
+│
+├── logs/
+│   └── code_log.txt
+│
+├── tests/
+│
+├── requirements.txt
+├── README.md
+└── .gitignore
 
----
 
 ## 🚀 How to Run
 
