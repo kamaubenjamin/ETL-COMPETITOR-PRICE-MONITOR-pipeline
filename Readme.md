@@ -70,38 +70,30 @@ The pipeline:
   * Extract top 5 banks
 
 ---
+python -m src.main
 
-## 📂 Project Structure
+## Project Structure
 
-ETL Banking Pipeline/
+ETL Banking/src/
 │
-├── data/
-│   ├── raw/
-│   │   └── .gitkeep
-│   ├── processed/
-│   │   └── .gitkeep
-│   └── output/
-│       ├── banks.csv
-│       └── .gitkeep
+├── extract/                # Data ingestion layer
+│   ├── base_connector.py
+│   ├── web_scraper.py     # Web extraction connector
+│   ├── file_loader.py     # CSV / file ingestion
+│   └── extract.py         # Connector factory
 │
-├── src/
-│   ├── __init__.py
-│   ├── main.py
-│   ├── extract.py
-│   ├── transform.py
-│   ├── load.py
-│   ├── utils.py
-│   └── config.py
+├── transform/             # Data transformation layer
+│   ├── transformer.py     # Core transformation logic
 │
-├── tests/
-│   ├── __init__.py
-│   ├── test_extract.py
-│   └── test_main.py
+├── load/                  # Data loading layer
+│   ├── load_to_csv.py
+│   ├── load_to_db.py
 │
-├── Banks.db
-├── requirements.txt
-├── .gitignore
-└── README.md
+├── orchestrator.py       # Pipeline engine (ETL workflow)
+│
+├── utils/                # Logging + helpers
+│
+dashboard.py              # Streamlit UI (control panel)
 
 
 ## 🚀 How to Run
