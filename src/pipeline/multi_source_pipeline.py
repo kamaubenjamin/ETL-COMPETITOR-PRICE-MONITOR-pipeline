@@ -43,6 +43,10 @@ def run_multi_source_pipeline(sources: dict, config) -> pd.DataFrame:
             # -------------------------
             engine = TransformEngine(df)
             df_clean = engine.apply([])
+            # 🔥 ADD THIS LINE HERE (RIGHT AFTER TRANSFORM)
+            df_clean = df_clean[
+                df_clean["product_name"].str.contains(r"\b(tv|television|qled|oled)\b", case=False, na=False)
+            ]
 
             datasets[name] = df_clean
 

@@ -45,7 +45,7 @@ def detect_price_changes(df: pd.DataFrame):
             if pd.isna(old_price) or pd.isna(new_price):
                 continue
 
-            if old_price != new_price:
+            if (not pd.isna(old_price)and not pd.isna(new_price)and old_price != new_price):
                 changes.append({
                     "product": product,
                     "source": source,
