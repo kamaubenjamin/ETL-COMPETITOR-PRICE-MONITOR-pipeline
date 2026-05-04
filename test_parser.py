@@ -1,39 +1,21 @@
-import pandas as pd
-from src.transform.comparison_engine import combine_datasets, match_products
-from src.transform.comparison_engine import build_comparison_table
-# 🔥 Simulated datasets (like Jumia + another site)
-df_jumia = pd.DataFrame({
-    "product_name": [
-        "Samsung 43 inch Smart TV",
-        "Vitron 32 inch TV",
-        "Amtec Speaker"
-    ],
-    "price": [34000, 12000, 5000],
-    "currency": ["KES", "KES", "KES"]
-})
 
-df_kilimall = pd.DataFrame({
-    "product_name": [
-        "Samsung 43\" TV",
-        "Vitron 32\" Smart TV",
-        "Amtec Multimedia Speaker"
-    ],
-    "price": [35500, 11500, 5200],
-    "currency": ["KES", "KES", "KES"]
-})
 
-# 🔥 Combine datasets
-combined = combine_datasets({
-    "jumia": df_jumia,
-    "kilimall": df_kilimall
-})
+from src.pipeline.multi_source_pipeline import run_multi_source_pipeline
+import src.config as config
 
-# 🔥 Match products
-matched = match_products(combined)
+sources = {
+    "jumia": {
+        "url": "https://www.jumia.co.ke/electronics/",
+        "selector": "article.prd"
+    },
+    "kilimall": {
+        "url": "https://www.kilimall.co.ke/search?q=electronics&page=1&source=search|enterSearch|electronics",
+        "selector": ".product-item"
+    }
+}
 
-print(matched)
 
-comparison = build_comparison_table(matched)
+result = run_multi_source_pipeline(sources, config)
 
-print("\n=== COMPARISON TABLE ===\n")
-print(comparison)
+print("\n=== FINAL COMPARISON ===\n")
+print(result)

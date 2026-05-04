@@ -22,7 +22,7 @@ def combine_datasets(datasets: dict) -> pd.DataFrame:
 
 # Group similar products based on name similarity
 
-def match_products(df: pd.DataFrame, threshold: int = 75) -> pd.DataFrame:
+def match_products(df: pd.DataFrame, threshold: int = 70) -> pd.DataFrame:
     """
     Improved product matching using token_set_ratio
     """
