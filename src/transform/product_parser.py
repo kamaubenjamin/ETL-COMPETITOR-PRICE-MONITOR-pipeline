@@ -4,7 +4,8 @@ import pandas as pd
 
 def extract_product_info(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Parser V3: Handles multiple currencies and avoids quantity noise (e.g. 500ml, 2kg)
+    Parser V3: Handles multiple currencies, avoids quantity noise (e.g. 500ml, 2kg),
+    and normalizes currency codes.
     """
 
     results = []
@@ -13,7 +14,7 @@ def extract_product_info(df: pd.DataFrame) -> pd.DataFrame:
         text = str(row)
 
         # -----------------------------
-        # 💰 PRICE + CURRENCY (FIXED LOGIC)
+        # 💰 PRICE + CURRENCY (FIXED + NORMALIZED)
         # -----------------------------
         price = None
         currency = None
@@ -26,7 +27,17 @@ def extract_product_info(df: pd.DataFrame) -> pd.DataFrame:
         )
 
         if price_match:
-            currency = price_match.group(1).upper()
+            raw_currency = price_match.group(1).upper()
+
+            # 🔥 Currency normalization
+            currency_map = {
+                "KSH": "KES",
+                "KES": "KES",
+                "£": "GBP",
+                "$": "USD"
+            }
+
+            currency = currency_map.get(raw_currency, raw_currency)
 
             raw_price = price_match.group(2).replace(",", "")
 
@@ -65,7 +76,7 @@ def extract_product_info(df: pd.DataFrame) -> pd.DataFrame:
         if price_match:
             name = text[:price_match.start()].strip()
 
-        # Remove common junk
+        # Remove common junk words
         junk_words = [
             "add to basket",
             "buy now",
@@ -76,7 +87,7 @@ def extract_product_info(df: pd.DataFrame) -> pd.DataFrame:
         for word in junk_words:
             name = name.replace(word, "").strip()
 
-        # Avoid weak rows
+        # Skip weak rows
         if len(name) < 3:
             continue
 
