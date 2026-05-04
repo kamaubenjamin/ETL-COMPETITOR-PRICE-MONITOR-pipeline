@@ -34,14 +34,23 @@ def detect_price_changes(df: pd.DataFrame):
         latest = product_df.iloc[-1]
         previous = product_df.iloc[-2]
 
-        for source in ["jumia", "kilimall"]:
-            if source in df.columns:
-                if latest[source] != previous[source]:
-                    changes.append({
-                        "product": product,
-                        "source": source,
-                        "old_price": previous[source],
-                        "new_price": latest[source]
-                    })
+        for source in df.columns:
+            if source in ["product_name", "timestamp"]:
+                continue
+
+            old_price = previous.get(source)
+            new_price = latest.get(source)
+
+            # 🔥 FIX: ignore NaN comparisons
+            if pd.isna(old_price) or pd.isna(new_price):
+                continue
+
+            if old_price != new_price:
+                changes.append({
+                    "product": product,
+                    "source": source,
+                    "old_price": old_price,
+                    "new_price": new_price
+                })
 
     return pd.DataFrame(changes)
