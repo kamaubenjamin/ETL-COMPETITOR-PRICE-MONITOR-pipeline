@@ -12,10 +12,19 @@ import time
 st.set_page_config(page_title="ETL Pipeline Dashboard", layout="wide")
 
 st.write("RUNNING FILE:", __file__)
+
 def normalize_source_type(source_type):
-    if source_type == "API (Future)":
-        return "API"
-    return source_type
+    mapping = {
+        "Default (Web)": "default (web)",
+        "Playwright (Dynamic Web)": "playwright",
+        "Selenium (Dynamic Web)": "selenium",
+        "CSV": "csv",
+        "Upload Dataset": "upload dataset",
+        "API (Future)": "api"
+    }
+
+    return mapping.get(source_type, source_type.strip().lower())
+
 # -----------------------------
 # SESSION STATE INIT
 # -----------------------------
@@ -36,8 +45,9 @@ for k, v in defaults.items():
     if k not in st.session_state:
         st.session_state[k] = v
 
+
 # -----------------------------
-# DATASET SELECTION
+# DATASET
 # -----------------------------
 st.markdown("## Dataset Selection")
 
@@ -48,8 +58,9 @@ dataset_option = st.selectbox(
 
 selected_config = config
 
+
 # -----------------------------
-# PIPELINE INSTANCE (KEPT)
+# PIPELINE INSTANCE
 # -----------------------------
 if "pipeline" not in st.session_state:
     st.session_state.pipeline = ETLPipeline(selected_config)
@@ -58,10 +69,38 @@ else:
 
 pipeline = st.session_state.pipeline
 
+
+# -----------------------------
+# SOURCE TYPE
+# -----------------------------
 source_type = st.selectbox(
     "Select Data Source Type",
-    ["Default (Web)", "CSV", "Upload Dataset", "API (Future)"]
+    ["Default (Web)", "Playwright (Dynamic Web)", "CSV", "Upload Dataset", "API (Future)"]
 )
+
+keyword = None
+selector = None
+custom_url = None
+scrape_selector = None   # FIX: ensure always defined
+
+
+# -----------------------------
+# 
+# PLAYWRIGHT INPUTS (FIXED)
+# -----------------------------
+if source_type == "Playwright (Dynamic Web)":
+    custom_url = st.text_input("Enter Target URL")
+
+    selector = st.text_input(
+        "Enter CSS Selector (REQUIRED for Playwright)",
+        placeholder="e.g. article.product_pod"
+    )
+
+    if not selector:
+        st.warning("⚠️ Playwright requires a selector for now")
+
+    keyword = st.text_input("Enter Keyword Filter (optional)")
+
 
 # -----------------------------
 # UPLOAD
@@ -81,39 +120,42 @@ if uploaded_file is not None:
     except Exception as e:
         st.error(f"Upload failed: {e}")
 
+
 # -----------------------------
 # CONTROL PANEL
 # -----------------------------
 st.markdown("## Control Panel")
 
-#Custom URL input for web scraping
-custom_url = None
+custom_url_input = None
 if source_type == "Default (Web)":
-    custom_url = st.text_input("Enter Target URL")
-# Update config with custom URL if provided
-if custom_url:
-    selected_config.url = custom_url
+    custom_url_input = st.text_input("Enter Target URL")
+
+if custom_url_input:
+    selected_config.url = custom_url_input
+
+elif source_type == "Playwright (Dynamic Web)":# if playwright option is selected, we prioritize that URL input over the default one    
+    if custom_url:
+        selected_config.url = custom_url
+
+if keyword:
+    selected_config.keyword = keyword
 
 
-# scraping mode options   
 scrape_mode = st.selectbox(
     "Scraping Mode",
     ["Auto Detect", "Table Extraction", "Full Page Text", "Custom Selector"]
 )
 
-selector = None
+scrape_selector = None
 if scrape_mode == "Custom Selector":
-    selector = st.text_input("Enter CSS selector")
+    scrape_selector = st.text_input("Enter CSS selector")
 
-transform_option = st.selectbox(
-    "Select Transformation Type",
-    ["Default Transform", "Raw Pass-Through"]
-)
 
 load_option = st.selectbox(
     "Select Load Destination",
     ["CSV", "Database", "Both"]
 )
+
 
 # -----------------------------
 # RULE BUILDER
@@ -127,18 +169,18 @@ rename_enabled = st.checkbox("Rename Columns")
 old_col = st.text_input("Old Column Name")
 new_col = st.text_input("New Column Name")
 
+
 # -----------------------------
 # PIPELINE BUTTONS
 # -----------------------------
 col1, col2, col3, col4 = st.columns(4)
 
+
 # =============================
-# FULL PIPELINE (FIXED 🔥)
+# FULL PIPELINE
 # =============================
 with col1:
     if st.button("🔵 Run Full Pipeline"):
-
-        start_time = time.time()
 
         st.session_state.pipeline_status = "Running"
         st.session_state.error_message = ""
@@ -149,10 +191,19 @@ with col1:
             clean_source_type = normalize_source_type(source_type)
             uploaded_df = st.session_state.get("uploaded_df")
 
+            # 🔥 SMART SELECTOR RESOLUTION (AUTO MODE ENABLED)
+            final_selector = None
+
+            if scrape_mode == "Custom Selector":
+               if scrape_selector and scrape_selector.strip():
+                  final_selector = scrape_selector
+
+            elif selector and selector.strip():
+                 final_selector = selector
+
             if clean_source_type == "Upload Dataset" and uploaded_df is None:
                 raise Exception("Please upload a dataset first")
 
-            # rules stay EXACTLY as you had them
             rules = []
 
             if drop_nulls:
@@ -162,65 +213,67 @@ with col1:
             if rename_enabled and old_col and new_col:
                 rules.append({"type": "rename", "columns": {old_col: new_col}})
 
-            # RUN PIPELINE
             result = pipeline.run(
                 source_type=clean_source_type,
                 uploaded_df=uploaded_df,
                 mode=scrape_mode,
-                selector=selector,
+                selector=final_selector,
                 rules=rules,
                 load_option=load_option
             )
-
-            # -----------------------
-            # UI UPDATES (RESTORED DETAIL)
-            # -----------------------
+            st.write("DEBUG EXTRACT RESULT:", result["extract"])
 
             progress.progress(30)
             st.session_state.extract_status = "Success"
-            st.info(f"Extracted {result['extract']['rows']} rows, {result['extract']['cols']} cols")
 
             progress.progress(70)
             st.session_state.transform_status = "Success"
-            st.info(f"Transformed {result['transform']['rows']} rows, {result['transform']['cols']} cols")
 
             progress.progress(100)
             st.session_state.load_status = "Success"
 
             st.session_state.data = result["data"]
-            st.session_state.pipeline_status = "Success"
             st.session_state.execution_time = f"{result['execution_time']} sec"
-            st.session_state.last_run_time = time.strftime("%Y-%m-%d %H:%M:%S")
 
             st.success(f"Pipeline complete ✅ Shape: {result['shape']}")
 
         except Exception as e:
             st.session_state.pipeline_status = "Failed"
             st.error(f"Pipeline failed ❌: {e}")
+
+
 # =============================
 # EXTRACT ONLY
 # =============================
 with col2:
     if st.button("🔵 Run Extract"):
         try:
+            clean_source_type = normalize_source_type(source_type)
+
+            # 🔥 SMART SELECTOR RESOLUTION (CONSISTENT WITH FULL PIPELINE)
+            final_selector = None
+
+            if scrape_mode == "Custom Selector":
+                if scrape_selector and scrape_selector.strip():
+                    final_selector = scrape_selector
+
+            elif selector and selector.strip():
+                  final_selector = selector
             df = run_extraction(
-                source_type=source_type,
+                source_type=clean_source_type,
                 config=selected_config,
                 uploaded_df=st.session_state.get("uploaded_df"),
                 mode=scrape_mode,
-                selector=selector
+                selector=final_selector
             )
-
-            if df is None:
-                raise Exception("No data extracted")
 
             st.session_state.data = df
             st.session_state.extract_status = "Success"
-            st.info(f"Extracted {df.shape[0]} rows, {df.shape[1]} columns")
 
         except Exception as e:
             st.session_state.extract_status = "Failed"
-            st.session_state.error_message = str(e)
+            st.error(str(e))
+
 
 # =============================
 # TRANSFORM ONLY
@@ -241,14 +294,13 @@ with col3:
             engine = TransformEngine(df)
             df = engine.apply(rules)
 
-
             st.session_state.data = df
             st.session_state.transform_status = "Success"
-            st.info(f"Transformed dataset: {df.shape}")
 
         except Exception as e:
             st.session_state.transform_status = "Failed"
-            st.session_state.error_message = str(e)
+            st.error(str(e))
+
 
 # =============================
 # LOAD ONLY
@@ -276,22 +328,25 @@ with col4:
 
         except Exception as e:
             st.session_state.load_status = "Failed"
-            st.session_state.error_message = str(e)
+            st.error(str(e))
 
-# =====================================================
-# PIPELINE STATUS
-# =====================================================
+
+# -----------------------------
+# STATUS UI
+# -----------------------------
 st.markdown("## 🚦 Pipeline Status")
+
 
 def status_box(label, status):
     if status == "Idle":
-        st.info(f"{label}\n\n⚪ Idle")
+        st.info(f"{label} ⚪ Idle")
     elif status == "Running":
-        st.warning(f"{label}\n\n🟡 Running...")
+        st.warning(f"{label} 🟡 Running")
     elif status == "Success":
-        st.success(f"{label}\n\n🟢 Done")
+        st.success(f"{label} 🟢 Done")
     elif status == "Failed":
-        st.error(f"{label}\n\n🔴 Failed")
+        st.error(f"{label} 🔴 Failed")
+
 
 c1, c2, c3 = st.columns(3)
 
@@ -304,49 +359,10 @@ with c2:
 with c3:
     status_box("Load", st.session_state.load_status)
 
-# =====================================================
-# METRICS
-# =====================================================
-st.markdown("## Metrics")
 
-m1, m2, m3, m4 = st.columns(4)
-
-try:
-    conn = sqlite3.connect(config.db_name)
-    count = pd.read_sql("SELECT COUNT(*) as count FROM Largest_banks", conn)
-    conn.close()
-
-    m1.metric("Records in DB", int(count["count"].iloc[0]))
-except:
-    m1.metric("Records in DB", "N/A")
-
-m2.metric("Execution Time", st.session_state.execution_time)
-m3.metric("CSV Files", "1")
-m4.metric("DB Status", "OK")
-
-# =====================================================
-# LOGS
-# =====================================================
-st.markdown("## Logs")
-
-if st.button("🔄 Refresh Logs"):
-    st.session_state.last_log_refresh = time.strftime("%Y-%m-%d %H:%M:%S")
-    st.session_state.refresh_count += 1
-
-st.caption(f"Last refreshed: {st.session_state.last_log_refresh}")
-st.caption(f"Refresh count: {st.session_state.refresh_count}")
-
-try:
-    with open(LOG_FILE, "r") as f:
-        logs = f.read()
-except:
-    logs = "No logs yet"
-
-st.text_area("Logs", logs, height=300)
-
-# =====================================================
+# -----------------------------
 # DATA PREVIEW
-# =====================================================
+# -----------------------------
 st.markdown("## Data Preview")
 
 if st.session_state.data is not None:
