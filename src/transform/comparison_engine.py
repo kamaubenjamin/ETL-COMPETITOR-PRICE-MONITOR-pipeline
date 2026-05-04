@@ -24,25 +24,24 @@ def normalize_name(text: str) -> str:
     text = text.lower()
 
     # remove punctuation
-    text = re.sub(r'[^\w\s]', '', text)
+    text = re.sub(r"[^\w\s]", "", text)
 
-    # normalize inch formats
+    # normalize units
     text = text.replace("inch", "").replace('"', "")
 
     # remove noise words
     stop_words = ["smart", "android", "tv", "led", "qled"]
     words = text.split()
-
     words = [w for w in words if w not in stop_words]
 
     return " ".join(words)
 
 
 # -----------------------------
-# 🏷️ BRAND EXTRACTION (IMPROVED)
+# 🏷️ BRAND EXTRACTION
 # -----------------------------
 def extract_brand(text: str) -> str:
-    brands = ["vitron", "amtec", "vision", "samsung", "lg", "sony"]
+    brands = ["vitron", "amtec", "vision", "samsung", "lg", "sony", "hisense"]
 
     text = text.lower()
 
@@ -54,6 +53,27 @@ def extract_brand(text: str) -> str:
 
 
 # -----------------------------
+# 📦 CATEGORY DETECTION (GENERIC)
+# -----------------------------
+def detect_category(name: str) -> str:
+    text = name.lower()
+
+    keywords = {
+        "electronics": ["tv", "speaker", "woofer", "headphone", "earphone"],
+        "wearables": ["watch", "smartwatch"],
+        "accessories": ["cable", "charger", "adapter"],
+        "tools": ["glue", "repair", "tool"],
+    }
+
+    for category, words in keywords.items():
+        for w in words:
+            if w in text:
+                return category
+
+    return "other"
+
+
+# -----------------------------
 # 🧩 FEATURE EXTRACTION
 # -----------------------------
 def extract_features(name: str) -> dict:
@@ -62,17 +82,20 @@ def extract_features(name: str) -> dict:
     brand = extract_brand(text)
 
     # size (e.g. 43", 50 inch)
-    size_match = re.search(r'(\d{2})\s?(?:\"|inch)', text)
+    size_match = re.search(r"(\d{2})\s?(?:\"|inch)", text)
     size = size_match.group(1) if size_match else None
 
-    # model (alphanumeric codes)
-    model_match = re.search(r'\b[a-z0-9]{4,}\b', text)
+    # model (flexible alphanumeric)
+    model_match = re.search(r"\b[a-z0-9]{4,}\b", text)
     model = model_match.group(0) if model_match else None
+
+    category = detect_category(text)
 
     return {
         "brand": brand,
         "size": size,
-        "model": model
+        "model": model,
+        "category": category
     }
 
 
@@ -103,6 +126,12 @@ def match_products(df: pd.DataFrame, threshold: int = 70) -> pd.DataFrame:
             compare_norm = normalize_name(compare_raw)
             features_j = extract_features(compare_raw)
 
+            # -----------------------------
+            # 🚫 CATEGORY FILTER (light, generic)
+            # -----------------------------
+            if features_i["category"] != features_j["category"]:
+                continue
+
             score = 0
 
             # -----------------------------
@@ -116,7 +145,10 @@ def match_products(df: pd.DataFrame, threshold: int = 70) -> pd.DataFrame:
 
             # flexible model match
             if features_i["model"] and features_j["model"]:
-                if features_i["model"] in features_j["model"] or features_j["model"] in features_i["model"]:
+                if (
+                    features_i["model"] in features_j["model"]
+                    or features_j["model"] in features_i["model"]
+                ):
                     score += 30
 
             # -----------------------------
@@ -147,13 +179,15 @@ def build_comparison_table(df: pd.DataFrame) -> pd.DataFrame:
 
     pivot = pivot.reset_index()
 
-    # representative product name
     names = df.groupby("match_id")["product_name"].first().reset_index()
 
     result = pivot.merge(names, on="match_id")
 
     # reorder columns
-    result = result[["product_name"] + [c for c in result.columns if c not in ["product_name", "match_id"]]]
+    result = result[
+        ["product_name"]
+        + [c for c in result.columns if c not in ["product_name", "match_id"]]
+    ]
 
     # -----------------------------
     # 🏆 FIND CHEAPEST

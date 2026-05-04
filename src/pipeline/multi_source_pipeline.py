@@ -1,5 +1,5 @@
 import pandas as pd
-
+from src.storage.history_store import save_snapshot
 from src.extract.extract import run_extraction
 from src.transform.engine import TransformEngine
 from src.transform.comparison_engine import (
@@ -68,5 +68,7 @@ def run_multi_source_pipeline(sources: dict, config) -> pd.DataFrame:
     # COMPARE
     # -------------------------
     comparison = build_comparison_table(matched)
-
+     
+    #save final comparison to history for future reference
+    save_snapshot(comparison)
     return comparison
