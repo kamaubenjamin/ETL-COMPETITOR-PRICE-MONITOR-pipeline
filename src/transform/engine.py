@@ -1,3 +1,4 @@
+from src.transform.product_parser import extract_product_info
 import pandas as pd
 
 
@@ -21,6 +22,12 @@ class TransformEngine:
 
             elif rule_type == "add_column":
                 self.add_column(rule)
+                # 🔥 Product parser auto-trigger
+            if self.df.shape[1] == 1:
+               try:
+                   self.df = extract_product_info(self.df)
+               except Exception as e:
+                     print("Parser skipped:", e)
 
         return self.df
 
