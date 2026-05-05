@@ -14,7 +14,7 @@ from src.storage.history_store import save_snapshot, detect_price_changes
 from src.alerts.alert_engine import generate_alerts
 
 # import your multi-source pipeline function
-from test_parser import run_multi_source_pipeline
+from src.pipeline.multi_source_pipeline import run_multi_source_pipeline
 
 
 st.set_page_config(page_title="ETL Pipeline Dashboard", layout="wide")
@@ -127,6 +127,10 @@ if uploaded_file is not None:
             engine="python",
             on_bad_lines="skip"
         )
+
+        st.session_state.uploaded_df.columns = [
+           col.replace("items.*.", "") for col in st.session_state.uploaded_df.columns
+        ]
         st.success("Custom dataset loaded ✅")
     except Exception as e:
         st.error(f"Upload failed: {e}")
@@ -295,30 +299,52 @@ with col1:
             if rename_enabled and old_col and new_col:
                 rules.append({"type": "rename", "columns": {old_col: new_col}})
 
-            result = pipeline.run(
-                source_type=clean_source_type,
-                uploaded_df=uploaded_df,
-                mode=scrape_mode,
-                selector=final_selector,
-                rules=rules,
-                load_option=load_option
-            )
+            # -------------------------
+            # HANDLE UPLOAD DATASET SEPARATELY
+            # -------------------------
+            if clean_source_type == "Upload Dataset":
+                df = uploaded_df
 
-            st.write("DEBUG EXTRACT RESULT:", result["extract"])
+                if df is None:
+                    raise Exception("Please upload a dataset first")
 
-            progress.progress(30)
-            st.session_state.extract_status = "Success"
+                # Optional: clean column names
+                df.columns = [col.replace("items.*.", "") for col in df.columns]
 
-            progress.progress(70)
-            st.session_state.transform_status = "Success"
+                st.session_state.data = df
+                st.session_state.extract_status = "Success"
+                st.session_state.transform_status = "Success"
+                st.session_state.load_status = "Idle"
 
-            progress.progress(100)
-            st.session_state.load_status = "Success"
+                st.success(f"Dataset loaded successfully ✅ Shape: {df.shape}")
+            else:
+                # -------------------------
+                # NORMAL PIPELINE (WEB/API)
+                # -------------------------
+                result = pipeline.run(
+                    source_type=clean_source_type,
+                    uploaded_df=uploaded_df,
+                    mode=scrape_mode,
+                    selector=final_selector,
+                    rules=rules,
+                    load_option=load_option
+                )
 
-            st.session_state.data = result["data"]
-            st.session_state.execution_time = f"{result['execution_time']} sec"
+                st.session_state.data = result["data"]
+                st.write("DEBUG EXTRACT RESULT:", result["extract"])
 
-            st.success(f"Pipeline complete ✅ Shape: {result['shape']}")
+                progress.progress(30)
+                st.session_state.extract_status = "Success"
+
+                progress.progress(70)
+                st.session_state.transform_status = "Success"
+
+                progress.progress(100)
+                st.session_state.load_status = "Success"
+
+                st.session_state.execution_time = f"{result['execution_time']} sec"
+
+                st.success(f"Pipeline complete ✅ Shape: {result['shape']}")
 
         except Exception as e:
             st.session_state.pipeline_status = "Failed"
