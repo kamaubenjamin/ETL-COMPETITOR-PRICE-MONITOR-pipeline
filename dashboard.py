@@ -4,6 +4,7 @@ import pandas as pd
 import sqlite3
 from datetime import datetime
 from src.orchestrator import ETLPipeline
+from src.workflows import registry
 import src.config as config
 from src.utils import LOG_FILE
 from src.load import load_to_csv, load_to_db
@@ -30,11 +31,16 @@ defaults = {
     "extract_status": "Idle",
     "transform_status": "Idle",
     "load_status": "Idle",
+    "selected_workflow": "electronics_monitoring",
+    "workflow_config": registry.get("electronics_monitoring"),
 }
 
 for k, v in defaults.items():
     if k not in st.session_state:
         st.session_state[k] = v
+
+# Display active workflow
+st.info(f"📊 **Active Workflow**: {st.session_state.workflow_config.name}")
 
 def normalize_source_type(source_type):
     """Normalize source type string."""
@@ -52,6 +58,46 @@ def normalize_source_type(source_type):
 # SIDEBAR CONFIGURATION
 # =============================
 with st.sidebar:
+    st.markdown("## 📋 Workflow Selection")
+    
+    # Workflow selection dropdown
+    available_workflows = registry.list_workflows()
+    selected = st.selectbox(
+        "Select Monitoring Workflow",
+        available_workflows,
+        key="workflow_selector"
+    )
+    
+    if selected != st.session_state.selected_workflow:
+        st.session_state.selected_workflow = selected
+        st.session_state.workflow_config = registry.get(selected)
+    
+    workflow = st.session_state.workflow_config
+    
+    # Display workflow details
+    st.markdown(f"**{workflow.name}**")
+    st.caption(workflow.description)
+    
+    with st.expander("📌 Workflow Details"):
+        st.markdown("**Sources:**")
+        for source in workflow.sources:
+            st.text(f"  • {source.name}")
+            st.caption(f"    Type: {source.source_type}")
+            st.caption(f"    Threshold: {source.match_threshold}")
+        
+        st.markdown(f"**Global Match Threshold:** {workflow.global_match_threshold}")
+        
+        if workflow.transformation_rules:
+            st.markdown("**Transform Rules:**")
+            for rule in workflow.transformation_rules:
+                st.caption(f"  • {rule.get('type', 'unknown')}")
+        
+        if workflow.alert_rules:
+            st.markdown("**Alert Rules:**")
+            for rule in workflow.alert_rules:
+                st.caption(f"  • {rule.get('type', 'unknown')}")
+    
+    st.divider()
     st.markdown("## ⚙️ Configuration")
     
     dataset_option = st.selectbox("Choose Dataset", ["Bank Data (Default)", "Custom Dataset"])
@@ -152,6 +198,9 @@ with tab1:
                 if clean_source_type == "upload dataset":
                     df = uploaded_df
                     df.columns = [col.replace("items.*.", "") for col in df.columns]
+                    engine = TransformEngine(df)
+                    df = engine.apply(rules)
+
                     st.session_state.data = df
                     st.session_state.extract_status = "Success"
                     st.session_state.transform_status = "Success"
@@ -319,6 +368,7 @@ with tab3:
                 }
                 comparison = run_multi_source_pipeline(sources, selected_config)
                 st.session_state["latest_data"] = comparison
+                st.session_state.data = comparison
                 st.success("✅ Monitoring complete")
         except Exception as e:
             st.error(f"❌ Failed: {e}")

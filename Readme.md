@@ -1,76 +1,74 @@
-# 🏦 Largest Banks ETL Pipeline
+# 💰 Competitor Price Monitor
 
 ## 📌 Project Overview
 
-This project is a full **ETL (Extract, Transform, Load)** pipeline built using Python to process and analyze data on the largest banks globally.
+**Competitor Price Intelligence Platform** — A modular ETL system for monitoring competitor pricing across multiple ecommerce and retail platforms.
 
-The pipeline:
+The platform:
 
-* Extracts data from a Wikipedia page
-* Transforms market capitalization values into multiple currencies
-* Loads the processed data into both a CSV file and a SQLite database
-* Runs SQL queries to analyze the data
+* Extracts product data from multiple sources (web scraping, APIs, CSV uploads)
+* Normalizes and standardizes data with intelligent parsing
+* Matches products across sources using fuzzy matching and feature extraction
+* Tracks price changes and historical trends
+* Generates real-time alerts on price movements and undercutting
+* Provides interactive dashboards for monitoring and analytics
 
 ---
 
 ## ⚙️ Tech Stack
 
-* Python 🐍
-* Pandas & NumPy
-* BeautifulSoup (web scraping)
-* SQLite3 (database)
+* Python 3.11+ 🐍
+* Streamlit (interactive dashboard)
+* Pandas & NumPy (data processing)
+* Playwright & Selenium (web scraping)
+* BeautifulSoup (HTML parsing)
+* RapidFuzz (fuzzy matching)
+* SQLite3 (local storage)
 * Requests (HTTP calls)
 
 ---
 
-## 🔄 ETL Pipeline Flow
+## 🔄 Pipeline Architecture
 
-### 1. Extract
+### Extract Layer
+- Web scraping (Playwright, Selenium)
+- CSV imports
+- API connectors
+- Configurable selectors and modes
 
-* Scrapes data from:
+### Transform Layer
+- Product name normalization
+- Price parsing with currency detection
+- Availability status extraction
+- Category classification
+- Transformation rules engine
 
-  * List of largest banks (Wikipedia archive)
-* Extracts:
+### Matching Layer
+- Brand extraction
+- Size/model detection
+- Fuzzy matching with configurable thresholds
+- Cross-source product mapping
 
-  * Bank Name
-  * Market Capitalization (USD)
-
----
-
-### 2. Transform
-
-* Cleans and formats data
-* Converts market capitalization from USD to:
-
-  * GBP 🇬🇧
-  * EUR 🇪🇺
-  * INR 🇮🇳
-* Adds additional columns in:
-
-  * Millions
-  * Rounded values for readability
-
----
-
-### 3. Load
-
-* Saves transformed data to:
-
-  * CSV file (`Largest_banks_transformed.csv`)
-  * SQLite database (`Banks.db`)
+### Monitoring Layer
+- Historical price tracking
+- Price change detection
+- Undercut alerts
+- Real-time notifications
 
 ---
 
-### 4. Query & Analysis
+## 🚀 Quick Start
 
-* Runs SQL queries to:
+```bash
+# Activate environment
+source venv/bin/activate  # or .\venv\Scripts\Activate on Windows
 
-  * Retrieve full dataset
-  * Calculate average market capitalization (GBP)
-  * Extract top 5 banks
+# Run dashboard
+streamlit run src/dashboard.py
 
----
-python -m src.main
+# Run tests
+pytest tests/ -v
+```
 
 ## Project Structure
 

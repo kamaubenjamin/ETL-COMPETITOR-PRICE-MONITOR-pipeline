@@ -10,8 +10,19 @@ class TransformEngine:
 
     def apply(self, rules: list):
         """
-        Apply transformation rules, then run product parser.
+        Parse raw content first, then apply transformation rules on structured output.
         """
+
+        # ------------------------
+        # 🔥 PRODUCT PARSER (RUN FIRST WHEN CONTENT IS AVAILABLE)
+        # ------------------------
+        if "content" in self.df.columns:
+            try:
+                parsed_df = extract_product_info(self.df)
+                if isinstance(parsed_df, pd.DataFrame) and not parsed_df.empty:
+                    self.df = parsed_df
+            except Exception as e:
+                print("Parser skipped:", e)
 
         # ------------------------
         # 🔧 APPLY RULES
@@ -30,19 +41,6 @@ class TransformEngine:
 
             elif rule_type == "add_column":
                 self.add_column(rule)
-
-        # ------------------------
-        # 🔥 PRODUCT PARSER (RUN ONCE AFTER RULES)
-        # ------------------------
-        try:
-            parsed_df = extract_product_info(self.df)
-
-            # Only overwrite if parser returns useful structured data
-            if isinstance(parsed_df, pd.DataFrame) and not parsed_df.empty:
-                self.df = parsed_df
-
-        except Exception as e:
-            print("Parser skipped:", e)
 
         return self.df
 

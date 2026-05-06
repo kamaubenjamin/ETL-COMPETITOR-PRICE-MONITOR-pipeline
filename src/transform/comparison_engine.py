@@ -1,6 +1,11 @@
 import pandas as pd
-import re
 from rapidfuzz import fuzz
+from src.transform.product_normalizer import (
+    extract_features,
+    normalize_name,
+    extract_brand,
+    detect_category,
+)
 
 
 # -----------------------------
@@ -18,93 +23,24 @@ def combine_datasets(datasets: dict) -> pd.DataFrame:
 
 
 # -----------------------------
-# 🧠 NORMALIZE NAME
-# -----------------------------
-def normalize_name(text: str) -> str:
-    text = text.lower()
-
-    # remove punctuation
-    text = re.sub(r"[^\w\s]", "", text)
-
-    # normalize units
-    text = text.replace("inch", "").replace('"', "")
-
-    # remove noise words
-    stop_words = ["smart", "android", "tv", "led", "qled"]
-    words = text.split()
-    words = [w for w in words if w not in stop_words]
-
-    return " ".join(words)
-
-
-# -----------------------------
-# 🏷️ BRAND EXTRACTION
-# -----------------------------
-def extract_brand(text: str) -> str:
-    brands = ["vitron", "amtec", "vision", "samsung", "lg", "sony", "hisense"]
-
-    text = text.lower()
-
-    for b in brands:
-        if b in text:
-            return b
-
-    return text.split()[0] if text.split() else None
-
-
-# -----------------------------
-# 📦 CATEGORY DETECTION (GENERIC)
-# -----------------------------
-def detect_category(name: str) -> str:
-    text = name.lower()
-
-    keywords = {
-        "electronics": ["tv", "speaker", "woofer", "headphone", "earphone"],
-        "wearables": ["watch", "smartwatch"],
-        "accessories": ["cable", "charger", "adapter"],
-        "tools": ["glue", "repair", "tool"],
-    }
-
-    for category, words in keywords.items():
-        for w in words:
-            if w in text:
-                return category
-
-    return "other"
-
-
-# -----------------------------
-# 🧩 FEATURE EXTRACTION
-# -----------------------------
-def extract_features(name: str) -> dict:
-    text = name.lower()
-
-    brand = extract_brand(text)
-
-    # size (e.g. 43", 50 inch)
-    size_match = re.search(r"(\d{2})\s?(?:\"|inch)", text)
-    size = size_match.group(1) if size_match else None
-
-    # model (flexible alphanumeric)
-    model_match = re.search(r"\b[a-z0-9]{4,}\b", text)
-    model = model_match.group(0) if model_match else None
-
-    category = detect_category(text)
-
-    return {
-        "brand": brand,
-        "size": size,
-        "model": model,
-        "category": category
-    }
-
-
-# -----------------------------
 # 🔍 MATCH PRODUCTS
 # -----------------------------
 def match_products(df: pd.DataFrame, threshold: int = 70) -> pd.DataFrame:
     df = df.copy().reset_index(drop=True)
+
+    if "product_name" not in df.columns:
+        raise ValueError("DataFrame must contain a 'product_name' column.")
+
+    if df.empty:
+        return df
+
     df["match_id"] = -1
+    df["normalized_name"] = df["product_name"].astype(str).apply(normalize_name)
+    features = [extract_features(name) for name in df["product_name"].astype(str)]
+    df["feature_brand"] = [f["brand"] for f in features]
+    df["feature_size"] = [f["size"] for f in features]
+    df["feature_model"] = [f["model"] for f in features]
+    df["feature_category"] = [f["category"] for f in features]
 
     match_id = 0
 
@@ -113,49 +49,31 @@ def match_products(df: pd.DataFrame, threshold: int = 70) -> pd.DataFrame:
             continue
 
         df.loc[i, "match_id"] = match_id
-
-        base_raw = df.loc[i, "product_name"]
-        base_norm = normalize_name(base_raw)
-        features_i = extract_features(base_raw)
+        base_norm = df.loc[i, "normalized_name"]
+        brand_i = df.loc[i, "feature_brand"]
+        size_i = df.loc[i, "feature_size"]
+        model_i = df.loc[i, "feature_model"]
+        category_i = df.loc[i, "feature_category"]
 
         for j in range(i + 1, len(df)):
             if df.loc[j, "match_id"] != -1:
                 continue
 
-            compare_raw = df.loc[j, "product_name"]
-            compare_norm = normalize_name(compare_raw)
-            features_j = extract_features(compare_raw)
-
-            # -----------------------------
-            # 🚫 CATEGORY FILTER (light, generic)
-            # -----------------------------
-            if features_i["category"] != features_j["category"]:
+            if category_i != df.loc[j, "feature_category"]:
                 continue
 
             score = 0
-
-            # -----------------------------
-            # 🔥 FEATURE MATCHING
-            # -----------------------------
-            if features_i["brand"] and features_i["brand"] == features_j["brand"]:
+            if brand_i and brand_i == df.loc[j, "feature_brand"]:
                 score += 30
 
-            if features_i["size"] and features_i["size"] == features_j["size"]:
-                score += 30
+            if size_i and size_i == df.loc[j, "feature_size"]:
+                score += 20
 
-            # flexible model match
-            if features_i["model"] and features_j["model"]:
-                if (
-                    features_i["model"] in features_j["model"]
-                    or features_j["model"] in features_i["model"]
-                ):
-                    score += 30
+            if model_i and df.loc[j, "feature_model"]:
+                if model_i in df.loc[j, "feature_model"] or df.loc[j, "feature_model"] in model_i:
+                    score += 20
 
-            # -----------------------------
-            # 🔁 FUZZY MATCH
-            # -----------------------------
-            fuzzy_score = fuzz.token_set_ratio(base_norm, compare_norm)
-
+            fuzzy_score = fuzz.token_set_ratio(base_norm, df.loc[j, "normalized_name"])
             final_score = score + (fuzzy_score * 0.7)
 
             if final_score >= threshold:

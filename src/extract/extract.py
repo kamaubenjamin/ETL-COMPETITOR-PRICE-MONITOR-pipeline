@@ -8,6 +8,7 @@ from src.extract.playwright_connector import PlaywrightConnector
 def get_connector(source_type, config=None, uploaded_df=None, mode=None, selector=None):
 
     source_type = source_type.strip().lower()   # 🔥 normalize everything
+    mode = mode or "Auto Detect"
 
     if source_type == "default (web)":
         return WebScraperConnector(config.url, mode, selector)

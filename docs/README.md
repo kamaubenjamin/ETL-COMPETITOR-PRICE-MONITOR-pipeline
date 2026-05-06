@@ -7,6 +7,7 @@ Real-time multi-source price tracking with automated ETL pipeline. Monitor compe
 - **Multi-Source Extraction**: Web scraping, API integration, CSV import, and dynamic page loading (Selenium/Playwright)
 - **Smart Transformation**: Product normalization, price parsing, availability detection, feature extraction
 - **Intelligent Matching**: Fuzzy matching with brand, size, and category awareness for accurate product comparison
+- **Product Normalization**: Normalized product names to improve match quality across sources
 - **Price Change Alerts**: Real-time undercut detection and price increase notifications
 - **Audit Trail**: Complete operation history with error tracking and performance metrics
 - **Data Export**: CSV downloads and database persistence
@@ -316,6 +317,16 @@ print(audit.get_stats(hours=24))
 #     }
 # }
 ```
+
+## 🧭 Roadmap
+
+The platform is evolving toward a modular SME intelligence middleware with:
+
+- `src/transform/product_normalizer.py` for product name normalization
+- `src/transform/comparison_engine.py` for improved fuzzy matching and source comparison
+- reusable extraction connectors for web, CSV, API, Selenium, Playwright
+- a monitoring layer that tracks price snapshots and alerts
+- future workflow definitions for configurable pipelines
 
 ## 🔍 Troubleshooting
 

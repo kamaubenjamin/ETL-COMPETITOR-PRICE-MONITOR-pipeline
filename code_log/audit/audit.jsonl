@@ -16,3 +16,15 @@
 {"timestamp": "2026-05-06T17:06:20.147843", "operation_type": "extract", "status": "success", "details": {"source_type": "playwright", "rows_extracted": 1, "error": null}, "duration": 10.074927806854248}
 {"timestamp": "2026-05-06T17:06:20.151721", "operation_type": "transform", "status": "success", "details": {"rows_input": 1, "rows_output": 1, "rules": [], "error": null}, "duration": 0.003878355026245117}
 {"timestamp": "2026-05-06T17:06:20.151721", "operation_type": "load", "status": "success", "details": {"destination": "CSV", "rows_loaded": 1, "error": null}, "duration": 0.0}
+{"timestamp": "2026-05-06T21:58:35.054289", "operation_type": "extract", "status": "success", "details": {"source_type": "playwright", "rows_extracted": 1, "error": null}, "duration": 14.085538387298584}
+{"timestamp": "2026-05-06T21:58:35.057291", "operation_type": "transform", "status": "success", "details": {"rows_input": 1, "rows_output": 1, "rules": [], "error": null}, "duration": 0.0019974708557128906}
+{"timestamp": "2026-05-06T21:58:35.060289", "operation_type": "load", "status": "success", "details": {"destination": "CSV", "rows_loaded": 1, "error": null}, "duration": 0.001998424530029297}
+{"timestamp": "2026-05-06T22:02:39.819104", "operation_type": "extract", "status": "success", "details": {"source_type": "playwright", "rows_extracted": 1, "error": null}, "duration": 13.198199272155762}
+{"timestamp": "2026-05-06T22:02:39.821140", "operation_type": "transform", "status": "success", "details": {"rows_input": 1, "rows_output": 1, "rules": [], "error": null}, "duration": 0.0010347366333007812}
+{"timestamp": "2026-05-06T22:02:39.824140", "operation_type": "load", "status": "success", "details": {"destination": "CSV", "rows_loaded": 1, "error": null}, "duration": 0.001996755599975586}
+{"timestamp": "2026-05-06T22:04:18.742549", "operation_type": "extract", "status": "success", "details": {"source_type": "default (web)", "rows_extracted": 1, "error": null}, "duration": 4.037979364395142}
+{"timestamp": "2026-05-06T22:04:18.744550", "operation_type": "transform", "status": "success", "details": {"rows_input": 1, "rows_output": 1, "rules": [], "error": null}, "duration": 0.0010023117065429688}
+{"timestamp": "2026-05-06T22:04:18.747553", "operation_type": "load", "status": "success", "details": {"destination": "CSV", "rows_loaded": 1, "error": null}, "duration": 0.001967191696166992}
+{"timestamp": "2026-05-06T22:07:58.532773", "operation_type": "extract", "status": "success", "details": {"source_type": "playwright", "rows_extracted": 65, "error": null}, "duration": 13.73472785949707}
+{"timestamp": "2026-05-06T22:07:58.535810", "operation_type": "transform", "status": "success", "details": {"rows_input": 65, "rows_output": 62, "rules": [], "error": null}, "duration": 0.002001047134399414}
+{"timestamp": "2026-05-06T22:07:58.537773", "operation_type": "load", "status": "success", "details": {"destination": "CSV", "rows_loaded": 62, "error": null}, "duration": 0.0019636154174804688}
