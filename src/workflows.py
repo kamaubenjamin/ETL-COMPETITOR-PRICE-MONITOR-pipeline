@@ -4,6 +4,8 @@ Supports source-specific thresholds, filters, and monitoring configurations.
 """
 from typing import List, Dict, Optional
 import json
+import glob
+import os
 from dataclasses import dataclass, asdict
 
 
@@ -151,8 +153,19 @@ class WorkflowRegistry:
         workflow = self.get(workflow_id)
         if not workflow:
             raise ValueError(f"Workflow {workflow_id} not found")
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
         with open(filepath, "w") as f:
             json.dump(workflow.to_dict(), f, indent=2)
+
+    def load_all_workflows(self, directory: str):
+        """Load all workflow JSON files from a directory."""
+        if not os.path.isdir(directory):
+            return
+        for path in glob.glob(os.path.join(directory, "*.json")):
+            try:
+                self.load_from_file(path)
+            except Exception:
+                continue
 
     def load_from_file(self, filepath: str) -> WorkflowConfig:
         """Load a workflow from JSON file."""
@@ -165,3 +178,5 @@ class WorkflowRegistry:
 
 # Global registry instance
 registry = WorkflowRegistry()
+workflow_store_dir = os.path.join(os.path.dirname(__file__), "workflows")
+registry.load_all_workflows(workflow_store_dir)

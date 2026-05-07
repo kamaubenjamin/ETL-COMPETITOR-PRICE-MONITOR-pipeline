@@ -4,7 +4,7 @@ import pandas as pd
 import sqlite3
 from datetime import datetime
 from src.orchestrator import ETLPipeline
-from src.workflows import registry
+from src.workflows import registry, WorkflowConfig, SourceConfig
 import src.config as config
 from src.utils import LOG_FILE
 from src.load import load_to_csv, load_to_db
@@ -38,6 +38,39 @@ defaults = {
 for k, v in defaults.items():
     if k not in st.session_state:
         st.session_state[k] = v
+
+
+def slugify_id(text):
+    return "".join(c if c.isalnum() else "_" for c in text.strip().lower()).strip("_")
+
+
+def initialize_workflow_builder():
+    if "workflow_builder_sources" not in st.session_state:
+        st.session_state.workflow_builder_sources = [
+            {
+                "name": "source_1",
+                "source_type": "playwright",
+                "url": "",
+                "selector": "",
+                "mode": "Auto Detect",
+                "keyword": "",
+                "match_threshold": 70,
+            }
+        ]
+    if "workflow_builder_alerts" not in st.session_state:
+        st.session_state.workflow_builder_alerts = [
+            {"type": "price_drop", "threshold": 5},
+        ]
+    if "new_workflow_name" not in st.session_state:
+        st.session_state.new_workflow_name = ""
+    if "new_workflow_description" not in st.session_state:
+        st.session_state.new_workflow_description = ""
+    if "new_workflow_enabled" not in st.session_state:
+        st.session_state.new_workflow_enabled = True
+    if "new_workflow_threshold" not in st.session_state:
+        st.session_state.new_workflow_threshold = 70
+
+initialize_workflow_builder()
 
 # Display active workflow
 st.info(f"📊 **Active Workflow**: {st.session_state.workflow_config.name}")
@@ -95,8 +128,151 @@ with st.sidebar:
         if workflow.alert_rules:
             st.markdown("**Alert Rules:**")
             for rule in workflow.alert_rules:
-                st.caption(f"  • {rule.get('type', 'unknown')}")
-    
+                st.caption(f"  • {rule.get('type', 'unknown')} | threshold: {rule.get('threshold', 'n/a')}")
+
+    with st.expander("➕ Create & Save Workflow"):
+        st.markdown("### New workflow builder")
+        workflow_name = st.text_input("Workflow Name", value=st.session_state.new_workflow_name, key="new_workflow_name")
+        workflow_description = st.text_area("Description", value=st.session_state.new_workflow_description, key="new_workflow_description")
+        workflow_enabled = st.checkbox("Enabled", value=st.session_state.new_workflow_enabled, key="new_workflow_enabled")
+        workflow_threshold = st.slider("Global match threshold", 50, 100, value=st.session_state.new_workflow_threshold, key="new_workflow_threshold")
+        st.markdown("---")
+        st.markdown("#### Sources")
+
+        source_types = ["playwright", "selenium", "csv", "api"]
+        source_modes = ["Auto Detect", "Table Extraction", "Full Page Text", "Custom Selector"]
+
+        for idx, source in enumerate(st.session_state.workflow_builder_sources):
+            st.markdown(f"**Source {idx + 1}**")
+            source["name"] = st.text_input("Name", value=source["name"], key=f"builder_source_name_{idx}")
+            source["source_type"] = st.selectbox(
+                "Type",
+                source_types,
+                index=source_types.index(source["source_type"]) if source["source_type"] in source_types else 0,
+                key=f"builder_source_type_{idx}",
+            )
+            source["mode"] = st.selectbox(
+                "Mode",
+                source_modes,
+                index=source_modes.index(source["mode"]) if source["mode"] in source_modes else 0,
+                key=f"builder_source_mode_{idx}",
+            )
+            source["url"] = st.text_input("URL", value=source["url"], key=f"builder_source_url_{idx}")
+            source["selector"] = st.text_input("Selector", value=source["selector"], key=f"builder_source_selector_{idx}")
+            source["keyword"] = st.text_input("Keyword", value=source["keyword"], key=f"builder_source_keyword_{idx}")
+            source["match_threshold"] = st.slider(
+                "Match threshold",
+                50,
+                100,
+                value=source["match_threshold"],
+                key=f"builder_source_threshold_{idx}",
+            )
+            if st.button("Remove this source", key=f"remove_builder_source_{idx}"):
+                if len(st.session_state.workflow_builder_sources) > 1:
+                    st.session_state.workflow_builder_sources.pop(idx)
+                    st.experimental_rerun()
+                else:
+                    st.warning("At least one source is required.")
+            st.markdown("---")
+
+        if st.button("Add source", key="add_workflow_source"):
+            st.session_state.workflow_builder_sources.append(
+                {
+                    "name": f"source_{len(st.session_state.workflow_builder_sources) + 1}",
+                    "source_type": "playwright",
+                    "url": "",
+                    "selector": "",
+                    "mode": "Auto Detect",
+                    "keyword": "",
+                    "match_threshold": 70,
+                }
+            )
+            st.experimental_rerun()
+
+        st.markdown("#### Alert Rules")
+        alert_types = ["price_drop", "undercut", "price_increase"]
+        for idx, rule in enumerate(st.session_state.workflow_builder_alerts):
+            st.markdown(f"**Rule {idx + 1}**")
+            rule["type"] = st.selectbox(
+                "Rule type",
+                alert_types,
+                index=alert_types.index(rule["type"]) if rule["type"] in alert_types else 0,
+                key=f"builder_alert_type_{idx}",
+            )
+            rule["threshold"] = st.number_input(
+                "Threshold",
+                min_value=0,
+                max_value=10000,
+                value=rule["threshold"],
+                step=1,
+                key=f"builder_alert_threshold_{idx}",
+            )
+            if st.button("Remove this rule", key=f"remove_builder_rule_{idx}"):
+                if len(st.session_state.workflow_builder_alerts) > 1:
+                    st.session_state.workflow_builder_alerts.pop(idx)
+                    st.experimental_rerun()
+                else:
+                    st.warning("At least one alert rule is recommended.")
+            st.markdown("---")
+
+        if st.button("Save workflow", key="save_workflow"):
+            if not workflow_name.strip():
+                st.error("Workflow name is required.")
+            else:
+                workflow_id = slugify_id(workflow_name)
+                if not workflow_id:
+                    workflow_id = "workflow"
+                original_id = workflow_id
+                counter = 1
+                while workflow_id in registry.workflows:
+                    workflow_id = f"{original_id}_{counter}"
+                    counter += 1
+
+                new_sources = []
+                for source in st.session_state.workflow_builder_sources:
+                    if not source["name"].strip() or not source["source_type"].strip():
+                        st.error("Each source must have a name and a type.")
+                        break
+                    new_sources.append(
+                        SourceConfig(
+                            name=source["name"].strip(),
+                            source_type=source["source_type"].strip(),
+                            url=source["url"].strip() or None,
+                            selector=source["selector"].strip() or None,
+                            mode=source["mode"].strip(),
+                            keyword=source["keyword"].strip() or None,
+                            match_threshold=source["match_threshold"],
+                        )
+                    )
+                else:
+                    alert_rules = [
+                        {"type": rule["type"], "threshold": rule["threshold"]}
+                        for rule in st.session_state.workflow_builder_alerts
+                        if rule.get("type")
+                    ]
+
+                    workflow = WorkflowConfig(
+                        workflow_id=workflow_id,
+                        name=workflow_name.strip(),
+                        description=workflow_description.strip(),
+                        sources=new_sources,
+                        transformation_rules=[],
+                        alert_rules=alert_rules,
+                        global_match_threshold=workflow_threshold,
+                        enabled=workflow_enabled,
+                    )
+
+                    registry.register(workflow)
+                    workflow_store = os.path.join(os.path.dirname(__file__), "src", "workflows")
+                    os.makedirs(workflow_store, exist_ok=True)
+                    registry.save_to_file(workflow.workflow_id, os.path.join(workflow_store, f"{workflow.workflow_id}.json"))
+
+                    st.success(f"Saved workflow '{workflow.name}' and selected it.")
+                    st.session_state.selected_workflow = workflow.workflow_id
+                    st.session_state.workflow_selector = workflow.workflow_id
+                    st.session_state.workflow_config = workflow
+                    st.experimental_rerun()
+
     st.divider()
     st.markdown("## ⚙️ Configuration")
     
@@ -359,14 +535,10 @@ with tab2:
 with tab3:
     st.markdown("## 🚀 Run Price Monitoring")
     
-    if st.button("Start Multi-Source Monitoring", use_container_width=True):
+    if st.button(f"Run Workflow: {workflow.name}", use_container_width=True):
         try:
-            with st.spinner("Fetching competitor data..."):
-                sources = {
-                    "jumia": {"type": "playwright", "url": "https://www.jumia.co.ke/electronics/", "selector": "article.prd"},
-                    "kilimall": {"type": "playwright", "url": "https://www.kilimall.co.ke/search?q=electronics", "selector": ".product-item"}
-                }
-                comparison = run_multi_source_pipeline(sources, selected_config)
+            with st.spinner(f"Running '{workflow.name}'..."):
+                comparison = run_multi_source_pipeline(workflow, selected_config)
                 st.session_state["latest_data"] = comparison
                 st.session_state.data = comparison
                 st.success("✅ Monitoring complete")
@@ -381,18 +553,17 @@ with tab3:
             df_history = pd.read_csv(history_file)
             if not df_history.empty:
                 changes = detect_price_changes(df_history)
-                alerts = generate_alerts(changes)
+                alerts = generate_alerts(changes, workflow.alert_rules)
                 st.markdown("### 🚨 Alerts")
-                if alerts and alerts[0] != "No price changes detected":
+                if alerts and alerts[0] not in ["No price changes detected", "No alerts triggered by workflow rules"]:
                     for alert in alerts:
                         st.warning(alert)
+                    st.dataframe(changes, use_container_width=True)
                 else:
-                    st.info("✅ No price changes detected")
+                    st.info("✅ No alerts triggered by workflow rules")
 
 # =============================
 # TAB 4: DATA
-# =============================
-with tab4:
     st.markdown("## 📊 Current Data")
     
     if st.session_state.data is not None:

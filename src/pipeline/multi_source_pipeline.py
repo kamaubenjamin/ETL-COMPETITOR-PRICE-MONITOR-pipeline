@@ -7,17 +7,30 @@ from src.transform.comparison_engine import (
     match_products,
     build_comparison_table
 )
+from src.workflows import WorkflowConfig
 
 
-def run_multi_source_pipeline(sources: dict, config) -> pd.DataFrame:
+def run_multi_source_pipeline(sources: dict | WorkflowConfig, config) -> pd.DataFrame:
     """
-    Run full pipeline across multiple sources
+    Run full pipeline across multiple sources.
 
-    sources = {
-        "jumia": {"url": "...", "selector": "..."},
-        "kilimall": {"url": "...", "selector": "..."}
-    }
+    Sources may be passed as a raw dict or a WorkflowConfig instance.
     """
+
+    threshold = 70
+    if isinstance(sources, WorkflowConfig):
+        workflow = sources
+        threshold = workflow.global_match_threshold
+        sources = {
+            source.name: {
+                "type": source.source_type,
+                "url": source.url,
+                "selector": source.selector,
+                "keyword": source.keyword,
+                "match_threshold": source.match_threshold,
+            }
+            for source in workflow.sources
+        }
 
     datasets = {}
 
@@ -46,10 +59,6 @@ def run_multi_source_pipeline(sources: dict, config) -> pd.DataFrame:
             # -------------------------
             engine = TransformEngine(df)
             df_clean = engine.apply([])
-            df_clean = df_clean[
-                df_clean["product_name"].str.contains(r"\b(tv|television|qled|oled)\b", case=False, na=False)
-            ]
-
             datasets[name] = df_clean
 
             print(f"✅ {name}: {len(df_clean)} rows extracted")
@@ -68,7 +77,7 @@ def run_multi_source_pipeline(sources: dict, config) -> pd.DataFrame:
     # -------------------------
     # MATCH
     # -------------------------
-    matched = match_products(combined)
+    matched = match_products(combined, threshold=threshold)
 
     # -------------------------
     # COMPARE

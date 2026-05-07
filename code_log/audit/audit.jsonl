@@ -28,3 +28,6 @@
 {"timestamp": "2026-05-06T22:07:58.532773", "operation_type": "extract", "status": "success", "details": {"source_type": "playwright", "rows_extracted": 65, "error": null}, "duration": 13.73472785949707}
 {"timestamp": "2026-05-06T22:07:58.535810", "operation_type": "transform", "status": "success", "details": {"rows_input": 65, "rows_output": 62, "rules": [], "error": null}, "duration": 0.002001047134399414}
 {"timestamp": "2026-05-06T22:07:58.537773", "operation_type": "load", "status": "success", "details": {"destination": "CSV", "rows_loaded": 62, "error": null}, "duration": 0.0019636154174804688}
+{"timestamp": "2026-05-07T22:29:34.169717", "operation_type": "extract", "status": "success", "details": {"source_type": "default (web)", "rows_extracted": 10, "error": null}, "duration": 4.048481702804565}
+{"timestamp": "2026-05-07T22:29:34.174776", "operation_type": "transform", "status": "success", "details": {"rows_input": 10, "rows_output": 10, "rules": [], "error": null}, "duration": 0.0030388832092285156}
+{"timestamp": "2026-05-07T22:29:34.179556", "operation_type": "load", "status": "success", "details": {"destination": "CSV", "rows_loaded": 10, "error": null}, "duration": 0.0027582645416259766}
