@@ -1,0 +1,116 @@
+{
+  "samsung_55_b0035b22": {
+    "canonical_id": "samsung_55_b0035b22",
+    "canonical_name": "samsung 55\" None QLED TV",
+    "brand": "samsung",
+    "category": "tv",
+    "model": null,
+    "size": "55",
+    "specifications": {
+      "technology": "QLED"
+    },
+    "confidence_score": 100.0,
+    "match_count": 3,
+    "last_updated": "2026-05-08T06:51:23.383525",
+    "source_products": [
+      "Samsung 55\" QLED TV 4K UHD",
+      "Samsung 55 Inch QLED Television",
+      "Samsung 55\" QLED 4K TV"
+    ]
+  },
+  "lg_65_c6df5acc": {
+    "canonical_id": "lg_65_c6df5acc",
+    "canonical_name": "lg 65\" None OLED TV",
+    "brand": "lg",
+    "category": "tv",
+    "model": null,
+    "size": "65",
+    "specifications": {
+      "technology": "OLED"
+    },
+    "confidence_score": 100.0,
+    "match_count": 2,
+    "last_updated": "2026-05-08T06:51:23.384195",
+    "source_products": [
+      "LG 65 OLED TV",
+      "LG 65 Inch OLED Television"
+    ]
+  },
+  "sony_50_0bab0ffc": {
+    "canonical_id": "sony_50_0bab0ffc",
+    "canonical_name": "sony 50\" None LED TV",
+    "brand": "sony",
+    "category": "tv",
+    "model": null,
+    "size": "50",
+    "specifications": {
+      "technology": "LED"
+    },
+    "confidence_score": 100.0,
+    "match_count": 2,
+    "last_updated": "2026-05-08T06:51:23.384878",
+    "source_products": [
+      "Sony Bravia 50\" 4K",
+      "Sony 50\" Bravia LED TV"
+    ]
+  },
+  "redmi_256gb_15_ce0052bf": {
+    "canonical_id": "redmi_256gb_15_ce0052bf",
+    "canonical_name": "redmi 15\" 256GB Monitor",
+    "brand": "redmi",
+    "category": "monitor",
+    "model": "256GB",
+    "size": "15",
+    "specifications": {
+      "storage": "8GB",
+      "ram": "8GB"
+    },
+    "confidence_score": 100.0,
+    "match_count": 3,
+    "last_updated": "2026-05-08T07:02:31.758095",
+    "source_products": [
+      "Redmi Xiaomi Redmi 15C Smartphone - 8GB RAM, 128GB Storage, 6.9\" Display, Black",
+      "Redmi Redmi 15C Smartphone - 8GB RAM, 128GB Storage, 6.62\" Display, 5000mAh Battery, Black",
+      "Redmi Redmi 15C Smartphone - 8GB RAM, 256GB Storage, 6000mAh, 6.9\" Display, MediaTek Helio G81, Black"
+    ]
+  },
+  "samsung_128gb_16_3bfe1ced": {
+    "canonical_id": "samsung_128gb_16_3bfe1ced",
+    "canonical_name": "samsung 16\" 128GB Monitor",
+    "brand": "samsung",
+    "category": "monitor",
+    "model": "128GB",
+    "size": "16",
+    "specifications": {
+      "storage": "128GB",
+      "ram": "4GB"
+    },
+    "confidence_score": 100.0,
+    "match_count": 2,
+    "last_updated": "2026-05-08T07:02:31.758095",
+    "source_products": [
+      "Samsung Samsung A07 Smartphone - 6.7\" Display, 4GB RAM, 64GB Storage, Dual SIM",
+      "Samsung Samsung Galaxy A16 Smartphone - 128GB Storage, 4GB RAM, 6.7\" Display, Black"
+    ]
+  },
+  "official_256gb_15_bb4daec3": {
+    "canonical_id": "official_256gb_15_bb4daec3",
+    "canonical_name": "official 256GB 8GBGB",
+    "brand": "official",
+    "category": "phone",
+    "model": "256GB",
+    "size": "15",
+    "specifications": {
+      "technology": "IPS",
+      "storage": "8GB",
+      "ram": "8GB"
+    },
+    "confidence_score": 100.0,
+    "match_count": 2,
+    "last_updated": "2026-05-08T07:02:31.759097",
+    "source_products": [
+      "XIAOMI Xiaomi Redmi 15C Smartphone - 6.9\" IPS LCD, 8GB RAM, 256GB, 4G, 6000mAh Battery, Android 15, Black",
+      "Official Store\nXIAOMI Xiaomi Redmi 15C Smartphone - 6.9\" IPS LCD, 8GB RAM, 256GB, 4G, 6000mAh Battery, Android 15, Black"
+    ]
+  }
+}

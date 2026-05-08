@@ -5,6 +5,8 @@ import sqlite3
 from datetime import datetime
 from src.orchestrator import ETLPipeline
 from src.workflows import registry, WorkflowConfig, SourceConfig
+from src.scheduler import scheduler
+from src.reporter import reporter
 import src.config as config
 from src.utils import LOG_FILE
 from src.load import load_to_csv, load_to_db
@@ -33,6 +35,7 @@ defaults = {
     "load_status": "Idle",
     "selected_workflow": "electronics_monitoring",
     "workflow_config": registry.get("electronics_monitoring"),
+    "schedule_checked": False,
 }
 
 for k, v in defaults.items():
@@ -42,6 +45,43 @@ for k, v in defaults.items():
 
 def slugify_id(text):
     return "".join(c if c.isalnum() else "_" for c in text.strip().lower()).strip("_")
+
+
+def get_due_schedules() -> list:
+    return [s for s in scheduler.list_enabled() if scheduler.is_due(s)]
+
+
+def run_scheduled_workflow(schedule):
+    workflow = registry.get(schedule.workflow_id)
+    if not workflow:
+        return None, f"Workflow {schedule.workflow_id} not found"
+
+    try:
+        comparison = run_multi_source_pipeline(workflow, config)
+        scheduler.record_run(schedule.workflow_id)
+        return comparison, None
+    except Exception as exc:
+        return None, str(exc)
+
+
+def auto_run_due_schedules():
+    if st.session_state.get("schedule_checked"):
+        return
+
+    due_schedules = get_due_schedules()
+    if not due_schedules:
+        st.session_state.schedule_checked = True
+        return
+
+    st.session_state.schedule_checked = True
+    for schedule in due_schedules:
+        comparison, error = run_scheduled_workflow(schedule)
+        if comparison is not None:
+            st.success(f"✅ Auto-run complete: {schedule.workflow_id}")
+            st.session_state["latest_data"] = comparison
+            st.session_state.data = comparison
+        else:
+            st.error(f"❌ Auto-run failed: {schedule.workflow_id} ({error})")
 
 
 def initialize_workflow_builder():
@@ -272,6 +312,86 @@ with st.sidebar:
                     st.session_state.workflow_selector = workflow.workflow_id
                     st.session_state.workflow_config = workflow
                     st.experimental_rerun()
+
+    with st.expander("⏰ Schedule Workflow"):
+        st.markdown("### Automated Execution")
+        
+        frequency = st.selectbox(
+            "Run frequency",
+            ["manual", "hourly", "daily", "weekly"],
+            key="schedule_frequency"
+        )
+        
+        time_of_day = None
+        day_of_week = None
+        
+        if frequency in ["daily", "weekly"]:
+            time_of_day = st.time_input("Time of day", key="schedule_time")
+        
+        if frequency == "weekly":
+            day_of_week = st.selectbox(
+                "Day of week",
+                ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
+                key="schedule_day"
+            )
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("💾 Save Schedule", key="save_schedule"):
+                schedule = scheduler.create_schedule(
+                    workflow_id=st.session_state.selected_workflow,
+                    frequency=frequency,
+                    time_of_day=str(time_of_day) if time_of_day else None,
+                    day_of_week=day_of_week,
+                )
+                st.success(f"✅ Scheduled '{st.session_state.workflow_config.name}' to run {frequency}")
+        
+        with col2:
+            if st.button("🗑️ Remove Schedule", key="remove_schedule"):
+                if scheduler.delete_schedule(st.session_state.selected_workflow):
+                    st.success("✅ Schedule removed")
+                else:
+                    st.warning("No schedule found for this workflow")
+        
+        st.divider()
+        st.markdown("### Scheduled Workflows")
+        schedules = scheduler.list_schedules()
+        auto_run_due_schedules()
+
+        due_schedules = get_due_schedules()
+        if due_schedules:
+            st.info(f"⚠️ {len(due_schedules)} scheduled workflow(s) due to run now")
+            if st.button("▶️ Run Due Scheduled Workflows", key="run_due_schedules"):
+                for schedule in due_schedules:
+                    comparison, error = run_scheduled_workflow(schedule)
+                    if comparison is not None:
+                        st.success(f"✅ Scheduled run completed: {schedule.workflow_id}")
+                        st.session_state["latest_data"] = comparison
+                        st.session_state.data = comparison
+                    else:
+                        st.error(f"❌ Scheduled run failed: {schedule.workflow_id} ({error})")
+
+        if schedules:
+            for sched in schedules:
+                with st.container():
+                    st.caption(f"**{sched.workflow_id}**")
+                    col1, col2, col3 = st.columns(3)
+                    with col1:
+                        st.metric("Frequency", sched.frequency)
+                    with col2:
+                        st.metric("Runs", sched.run_count)
+                    with col3:
+                        status = "🟢 Enabled" if sched.enabled else "🔴 Disabled"
+                        if scheduler.is_due(sched):
+                            status = "⚠️ Due Now"
+                        st.metric("Status", status)
+                    if sched.last_run:
+                        st.caption(f"Last run: {sched.last_run}")
+                    next_run = scheduler.get_next_run(sched)
+                    if next_run:
+                        st.caption(f"Next run: {next_run.isoformat(sep=' ', timespec='minutes')}")
+        else:
+            st.info("No schedules configured yet")
 
     st.divider()
     st.markdown("## ⚙️ Configuration")
@@ -559,6 +679,71 @@ with tab3:
                     for alert in alerts:
                         st.warning(alert)
                     st.dataframe(changes, use_container_width=True)
+                    
+                    st.markdown("### 📋 Export Results")
+                    col1, col2, col3, col4 = st.columns(4)
+                    
+                    with col1:
+                        csv_file = reporter.export_alerts_csv(alerts, workflow.name)
+                        st.download_button(
+                            "📥 Alerts CSV",
+                            data=open(csv_file, 'rb').read(),
+                            file_name=os.path.basename(csv_file),
+                            mime="text/csv"
+                        )
+                    
+                    with col2:
+                        comparison_data = st.session_state.data
+                        if comparison_data is not None:
+                            csv_file = reporter.export_comparison_csv(comparison_data, workflow.name)
+                            st.download_button(
+                                "📥 Comparison CSV",
+                                data=open(csv_file, 'rb').read(),
+                                file_name=os.path.basename(csv_file),
+                                mime="text/csv"
+                            )
+                    
+                    with col3:
+                        if st.button("📄 Alerts PDF"):
+                            try:
+                                pdf_file = reporter.export_alerts_pdf(alerts, workflow.name)
+                                if pdf_file:
+                                    with open(pdf_file, 'rb') as f:
+                                        st.download_button(
+                                            "⬇️ Download Alerts PDF",
+                                            data=f.read(),
+                                            file_name=os.path.basename(pdf_file),
+                                            mime="application/pdf"
+                                        )
+                                else:
+                                    st.warning("PDF generation not available")
+                            except Exception as e:
+                                st.error(f"PDF generation failed: {e}")
+                    
+                    with col4:
+                        if st.button("📄 Comparison PDF"):
+                            try:
+                                pdf_file = reporter.export_comparison_pdf(comparison_data, workflow.name)
+                                if pdf_file:
+                                    with open(pdf_file, 'rb') as f:
+                                        st.download_button(
+                                            "⬇️ Download Comparison PDF",
+                                            data=f.read(),
+                                            file_name=os.path.basename(pdf_file),
+                                            mime="application/pdf"
+                                        )
+                                else:
+                                    st.warning("PDF generation not available")
+                            except Exception as e:
+                                st.error(f"PDF generation failed: {e}")
+
+                    st.markdown("---")
+                    summary = reporter.generate_summary(
+                        st.session_state.data,
+                        alerts,
+                        workflow.name
+                    )
+                    st.metric("Total Alerts", len(alerts))
                 else:
                     st.info("✅ No alerts triggered by workflow rules")
 

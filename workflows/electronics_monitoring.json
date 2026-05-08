@@ -1,0 +1,69 @@
+{
+  "workflow_id": "electronics_monitoring",
+  "workflow_name": "Electronics Price Monitoring",
+  "description": "Monitor competitor pricing on electronics across Jumia and Kilimall",
+  "enabled": true,
+
+  "sources": [
+    {
+      "name": "jumia_electronics",
+      "source_type": "playwright",
+      "url": "https://www.jumia.co.ke/electronics/",
+      "selector": "article.prd",
+      "keyword": "electronics",
+      "match_threshold": 72
+    },
+    {
+      "name": "kilimall_electronics",
+      "source_type": "playwright",
+      "url": "https://www.kilimall.co.ke/search?q=electronics",
+      "selector": ".product-item",
+      "keyword": "electronics",
+      "match_threshold": 72
+    }
+  ],
+
+  "filters": {
+    "category": "electronics",
+    "keywords": ["tv", "smart tv", "monitor", "laptop", "phone"]
+  },
+
+  "transformation_rules": [
+    {
+      "type": "drop_nulls",
+      "subset": ["price"]
+    }
+  ],
+
+  "steps": [
+    "extract",
+    "normalize",
+    "fuzzy_match",
+    "compare",
+    "detect_changes",
+    "generate_alerts",
+    "generate_reports"
+  ],
+
+  "alert_rules": {
+    "price_drop_percentage": 5,
+    "price_drop_absolute": 1000,
+    "minimum_confidence": 0.75,
+    "undercut_threshold": 2000
+  },
+
+  "schedule": {
+    "frequency": "daily",
+    "time_of_day": "08:00",
+    "day_of_week": null,
+    "enabled": true
+  },
+
+  "reporting": {
+    "export_csv": true,
+    "export_pdf": true,
+    "report_dir": "reports"
+  },
+
+  "global_match_threshold": 70
+}

@@ -1,0 +1,22 @@
+{
+  "electronics_monitoring": {
+    "workflow_id": "electronics_monitoring",
+    "frequency": "daily",
+    "time_of_day": "08:00",
+    "day_of_week": null,
+    "enabled": true,
+    "last_run": null,
+    "next_run": "2026-05-08T08:00:00",
+    "run_count": 0
+  },
+  "smartphones_monitoring": {
+    "workflow_id": "smartphones_monitoring",
+    "frequency": "daily",
+    "time_of_day": "10:00",
+    "day_of_week": null,
+    "enabled": true,
+    "last_run": null,
+    "next_run": "2026-05-08T10:00:00",
+    "run_count": 0
+  }
+}

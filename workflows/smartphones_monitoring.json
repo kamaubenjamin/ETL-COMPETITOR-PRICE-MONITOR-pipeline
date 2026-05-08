@@ -1,0 +1,73 @@
+{
+  "workflow_id": "smartphones_monitoring",
+  "workflow_name": "Smartphone Price Monitoring",
+  "description": "Track smartphone pricing across multiple channels",
+  "enabled": true,
+
+  "sources": [
+    {
+      "name": "jumia_phones",
+      "source_type": "playwright",
+      "url": "https://www.jumia.co.ke/mobile-phones/",
+      "selector": "article.prd",
+      "keyword": "smartphone",
+      "match_threshold": 75
+    },
+    {
+      "name": "kilimall_phones",
+      "source_type": "playwright",
+      "url": "https://www.kilimall.co.ke/search?q=phone",
+      "selector": ".product-item",
+      "keyword": "smartphone",
+      "match_threshold": 75
+    }
+  ],
+
+  "filters": {
+    "category": "phones",
+    "keywords": ["smartphone", "phone", "mobile"]
+  },
+
+  "transformation_rules": [
+    {
+      "type": "drop_nulls",
+      "subset": ["price"]
+    },
+    {
+      "type": "filter",
+      "condition": "price > 5000"
+    }
+  ],
+
+  "steps": [
+    "extract",
+    "normalize",
+    "fuzzy_match",
+    "compare",
+    "detect_changes",
+    "generate_alerts",
+    "generate_reports"
+  ],
+
+  "alert_rules": {
+    "price_drop_percentage": 3,
+    "price_drop_absolute": 500,
+    "minimum_confidence": 0.80,
+    "undercut_threshold": 1000
+  },
+
+  "schedule": {
+    "frequency": "daily",
+    "time_of_day": "10:00",
+    "day_of_week": null,
+    "enabled": true
+  },
+
+  "reporting": {
+    "export_csv": true,
+    "export_pdf": true,
+    "report_dir": "reports"
+  },
+
+  "global_match_threshold": 75
+}

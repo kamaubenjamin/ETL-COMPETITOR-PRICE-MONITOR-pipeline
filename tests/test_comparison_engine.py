@@ -136,6 +136,31 @@ class TestProductMatching:
         result = match_products(df)
         assert result.iloc[0]['match_id'] != result.iloc[1]['match_id']
 
+    def test_match_with_source_thresholds(self):
+        """Test that source-specific thresholds affect matching."""
+        df = pd.DataFrame({
+            'product_name': [
+                'Samsung 55 inch TV',
+                'LG 55 inch TV',
+            ],
+            'price': [50000, 52000],
+            'source': ['jumia', 'kilimall']
+        })
+
+        result_low = match_products(
+            df,
+            threshold=60,
+            source_thresholds={'jumia': 50, 'kilimall': 50},
+        )
+        assert result_low.iloc[0]['match_id'] == result_low.iloc[1]['match_id']
+
+        result_high = match_products(
+            df,
+            threshold=60,
+            source_thresholds={'jumia': 80, 'kilimall': 70},
+        )
+        assert result_high.iloc[0]['match_id'] != result_high.iloc[1]['match_id']
+
     def test_match_id_starts_at_zero(self):
         """Test that match IDs start from 0."""
         df = pd.DataFrame({
