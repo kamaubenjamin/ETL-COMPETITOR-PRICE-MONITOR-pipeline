@@ -6,7 +6,6 @@ import json
 import os
 from datetime import datetime
 from typing import Dict, Any, Optional, List
-from uuid import uuid4
 import pandas as pd
 
 from src.scheduler import scheduler
@@ -14,7 +13,6 @@ from src.reporter import reporter
 from src.workflows import WorkflowConfig, SourceConfig, registry
 from src.pipeline.multi_source_pipeline import run_multi_source_pipeline
 from src.storage.history_store import save_snapshot, detect_price_changes
-from src.storage.workflow_history import workflow_history_store
 from src.alerts.alert_engine import generate_alerts
 import src.config as config
 
@@ -90,19 +88,13 @@ class WorkflowRunner:
             }
 
         start_time = datetime.now()
-        run_id = str(uuid4())
         execution_log = {
-            "run_id": run_id,
             "workflow_id": workflow_id,
             "workflow_name": workflow_def.get("workflow_name"),
             "start_time": start_time.isoformat(),
+            "steps": [],
             "status": "success",
             "error": None,
-            "steps": [],
-            "alerts_generated": 0,
-            "report_paths": [],
-            "comparison_shape": None,
-            "triggered_by": "manual",
         }
 
         try:
@@ -123,8 +115,6 @@ class WorkflowRunner:
                         comparison = run_multi_source_pipeline(workflow_config, config)
                         step_log["message"] = f"Extracted from {len(workflow_config.sources)} sources"
                         execution_log["comparison"] = comparison
-                        if hasattr(comparison, "shape"):
-                            execution_log["comparison_shape"] = list(comparison.shape)
 
                     elif step == "normalize":
                         step_log["message"] = "Normalized product data"
@@ -153,11 +143,9 @@ class WorkflowRunner:
                                 [alert_rules] if alert_rules else []
                             )
                             execution_log["alerts"] = alerts
-                            execution_log["alerts_generated"] = len(alerts) if isinstance(alerts, list) else 0
                             step_log["message"] = f"Generated {len(alerts)} alerts"
                         else:
                             execution_log["alerts"] = []
-                            execution_log["alerts_generated"] = 0
                             step_log["message"] = "No alerts to generate"
 
                     elif step == "generate_reports":
@@ -168,7 +156,6 @@ class WorkflowRunner:
                             )
                             step_log["message"] = f"Generated report: {os.path.basename(csv_file)}"
                             execution_log["report_file"] = csv_file
-                            execution_log["report_paths"].append(csv_file)
 
                             if workflow_def.get("reporting", {}).get("export_pdf"):
                                 pdf_file = reporter.export_comparison_pdf(
@@ -177,7 +164,6 @@ class WorkflowRunner:
                                 )
                                 if pdf_file:
                                     execution_log["pdf_file"] = pdf_file
-                                    execution_log["report_paths"].append(pdf_file)
 
                     step_log["duration"] = (datetime.now() - step_start).total_seconds()
                     execution_log["steps"].append(step_log)
@@ -194,7 +180,6 @@ class WorkflowRunner:
             # Record execution in history
             execution_log["end_time"] = datetime.now().isoformat()
             execution_log["total_duration"] = (datetime.now() - start_time).total_seconds()
-            workflow_history_store.record_execution(execution_log)
             self.execution_history.append(execution_log)
 
             # Update scheduler
@@ -209,7 +194,6 @@ class WorkflowRunner:
             execution_log["error"] = str(e)
             execution_log["end_time"] = datetime.now().isoformat()
             execution_log["total_duration"] = (datetime.now() - start_time).total_seconds()
-            workflow_history_store.record_execution(execution_log)
             self.execution_history.append(execution_log)
             return execution_log
 

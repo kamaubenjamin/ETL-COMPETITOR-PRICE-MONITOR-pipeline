@@ -7,6 +7,8 @@ from src.orchestrator import ETLPipeline
 from src.workflows import registry, WorkflowConfig, SourceConfig
 from src.scheduler import scheduler
 from src.reporter import reporter
+from src.workflow_runner import runner as workflow_runner
+from src.storage.workflow_history import workflow_history_store
 import src.config as config
 from src.utils import LOG_FILE
 from src.load import load_to_csv, load_to_db
@@ -57,8 +59,11 @@ def run_scheduled_workflow(schedule):
         return None, f"Workflow {schedule.workflow_id} not found"
 
     try:
-        comparison = run_multi_source_pipeline(workflow, config)
-        scheduler.record_run(schedule.workflow_id)
+        result = workflow_runner.execute_workflow(schedule.workflow_id)
+        if result.get("status") == "failed":
+            return None, result.get("error")
+
+        comparison = result.get("comparison")
         return comparison, None
     except Exception as exc:
         return None, str(exc)
@@ -68,20 +73,21 @@ def auto_run_due_schedules():
     if st.session_state.get("schedule_checked"):
         return
 
-    due_schedules = get_due_schedules()
-    if not due_schedules:
-        st.session_state.schedule_checked = True
+    due_results = workflow_runner.execute_due_workflows()
+    st.session_state.schedule_checked = True
+
+    if not due_results:
         return
 
-    st.session_state.schedule_checked = True
-    for schedule in due_schedules:
-        comparison, error = run_scheduled_workflow(schedule)
-        if comparison is not None:
-            st.success(f"✅ Auto-run complete: {schedule.workflow_id}")
-            st.session_state["latest_data"] = comparison
-            st.session_state.data = comparison
+    for result in due_results:
+        if result.get("status") != "failed":
+            st.success(f"✅ Auto-run complete: {result.get('workflow_id')}")
+            comparison = result.get("comparison")
+            if comparison is not None:
+                st.session_state["latest_data"] = comparison
+                st.session_state.data = comparison
         else:
-            st.error(f"❌ Auto-run failed: {schedule.workflow_id} ({error})")
+            st.error(f"❌ Auto-run failed: {result.get('workflow_id')} ({result.get('error')})")
 
 
 def initialize_workflow_builder():
@@ -112,6 +118,11 @@ def initialize_workflow_builder():
 
 initialize_workflow_builder()
 
+# Register declarative workflows from the workflow runner into the dashboard registry
+for workflow_id in workflow_runner.list_workflows():
+    if registry.get(workflow_id) is None:
+        workflow_runner.register_workflow_to_registry(workflow_id)
+
 # Display active workflow
 st.info(f"📊 **Active Workflow**: {st.session_state.workflow_config.name}")
 
@@ -134,7 +145,7 @@ with st.sidebar:
     st.markdown("## 📋 Workflow Selection")
     
     # Workflow selection dropdown
-    available_workflows = registry.list_workflows()
+    available_workflows = sorted(set(registry.list_workflows()))
     selected = st.selectbox(
         "Select Monitoring Workflow",
         available_workflows,
@@ -210,7 +221,7 @@ with st.sidebar:
             if st.button("Remove this source", key=f"remove_builder_source_{idx}"):
                 if len(st.session_state.workflow_builder_sources) > 1:
                     st.session_state.workflow_builder_sources.pop(idx)
-                    st.experimental_rerun()
+                    st.st.rerun()
                 else:
                     st.warning("At least one source is required.")
             st.markdown("---")
@@ -227,7 +238,7 @@ with st.sidebar:
                     "match_threshold": 70,
                 }
             )
-            st.experimental_rerun()
+            st.st.rerun()
 
         st.markdown("#### Alert Rules")
         alert_types = ["price_drop", "undercut", "price_increase"]
@@ -250,7 +261,7 @@ with st.sidebar:
             if st.button("Remove this rule", key=f"remove_builder_rule_{idx}"):
                 if len(st.session_state.workflow_builder_alerts) > 1:
                     st.session_state.workflow_builder_alerts.pop(idx)
-                    st.experimental_rerun()
+                    st.st.rerun()
                 else:
                     st.warning("At least one alert rule is recommended.")
             st.markdown("---")
@@ -311,7 +322,7 @@ with st.sidebar:
                     st.session_state.selected_workflow = workflow.workflow_id
                     st.session_state.workflow_selector = workflow.workflow_id
                     st.session_state.workflow_config = workflow
-                    st.experimental_rerun()
+                    st.st.rerun()
 
     with st.expander("⏰ Schedule Workflow"):
         st.markdown("### Automated Execution")
@@ -649,19 +660,47 @@ with tab2:
     else:
         st.info("No price history yet.")
 
+    st.divider()
+    st.markdown("## 🧾 Workflow Execution History")
+    execution_history = workflow_history_store.get_latest_runs(limit=20)
+    if execution_history:
+        history_rows = [
+            {
+                "run_id": row.get("run_id"),
+                "workflow_id": row.get("workflow_id"),
+                "status": row.get("status"),
+                "started_at": row.get("start_time"),
+                "ended_at": row.get("end_time"),
+                "duration_seconds": row.get("total_duration"),
+                "alerts_generated": row.get("alerts_generated", 0),
+            }
+            for row in execution_history
+        ]
+        st.dataframe(pd.DataFrame(history_rows), use_container_width=True)
+    else:
+        st.info("No workflow execution history yet.")
+
 # =============================
 # TAB 3: MONITORING
 # =============================
 with tab3:
     st.markdown("## 🚀 Run Price Monitoring")
     
-    if st.button(f"Run Workflow: {workflow.name}", use_container_width=True):
+    if st.button(f"▶️ Run Workflow Definition: {workflow.name}", use_container_width=True):
         try:
-            with st.spinner(f"Running '{workflow.name}'..."):
-                comparison = run_multi_source_pipeline(workflow, selected_config)
-                st.session_state["latest_data"] = comparison
-                st.session_state.data = comparison
-                st.success("✅ Monitoring complete")
+            with st.spinner(f"Executing workflow '{workflow.name}'..."):
+                result = workflow_runner.execute_workflow(st.session_state.selected_workflow)
+                st.session_state["latest_execution"] = result
+                if result.get("status") == "failed":
+                    st.error(f"❌ Workflow failed: {result.get('error')}")
+                else:
+                    st.success(f"✅ Workflow completed in {result.get('total_duration', 0):.2f}s")
+                    comparison = result.get("comparison")
+                    if comparison is not None:
+                        st.session_state["latest_data"] = comparison
+                        st.session_state.data = comparison
+                    for step in result.get("steps", []):
+                        st.text(f"- {step.get('name')} : {step.get('status')} ({step.get('duration', 0):.2f}s)")
         except Exception as e:
             st.error(f"❌ Failed: {e}")
     
@@ -749,6 +788,7 @@ with tab3:
 
 # =============================
 # TAB 4: DATA
+with tab4:
     st.markdown("## 📊 Current Data")
     
     if st.session_state.data is not None:

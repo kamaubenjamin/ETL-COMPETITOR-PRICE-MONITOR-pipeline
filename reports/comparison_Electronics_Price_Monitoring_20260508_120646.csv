@@ -1,0 +1,6 @@
+canonical_id,product_name,match_confidence,match_type,jumia_phones,kilimall_phones,cheapest_source,cheapest_price,source_count
+redmi_256gb_15_ce0052bf,"redmi 15"" 256GB Monitor",96.08266820120701,exact_match,15299.0,14999.0,kilimall_phones,14999.0,2
+refurbished_64gb_64_7adf5a57,refurbished 64GB 64GBGB,94.85065517259896,exact_match,,3777.0,kilimall_phones,3777.0,1
+refurbished_64gb_64_7adf5a57,refurbished 64GB 64GBGB,77.21510077160691,medium_confidence,,6499.0,kilimall_phones,6499.0,1
+match_2,Android Smartphone Refurbished OPPO A91 6.4‘ AMOLED 48mp quad camara 8+128GB 4000mAh (blue),0.0,no_match,11390.0,,jumia_phones,11390.0,1
+match_1,"redbeat E3 Smartphone 6.6inchs Dual SIM,12GB/256GB,Android14,Side Fingerprint,BLUE",0.0,no_match,13400.0,,jumia_phones,13400.0,1
