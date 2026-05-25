@@ -124,13 +124,12 @@
       "technology": "QLED"
     },
     "confidence_score": 100.0,
-    "match_count": 4,
-    "last_updated": "2026-05-08T13:13:26.897176",
+    "match_count": 3,
+    "last_updated": "2026-05-20T07:05:06.794509",
     "source_products": [
-      "VITRON 32\" INCH QLED TV HTC3288QS ,BLUETOOTH Enabled FRAMELESS 32 Inch Smart Android 14.0 TV Inbuilt Decoder ELECTRONICS 3*HDMI Ports,2*USB Ports,Netflix,Youtube, APPSTORE,Wi-Fi + 6 EXTRA ACCESSORIES",
-      "Vitron 32 Inch Qled BLUETOOTH Enabled TV, FRAMELESS TELEVISION 32 Inch Smart Android 11.0 TV Inbuilt Decoder ELECTRONICS 3*HDMI Ports,2*USB Ports,Netflix,Youtube, APPSTORE,Wi-Fi + 7 EXTRA ACCESSORIES",
-      "VITRON 32\" INCH QLED TV HTC3288QS ,BLUETOOTH Enabled FRAMELESS Smart Android 14.0 TV Inbuilt Decoder ELECTRONICS 3*HDMI Ports,2*USB Ports,Netflix,Youtube ,Appstore 14 MONTHS WARRANTY+6 FREE GIFTS",
-      "VITRON 32\" INCH QLED TV HTC3288QS ,BLUETOOTH Enabled FRAMELESS Smart Android 14.0 TV Inbuilt Decoder ELECTRONICS 3*HDMI Ports,2*USB Ports,Netflix,Youtube ,Appstore 14 MONTHS WARRANTY+ 7 FREE GIFTS"
+      "VITRON 32\" INCH QLED TV HTC3288QS ,BLUETOOTH Enabled FRAMELESS 32 Inch Smart And",
+      "Vitron 32 Inch Qled BLUETOOTH Enabled TV, FRAMELESS TELEVISION 32 Inch Smart And",
+      "VITRON 32\" INCH QLED TV HTC3288QS ,BLUETOOTH Enabled FRAMELESS Smart Android 14."
     ]
   },
   "redmi_128gb_15_a5b1feeb": {
@@ -141,15 +140,16 @@
     "model": "128GB",
     "size": "15",
     "specifications": {
-      "storage": "128GB"
+      "storage": "8GB",
+      "ram": "8GB"
     },
     "confidence_score": 100.0,
     "match_count": 3,
-    "last_updated": "2026-05-08T12:06:45.109033",
+    "last_updated": "2026-05-20T07:09:01.191857",
     "source_products": [
-      "Redmi Xiaomi Redmi 15C Smartphone - 8GB RAM, 128GB Storage, 6.9\" Display, Black",
-      "Redmi Redmi 15C Smartphone - 8GB RAM, 128GB Storage, 6.62\" Display, 5000mAh Battery, Black",
-      "REDMI 15C 128GB Storage Upto 8(4+4)GB Ram 6.9'' FHD Immersive Display 50MP Main Cam +8MP front 6000mAh 33W Fast Charger Xiaomi Hyper OS Side Fingerprint Smartphone smart phones"
+      "Xiaomi Redmi 15C Smartphone - 8GB RAM, 128GB Storage, 6.9\" Display, Black",
+      "Redmi 15C Smartphone - 8GB RAM, 128GB Storage, 6.62\" Display, 5000mAh Battery, B",
+      "Redmi 15C Smartphone - 6.9\" Display, 4GB RAM, 128GB Storage, 6000mAh Battery, Bl"
     ]
   },
   "refurbished_64gb_64_7adf5a57": {
@@ -168,6 +168,62 @@
     "source_products": [
       "Refurbished OPPO A3 F7 Smart Phone 128GB+4GB 6.23\" 3500mAh phone Dual SIM 4G phone Refurbished Phone SmartPhones Mobile Phones 128GB phone 4G Phone oppp phone smartphone",
       "Refurbished OPPO A3S A5 64GB+4GB 6.2\"13MP face unlock 4230mah Fingerprint unlock phone Dual SIM 4G phone Refurbished Phone SmartPhones Mobile Phones 128GB phone 4G Phones oppp phone smartphone"
+    ]
+  },
+  "official_64gb_100_812af294": {
+    "canonical_id": "official_64gb_100_812af294",
+    "canonical_name": "official 100\" 64GB Monitor",
+    "brand": "official",
+    "category": "monitor",
+    "model": "64GB",
+    "size": "100",
+    "specifications": {
+      "storage": "6GB",
+      "ram": "6GB"
+    },
+    "confidence_score": 100.0,
+    "match_count": 2,
+    "last_updated": "2026-05-20T07:09:01.191857",
+    "source_products": [
+      "Itel A100C 4G Smartphone, 6GB RAM, 64GB Storage, 6.6\" Display, 5000mAh, Black",
+      "Official Store\nItel A100C 4G Smartphone, 6GB RAM, 64GB Storage, 6.6\" Display, 50"
+    ]
+  },
+  "samsung_64gb_2b91223c": {
+    "canonical_id": "samsung_64gb_2b91223c",
+    "canonical_name": "samsung None\" 64GB Monitor",
+    "brand": "samsung",
+    "category": "monitor",
+    "model": "64GB",
+    "size": null,
+    "specifications": {
+      "storage": "4GB",
+      "ram": "4GB"
+    },
+    "confidence_score": 100.0,
+    "match_count": 2,
+    "last_updated": "2026-05-20T07:09:01.191857",
+    "source_products": [
+      "Samsung A07 Smartphone - 6.7\" Display, 4GB RAM, 64GB Storage, Dual SIM",
+      "Samsung A07 Smartphone 6.7\" HD+ Display 4GB RAM 128GB Storage"
+    ]
+  },
+  "refurbished_64gb_83_7adf5a57": {
+    "canonical_id": "refurbished_64gb_83_7adf5a57",
+    "canonical_name": "refurbished 64GB 64GBGB",
+    "brand": "refurbished",
+    "category": "phone",
+    "model": "64GB",
+    "size": "83",
+    "specifications": {
+      "storage": "64GB"
+    },
+    "confidence_score": 100.0,
+    "match_count": 2,
+    "last_updated": "2026-05-20T07:09:01.191857",
+    "source_products": [
+      "Refurbished OPPO A83 Smartphones 64GB+4GB 5.7 inches 13MP+8MP 3180mAh Dual SIM 2",
+      "Refurbished OPPO A83 64GB+4GB 5.7\"13MP+8MP 3180mAh Fingerprint unlock phone Dual"
     ]
   }
 }

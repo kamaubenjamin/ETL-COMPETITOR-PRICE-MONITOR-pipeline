@@ -17,3 +17,23 @@ data/
 
 # OS files
 .DS_Store
+
+# Runtime workflow artifacts
+reports/
+price_history.csv
+src/storage/workflow_history.json
+src/schedules.json
+code_log/audit/audit.jsonl
+
+# Generated outputs
+output_data/
+*.csv
+
+# Virtual environment
+venv/
+
+# Streamlit cache
+.streamlit/
+
+# Pytest cache
+.pytest_cache/
