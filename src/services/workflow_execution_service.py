@@ -12,7 +12,8 @@ from __future__ import annotations
 import json
 import os
 import threading
-from concurrent.futures import Future, ThreadPoolExecutor
+import time
+from concurrent.futures import Future, ThreadPoolExecutor, TimeoutError
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Any, Dict, List, Optional
@@ -28,6 +29,8 @@ from src.contracts.api import (
     public_dict,
     utc_now_iso,
 )
+from src.core.execution.status import ACTIVE_STATUSES, ExecutionStatus, normalize_status
+from src.core.logging import ExecutionLogger
 from src.extract.extract import run_extraction
 from src.storage.workflow_history import workflow_history_store
 from src.telemetry.pipeline_logger import PipelineLogger
@@ -73,6 +76,34 @@ class RunStatusStore:
         records = sorted(records, key=lambda item: item.get("updated_at", ""), reverse=True)
         return [RunStatusRecord(**record) for record in records[:limit]]
 
+    def find_active_by_workflow(self, workflow_id: str) -> Optional[RunStatusRecord]:
+        for record in self.list(workflow_id=workflow_id, limit=1000):
+            if normalize_status(record.status) in ACTIVE_STATUSES:
+                return record
+        return None
+
+    def mark_stale_running(self, stale_after_seconds: int = 7200) -> int:
+        now = time.time()
+        changed = 0
+        with self._lock:
+            records = self._load()
+            for run_id, record in records.items():
+                if normalize_status(record.get("status")) not in ACTIVE_STATUSES:
+                    continue
+                updated_at = record.get("updated_at") or record.get("submitted_at")
+                try:
+                    updated_ts = datetime_from_iso(updated_at)
+                except ValueError:
+                    continue
+                if now - updated_ts > stale_after_seconds:
+                    record["status"] = ExecutionStatus.TIMEOUT.value
+                    record["completed_at"] = utc_now_iso()
+                    record["error"] = "Execution state was stale and marked timeout"
+                    changed += 1
+            if changed:
+                self._save(records)
+        return changed
+
     def _load(self) -> Dict[str, Dict[str, Any]]:
         if not os.path.exists(self.filepath):
             return {}
@@ -102,13 +133,15 @@ class WorkflowExecutionService:
         self.executor = ThreadPoolExecutor(max_workers=max_workers, thread_name_prefix="flowsync-workflow")
         self._futures: Dict[str, Future] = {}
         self._futures_lock = threading.RLock()
+        self.logger = ExecutionLogger()
 
     def run_workflow(self, request: WorkflowRunRequest) -> WorkflowRunResponse:
+        self.status_store.mark_stale_running()
         if not self.runner.get_workflow(request.workflow_id):
             return WorkflowRunResponse(
                 run_id=request.run_id or str(uuid4()),
                 workflow_id=request.workflow_id,
-                status="failed",
+                status=ExecutionStatus.FAILED.value,
                 accepted=False,
                 message=f"Workflow {request.workflow_id} not found",
                 error=f"Workflow {request.workflow_id} not found",
@@ -116,11 +149,24 @@ class WorkflowExecutionService:
 
         run_id = request.run_id or str(uuid4())
         submitted_at = utc_now_iso()
+        if request.prevent_overlap:
+            active = self.status_store.find_active_by_workflow(request.workflow_id)
+            if active and active.run_id != run_id:
+                return WorkflowRunResponse(
+                    run_id=active.run_id,
+                    workflow_id=request.workflow_id,
+                    status=active.status,
+                    accepted=False,
+                    message="Workflow already has an active run",
+                    submitted_at=submitted_at,
+                    error="overlapping_execution_prevented",
+                )
+
         self.status_store.upsert(
             RunStatusRecord(
                 run_id=run_id,
                 workflow_id=request.workflow_id,
-                status="queued" if request.async_execution else "running",
+                status=ExecutionStatus.QUEUED.value if request.async_execution else ExecutionStatus.RUNNING.value,
                 submitted_at=submitted_at,
                 updated_at=submitted_at,
                 triggered_by=request.triggered_by,
@@ -135,19 +181,47 @@ class WorkflowExecutionService:
             return WorkflowRunResponse(
                 run_id=run_id,
                 workflow_id=request.workflow_id,
-                status="queued",
+                status=ExecutionStatus.QUEUED.value,
                 accepted=True,
                 message="Workflow execution queued",
                 submitted_at=submitted_at,
             )
 
-        result = self._execute_workflow(request, run_id)
-        status = result.get("status", "unknown")
+        sync_future = self.executor.submit(self._execute_workflow, request, run_id)
+        try:
+            result = sync_future.result(timeout=request.timeout_seconds)
+        except TimeoutError:
+            self.status_store.update(
+                run_id,
+                status=ExecutionStatus.TIMEOUT.value,
+                completed_at=utc_now_iso(),
+                error=f"Workflow timed out after {request.timeout_seconds}s",
+            )
+        except Exception as exc:
+            return WorkflowRunResponse(
+                run_id=run_id,
+                workflow_id=request.workflow_id,
+                status=ExecutionStatus.FAILED.value,
+                accepted=False,
+                message="Workflow execution failed",
+                submitted_at=submitted_at,
+                error=str(exc),
+            )
+            return WorkflowRunResponse(
+                run_id=run_id,
+                workflow_id=request.workflow_id,
+                status=ExecutionStatus.TIMEOUT.value,
+                accepted=False,
+                message="Workflow execution timed out",
+                submitted_at=submitted_at,
+                error=f"Workflow timed out after {request.timeout_seconds}s",
+            )
+        status = normalize_status(result.get("status", "unknown"))
         return WorkflowRunResponse(
             run_id=run_id,
             workflow_id=request.workflow_id,
             status=status,
-            accepted=status != "failed",
+            accepted=normalize_status(status) != ExecutionStatus.FAILED.value,
             message="Workflow execution completed",
             submitted_at=submitted_at,
             result=self._summarize_result(result),
@@ -155,29 +229,69 @@ class WorkflowExecutionService:
         )
 
     def _execute_workflow(self, request: WorkflowRunRequest, run_id: str) -> Dict[str, Any]:
-        self.status_store.update(run_id, status="running")
-        try:
-            result = self.runner.execute_workflow(
-                request.workflow_id,
-                run_id=run_id,
-                triggered_by=request.triggered_by,
-                metadata={
-                    **request.metadata,
-                    # Future Airflow/Kafka workers can preserve this source.
-                    "api_boundary": "WorkflowExecutionService",
-                },
-            )
-            self.status_store.update(
-                run_id,
-                status=result.get("status", "unknown"),
-                result=self._summarize_result(result),
-                error=result.get("error"),
-            )
-            return result
-        except Exception as exc:
-            error = str(exc)
-            self.status_store.update(run_id, status="failed", error=error)
-            raise
+        started_at = utc_now_iso()
+        start_perf = time.perf_counter()
+        self.status_store.update(run_id, status=ExecutionStatus.RUNNING.value, started_at=started_at)
+        max_retries = max(0, int(request.max_retries or 0))
+        last_error: Optional[Exception] = None
+
+        for attempt in range(max_retries + 1):
+            try:
+                if attempt:
+                    self.logger.retry(
+                        "workflow_retry",
+                        attempt=attempt,
+                        max_retries=max_retries,
+                        run_id=run_id,
+                        workflow_id=request.workflow_id,
+                    )
+                result = self.runner.execute_workflow(
+                    request.workflow_id,
+                    run_id=run_id,
+                    triggered_by=request.triggered_by,
+                    metadata={
+                        **request.metadata,
+                        "api_boundary": "WorkflowExecutionService",
+                        "attempt": attempt + 1,
+                        "max_retries": max_retries,
+                    },
+                )
+                summary = self._summarize_result(result)
+                status = normalize_status(result.get("status", ExecutionStatus.FAILED.value))
+                completed_at = utc_now_iso()
+                duration_ms = int((time.perf_counter() - start_perf) * 1000)
+                self.status_store.update(
+                    run_id,
+                    status=status,
+                    completed_at=completed_at,
+                    duration_ms=duration_ms,
+                    records_processed=summary.get("records_processed", 0),
+                    alerts_generated=summary.get("alerts_generated", 0),
+                    reports_generated=summary.get("reports_generated", 0),
+                    connector_type=summary.get("connector_type"),
+                    result=summary,
+                    error=result.get("error"),
+                )
+                return result
+            except Exception as exc:
+                last_error = exc
+                self.logger.error(
+                    "workflow_execution_failed",
+                    error=exc,
+                    run_id=run_id,
+                    workflow_id=request.workflow_id,
+                    attempt=attempt + 1,
+                )
+
+        error = str(last_error) if last_error else "Unknown workflow failure"
+        self.status_store.update(
+            run_id,
+            status=ExecutionStatus.FAILED.value,
+            completed_at=utc_now_iso(),
+            duration_ms=int((time.perf_counter() - start_perf) * 1000),
+            error=error,
+        )
+        raise RuntimeError(error)
 
     def create_workflow(self, request: WorkflowCreateRequest) -> Dict[str, Any]:
         workflow_def = request.to_workflow_definition()
@@ -307,8 +421,14 @@ class WorkflowExecutionService:
             "error": result.get("error"),
             "alerts_generated": result.get("alerts_generated", 0),
             "report_paths": result.get("report_paths", []),
+            "reports_generated": len(result.get("report_paths", [])),
             "comparison_shape": result.get("comparison_shape"),
+            "records_processed": result.get("records_processed", 0),
+            "connector_type": result.get("connector_type"),
             "total_duration": result.get("total_duration"),
+            "duration_ms": result.get("duration_ms"),
+            "started_at": result.get("started_at") or result.get("start_time"),
+            "completed_at": result.get("completed_at") or result.get("end_time"),
         }
 
     def _make_execution_config(self, **overrides: Any):
@@ -322,3 +442,9 @@ class WorkflowExecutionService:
 
 
 workflow_execution_service = WorkflowExecutionService()
+
+
+def datetime_from_iso(value: str) -> float:
+    from datetime import datetime
+
+    return datetime.fromisoformat(value.replace("Z", "+00:00")).timestamp()

@@ -10,20 +10,19 @@ from __future__ import annotations
 from dataclasses import asdict
 from typing import Any, Dict, Optional
 
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-
 from src.contracts.api import (
     ConnectorTestRequest,
     SourceSyncRequest,
     WorkflowCreateRequest,
     WorkflowRunRequest,
 )
+from src.contracts.payloads import alert_payload, execution_history_payload, report_payload, telemetry_run_payload
 
 
 def create_app():
     try:
-        from fastapi import HTTPException
+        from fastapi import FastAPI, HTTPException
+        from fastapi.middleware.cors import CORSMiddleware
     except ImportError as exc:  # pragma: no cover
         raise RuntimeError(
             "Install fastapi and uvicorn to run the FlowSync ETL API"
@@ -107,11 +106,10 @@ def create_app():
     ) -> Dict[str, Any]:
 
         return {
-            "history": workflow_execution_service.get_workflow_history(
-                workflow_id,
-                run_id,
-                limit,
-            )
+            "history": [
+                execution_history_payload(entry)
+                for entry in workflow_execution_service.get_workflow_history(workflow_id, run_id, limit)
+            ]
         }
 
     # ---------------------------------------------------------
@@ -139,10 +137,10 @@ def create_app():
     ) -> Dict[str, Any]:
 
         return {
-            "runs": workflow_execution_service.list_run_statuses(
-                workflow_id,
-                limit,
-            )
+            "runs": [
+                telemetry_run_payload(record)
+                for record in workflow_execution_service.list_run_statuses(workflow_id, limit)
+            ]
         }
 
     # ---------------------------------------------------------
@@ -156,18 +154,7 @@ def create_app():
 
         for entry in history:
             for alert in entry.get("alerts", []) or []:
-                flattened.append(
-                    {
-                        "run_id": entry.get("run_id"),
-                        "workflow_id": entry.get("workflow_id"),
-                        "workflow_name": entry.get("workflow_name"),
-                        "alert": alert,
-                        "timestamp": (
-                            entry.get("end_time")
-                            or entry.get("start_time")
-                        ),
-                    }
-                )
+                flattened.append(alert_payload(entry, alert))
 
         return {
             "alerts": flattened[:limit]
@@ -213,7 +200,10 @@ def create_app():
     @app.get("/reports/latest")
     def latest_reports(limit: int = 10) -> Dict[str, Any]:
         return {
-            "reports": workflow_execution_service.get_latest_reports(limit)
+            "reports": [
+                report_payload(report)
+                for report in workflow_execution_service.get_latest_reports(limit)
+            ]
         }
 
     return app

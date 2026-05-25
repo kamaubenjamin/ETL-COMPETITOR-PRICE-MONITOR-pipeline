@@ -13,7 +13,6 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 from uuid import uuid4
 
-
 def utc_now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
@@ -28,6 +27,9 @@ class WorkflowRunRequest:
     run_id: Optional[str] = None
     triggered_by: str = "flowsync-ui"
     async_execution: bool = True
+    timeout_seconds: Optional[int] = None
+    max_retries: int = 0
+    prevent_overlap: bool = True
     metadata: Dict[str, Any] = field(default_factory=dict)
 
     @classmethod
@@ -37,6 +39,9 @@ class WorkflowRunRequest:
             run_id=payload.get("run_id"),
             triggered_by=payload.get("triggered_by", "flowsync-ui"),
             async_execution=payload.get("async_execution", payload.get("async", True)),
+            timeout_seconds=payload.get("timeout_seconds"),
+            max_retries=payload.get("max_retries", 0),
+            prevent_overlap=payload.get("prevent_overlap", True),
             metadata=payload.get("metadata") or {},
         )
 
@@ -149,6 +154,13 @@ class RunStatusRecord:
     submitted_at: str
     updated_at: str
     triggered_by: str = "flowsync-ui"
+    started_at: Optional[str] = None
+    completed_at: Optional[str] = None
+    duration_ms: Optional[int] = None
+    records_processed: int = 0
+    alerts_generated: int = 0
+    reports_generated: int = 0
+    connector_type: Optional[str] = None
     error: Optional[str] = None
     result: Optional[Dict[str, Any]] = None
     metadata: Dict[str, Any] = field(default_factory=dict)

@@ -4,6 +4,7 @@ Loads workflow definitions from JSON and executes them end-to-end.
 """
 import json
 import os
+import threading
 from datetime import datetime
 from types import SimpleNamespace
 from typing import Dict, Any, Optional, List
@@ -11,6 +12,8 @@ from uuid import uuid4
 import pandas as pd
 
 from src.scheduler import scheduler
+from src.core.execution.status import ExecutionStatus
+from src.contracts.execution import ExecutionError
 from src.reporter import reporter
 from src.workflows import WorkflowConfig, SourceConfig, registry
 from src.pipeline.multi_source_pipeline import run_multi_source_pipeline
@@ -37,6 +40,8 @@ class WorkflowRunner:
         self.workflows: Dict[str, Dict[str, Any]] = {}
         self.execution_history: List[Dict[str, Any]] = []
         self.alert_manager = AlertManager()
+        self._active_workflows: set[str] = set()
+        self._active_lock = threading.RLock()
         self.load_workflows()
 
     def load_workflows(self):
@@ -126,10 +131,20 @@ class WorkflowRunner:
         workflow_def = self.get_workflow(workflow_id)
         if not workflow_def:
             return {
-                "status": "failed",
+                "status": ExecutionStatus.FAILED.value,
                 "error": f"Workflow {workflow_id} not found",
                 "execution_time": 0,
             }
+        with self._active_lock:
+            if workflow_id in self._active_workflows:
+                return {
+                    "run_id": run_id or str(uuid4()),
+                    "workflow_id": workflow_id,
+                    "status": ExecutionStatus.CANCELLED.value,
+                    "error": f"Workflow {workflow_id} already has an active run",
+                    "execution_time": 0,
+                }
+            self._active_workflows.add(workflow_id)
 
         start_time = datetime.now()
         run_id = run_id or str(uuid4())
@@ -154,12 +169,17 @@ class WorkflowRunner:
             "workflow_id": workflow_id,
             "workflow_name": workflow_def.get("workflow_name"),
             "start_time": start_time.isoformat(),
-            "status": "success",
+            "started_at": start_time.isoformat(),
+            "status": ExecutionStatus.RUNNING.value,
             "error": None,
+            "errors": [],
             "steps": [],
             "alerts_generated": 0,
             "report_paths": [],
+            "reports_generated": 0,
             "comparison_shape": None,
+            "records_processed": 0,
+            "connector_type": None,
             "triggered_by": triggered_by,
             "metadata": metadata,
         }
@@ -167,18 +187,132 @@ class WorkflowRunner:
         try:
             workflow_config = self.workflow_to_config(workflow_def)
             execution_config = self._make_execution_config()
+            execution_log["connector_type"] = ",".join(sorted({source.source_type for source in workflow_config.sources}))
+            max_step_retries = int(workflow_def.get("max_retries", metadata.get("max_retries", 0)) or 0)
 
             # Execute each step
             for step in workflow_def.get("steps", []):
                 step_start = datetime.now()
                 step_log = {
                     "name": step,
-                    "status": "success",
+                    "status": ExecutionStatus.RUNNING.value,
                     "duration": 0,
+                    "duration_ms": 0,
                     "message": "",
+                    "attempts": 0,
                 }
 
                 try:
+                    step_error = None
+                    for attempt in range(max_step_retries + 1):
+                        step_log["attempts"] = attempt + 1
+                        try:
+                            self._execute_step(
+                                step,
+                                workflow_def,
+                                workflow_config,
+                                execution_config,
+                                execution_log,
+                                run_id,
+                            )
+                            step_error = None
+                            break
+                        except Exception as e:
+                            step_error = e
+                            if attempt >= max_step_retries:
+                                raise
+
+                    if step_error is None:
+                        step_log["status"] = ExecutionStatus.SUCCESS.value
+                        step_log["message"] = self._step_message(step, workflow_config, execution_log, workflow_def)
+                    step_log["duration"] = (datetime.now() - step_start).total_seconds()
+                    step_log["duration_ms"] = int(step_log["duration"] * 1000)
+                    execution_log["steps"].append(step_log)
+
+                except Exception as e:
+                    step_log["status"] = ExecutionStatus.FAILED.value
+                    step_log["message"] = str(e)
+                    step_log["duration"] = (datetime.now() - step_start).total_seconds()
+                    step_log["duration_ms"] = int(step_log["duration"] * 1000)
+                    execution_log["steps"].append(step_log)
+                    execution_log["status"] = ExecutionStatus.PARTIAL_SUCCESS.value
+                    error_payload = ExecutionError(
+                        message=str(e),
+                        error_type=type(e).__name__,
+                        step=step,
+                        retryable=max_step_retries > 0,
+                    ).to_payload()
+                    execution_log["errors"].append(error_payload)
+                    if execution_log["error"] is None:
+                        execution_log["error"] = f"Step '{step}' failed: {e}"
+
+            if execution_log["status"] == ExecutionStatus.RUNNING.value:
+                execution_log["status"] = ExecutionStatus.SUCCESS.value
+
+            # Record execution in history
+            completed_at = datetime.now()
+            execution_log["end_time"] = completed_at.isoformat()
+            execution_log["completed_at"] = completed_at.isoformat()
+            execution_log["total_duration"] = (completed_at - start_time).total_seconds()
+            execution_log["duration_ms"] = int(execution_log["total_duration"] * 1000)
+            execution_log["reports_generated"] = len(execution_log["report_paths"])
+            if execution_log.get("comparison_shape"):
+                execution_log["records_processed"] = execution_log["comparison_shape"][0]
+            workflow_history_store.record_execution(execution_log)
+            self.execution_history.append(execution_log)
+            pipeline_logger.finalize(
+                execution_log["status"],
+                records_processed=execution_log["records_processed"],
+                error_message=execution_log.get("error"),
+                metadata={
+                    "workflow_id": workflow_id,
+                    "alerts_generated": execution_log["alerts_generated"],
+                    "reports_generated": execution_log["reports_generated"],
+                    "report_paths": execution_log["report_paths"],
+                    "duration_ms": execution_log["duration_ms"],
+                    "connector_type": execution_log["connector_type"],
+                },
+            )
+
+            # Update scheduler
+            schedule = scheduler.get_schedule(workflow_id)
+            if schedule:
+                scheduler.record_run(workflow_id)
+
+            with self._active_lock:
+                self._active_workflows.discard(workflow_id)
+            return execution_log
+
+        except Exception as e:
+            completed_at = datetime.now()
+            execution_log["status"] = ExecutionStatus.FAILED.value
+            execution_log["error"] = str(e)
+            execution_log["errors"].append(
+                ExecutionError(
+                    message=str(e),
+                    error_type=type(e).__name__,
+                    retryable=False,
+                ).to_payload()
+            )
+            execution_log["end_time"] = completed_at.isoformat()
+            execution_log["completed_at"] = completed_at.isoformat()
+            execution_log["total_duration"] = (completed_at - start_time).total_seconds()
+            execution_log["duration_ms"] = int(execution_log["total_duration"] * 1000)
+            workflow_history_store.record_execution(execution_log)
+            self.execution_history.append(execution_log)
+            pipeline_logger.failure(
+                e,
+                metadata={
+                    "workflow_id": workflow_id,
+                    "total_duration": execution_log["total_duration"],
+                    "duration_ms": execution_log["duration_ms"],
+                },
+            )
+            with self._active_lock:
+                self._active_workflows.discard(workflow_id)
+            return execution_log
+
+    def _execute_step(self, step, workflow_def, workflow_config, execution_config, execution_log, run_id):
                     if step == "extract":
                         pipeline_result = run_multi_source_pipeline(workflow_config, execution_config)
                         if isinstance(pipeline_result, tuple):
@@ -188,26 +322,28 @@ class WorkflowRunner:
                         else:
                             # Fallback for older pipeline versions
                             execution_log["comparison"] = pipeline_result
-                        step_log["message"] = f"Extracted from {len(workflow_config.sources)} sources"
                         if hasattr(comparison, "shape"):
                             execution_log["comparison_shape"] = list(comparison.shape)
+                            execution_log["records_processed"] = comparison.shape[0]
+                        source_failures = getattr(comparison, "attrs", {}).get("source_failures", [])
+                        if source_failures:
+                            execution_log["errors"].extend(source_failures)
+                            execution_log["status"] = ExecutionStatus.PARTIAL_SUCCESS.value
 
                     elif step == "normalize":
-                        step_log["message"] = "Normalized product data"
+                        return
 
                     elif step == "fuzzy_match":
-                        step_log["message"] = "Applied fuzzy matching and confidence scoring"
+                        return
 
                     elif step == "compare":
-                        step_log["message"] = "Compared products across sources"
+                        return
 
                     elif step == "compare_supplier_vs_market":
                         if "matched" in execution_log:
                             supplier_analysis = compare_supplier_vs_market(execution_log["matched"])
                             execution_log["supplier_analysis"] = supplier_analysis
-                            step_log["message"] = f"Analyzed {len(supplier_analysis)} supplier vs market comparisons"
-                        else:
-                            step_log["message"] = "No matched data for supplier analysis"
+                        return
 
                     elif step == "detect_undercut":
                         if "supplier_analysis" in execution_log:
@@ -217,18 +353,14 @@ class WorkflowRunner:
                                 threshold=undercut_threshold
                             )
                             execution_log["undercut_opportunities"] = undercut_opportunities
-                            step_log["message"] = f"Found {len(undercut_opportunities)} undercut opportunities"
                         else:
                             execution_log["undercut_opportunities"] = pd.DataFrame()
-                            step_log["message"] = "No supplier analysis for undercut detection"
                         history_file = "price_history.csv"
                         if os.path.exists(history_file):
                             df_history = pd.read_csv(history_file)
                             changes = detect_price_changes(df_history)
                             execution_log["changes"] = changes
-                            step_log["message"] = f"Detected {len(changes)} price changes"
-                        else:
-                            step_log["message"] = "No price history for comparison"
+                        return
 
                     elif step == "generate_alerts":
                         if "changes" in execution_log:
@@ -239,7 +371,6 @@ class WorkflowRunner:
                             )
                             execution_log["alerts"] = alerts
                             execution_log["alerts_generated"] = len(alerts) if isinstance(alerts, list) else 0
-                            step_log["message"] = f"Generated {len(alerts)} alerts"
                             for alert in alerts:
                                 if isinstance(alert, str) and not alert.lower().startswith("no "):
                                     self.alert_manager.publish(
@@ -253,7 +384,7 @@ class WorkflowRunner:
                         else:
                             execution_log["alerts"] = []
                             execution_log["alerts_generated"] = 0
-                            step_log["message"] = "No alerts to generate"
+                        return
 
                     elif step == "generate_reports":
                         if "comparison" in execution_log:
@@ -261,7 +392,6 @@ class WorkflowRunner:
                                 execution_log["comparison"],
                                 workflow_def.get("workflow_name", workflow_id),
                             )
-                            step_log["message"] = f"Generated report: {os.path.basename(csv_file)}"
                             execution_log["report_file"] = csv_file
                             execution_log["report_paths"].append(csv_file)
 
@@ -273,59 +403,21 @@ class WorkflowRunner:
                                 if pdf_file:
                                     execution_log["pdf_file"] = pdf_file
                                     execution_log["report_paths"].append(pdf_file)
+                        execution_log["reports_generated"] = len(execution_log["report_paths"])
+                        return
 
-                    step_log["duration"] = (datetime.now() - step_start).total_seconds()
-                    execution_log["steps"].append(step_log)
-
-                except Exception as e:
-                    step_log["status"] = "failed"
-                    step_log["message"] = str(e)
-                    step_log["duration"] = (datetime.now() - step_start).total_seconds()
-                    execution_log["steps"].append(step_log)
-                    execution_log["status"] = "partial"
-                    if execution_log["error"] is None:
-                        execution_log["error"] = f"Step '{step}' failed: {e}"
-
-            # Record execution in history
-            execution_log["end_time"] = datetime.now().isoformat()
-            execution_log["total_duration"] = (datetime.now() - start_time).total_seconds()
-            workflow_history_store.record_execution(execution_log)
-            self.execution_history.append(execution_log)
-            pipeline_logger.finalize(
-                execution_log["status"],
-                records_processed=execution_log["comparison_shape"][0]
-                if execution_log.get("comparison_shape")
-                else 0,
-                error_message=execution_log.get("error"),
-                metadata={
-                    "workflow_id": workflow_id,
-                    "alerts_generated": execution_log["alerts_generated"],
-                    "report_paths": execution_log["report_paths"],
-                },
-            )
-
-            # Update scheduler
-            schedule = scheduler.get_schedule(workflow_id)
-            if schedule:
-                scheduler.record_run(workflow_id)
-
-            return execution_log
-
-        except Exception as e:
-            execution_log["status"] = "failed"
-            execution_log["error"] = str(e)
-            execution_log["end_time"] = datetime.now().isoformat()
-            execution_log["total_duration"] = (datetime.now() - start_time).total_seconds()
-            workflow_history_store.record_execution(execution_log)
-            self.execution_history.append(execution_log)
-            pipeline_logger.failure(
-                e,
-                metadata={
-                    "workflow_id": workflow_id,
-                    "total_duration": execution_log["total_duration"],
-                },
-            )
-            return execution_log
+    def _step_message(self, step, workflow_config, execution_log, workflow_def):
+        if step == "extract":
+            return f"Extracted from {len(workflow_config.sources)} sources"
+        if step == "compare_supplier_vs_market" and "supplier_analysis" in execution_log:
+            return f"Analyzed {len(execution_log['supplier_analysis'])} supplier vs market comparisons"
+        if step == "detect_undercut" and "changes" in execution_log:
+            return f"Detected {len(execution_log['changes'])} price changes"
+        if step == "generate_alerts":
+            return f"Generated {execution_log.get('alerts_generated', 0)} alerts"
+        if step == "generate_reports":
+            return f"Generated {len(execution_log.get('report_paths', []))} reports"
+        return f"Completed {step}"
 
     def execute_due_workflows(self) -> List[Dict[str, Any]]:
         """Execute all workflows that are due to run."""

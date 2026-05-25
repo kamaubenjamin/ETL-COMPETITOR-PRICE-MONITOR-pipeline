@@ -47,6 +47,15 @@ class WorkflowScheduler:
         day_of_week: Optional[str] = None,
     ) -> ScheduledWorkflow:
         """Create a new workflow schedule."""
+        if workflow_id in self.schedules:
+            return self.update_schedule(
+                workflow_id,
+                frequency=frequency,
+                time_of_day=time_of_day,
+                day_of_week=day_of_week,
+                enabled=True,
+            )
+
         schedule = ScheduledWorkflow(
             workflow_id=workflow_id,
             frequency=frequency,
@@ -97,6 +106,10 @@ class WorkflowScheduler:
         schedule.next_run = next_run.isoformat() if next_run else None
         self.save_schedules()
         return True
+
+    def has_duplicate_schedule(self, workflow_id: str) -> bool:
+        """Dictionary-backed schedules should never duplicate IDs."""
+        return list(self.schedules.keys()).count(workflow_id) > 1
 
     def get_next_run(self, schedule: ScheduledWorkflow) -> Optional[datetime]:
         """Calculate the next scheduled run time."""

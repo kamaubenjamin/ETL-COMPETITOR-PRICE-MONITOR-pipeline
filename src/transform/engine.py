@@ -1,5 +1,6 @@
 import pandas as pd
 from src.transform.product_parser import extract_product_info
+from src.transforms.pipeline import TransformationPipeline
 
 
 class TransformEngine:
@@ -27,20 +28,7 @@ class TransformEngine:
         # ------------------------
         # 🔧 APPLY RULES
         # ------------------------
-        for rule in rules:
-            rule_type = rule.get("type")
-
-            if rule_type == "rename":
-                self.rename_columns(rule)
-
-            elif rule_type == "drop_nulls":
-                self.drop_nulls(rule)
-
-            elif rule_type == "filter":
-                self.filter_data(rule)
-
-            elif rule_type == "add_column":
-                self.add_column(rule)
+        self.df = TransformationPipeline(self.df).apply(rules or [])
 
         return self.df
 

@@ -53,6 +53,7 @@ def run_multi_source_pipeline(sources: dict | WorkflowConfig, config) -> pd.Data
         }
 
     datasets = {}
+    source_failures = []
 
     for name, cfg in sources.items():
         print(f"\n🔍 Processing source: {name}")
@@ -88,6 +89,8 @@ def run_multi_source_pipeline(sources: dict | WorkflowConfig, config) -> pd.Data
                 config=config,
                 mode=mode,
                 selector=selector,
+                source_name=name,
+                run_id=pipeline_logger.run_id,
             )
 
             # -------------------------
@@ -114,6 +117,7 @@ def run_multi_source_pipeline(sources: dict | WorkflowConfig, config) -> pd.Data
             print(f"✅ {name}: {len(df_clean)} rows extracted")
 
         except Exception as e:
+            source_failures.append({"source_name": name, "source_type": source_type, "error": str(e)})
             pipeline_logger.log_ingestion_batch(
                 source_name=name,
                 source_type=source_type,
@@ -156,6 +160,8 @@ def run_multi_source_pipeline(sources: dict | WorkflowConfig, config) -> pd.Data
         # COMPARE
         # -------------------------
         comparison = build_comparison_table(matched)
+        comparison.attrs["source_failures"] = source_failures
+        comparison.attrs["successful_sources"] = list(datasets.keys())
          
         #save final comparison to history for future reference
         save_snapshot(comparison)
@@ -164,6 +170,7 @@ def run_multi_source_pipeline(sources: dict | WorkflowConfig, config) -> pd.Data
             metadata={
                 "workflow_id": workflow_id,
                 "comparison_rows": len(comparison) if hasattr(comparison, "__len__") else 0,
+                "source_failures": source_failures,
             },
         )
         return matched, comparison

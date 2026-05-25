@@ -92,6 +92,16 @@ Core endpoints:
 - `GET /sources/health` - inspect configured source health
 - `GET /reports/latest` - return latest generated reports
 
+### Production Execution Core
+- Standard connectors live in `src/connectors/` and expose `validate()`, `extract()`, `transform()`, `normalize()`, and `load()`
+- Canonical product records include `product_name`, `source`, `category`, `current_price`, `old_price`, `currency`, `availability`, `sku`, `url`, and `timestamp`
+- Workflow lifecycle statuses are standardized as `pending`, `queued`, `running`, `success`, `failed`, `partial_success`, `cancelled`, and `timeout`
+- Execution metadata now tracks `run_id`, `workflow_id`, timestamps, `duration_ms`, records, alerts, reports, and connector type
+- Structured execution logs live in `src/core/logging/` and are scoped by run, workflow, and connector
+- Transform rules live behind `src/transforms/` for rename, null handling, filters, type coercion, deduplication, and normalization
+- Scheduling and API execution protect against duplicate/overlapping active workflow runs
+- The current scale path is in-process concurrency first; Kafka, Celery, Airflow, websocket telemetry, Supabase realtime fanout, and distributed workers can attach to these contracts without changing FlowSync endpoint shapes
+
 ---
 
 ## 🚀 Quick Start
