@@ -101,6 +101,7 @@ Core endpoints:
 - Transform rules live behind `src/transforms/` for rename, null handling, filters, type coercion, deduplication, and normalization
 - Scheduling and API execution protect against duplicate/overlapping active workflow runs
 - The current scale path is in-process concurrency first; Kafka, Celery, Airflow, websocket telemetry, Supabase realtime fanout, and distributed workers can attach to these contracts without changing FlowSync endpoint shapes
+- Adaptive supermarket/ecommerce extraction is available through `smart_playwright`; see `docs/SMART_PLAYWRIGHT.md`
 
 ---
 

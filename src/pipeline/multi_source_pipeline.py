@@ -33,9 +33,11 @@ def run_multi_source_pipeline(sources: dict | WorkflowConfig, config) -> pd.Data
 
     threshold = 70
     source_thresholds = None
+    transformation_rules = []
     if isinstance(sources, WorkflowConfig):
         workflow = sources
         threshold = workflow.global_match_threshold
+        transformation_rules = workflow.transformation_rules or []
         source_thresholds = {
             source.name: source.match_threshold
             for source in workflow.sources
@@ -48,6 +50,9 @@ def run_multi_source_pipeline(sources: dict | WorkflowConfig, config) -> pd.Data
                 "keyword": source.keyword,
                 "mode": source.mode,
                 "match_threshold": source.match_threshold,
+                "max_pages": getattr(source, "max_pages", 3),
+                "scroll_depth": getattr(source, "scroll_depth", 4),
+                "category": getattr(source, "category", None),
             }
             for source in workflow.sources
         }
@@ -72,6 +77,9 @@ def run_multi_source_pipeline(sources: dict | WorkflowConfig, config) -> pd.Data
         if cfg.get("url"):
             config.url = cfg.get("url")
         config.keyword = cfg.get("keyword")
+        config.max_pages = cfg.get("max_pages", 3)
+        config.scroll_depth = cfg.get("scroll_depth", 4)
+        config.category = cfg.get("category")
 
         selector = cfg.get("selector")
 
@@ -83,6 +91,9 @@ def run_multi_source_pipeline(sources: dict | WorkflowConfig, config) -> pd.Data
             if cfg.get("url"):
                 config.url = cfg.get("url")
             config.keyword = cfg.get("keyword")
+            config.max_pages = cfg.get("max_pages", 3)
+            config.scroll_depth = cfg.get("scroll_depth", 4)
+            config.category = cfg.get("category")
 
             df = run_extraction(
                 source_type=source_type,
@@ -97,8 +108,9 @@ def run_multi_source_pipeline(sources: dict | WorkflowConfig, config) -> pd.Data
             # TRANSFORM + PARSE
             # -------------------------
             engine = TransformEngine(df)
-            df_clean = engine.apply([])
+            df_clean = engine.apply(transformation_rules)
             datasets[name] = df_clean
+            extraction_metrics = getattr(df_clean, "attrs", {}).get("extraction_metrics") or getattr(df, "attrs", {}).get("extraction_metrics")
 
             pipeline_logger.log_ingestion_batch(
                 source_name=name,
@@ -111,6 +123,7 @@ def run_multi_source_pipeline(sources: dict | WorkflowConfig, config) -> pd.Data
                     # Kafka producers can publish this event as a durable
                     # source-batch message for distributed ingestion later.
                     "batch_boundary": "multi_source_extract_transform",
+                    "extraction_metrics": extraction_metrics,
                 },
             )
 
@@ -143,7 +156,7 @@ def run_multi_source_pipeline(sources: dict | WorkflowConfig, config) -> pd.Data
         source_type_map = None
         if isinstance(sources, WorkflowConfig):
             source_type_map = {src.name: src.source_type for src in sources.sources}
-            sources = {source.name: {"type": source.source_type, "url": source.url, "selector": source.selector, "keyword": source.keyword, "mode": source.mode, "match_threshold": source.match_threshold} for source in sources.sources}
+            sources = {source.name: {"type": source.source_type, "url": source.url, "selector": source.selector, "keyword": source.keyword, "mode": source.mode, "match_threshold": source.match_threshold, "max_pages": getattr(source, "max_pages", 3), "scroll_depth": getattr(source, "scroll_depth", 4), "category": getattr(source, "category", None)} for source in sources.sources}
 
         combined = combine_datasets(datasets, source_type_map)
 

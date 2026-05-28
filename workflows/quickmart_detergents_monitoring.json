@@ -1,0 +1,87 @@
+{
+  "workflow_id": "quickmart_detergents_monitoring",
+  "workflow_name": "Quickmart Detergents Monitoring",
+  "description": "Adaptive SmartPlaywright monitoring for Quickmart/Q SOKO detergent listings. This target may require branch/location context before product listings render.",
+  "enabled": true,
+  "sources": [
+    {
+      "name": "quickmart_detergents",
+      "source_type": "smart_playwright",
+      "url": "https://www.quickmart.co.ke/soaps-detergents",
+      "selector": null,
+      "keyword": "detergent",
+      "category": "detergents",
+      "max_pages": 2,
+      "scroll_depth": 5,
+      "match_threshold": 78,
+      "pre_actions": [
+        {
+          "type": "goto",
+          "url": "https://www.quickmart.co.ke",
+          "description": "Visit homepage to initialize session"
+        },
+        {
+          "type": "wait",
+          "ms": 2000,
+          "description": "Wait for homepage to render"
+        },
+        {
+          "type": "click",
+          "selector": "button:has-text('Select Branch')",
+          "timeout": 5000,
+          "description": "Open branch selector"
+        },
+        {
+          "type": "click",
+          "selector": "text=Nairobi",
+          "timeout": 3000,
+          "description": "Select Nairobi branch"
+        },
+        {
+          "type": "wait",
+          "ms": 1000,
+          "description": "Wait for branch selection to apply"
+        }
+      ]
+    }
+  ],
+  "filters": {
+    "category": "detergents",
+    "keywords": ["omo", "ariel", "sunlight", "toss", "geisha detergent"]
+  },
+  "transformation_rules": [
+    {
+      "type": "normalize",
+      "source": "quickmart_detergents"
+    },
+    {
+      "type": "drop_nulls",
+      "subset": ["current_price"]
+    },
+    {
+      "type": "deduplicate",
+      "subset": ["normalized_name", "source", "current_price"]
+    }
+  ],
+  "steps": ["extract", "normalize", "fuzzy_match", "compare", "detect_undercut", "generate_alerts", "generate_reports"],
+  "alert_rules": {
+    "price_drop_percentage": 5,
+    "abnormal_discount_threshold": 35,
+    "supplier_variance_threshold": 10,
+    "undercut_threshold": 50,
+    "sudden_spike_percentage": 25
+  },
+  "schedule": {
+    "frequency": "daily",
+    "time_of_day": "09:00",
+    "day_of_week": null,
+    "enabled": false
+  },
+  "reporting": {
+    "export_csv": true,
+    "export_pdf": false,
+    "report_dir": "reports"
+  },
+  "global_match_threshold": 78,
+  "max_retries": 1
+}

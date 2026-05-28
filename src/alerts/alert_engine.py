@@ -87,6 +87,7 @@ class AlertEngine:
         rules = self.rules or [
             {"type": "price_drop", "threshold": 0},
             {"type": "abnormal_spike", "threshold_percent": 50},
+            {"type": "abnormal_discount", "threshold_percent": 35},
             {"type": "missing_product"},
             {"type": "stock_disappearance"},
         ]
@@ -116,6 +117,18 @@ class AlertEngine:
             threshold_percent = float(rule.get("threshold_percent", rule.get("threshold", 50)))
             if spike_percent >= threshold_percent:
                 return self._alert("abnormal_spike", "warning", product, source, f"Price spiked {spike_percent:.1f}%", row)
+
+        if rule_type == "abnormal_discount":
+            discount = self._float(row.get("discount_percentage"))
+            threshold_percent = float(rule.get("threshold_percent", rule.get("threshold", 35)))
+            if discount is not None and discount >= threshold_percent:
+                return self._alert("abnormal_discount", "warning", product, source, f"Discount is unusually high at {discount:.1f}%", row)
+
+        if rule_type == "supplier_pricing_variance":
+            variance = self._float(row.get("price_variance"))
+            threshold = float(rule.get("threshold", 0))
+            if variance is not None and variance >= threshold:
+                return self._alert("supplier_pricing_variance", "warning", product, source, f"Pricing variance is {variance}", row)
 
         if rule_type == "missing_product" and pd.isna(product):
             return self._alert("missing_product", "warning", product, source, "Product name is missing", row)

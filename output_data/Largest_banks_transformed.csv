@@ -1,11 +1,11 @@
-Rank,Bank name,Market cap (US$ billion)
-1,JPMorgan Chase,432.92
-2,Bank of America,231.52
-3,Industrial and Commercial Bank of China,194.56
-4,Agricultural Bank of China,160.68
-5,HDFC Bank,157.91
-6,Wells Fargo,155.87
-7,HSBC Holdings PLC,148.9
-8,Morgan Stanley,140.83
-9,China Construction Bank,139.82
-10,Bank of China,136.81
+Rank,Bank name,Market cap (US$ billion),product_name,normalized_name,brand,source,category,current_price,old_price,discount_percentage,currency,availability,sku,url,image_url,timestamp,confidence_score
+1,JPMorgan Chase,432.92,,,,default (web),,,,,,,,https://web.archive.org/web/20230908091635/https://en.wikipedia.org/wiki/List_of_largest_banks,,2026-05-26T13:14:18.995386+00:00,
+2,Bank of America,231.52,,,,default (web),,,,,,,,https://web.archive.org/web/20230908091635/https://en.wikipedia.org/wiki/List_of_largest_banks,,2026-05-26T13:14:18.995386+00:00,
+3,Industrial and Commercial Bank of China,194.56,,,,default (web),,,,,,,,https://web.archive.org/web/20230908091635/https://en.wikipedia.org/wiki/List_of_largest_banks,,2026-05-26T13:14:18.995386+00:00,
+4,Agricultural Bank of China,160.68,,,,default (web),,,,,,,,https://web.archive.org/web/20230908091635/https://en.wikipedia.org/wiki/List_of_largest_banks,,2026-05-26T13:14:18.995386+00:00,
+5,HDFC Bank,157.91,,,,default (web),,,,,,,,https://web.archive.org/web/20230908091635/https://en.wikipedia.org/wiki/List_of_largest_banks,,2026-05-26T13:14:18.995386+00:00,
+6,Wells Fargo,155.87,,,,default (web),,,,,,,,https://web.archive.org/web/20230908091635/https://en.wikipedia.org/wiki/List_of_largest_banks,,2026-05-26T13:14:18.995386+00:00,
+7,HSBC Holdings PLC,148.9,,,,default (web),,,,,,,,https://web.archive.org/web/20230908091635/https://en.wikipedia.org/wiki/List_of_largest_banks,,2026-05-26T13:14:18.995386+00:00,
+8,Morgan Stanley,140.83,,,,default (web),,,,,,,,https://web.archive.org/web/20230908091635/https://en.wikipedia.org/wiki/List_of_largest_banks,,2026-05-26T13:14:18.995386+00:00,
+9,China Construction Bank,139.82,,,,default (web),,,,,,,,https://web.archive.org/web/20230908091635/https://en.wikipedia.org/wiki/List_of_largest_banks,,2026-05-26T13:14:18.995386+00:00,
+10,Bank of China,136.81,,,,default (web),,,,,,,,https://web.archive.org/web/20230908091635/https://en.wikipedia.org/wiki/List_of_largest_banks,,2026-05-26T13:14:18.995386+00:00,

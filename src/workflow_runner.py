@@ -19,7 +19,7 @@ from src.workflows import WorkflowConfig, SourceConfig, registry
 from src.pipeline.multi_source_pipeline import run_multi_source_pipeline
 from src.storage.history_store import save_snapshot, detect_price_changes
 from src.storage.workflow_history import workflow_history_store
-from src.alerts.alert_engine import generate_alerts
+from src.alerts.alert_engine import AlertEngine, generate_alerts
 from src.services.alert_manager import AlertManager
 from src.telemetry.pipeline_logger import PipelineLogger
 from src.transform.comparison_engine import (
@@ -83,6 +83,9 @@ class WorkflowRunner:
                 keyword=None,
                 match_threshold=src.get("match_threshold", 70),
                 mode="internal",
+                max_pages=src.get("max_pages", 1),
+                scroll_depth=src.get("scroll_depth", 0),
+                category=src.get("category"),
             ))
 
         # Handle external sources
@@ -95,6 +98,9 @@ class WorkflowRunner:
                 keyword=src.get("keyword"),
                 match_threshold=src.get("match_threshold", 70),
                 mode="Auto Detect",
+                max_pages=src.get("max_pages", 3),
+                scroll_depth=src.get("scroll_depth", 4),
+                category=src.get("category"),
             ))
 
         # Legacy support for "sources" field
@@ -107,6 +113,9 @@ class WorkflowRunner:
                 keyword=src.get("keyword"),
                 match_threshold=src.get("match_threshold", 70),
                 mode="Auto Detect",
+                max_pages=src.get("max_pages", 3),
+                scroll_depth=src.get("scroll_depth", 4),
+                category=src.get("category"),
             ))
 
         return WorkflowConfig(
@@ -363,27 +372,45 @@ class WorkflowRunner:
                         return
 
                     elif step == "generate_alerts":
+                        structured_alerts = []
+                        if "comparison" in execution_log:
+                            alert_rules = workflow_def.get("alert_rules", {})
+                            structured_rules = []
+                            if isinstance(alert_rules, dict):
+                                if alert_rules.get("abnormal_discount_threshold") is not None:
+                                    structured_rules.append({"type": "abnormal_discount", "threshold_percent": alert_rules.get("abnormal_discount_threshold", 35)})
+                                if alert_rules.get("sudden_spike_percentage") is not None:
+                                    structured_rules.append({"type": "abnormal_spike", "threshold_percent": alert_rules.get("sudden_spike_percentage", 25)})
+                                if alert_rules.get("supplier_variance_threshold") is not None:
+                                    structured_rules.append({"type": "supplier_pricing_variance", "threshold": alert_rules.get("supplier_variance_threshold", 10)})
+                                structured_rules.extend([
+                                    {"type": "missing_product"},
+                                    {"type": "stock_disappearance"},
+                                ])
+                            structured_alerts = AlertEngine(structured_rules).evaluate(execution_log["comparison"])
                         if "changes" in execution_log:
                             alert_rules = workflow_def.get("alert_rules", {})
                             alerts = generate_alerts(
                                 execution_log["changes"],
                                 [alert_rules] if alert_rules else []
                             )
+                            alerts = alerts + structured_alerts
                             execution_log["alerts"] = alerts
                             execution_log["alerts_generated"] = len(alerts) if isinstance(alerts, list) else 0
                             for alert in alerts:
-                                if isinstance(alert, str) and not alert.lower().startswith("no "):
+                                alert_message = alert.get("message") if isinstance(alert, dict) else alert
+                                if isinstance(alert_message, str) and not alert_message.lower().startswith("no "):
                                     self.alert_manager.publish(
-                                        alert,
+                                        alert_message,
                                         alert_type="price_monitoring",
-                                        severity="warning",
+                                        severity=alert.get("severity", "warning") if isinstance(alert, dict) else "warning",
                                         pipeline_name=workflow_def.get("workflow_name", workflow_id),
                                         pipeline_run_id=run_id,
                                         metadata={"workflow_id": workflow_id},
                                     )
                         else:
-                            execution_log["alerts"] = []
-                            execution_log["alerts_generated"] = 0
+                            execution_log["alerts"] = structured_alerts
+                            execution_log["alerts_generated"] = len(structured_alerts)
                         return
 
                     elif step == "generate_reports":

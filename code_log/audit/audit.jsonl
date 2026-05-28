@@ -37,3 +37,35 @@
 {"timestamp": "2026-05-20T07:03:00.477703", "operation_type": "extract", "status": "success", "details": {"source_type": "default (web)", "rows_extracted": 10, "error": null}, "duration": 4.034045219421387}
 {"timestamp": "2026-05-20T07:03:00.477703", "operation_type": "transform", "status": "success", "details": {"rows_input": 10, "rows_output": 10, "rules": [], "error": null}, "duration": 0.0}
 {"timestamp": "2026-05-20T07:03:00.483270", "operation_type": "load", "status": "success", "details": {"destination": "CSV", "rows_loaded": 10, "error": null}, "duration": 0.005567789077758789}
+{"timestamp": "2026-05-25T10:30:58.448226", "operation_type": "extract", "status": "success", "details": {"source_type": "default (web)", "rows_extracted": 10, "error": null}, "duration": 4.479098796844482}
+{"timestamp": "2026-05-25T10:30:58.450582", "operation_type": "transform", "status": "success", "details": {"rows_input": 10, "rows_output": 10, "rules": [], "error": null}, "duration": 0.0008103847503662109}
+{"timestamp": "2026-05-25T10:30:58.453602", "operation_type": "load", "status": "success", "details": {"destination": "CSV", "rows_loaded": 10, "error": null}, "duration": 0.0022640228271484375}
+{"timestamp": "2026-05-26T14:19:47.377110", "operation_type": "extract", "status": "success", "details": {"source_type": "playwright", "rows_extracted": 1, "error": null}, "duration": 13.759896039962769}
+{"timestamp": "2026-05-26T14:19:47.382647", "operation_type": "transform", "status": "success", "details": {"rows_input": 1, "rows_output": 1, "rules": [], "error": null}, "duration": 0.0}
+{"timestamp": "2026-05-26T14:19:47.389290", "operation_type": "load", "status": "success", "details": {"destination": "CSV", "rows_loaded": 1, "error": null}, "duration": 0.006643056869506836}
+{"timestamp": "2026-05-26T14:20:16.464465", "operation_type": "extract", "status": "success", "details": {"source_type": "playwright", "rows_extracted": 1, "error": null}, "duration": 11.202095985412598}
+{"timestamp": "2026-05-26T14:20:16.467523", "operation_type": "transform", "status": "success", "details": {"rows_input": 1, "rows_output": 1, "rules": [], "error": null}, "duration": 0.0}
+{"timestamp": "2026-05-26T14:20:16.470856", "operation_type": "load", "status": "success", "details": {"destination": "CSV", "rows_loaded": 1, "error": null}, "duration": 0.0033330917358398438}
+{"timestamp": "2026-05-26T14:20:45.237837", "operation_type": "extract", "status": "success", "details": {"source_type": "playwright", "rows_extracted": 1, "error": null}, "duration": 10.800246715545654}
+{"timestamp": "2026-05-26T14:20:45.239896", "operation_type": "transform", "status": "success", "details": {"rows_input": 1, "rows_output": 1, "rules": [], "error": null}, "duration": 0.0}
+{"timestamp": "2026-05-26T14:20:45.239896", "operation_type": "load", "status": "success", "details": {"destination": "CSV", "rows_loaded": 1, "error": null}, "duration": 0.0}
+{"timestamp": "2026-05-26T14:21:14.831847", "operation_type": "extract", "status": "success", "details": {"source_type": "playwright", "rows_extracted": 21, "error": null}, "duration": 11.010390281677246}
+{"timestamp": "2026-05-26T14:21:14.831847", "operation_type": "transform", "status": "success", "details": {"rows_input": 21, "rows_output": 21, "rules": [], "error": null}, "duration": 0.0}
+{"timestamp": "2026-05-26T14:21:14.838975", "operation_type": "load", "status": "success", "details": {"destination": "CSV", "rows_loaded": 21, "error": null}, "duration": 0.001069784164428711}
+{"timestamp": "2026-05-26T14:24:54.259644", "operation_type": "extract", "status": "success", "details": {"source_type": "playwright", "rows_extracted": 1, "error": null}, "duration": 12.83820652961731}
+{"timestamp": "2026-05-26T14:24:54.260382", "operation_type": "transform", "status": "success", "details": {"rows_input": 1, "rows_output": 1, "rules": [], "error": null}, "duration": 0.0}
+{"timestamp": "2026-05-26T14:24:54.260382", "operation_type": "load", "status": "success", "details": {"destination": "CSV", "rows_loaded": 1, "error": null}, "duration": 0.0}
+{"timestamp": "2026-05-26T14:25:24.083455", "operation_type": "error", "status": "failed", "details": {"error_type": "pipeline_failure", "error_message": "Connector returned empty DataFrame", "context": {"source_type": "playwright"}}, "duration": null}
+{"timestamp": "2026-05-26T14:25:40.289648", "operation_type": "error", "status": "failed", "details": {"error_type": "pipeline_failure", "error_message": "Connector returned empty DataFrame", "context": {"source_type": "playwright"}}, "duration": null}
+{"timestamp": "2026-05-26T14:26:04.204120", "operation_type": "extract", "status": "success", "details": {"source_type": "playwright", "rows_extracted": 1, "error": null}, "duration": 10.703843116760254}
+{"timestamp": "2026-05-26T14:26:04.206123", "operation_type": "transform", "status": "success", "details": {"rows_input": 1, "rows_output": 1, "rules": [], "error": null}, "duration": 0.0010018348693847656}
+{"timestamp": "2026-05-26T14:26:04.209121", "operation_type": "load", "status": "success", "details": {"destination": "CSV", "rows_loaded": 1, "error": null}, "duration": 0.0019991397857666016}
+{"timestamp": "2026-05-26T16:04:31.218892", "operation_type": "extract", "status": "success", "details": {"source_type": "default (web)", "rows_extracted": 10, "error": null}, "duration": 5.254807472229004}
+{"timestamp": "2026-05-26T16:04:31.221494", "operation_type": "transform", "status": "success", "details": {"rows_input": 10, "rows_output": 10, "rules": [], "error": null}, "duration": 0.0010116100311279297}
+{"timestamp": "2026-05-26T16:04:31.225077", "operation_type": "load", "status": "success", "details": {"destination": "CSV", "rows_loaded": 10, "error": null}, "duration": 0.0025856494903564453}
+{"timestamp": "2026-05-26T16:12:45.298747", "operation_type": "extract", "status": "success", "details": {"source_type": "default (web)", "rows_extracted": 10, "error": null}, "duration": 19.554787397384644}
+{"timestamp": "2026-05-26T16:12:45.300748", "operation_type": "transform", "status": "success", "details": {"rows_input": 10, "rows_output": 10, "rules": [], "error": null}, "duration": 0.0010371208190917969}
+{"timestamp": "2026-05-26T16:12:45.303335", "operation_type": "load", "status": "success", "details": {"destination": "CSV", "rows_loaded": 10, "error": null}, "duration": 0.002040386199951172}
+{"timestamp": "2026-05-26T16:14:19.001512", "operation_type": "extract", "status": "success", "details": {"source_type": "default (web)", "rows_extracted": 10, "error": null}, "duration": 3.62746000289917}
+{"timestamp": "2026-05-26T16:14:19.003555", "operation_type": "transform", "status": "success", "details": {"rows_input": 10, "rows_output": 10, "rules": [], "error": null}, "duration": 0.0010344982147216797}
+{"timestamp": "2026-05-26T16:14:19.006061", "operation_type": "load", "status": "success", "details": {"destination": "CSV", "rows_loaded": 10, "error": null}, "duration": 0.0025064945220947266}

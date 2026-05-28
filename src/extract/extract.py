@@ -2,6 +2,7 @@ from src.connectors.web import WebConnector
 from src.connectors.csv import CSVConnector
 from src.connectors.upload import UploadConnector
 from src.connectors.playwright import PlaywrightConnector
+from src.connectors.smart_playwright import SmartPlaywrightConnector
 from src.extract.api_connector import APIConnector
 from src.extract.selenium_connector import SeleniumConnector
 from src.extract.internal_connector import InternalDataConnector
@@ -51,6 +52,20 @@ def get_connector(source_type, config=None, uploaded_df=None, mode=None, selecto
             url=config.url,
             selector=selector,
             keyword=getattr(config, "keyword", None),
+            source_name=source_name or source_type,
+            run_id=run_id,
+        )
+
+    elif source_type in {"smart_playwright", "smart playwright", "adaptive_playwright"}:
+        return SmartPlaywrightConnector(
+            url=config.url,
+            selector=selector,
+            keyword=getattr(config, "keyword", None),
+            max_pages=getattr(config, "max_pages", 3),
+            scroll_depth=getattr(config, "scroll_depth", 4),
+            category=getattr(config, "category", None),
+            pre_actions=getattr(config, "pre_actions", None),
+            debug_mode=getattr(config, "debug_mode", False),
             source_name=source_name or source_type,
             run_id=run_id,
         )

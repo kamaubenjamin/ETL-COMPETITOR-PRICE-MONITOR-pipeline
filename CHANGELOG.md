@@ -10,3 +10,4 @@
 - Added API-first FlowSync control-plane boundary with typed contracts, async-safe workflow execution service, run status tracking, source health, connector test, source sync, alerts, telemetry run, and latest report endpoints.
 - Added optional FastAPI/uvicorn API deployment dependencies.
 - Added standardized connector architecture under `src/connectors`, canonical product records, structured execution logging, reusable transformation pipeline, standardized execution statuses, safer workflow metadata, retry/timeout status handling, overlap prevention, and normalized API payloads.
+- Added `SmartPlaywrightConnector`, ecommerce/supermarket DOM heuristics, detergent workflow examples for Naivas and Quickmart, product identity normalization, comparison utilities, and smart extraction documentation.

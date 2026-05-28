@@ -1,0 +1,42 @@
+{
+  "timestamp": 1779962770,
+  "evaluations": [
+    {
+      "url": "https://www.quickmart.co.ke/cussons-baby-soap-mild-gentle-100g-1",
+      "route_type": "category_listing_page",
+      "classification_confidence": 0.9,
+      "product_card_count": 392,
+      "unique_product_links": 38,
+      "repeated_price_count": 198,
+      "repeated_add_to_cart_count": 1,
+      "breadcrumb_depth": 43,
+      "has_filters": false,
+      "has_sorting": false,
+      "has_pagination": true,
+      "url_pattern_score": -0.2,
+      "rejected_reason": null,
+      "final_route_score": 1.3,
+      "signals": {
+        "url": "https://www.quickmart.co.ke/cussons-baby-soap-mild-gentle-100g-1",
+        "breadcrumb_depth": 43,
+        "product_card_count": 392,
+        "unique_product_links": 38,
+        "repeated_price_count": 198,
+        "repeated_add_to_cart_count": 1,
+        "has_product_schema": false,
+        "og_type": "product",
+        "has_add_to_cart": false,
+        "has_quantity_selector": true,
+        "has_reviews_widget": true,
+        "has_related_products": true,
+        "dominant_product": false,
+        "primary_price_count": 0,
+        "primary_cta_count": 0,
+        "related_products_count": 0,
+        "grid_consistency_score": 1.0,
+        "primary_product_confidence": 0.0,
+        "url_looks_like_product": true
+      }
+    }
+  ]
+}

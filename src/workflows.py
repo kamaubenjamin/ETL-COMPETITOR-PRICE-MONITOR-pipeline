@@ -19,6 +19,9 @@ class SourceConfig:
     mode: str = "Auto Detect"
     keyword: Optional[str] = None
     match_threshold: int = 70  # Source-specific match threshold
+    max_pages: int = 3
+    scroll_depth: int = 4
+    category: Optional[str] = None
 
 
 @dataclass

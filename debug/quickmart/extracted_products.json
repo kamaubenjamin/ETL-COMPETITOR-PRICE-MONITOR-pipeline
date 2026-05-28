@@ -1,0 +1,701 @@
+{
+  "timestamp": 1779962770,
+  "items": [
+    {
+      "selector": ".productInfoJs",
+      "raw_text": "8%\nOFF\n\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n\nKES 48.00\nKES 52.00 7.69% Off\nTuzo Esl Milk 450Ml\nADD",
+      "parsed": {
+        "product_name": "Tuzo Esl Milk 450Ml",
+        "current_price": 48.0,
+        "old_price": 52.0,
+        "discount": 8.0,
+        "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_401084.png?t=1779929354",
+        "confidence_score": 0.9
+      }
+    },
+    {
+      "selector": ".productInfoJs",
+      "raw_text": "11%\nOFF\n\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n\nKES 50.00\nKES 56.00 10.71% Off\nMolo Esl Uht Pouch Milk 500Ml\nADD",
+      "parsed": {
+        "product_name": "Molo Esl Uht Pouch Milk 500Ml",
+        "current_price": 50.0,
+        "old_price": 56.0,
+        "discount": 11.0,
+        "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_400540.png?t=1779929482",
+        "confidence_score": 0.9
+      }
+    },
+    {
+      "selector": ".productInfoJs",
+      "raw_text": "7%\nOFF\n\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n\nKES 149.00\nKES 160.00 6.88% Off\nLotus Home Baking Flour 2Kg\nADD",
+      "parsed": {
+        "product_name": "Lotus Home Baking Flour 2Kg",
+        "current_price": 149.0,
+        "old_price": 160.0,
+        "discount": 7.0,
+        "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_565123.png?t=1779928139",
+        "confidence_score": 0.9
+      }
+    },
+    {
+      "selector": ".productInfoJs",
+      "raw_text": "15%\nOFF\n\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n\nKES 50.00\nKES 59.00 15.25% Off\nLato Esl Pouch 500Ml\nADD",
+      "parsed": {
+        "product_name": "Lato Esl Pouch 500Ml",
+        "current_price": 50.0,
+        "old_price": 59.0,
+        "discount": 15.0,
+        "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_683833.png?t=1779929826",
+        "confidence_score": 0.9
+      }
+    },
+    {
+      "selector": ".productInfoJs",
+      "raw_text": "\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n\nKES 27.00\nMount Kenya Pasteurized Esl.90.200Ml\nADD",
+      "parsed": {
+        "product_name": "Mount Kenya Pasteurized Esl.90.200Ml",
+        "current_price": 27.0,
+        "old_price": 90.2,
+        "discount": null,
+        "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_405008.png?t=1779927812",
+        "confidence_score": 0.8
+      }
+    },
+    {
+      "selector": ".productInfoJs",
+      "raw_text": "\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n\nKES 35.00\nPumpkin Chapati Per Pc\nADD",
+      "parsed": {
+        "product_name": "Pumpkin Chapati Per Pc",
+        "current_price": 35.0,
+        "old_price": null,
+        "discount": null,
+        "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_730014.png?t=1779928760",
+        "confidence_score": 0.8
+      }
+    },
+    {
+      "selector": ".productInfoJs",
+      "raw_text": "2%\nOFF\n\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n\nKES 49.00\nKES 50.00 2% Off\nQuick Choice Esl Milk 500Ml\nADD",
+      "parsed": {
+        "product_name": "Quick Choice Esl Milk 500Ml",
+        "current_price": 49.0,
+        "old_price": 50.0,
+        "discount": 2.0,
+        "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_686100.png?t=1779929186",
+        "confidence_score": 0.9
+      }
+    },
+    {
+      "selector": ".productInfoJs",
+      "raw_text": "5%\nOFF\n\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n\nKES 58.00\nKES 61.00 4.92% Off\nBrookside Dairy Best Milk 500Ml\nADD",
+      "parsed": {
+        "product_name": "Brookside Dairy Best Milk 500Ml",
+        "current_price": 58.0,
+        "old_price": 61.0,
+        "discount": 5.0,
+        "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_400100.png?t=1779929840",
+        "confidence_score": 0.9
+      }
+    },
+    {
+      "selector": ".productInfoJs",
+      "raw_text": "10%\nOFF\n\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n\nKES 54.00\nKES 60.00 10% Off\nTuzo Whole Fino Milk 500Ml\nADD",
+      "parsed": {
+        "product_name": "Tuzo Whole Fino Milk 500Ml",
+        "current_price": 54.0,
+        "old_price": 60.0,
+        "discount": 10.0,
+        "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_400004.png?t=1779929940",
+        "confidence_score": 0.9
+      }
+    },
+    {
+      "selector": ".productInfoJs",
+      "raw_text": "\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n\nKES 10.00\nMaccoffee Classic 1.6G\nADD",
+      "parsed": {
+        "product_name": "Maccoffee Classic 1.6G",
+        "current_price": 10.0,
+        "old_price": null,
+        "discount": null,
+        "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_390270.png?t=1779930467",
+        "confidence_score": 0.8
+      }
+    },
+    {
+      "selector": ".productInfoJs",
+      "raw_text": "8%\nOFF\n\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n\nKES 48.00\nKES 52.00 7.69% Off\nTuzo Esl Milk 450Ml\nADD",
+      "parsed": {
+        "product_name": "Tuzo Esl Milk 450Ml",
+        "current_price": 48.0,
+        "old_price": 52.0,
+        "discount": 8.0,
+        "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_401084.png?t=1779929354",
+        "confidence_score": 0.9
+      }
+    },
+    {
+      "selector": ".productInfoJs",
+      "raw_text": "11%\nOFF\n\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n\nKES 50.00\nKES 56.00 10.71% Off\nMolo Esl Uht Pouch Milk 500Ml\nADD",
+      "parsed": {
+        "product_name": "Molo Esl Uht Pouch Milk 500Ml",
+        "current_price": 50.0,
+        "old_price": 56.0,
+        "discount": 11.0,
+        "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_400540.png?t=1779929482",
+        "confidence_score": 0.9
+      }
+    },
+    {
+      "selector": ".productInfoJs",
+      "raw_text": "2%\nOFF\n\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n\nKES 49.00\nKES 50.00 2% Off\nQuick Choice Esl Milk 500Ml\nADD",
+      "parsed": {
+        "product_name": "Quick Choice Esl Milk 500Ml",
+        "current_price": 49.0,
+        "old_price": 50.0,
+        "discount": 2.0,
+        "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_686100.png?t=1779929186",
+        "confidence_score": 0.9
+      }
+    },
+    {
+      "selector": ".productInfoJs",
+      "raw_text": "5%\nOFF\n\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n\nKES 58.00\nKES 61.00 4.92% Off\nBrookside Dairy Best Milk 500Ml\nADD",
+      "parsed": {
+        "product_name": "Brookside Dairy Best Milk 500Ml",
+        "current_price": 58.0,
+        "old_price": 61.0,
+        "discount": 5.0,
+        "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_400100.png?t=1779929840",
+        "confidence_score": 0.9
+      }
+    },
+    {
+      "selector": ".productInfoJs",
+      "raw_text": "10%\nOFF\n\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n\nKES 54.00\nKES 60.00 10% Off\nTuzo Whole Fino Milk 500Ml\nADD",
+      "parsed": {
+        "product_name": "Tuzo Whole Fino Milk 500Ml",
+        "current_price": 54.0,
+        "old_price": 60.0,
+        "discount": 10.0,
+        "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_400004.png?t=1779929940",
+        "confidence_score": 0.9
+      }
+    },
+    {
+      "selector": ".productInfoJs",
+      "raw_text": "\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n\nKES 10.00\nMaccoffee Classic 1.6G\nADD",
+      "parsed": {
+        "product_name": "Maccoffee Classic 1.6G",
+        "current_price": 10.0,
+        "old_price": null,
+        "discount": null,
+        "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_390270.png?t=1779930467",
+        "confidence_score": 0.8
+      }
+    },
+    {
+      "selector": ".products",
+      "raw_text": "\n                            \n                                \n                                    \n                                \n                            \n                    ",
+      "title": null,
+      "current_price": null,
+      "image_url": "/image/shop-logo/64/1/MEDIUM?t=1779962740",
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products",
+      "raw_text": "\n                    ",
+      "title": null,
+      "current_price": null,
+      "image_url": null,
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products",
+      "raw_text": "\n                        Quickmart Joska\n                        \n                            Joska \n                            , Machakos\n                                                            , Kenya\n                                                    \n                        \n                            \n                                \n                                \n                            \n                            4.6                            \n                        \n                        ",
+      "parsed": {
+        "product_name": "Quickmart Joska",
+        "current_price": 4.6,
+        "old_price": null,
+        "discount": null,
+        "image_url": null,
+        "confidence_score": 0.6
+      }
+    },
+    {
+      "selector": ".products-body",
+      "raw_text": "KES 48.00\nKES 52.00 7.69% Off\nTuzo Esl Milk 450Ml",
+      "parsed": {
+        "product_name": "Tuzo Esl Milk 450Ml",
+        "current_price": 48.0,
+        "old_price": 52.0,
+        "discount": 69.0,
+        "image_url": null,
+        "confidence_score": 0.7
+      }
+    },
+    {
+      "selector": ".products-body",
+      "raw_text": "KES 50.00\nKES 56.00 10.71% Off\nMolo Esl Uht Pouch Milk 500Ml",
+      "parsed": {
+        "product_name": "Molo Esl Uht Pouch Milk 500Ml",
+        "current_price": 50.0,
+        "old_price": 56.0,
+        "discount": 71.0,
+        "image_url": null,
+        "confidence_score": 0.7
+      }
+    },
+    {
+      "selector": ".products-body",
+      "raw_text": "KES 149.00\nKES 160.00 6.88% Off\nLotus Home Baking Flour 2Kg",
+      "parsed": {
+        "product_name": "Lotus Home Baking Flour 2Kg",
+        "current_price": 149.0,
+        "old_price": 160.0,
+        "discount": 88.0,
+        "image_url": null,
+        "confidence_score": 0.7
+      }
+    },
+    {
+      "selector": ".products-body",
+      "raw_text": "KES 50.00\nKES 59.00 15.25% Off\nLato Esl Pouch 500Ml",
+      "parsed": {
+        "product_name": "Lato Esl Pouch 500Ml",
+        "current_price": 50.0,
+        "old_price": 59.0,
+        "discount": 25.0,
+        "image_url": null,
+        "confidence_score": 0.7
+      }
+    },
+    {
+      "selector": ".products-body",
+      "raw_text": "KES 27.00\nMount Kenya Pasteurized Esl.90.200Ml",
+      "parsed": {
+        "product_name": "Mount Kenya Pasteurized Esl.90.200Ml",
+        "current_price": 27.0,
+        "old_price": 90.2,
+        "discount": null,
+        "image_url": null,
+        "confidence_score": 0.6
+      }
+    },
+    {
+      "selector": ".products-body",
+      "raw_text": "KES 35.00\nPumpkin Chapati Per Pc",
+      "parsed": {
+        "product_name": "Pumpkin Chapati Per Pc",
+        "current_price": 35.0,
+        "old_price": null,
+        "discount": null,
+        "image_url": null,
+        "confidence_score": 0.6
+      }
+    },
+    {
+      "selector": ".products-body",
+      "raw_text": "KES 49.00\nKES 50.00 2% Off\nQuick Choice Esl Milk 500Ml",
+      "parsed": {
+        "product_name": "Quick Choice Esl Milk 500Ml",
+        "current_price": 49.0,
+        "old_price": 50.0,
+        "discount": 2.0,
+        "image_url": null,
+        "confidence_score": 0.7
+      }
+    },
+    {
+      "selector": ".products-body",
+      "raw_text": "KES 58.00\nKES 61.00 4.92% Off\nBrookside Dairy Best Milk 500Ml",
+      "parsed": {
+        "product_name": "Brookside Dairy Best Milk 500Ml",
+        "current_price": 58.0,
+        "old_price": 61.0,
+        "discount": 92.0,
+        "image_url": null,
+        "confidence_score": 0.7
+      }
+    },
+    {
+      "selector": ".products-body",
+      "raw_text": "KES 54.00\nKES 60.00 10% Off\nTuzo Whole Fino Milk 500Ml",
+      "parsed": {
+        "product_name": "Tuzo Whole Fino Milk 500Ml",
+        "current_price": 54.0,
+        "old_price": 60.0,
+        "discount": 10.0,
+        "image_url": null,
+        "confidence_score": 0.7
+      }
+    },
+    {
+      "selector": ".products-body",
+      "raw_text": "KES 10.00\nMaccoffee Classic 1.6G",
+      "parsed": {
+        "product_name": "Maccoffee Classic 1.6G",
+        "current_price": 10.0,
+        "old_price": null,
+        "discount": null,
+        "image_url": null,
+        "confidence_score": 0.6
+      }
+    },
+    {
+      "selector": ".products-body",
+      "raw_text": "KES 48.00\nKES 52.00 7.69% Off\nTuzo Esl Milk 450Ml",
+      "parsed": {
+        "product_name": "Tuzo Esl Milk 450Ml",
+        "current_price": 48.0,
+        "old_price": 52.0,
+        "discount": 69.0,
+        "image_url": null,
+        "confidence_score": 0.7
+      }
+    },
+    {
+      "selector": ".products-body",
+      "raw_text": "KES 50.00\nKES 56.00 10.71% Off\nMolo Esl Uht Pouch Milk 500Ml",
+      "parsed": {
+        "product_name": "Molo Esl Uht Pouch Milk 500Ml",
+        "current_price": 50.0,
+        "old_price": 56.0,
+        "discount": 71.0,
+        "image_url": null,
+        "confidence_score": 0.7
+      }
+    },
+    {
+      "selector": ".products-body",
+      "raw_text": "KES 49.00\nKES 50.00 2% Off\nQuick Choice Esl Milk 500Ml",
+      "parsed": {
+        "product_name": "Quick Choice Esl Milk 500Ml",
+        "current_price": 49.0,
+        "old_price": 50.0,
+        "discount": 2.0,
+        "image_url": null,
+        "confidence_score": 0.7
+      }
+    },
+    {
+      "selector": ".products-body",
+      "raw_text": "KES 58.00\nKES 61.00 4.92% Off\nBrookside Dairy Best Milk 500Ml",
+      "parsed": {
+        "product_name": "Brookside Dairy Best Milk 500Ml",
+        "current_price": 58.0,
+        "old_price": 61.0,
+        "discount": 92.0,
+        "image_url": null,
+        "confidence_score": 0.7
+      }
+    },
+    {
+      "selector": ".products-body",
+      "raw_text": "KES 54.00\nKES 60.00 10% Off\nTuzo Whole Fino Milk 500Ml",
+      "parsed": {
+        "product_name": "Tuzo Whole Fino Milk 500Ml",
+        "current_price": 54.0,
+        "old_price": 60.0,
+        "discount": 10.0,
+        "image_url": null,
+        "confidence_score": 0.7
+      }
+    },
+    {
+      "selector": ".products-body",
+      "raw_text": "KES 10.00\nMaccoffee Classic 1.6G",
+      "parsed": {
+        "product_name": "Maccoffee Classic 1.6G",
+        "current_price": 10.0,
+        "old_price": null,
+        "discount": null,
+        "image_url": null,
+        "confidence_score": 0.6
+      }
+    },
+    {
+      "selector": ".products-body",
+      "raw_text": "\n                                \n                                    \n                                \n                            ",
+      "title": null,
+      "current_price": null,
+      "image_url": "/image/shop-logo/64/1/MEDIUM?t=1779962740",
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-foot",
+      "raw_text": "ADD",
+      "title": "ADD",
+      "current_price": null,
+      "image_url": null,
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-foot",
+      "raw_text": "ADD",
+      "title": "ADD",
+      "current_price": null,
+      "image_url": null,
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-foot",
+      "raw_text": "ADD",
+      "title": "ADD",
+      "current_price": null,
+      "image_url": null,
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-foot",
+      "raw_text": "ADD",
+      "title": "ADD",
+      "current_price": null,
+      "image_url": null,
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-foot",
+      "raw_text": "ADD",
+      "title": "ADD",
+      "current_price": null,
+      "image_url": null,
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-foot",
+      "raw_text": "ADD",
+      "title": "ADD",
+      "current_price": null,
+      "image_url": null,
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-foot",
+      "raw_text": "ADD",
+      "title": "ADD",
+      "current_price": null,
+      "image_url": null,
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-foot",
+      "raw_text": "ADD",
+      "title": "ADD",
+      "current_price": null,
+      "image_url": null,
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-foot",
+      "raw_text": "ADD",
+      "title": "ADD",
+      "current_price": null,
+      "image_url": null,
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-foot",
+      "raw_text": "ADD",
+      "title": "ADD",
+      "current_price": null,
+      "image_url": null,
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-foot",
+      "raw_text": "ADD",
+      "title": "ADD",
+      "current_price": null,
+      "image_url": null,
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-foot",
+      "raw_text": "ADD",
+      "title": "ADD",
+      "current_price": null,
+      "image_url": null,
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-foot",
+      "raw_text": "ADD",
+      "title": "ADD",
+      "current_price": null,
+      "image_url": null,
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-foot",
+      "raw_text": "ADD",
+      "title": "ADD",
+      "current_price": null,
+      "image_url": null,
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-foot",
+      "raw_text": "ADD",
+      "title": "ADD",
+      "current_price": null,
+      "image_url": null,
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-foot",
+      "raw_text": "ADD",
+      "title": "ADD",
+      "current_price": null,
+      "image_url": null,
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-foot",
+      "raw_text": "\n                        Quickmart Joska\n                        \n                            Joska \n                            , Machakos\n                                                            , Kenya\n                                                    \n                        \n                            \n                                \n                                \n                            \n                            4.6                            \n                        \n                        \n                        \n                            This branch is the closest to your delivery location. Proceed with this branch?                        \n                        \n                            Continue\n                            Change Branch?\n                        \n                    ",
+      "parsed": {
+        "product_name": "Quickmart Joska",
+        "current_price": 4.6,
+        "old_price": null,
+        "discount": null,
+        "image_url": null,
+        "confidence_score": 0.6
+      }
+    },
+    {
+      "selector": ".products-img",
+      "raw_text": "\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n",
+      "title": null,
+      "current_price": null,
+      "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_401084.png?t=1779929354",
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-img",
+      "raw_text": "\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n",
+      "title": null,
+      "current_price": null,
+      "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_400540.png?t=1779929482",
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-img",
+      "raw_text": "\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n",
+      "title": null,
+      "current_price": null,
+      "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_565123.png?t=1779928139",
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-img",
+      "raw_text": "\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n",
+      "title": null,
+      "current_price": null,
+      "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_683833.png?t=1779929826",
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-img",
+      "raw_text": "\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n",
+      "title": null,
+      "current_price": null,
+      "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_405008.png?t=1779927812",
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-img",
+      "raw_text": "\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n",
+      "title": null,
+      "current_price": null,
+      "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_730014.png?t=1779928760",
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-img",
+      "raw_text": "\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n",
+      "title": null,
+      "current_price": null,
+      "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_686100.png?t=1779929186",
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-img",
+      "raw_text": "\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n",
+      "title": null,
+      "current_price": null,
+      "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_400100.png?t=1779929840",
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-img",
+      "raw_text": "\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n",
+      "title": null,
+      "current_price": null,
+      "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_400004.png?t=1779929940",
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-img",
+      "raw_text": "\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n",
+      "title": null,
+      "current_price": null,
+      "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_390270.png?t=1779930467",
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-img",
+      "raw_text": "\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n",
+      "title": null,
+      "current_price": null,
+      "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_401084.png?t=1779929354",
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-img",
+      "raw_text": "\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n",
+      "title": null,
+      "current_price": null,
+      "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_400540.png?t=1779929482",
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-img",
+      "raw_text": "\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n",
+      "title": null,
+      "current_price": null,
+      "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_686100.png?t=1779929186",
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-img",
+      "raw_text": "\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n",
+      "title": null,
+      "current_price": null,
+      "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_400100.png?t=1779929840",
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-img",
+      "raw_text": "\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n",
+      "title": null,
+      "current_price": null,
+      "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_400004.png?t=1779929940",
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-img",
+      "raw_text": "\nWarning: Array to string conversion in /var/www/html/library/core/Database.class.php on line 0\n",
+      "title": null,
+      "current_price": null,
+      "image_url": "<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\n<br />\n<b>Warning</b>:  Array to string conversion in <b>/var/www/html/library/core/Database.class.php</b> on line <b>0</b><br />\nhttps://cfn.quickmart.co.ke/resized/230_230/product_images_390270.png?t=1779930467",
+      "reason": "missing_required_fields"
+    },
+    {
+      "selector": ".products-img",
+      "raw_text": "\n                                    \n                                ",
+      "title": null,
+      "current_price": null,
+      "image_url": "/image/shop-logo/64/1/MEDIUM?t=1779962740",
+      "reason": "missing_required_fields"
+    }
+  ]
+}

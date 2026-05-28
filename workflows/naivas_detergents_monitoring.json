@@ -1,0 +1,58 @@
+{
+  "workflow_id": "naivas_detergents_monitoring",
+  "workflow_name": "Naivas Detergents Monitoring",
+  "description": "Adaptive SmartPlaywright monitoring for detergent products on Naivas laundry pages.",
+  "enabled": true,
+  "sources": [
+    {
+      "name": "naivas_detergents",
+      "source_type": "smart_playwright",
+      "url": "https://www.naivas.online/laundry/detergents",
+      "selector": null,
+      "keyword": "detergent",
+      "category": "detergents",
+      "max_pages": 3,
+      "scroll_depth": 5,
+      "match_threshold": 78
+    }
+  ],
+  "filters": {
+    "category": "detergents",
+    "keywords": ["omo", "ariel", "sunlight", "toss", "geisha detergent"]
+  },
+  "transformation_rules": [
+    {
+      "type": "normalize",
+      "source": "naivas_detergents"
+    },
+    {
+      "type": "drop_nulls",
+      "subset": ["current_price"]
+    },
+    {
+      "type": "deduplicate",
+      "subset": ["normalized_name", "source", "current_price"]
+    }
+  ],
+  "steps": ["extract", "normalize", "fuzzy_match", "compare", "detect_undercut", "generate_alerts", "generate_reports"],
+  "alert_rules": {
+    "price_drop_percentage": 5,
+    "abnormal_discount_threshold": 35,
+    "supplier_variance_threshold": 10,
+    "undercut_threshold": 50,
+    "sudden_spike_percentage": 25
+  },
+  "schedule": {
+    "frequency": "daily",
+    "time_of_day": "08:30",
+    "day_of_week": null,
+    "enabled": true
+  },
+  "reporting": {
+    "export_csv": true,
+    "export_pdf": false,
+    "report_dir": "reports"
+  },
+  "global_match_threshold": 78,
+  "max_retries": 1
+}

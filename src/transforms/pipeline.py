@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-from src.contracts.records import normalize_product_frame
+from src.transforms.product_identity import normalize_product_frame
 
 
 class TransformationPipeline:

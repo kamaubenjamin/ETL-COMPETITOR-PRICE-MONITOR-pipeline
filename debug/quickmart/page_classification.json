@@ -1,0 +1,27 @@
+{
+  "timestamp": 1779960564,
+  "result": {
+    "route_type": "category_listing_page",
+    "confidence": 0.9,
+    "signals": {
+      "url": "https://www.quickmart.co.ke/products/search?&pagesize-30&collection-151",
+      "breadcrumb_depth": 1,
+      "product_card_count": 460,
+      "unique_product_links": 54,
+      "repeated_price_count": 139,
+      "repeated_add_to_cart_count": 1,
+      "has_product_schema": false,
+      "og_type": "website",
+      "has_add_to_cart": false,
+      "has_quantity_selector": true,
+      "has_reviews_widget": false,
+      "has_related_products": false,
+      "url_looks_like_product": false
+    },
+    "reasons": {
+      "many_cards": 460,
+      "many_links": 54,
+      "many_prices": 139
+    }
+  }
+}

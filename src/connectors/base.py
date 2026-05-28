@@ -16,7 +16,8 @@ from urllib.parse import urlparse
 
 import pandas as pd
 
-from src.contracts.records import CANONICAL_PRODUCT_COLUMNS, normalize_product_frame
+from src.contracts.records import CANONICAL_PRODUCT_COLUMNS
+from src.transforms.product_identity import normalize_product_frame
 from src.core.logging import ExecutionLogger
 
 

@@ -125,7 +125,7 @@
     },
     "confidence_score": 100.0,
     "match_count": 3,
-    "last_updated": "2026-05-20T07:05:06.794509",
+    "last_updated": "2026-05-27T08:00:22.846913",
     "source_products": [
       "VITRON 32\" INCH QLED TV HTC3288QS ,BLUETOOTH Enabled FRAMELESS 32 Inch Smart And",
       "Vitron 32 Inch Qled BLUETOOTH Enabled TV, FRAMELESS TELEVISION 32 Inch Smart And",
@@ -224,6 +224,22 @@
     "source_products": [
       "Refurbished OPPO A83 Smartphones 64GB+4GB 5.7 inches 13MP+8MP 3180mAh Dual SIM 2",
       "Refurbished OPPO A83 64GB+4GB 5.7\"13MP+8MP 3180mAh Fingerprint unlock phone Dual"
+    ]
+  },
+  "classic_f3d64714": {
+    "canonical_id": "classic_f3d64714",
+    "canonical_name": "classic",
+    "brand": "classic",
+    "category": "other",
+    "model": null,
+    "size": null,
+    "specifications": {},
+    "confidence_score": 100.0,
+    "match_count": 2,
+    "last_updated": "2026-05-27T13:17:59.741678",
+    "source_products": [
+      "Classic Detergent Lavender - 1Kg",
+      "Classic Detergent Lavender - 500G"
     ]
   }
 }

@@ -865,5 +865,1953 @@
     "pdf_file": "reports\\comparison_Smartphone_Price_Monitoring_20260520_070901.pdf",
     "end_time": "2026-05-20T07:09:01.470186",
     "total_duration": 25.291383
+  },
+  {
+    "run_id": "2cd3d58c-e4de-4405-926c-a7b6fdfac85e",
+    "workflow_id": "naivas_detergents_monitoring",
+    "workflow_name": "Naivas Detergents Monitoring",
+    "start_time": "2026-05-25T10:29:33.169840",
+    "started_at": "2026-05-25T10:29:33.169840",
+    "status": "partial_success",
+    "error": "Step 'extract' failed: No valid datasets extracted",
+    "errors": [
+      {
+        "message": "No valid datasets extracted",
+        "error_type": "Exception",
+        "step": "extract",
+        "retryable": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "extract",
+        "status": "failed",
+        "duration": 27.371824,
+        "duration_ms": 27371,
+        "message": "No valid datasets extracted",
+        "attempts": 2
+      },
+      {
+        "name": "normalize",
+        "status": "success",
+        "duration": 9e-06,
+        "duration_ms": 0,
+        "message": "Completed normalize",
+        "attempts": 1
+      },
+      {
+        "name": "fuzzy_match",
+        "status": "success",
+        "duration": 4e-06,
+        "duration_ms": 0,
+        "message": "Completed fuzzy_match",
+        "attempts": 1
+      },
+      {
+        "name": "compare",
+        "status": "success",
+        "duration": 4e-06,
+        "duration_ms": 0,
+        "message": "Completed compare",
+        "attempts": 1
+      },
+      {
+        "name": "detect_undercut",
+        "status": "success",
+        "duration": 0.267204,
+        "duration_ms": 267,
+        "message": "Detected 18 price changes",
+        "attempts": 1
+      },
+      {
+        "name": "generate_alerts",
+        "status": "success",
+        "duration": 0.002001,
+        "duration_ms": 2,
+        "message": "Generated 1 alerts",
+        "attempts": 1
+      },
+      {
+        "name": "generate_reports",
+        "status": "success",
+        "duration": 9e-06,
+        "duration_ms": 0,
+        "message": "Generated 0 reports",
+        "attempts": 1
+      }
+    ],
+    "alerts_generated": 1,
+    "report_paths": [],
+    "reports_generated": 0,
+    "comparison_shape": null,
+    "records_processed": 0,
+    "connector_type": "smart_playwright",
+    "triggered_by": "manual",
+    "metadata": {},
+    "undercut_opportunities": "Empty DataFrame\nColumns: []\nIndex: []",
+    "changes": "                                              product  ...                     new_price\n0   Vision Plus VP8850QV 50\" QLED 4K Smart TV \u2013 Ne...  ...                       35666.0\n1                Astronaut Star Projector Night Light  ...             jumia_electronics\n2   \u3010Clearance Sale\u30115-in-1 Electronics Cleaner Kit...  ...                       match_8\n3   AILYONS SB502K 2.1 CH Subwoofer / Sound Bar Mu...  ...             jumia_electronics\n4                             redmi 15\" 256GB Monitor  ...                       15299.0\n5                             redmi 15\" 256GB Monitor  ...                     96.082668\n6                             redmi 15\" 256GB Monitor  ...               kilimall_phones\n7                             redmi 15\" 256GB Monitor  ...                       14999.0\n8                             redmi 15\" 256GB Monitor  ...                           2.0\n9                             vitron 32\" None QLED TV  ...                       13570.0\n10                            vitron 32\" None QLED TV  ...                         100.0\n11                            vitron 32\" None QLED TV  ...                       13570.0\n12                            refurbished 64GB 64GBGB  ...  refurbished_64gb_83_7adf5a57\n13                            refurbished 64GB 64GBGB  ...                     97.144825\n14                            refurbished 64GB 64GBGB  ...                   exact_match\n15                            refurbished 64GB 64GBGB  ...                        3699.0\n16                            refurbished 64GB 64GBGB  ...                        3699.0\n17  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_9\n\n[18 rows x 4 columns]",
+    "alerts": [
+      "No alerts triggered by workflow rules"
+    ],
+    "end_time": "2026-05-25T10:30:00.811414",
+    "completed_at": "2026-05-25T10:30:00.811414",
+    "total_duration": 27.641574,
+    "duration_ms": 27641
+  },
+  {
+    "run_id": "e09bced9-55a2-4e0f-88a3-46f6355f184d",
+    "workflow_id": "quickmart_detergents_monitoring",
+    "workflow_name": "Quickmart Detergents Monitoring",
+    "start_time": "2026-05-26T14:10:25.543253",
+    "started_at": "2026-05-26T14:10:25.543253",
+    "status": "partial_success",
+    "error": "Step 'extract' failed: No valid datasets extracted",
+    "errors": [
+      {
+        "message": "No valid datasets extracted",
+        "error_type": "Exception",
+        "step": "extract",
+        "retryable": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "extract",
+        "status": "failed",
+        "duration": 27.580148,
+        "duration_ms": 27580,
+        "message": "No valid datasets extracted",
+        "attempts": 2
+      },
+      {
+        "name": "normalize",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed normalize",
+        "attempts": 1
+      },
+      {
+        "name": "fuzzy_match",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed fuzzy_match",
+        "attempts": 1
+      },
+      {
+        "name": "compare",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed compare",
+        "attempts": 1
+      },
+      {
+        "name": "detect_undercut",
+        "status": "success",
+        "duration": 0.2297,
+        "duration_ms": 229,
+        "message": "Detected 18 price changes",
+        "attempts": 1
+      },
+      {
+        "name": "generate_alerts",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 1 alerts",
+        "attempts": 1
+      },
+      {
+        "name": "generate_reports",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 0 reports",
+        "attempts": 1
+      }
+    ],
+    "alerts_generated": 1,
+    "report_paths": [],
+    "reports_generated": 0,
+    "comparison_shape": null,
+    "records_processed": 0,
+    "connector_type": "smart_playwright",
+    "triggered_by": "manual",
+    "metadata": {},
+    "undercut_opportunities": "Empty DataFrame\nColumns: []\nIndex: []",
+    "changes": "                                              product  ...                     new_price\n0   Vision Plus VP8850QV 50\" QLED 4K Smart TV \u2013 Ne...  ...                       35666.0\n1                Astronaut Star Projector Night Light  ...             jumia_electronics\n2   \u3010Clearance Sale\u30115-in-1 Electronics Cleaner Kit...  ...                       match_8\n3   AILYONS SB502K 2.1 CH Subwoofer / Sound Bar Mu...  ...             jumia_electronics\n4                             redmi 15\" 256GB Monitor  ...                       15299.0\n5                             redmi 15\" 256GB Monitor  ...                     96.082668\n6                             redmi 15\" 256GB Monitor  ...               kilimall_phones\n7                             redmi 15\" 256GB Monitor  ...                       14999.0\n8                             redmi 15\" 256GB Monitor  ...                           2.0\n9                             vitron 32\" None QLED TV  ...                       13570.0\n10                            vitron 32\" None QLED TV  ...                         100.0\n11                            vitron 32\" None QLED TV  ...                       13570.0\n12                            refurbished 64GB 64GBGB  ...  refurbished_64gb_83_7adf5a57\n13                            refurbished 64GB 64GBGB  ...                     97.144825\n14                            refurbished 64GB 64GBGB  ...                   exact_match\n15                            refurbished 64GB 64GBGB  ...                        3699.0\n16                            refurbished 64GB 64GBGB  ...                        3699.0\n17  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_9\n\n[18 rows x 4 columns]",
+    "alerts": [
+      "No alerts triggered by workflow rules"
+    ],
+    "end_time": "2026-05-26T14:10:53.353101",
+    "completed_at": "2026-05-26T14:10:53.353101",
+    "total_duration": 27.809848,
+    "duration_ms": 27809
+  },
+  {
+    "run_id": "177cc374-44e1-4c9f-a181-75c2279c6b30",
+    "workflow_id": "quickmart_detergents_monitoring",
+    "workflow_name": "Quickmart Detergents Monitoring",
+    "start_time": "2026-05-26T15:12:26.022358",
+    "started_at": "2026-05-26T15:12:26.022358",
+    "status": "partial_success",
+    "error": "Step 'extract' failed: No valid datasets extracted",
+    "errors": [
+      {
+        "message": "No valid datasets extracted",
+        "error_type": "Exception",
+        "step": "extract",
+        "retryable": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "extract",
+        "status": "failed",
+        "duration": 71.555241,
+        "duration_ms": 71555,
+        "message": "No valid datasets extracted",
+        "attempts": 2
+      },
+      {
+        "name": "normalize",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed normalize",
+        "attempts": 1
+      },
+      {
+        "name": "fuzzy_match",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed fuzzy_match",
+        "attempts": 1
+      },
+      {
+        "name": "compare",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed compare",
+        "attempts": 1
+      },
+      {
+        "name": "detect_undercut",
+        "status": "success",
+        "duration": 0.195311,
+        "duration_ms": 195,
+        "message": "Detected 18 price changes",
+        "attempts": 1
+      },
+      {
+        "name": "generate_alerts",
+        "status": "success",
+        "duration": 0.002041,
+        "duration_ms": 2,
+        "message": "Generated 1 alerts",
+        "attempts": 1
+      },
+      {
+        "name": "generate_reports",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 0 reports",
+        "attempts": 1
+      }
+    ],
+    "alerts_generated": 1,
+    "report_paths": [],
+    "reports_generated": 0,
+    "comparison_shape": null,
+    "records_processed": 0,
+    "connector_type": "smart_playwright",
+    "triggered_by": "manual",
+    "metadata": {},
+    "undercut_opportunities": "Empty DataFrame\nColumns: []\nIndex: []",
+    "changes": "                                              product  ...                     new_price\n0   Vision Plus VP8850QV 50\" QLED 4K Smart TV \u2013 Ne...  ...                       35666.0\n1                Astronaut Star Projector Night Light  ...             jumia_electronics\n2   \u3010Clearance Sale\u30115-in-1 Electronics Cleaner Kit...  ...                       match_8\n3   AILYONS SB502K 2.1 CH Subwoofer / Sound Bar Mu...  ...             jumia_electronics\n4                             redmi 15\" 256GB Monitor  ...                       15299.0\n5                             redmi 15\" 256GB Monitor  ...                     96.082668\n6                             redmi 15\" 256GB Monitor  ...               kilimall_phones\n7                             redmi 15\" 256GB Monitor  ...                       14999.0\n8                             redmi 15\" 256GB Monitor  ...                           2.0\n9                             vitron 32\" None QLED TV  ...                       13570.0\n10                            vitron 32\" None QLED TV  ...                         100.0\n11                            vitron 32\" None QLED TV  ...                       13570.0\n12                            refurbished 64GB 64GBGB  ...  refurbished_64gb_83_7adf5a57\n13                            refurbished 64GB 64GBGB  ...                     97.144825\n14                            refurbished 64GB 64GBGB  ...                   exact_match\n15                            refurbished 64GB 64GBGB  ...                        3699.0\n16                            refurbished 64GB 64GBGB  ...                        3699.0\n17  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_9\n\n[18 rows x 4 columns]",
+    "alerts": [
+      "No alerts triggered by workflow rules"
+    ],
+    "end_time": "2026-05-26T15:13:37.774951",
+    "completed_at": "2026-05-26T15:13:37.774951",
+    "total_duration": 71.752593,
+    "duration_ms": 71752
+  },
+  {
+    "run_id": "10bd50bd-98b6-4528-b709-3998c70e273e",
+    "workflow_id": "quickmart_detergents_monitoring",
+    "workflow_name": "Quickmart Detergents Monitoring",
+    "start_time": "2026-05-26T15:24:40.792346",
+    "started_at": "2026-05-26T15:24:40.792346",
+    "status": "partial_success",
+    "error": "Step 'extract' failed: No valid datasets extracted",
+    "errors": [
+      {
+        "message": "No valid datasets extracted",
+        "error_type": "Exception",
+        "step": "extract",
+        "retryable": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "extract",
+        "status": "failed",
+        "duration": 70.418051,
+        "duration_ms": 70418,
+        "message": "No valid datasets extracted",
+        "attempts": 2
+      },
+      {
+        "name": "normalize",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed normalize",
+        "attempts": 1
+      },
+      {
+        "name": "fuzzy_match",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed fuzzy_match",
+        "attempts": 1
+      },
+      {
+        "name": "compare",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed compare",
+        "attempts": 1
+      },
+      {
+        "name": "detect_undercut",
+        "status": "success",
+        "duration": 0.179632,
+        "duration_ms": 179,
+        "message": "Detected 18 price changes",
+        "attempts": 1
+      },
+      {
+        "name": "generate_alerts",
+        "status": "success",
+        "duration": 0.002007,
+        "duration_ms": 2,
+        "message": "Generated 1 alerts",
+        "attempts": 1
+      },
+      {
+        "name": "generate_reports",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 0 reports",
+        "attempts": 1
+      }
+    ],
+    "alerts_generated": 1,
+    "report_paths": [],
+    "reports_generated": 0,
+    "comparison_shape": null,
+    "records_processed": 0,
+    "connector_type": "smart_playwright",
+    "triggered_by": "manual",
+    "metadata": {},
+    "undercut_opportunities": "Empty DataFrame\nColumns: []\nIndex: []",
+    "changes": "                                              product  ...                     new_price\n0   Vision Plus VP8850QV 50\" QLED 4K Smart TV \u2013 Ne...  ...                       35666.0\n1                Astronaut Star Projector Night Light  ...             jumia_electronics\n2   \u3010Clearance Sale\u30115-in-1 Electronics Cleaner Kit...  ...                       match_8\n3   AILYONS SB502K 2.1 CH Subwoofer / Sound Bar Mu...  ...             jumia_electronics\n4                             redmi 15\" 256GB Monitor  ...                       15299.0\n5                             redmi 15\" 256GB Monitor  ...                     96.082668\n6                             redmi 15\" 256GB Monitor  ...               kilimall_phones\n7                             redmi 15\" 256GB Monitor  ...                       14999.0\n8                             redmi 15\" 256GB Monitor  ...                           2.0\n9                             vitron 32\" None QLED TV  ...                       13570.0\n10                            vitron 32\" None QLED TV  ...                         100.0\n11                            vitron 32\" None QLED TV  ...                       13570.0\n12                            refurbished 64GB 64GBGB  ...  refurbished_64gb_83_7adf5a57\n13                            refurbished 64GB 64GBGB  ...                     97.144825\n14                            refurbished 64GB 64GBGB  ...                   exact_match\n15                            refurbished 64GB 64GBGB  ...                        3699.0\n16                            refurbished 64GB 64GBGB  ...                        3699.0\n17  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_9\n\n[18 rows x 4 columns]",
+    "alerts": [
+      "No alerts triggered by workflow rules"
+    ],
+    "end_time": "2026-05-26T15:25:51.392036",
+    "completed_at": "2026-05-26T15:25:51.392036",
+    "total_duration": 70.59969,
+    "duration_ms": 70599
+  },
+  {
+    "run_id": "a7cf17d1-f6ef-4b0c-a242-fa48036441c6",
+    "workflow_id": "quickmart_detergents_monitoring",
+    "workflow_name": "Quickmart Detergents Monitoring",
+    "start_time": "2026-05-26T15:39:39.359756",
+    "started_at": "2026-05-26T15:39:39.359756",
+    "status": "partial_success",
+    "error": "Step 'extract' failed: No valid datasets extracted",
+    "errors": [
+      {
+        "message": "No valid datasets extracted",
+        "error_type": "Exception",
+        "step": "extract",
+        "retryable": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "extract",
+        "status": "failed",
+        "duration": 70.207924,
+        "duration_ms": 70207,
+        "message": "No valid datasets extracted",
+        "attempts": 2
+      },
+      {
+        "name": "normalize",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed normalize",
+        "attempts": 1
+      },
+      {
+        "name": "fuzzy_match",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed fuzzy_match",
+        "attempts": 1
+      },
+      {
+        "name": "compare",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed compare",
+        "attempts": 1
+      },
+      {
+        "name": "detect_undercut",
+        "status": "success",
+        "duration": 0.175669,
+        "duration_ms": 175,
+        "message": "Detected 18 price changes",
+        "attempts": 1
+      },
+      {
+        "name": "generate_alerts",
+        "status": "success",
+        "duration": 0.001999,
+        "duration_ms": 1,
+        "message": "Generated 1 alerts",
+        "attempts": 1
+      },
+      {
+        "name": "generate_reports",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 0 reports",
+        "attempts": 1
+      }
+    ],
+    "alerts_generated": 1,
+    "report_paths": [],
+    "reports_generated": 0,
+    "comparison_shape": null,
+    "records_processed": 0,
+    "connector_type": "smart_playwright",
+    "triggered_by": "manual",
+    "metadata": {},
+    "undercut_opportunities": "Empty DataFrame\nColumns: []\nIndex: []",
+    "changes": "                                              product  ...                     new_price\n0   Vision Plus VP8850QV 50\" QLED 4K Smart TV \u2013 Ne...  ...                       35666.0\n1                Astronaut Star Projector Night Light  ...             jumia_electronics\n2   \u3010Clearance Sale\u30115-in-1 Electronics Cleaner Kit...  ...                       match_8\n3   AILYONS SB502K 2.1 CH Subwoofer / Sound Bar Mu...  ...             jumia_electronics\n4                             redmi 15\" 256GB Monitor  ...                       15299.0\n5                             redmi 15\" 256GB Monitor  ...                     96.082668\n6                             redmi 15\" 256GB Monitor  ...               kilimall_phones\n7                             redmi 15\" 256GB Monitor  ...                       14999.0\n8                             redmi 15\" 256GB Monitor  ...                           2.0\n9                             vitron 32\" None QLED TV  ...                       13570.0\n10                            vitron 32\" None QLED TV  ...                         100.0\n11                            vitron 32\" None QLED TV  ...                       13570.0\n12                            refurbished 64GB 64GBGB  ...  refurbished_64gb_83_7adf5a57\n13                            refurbished 64GB 64GBGB  ...                     97.144825\n14                            refurbished 64GB 64GBGB  ...                   exact_match\n15                            refurbished 64GB 64GBGB  ...                        3699.0\n16                            refurbished 64GB 64GBGB  ...                        3699.0\n17  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_9\n\n[18 rows x 4 columns]",
+    "alerts": [
+      "No alerts triggered by workflow rules"
+    ],
+    "end_time": "2026-05-26T15:40:49.745348",
+    "completed_at": "2026-05-26T15:40:49.745348",
+    "total_duration": 70.385592,
+    "duration_ms": 70385
+  },
+  {
+    "run_id": "81119cff-0ca0-482f-93f1-363911adfecc",
+    "workflow_id": "quickmart_detergents_monitoring",
+    "workflow_name": "Quickmart Detergents Monitoring",
+    "start_time": "2026-05-26T15:51:00.342790",
+    "started_at": "2026-05-26T15:51:00.342790",
+    "status": "partial_success",
+    "error": "Step 'extract' failed: No valid datasets extracted",
+    "errors": [
+      {
+        "message": "No valid datasets extracted",
+        "error_type": "Exception",
+        "step": "extract",
+        "retryable": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "extract",
+        "status": "failed",
+        "duration": 72.808391,
+        "duration_ms": 72808,
+        "message": "No valid datasets extracted",
+        "attempts": 2
+      },
+      {
+        "name": "normalize",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed normalize",
+        "attempts": 1
+      },
+      {
+        "name": "fuzzy_match",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed fuzzy_match",
+        "attempts": 1
+      },
+      {
+        "name": "compare",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed compare",
+        "attempts": 1
+      },
+      {
+        "name": "detect_undercut",
+        "status": "success",
+        "duration": 0.174777,
+        "duration_ms": 174,
+        "message": "Detected 18 price changes",
+        "attempts": 1
+      },
+      {
+        "name": "generate_alerts",
+        "status": "success",
+        "duration": 0.000999,
+        "duration_ms": 0,
+        "message": "Generated 1 alerts",
+        "attempts": 1
+      },
+      {
+        "name": "generate_reports",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 0 reports",
+        "attempts": 1
+      }
+    ],
+    "alerts_generated": 1,
+    "report_paths": [],
+    "reports_generated": 0,
+    "comparison_shape": null,
+    "records_processed": 0,
+    "connector_type": "smart_playwright",
+    "triggered_by": "manual",
+    "metadata": {},
+    "undercut_opportunities": "Empty DataFrame\nColumns: []\nIndex: []",
+    "changes": "                                              product  ...                     new_price\n0   Vision Plus VP8850QV 50\" QLED 4K Smart TV \u2013 Ne...  ...                       35666.0\n1                Astronaut Star Projector Night Light  ...             jumia_electronics\n2   \u3010Clearance Sale\u30115-in-1 Electronics Cleaner Kit...  ...                       match_8\n3   AILYONS SB502K 2.1 CH Subwoofer / Sound Bar Mu...  ...             jumia_electronics\n4                             redmi 15\" 256GB Monitor  ...                       15299.0\n5                             redmi 15\" 256GB Monitor  ...                     96.082668\n6                             redmi 15\" 256GB Monitor  ...               kilimall_phones\n7                             redmi 15\" 256GB Monitor  ...                       14999.0\n8                             redmi 15\" 256GB Monitor  ...                           2.0\n9                             vitron 32\" None QLED TV  ...                       13570.0\n10                            vitron 32\" None QLED TV  ...                         100.0\n11                            vitron 32\" None QLED TV  ...                       13570.0\n12                            refurbished 64GB 64GBGB  ...  refurbished_64gb_83_7adf5a57\n13                            refurbished 64GB 64GBGB  ...                     97.144825\n14                            refurbished 64GB 64GBGB  ...                   exact_match\n15                            refurbished 64GB 64GBGB  ...                        3699.0\n16                            refurbished 64GB 64GBGB  ...                        3699.0\n17  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_9\n\n[18 rows x 4 columns]",
+    "alerts": [
+      "No alerts triggered by workflow rules"
+    ],
+    "end_time": "2026-05-26T15:52:13.326957",
+    "completed_at": "2026-05-26T15:52:13.326957",
+    "total_duration": 72.984167,
+    "duration_ms": 72984
+  },
+  {
+    "run_id": "dfb89a96-eb91-45ff-be71-9c7b1b22baea",
+    "workflow_id": "quickmart_detergents_monitoring",
+    "workflow_name": "Quickmart Detergents Monitoring",
+    "start_time": "2026-05-26T16:14:24.179096",
+    "started_at": "2026-05-26T16:14:24.179096",
+    "status": "partial_success",
+    "error": "Step 'extract' failed: No valid datasets extracted",
+    "errors": [
+      {
+        "message": "No valid datasets extracted",
+        "error_type": "Exception",
+        "step": "extract",
+        "retryable": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "extract",
+        "status": "failed",
+        "duration": 71.721202,
+        "duration_ms": 71721,
+        "message": "No valid datasets extracted",
+        "attempts": 2
+      },
+      {
+        "name": "normalize",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed normalize",
+        "attempts": 1
+      },
+      {
+        "name": "fuzzy_match",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed fuzzy_match",
+        "attempts": 1
+      },
+      {
+        "name": "compare",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed compare",
+        "attempts": 1
+      },
+      {
+        "name": "detect_undercut",
+        "status": "success",
+        "duration": 0.175179,
+        "duration_ms": 175,
+        "message": "Detected 18 price changes",
+        "attempts": 1
+      },
+      {
+        "name": "generate_alerts",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 1 alerts",
+        "attempts": 1
+      },
+      {
+        "name": "generate_reports",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 0 reports",
+        "attempts": 1
+      }
+    ],
+    "alerts_generated": 1,
+    "report_paths": [],
+    "reports_generated": 0,
+    "comparison_shape": null,
+    "records_processed": 0,
+    "connector_type": "smart_playwright",
+    "triggered_by": "manual",
+    "metadata": {},
+    "undercut_opportunities": "Empty DataFrame\nColumns: []\nIndex: []",
+    "changes": "                                              product  ...                     new_price\n0   Vision Plus VP8850QV 50\" QLED 4K Smart TV \u2013 Ne...  ...                       35666.0\n1                Astronaut Star Projector Night Light  ...             jumia_electronics\n2   \u3010Clearance Sale\u30115-in-1 Electronics Cleaner Kit...  ...                       match_8\n3   AILYONS SB502K 2.1 CH Subwoofer / Sound Bar Mu...  ...             jumia_electronics\n4                             redmi 15\" 256GB Monitor  ...                       15299.0\n5                             redmi 15\" 256GB Monitor  ...                     96.082668\n6                             redmi 15\" 256GB Monitor  ...               kilimall_phones\n7                             redmi 15\" 256GB Monitor  ...                       14999.0\n8                             redmi 15\" 256GB Monitor  ...                           2.0\n9                             vitron 32\" None QLED TV  ...                       13570.0\n10                            vitron 32\" None QLED TV  ...                         100.0\n11                            vitron 32\" None QLED TV  ...                       13570.0\n12                            refurbished 64GB 64GBGB  ...  refurbished_64gb_83_7adf5a57\n13                            refurbished 64GB 64GBGB  ...                     97.144825\n14                            refurbished 64GB 64GBGB  ...                   exact_match\n15                            refurbished 64GB 64GBGB  ...                        3699.0\n16                            refurbished 64GB 64GBGB  ...                        3699.0\n17  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_9\n\n[18 rows x 4 columns]",
+    "alerts": [
+      "No alerts triggered by workflow rules"
+    ],
+    "end_time": "2026-05-26T16:15:36.076473",
+    "completed_at": "2026-05-26T16:15:36.076473",
+    "total_duration": 71.897377,
+    "duration_ms": 71897
+  },
+  {
+    "run_id": "dbbb03f5-8391-44dd-8fd5-2c8624af2a9c",
+    "workflow_id": "quickmart_detergents_monitoring",
+    "workflow_name": "Quickmart Detergents Monitoring",
+    "start_time": "2026-05-26T16:18:41.324229",
+    "started_at": "2026-05-26T16:18:41.324229",
+    "status": "partial_success",
+    "error": "Step 'extract' failed: No valid datasets extracted",
+    "errors": [
+      {
+        "message": "No valid datasets extracted",
+        "error_type": "Exception",
+        "step": "extract",
+        "retryable": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "extract",
+        "status": "failed",
+        "duration": 69.579635,
+        "duration_ms": 69579,
+        "message": "No valid datasets extracted",
+        "attempts": 2
+      },
+      {
+        "name": "normalize",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed normalize",
+        "attempts": 1
+      },
+      {
+        "name": "fuzzy_match",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed fuzzy_match",
+        "attempts": 1
+      },
+      {
+        "name": "compare",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed compare",
+        "attempts": 1
+      },
+      {
+        "name": "detect_undercut",
+        "status": "success",
+        "duration": 0.171447,
+        "duration_ms": 171,
+        "message": "Detected 18 price changes",
+        "attempts": 1
+      },
+      {
+        "name": "generate_alerts",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 1 alerts",
+        "attempts": 1
+      },
+      {
+        "name": "generate_reports",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 0 reports",
+        "attempts": 1
+      }
+    ],
+    "alerts_generated": 1,
+    "report_paths": [],
+    "reports_generated": 0,
+    "comparison_shape": null,
+    "records_processed": 0,
+    "connector_type": "smart_playwright",
+    "triggered_by": "manual",
+    "metadata": {},
+    "undercut_opportunities": "Empty DataFrame\nColumns: []\nIndex: []",
+    "changes": "                                              product  ...                     new_price\n0   Vision Plus VP8850QV 50\" QLED 4K Smart TV \u2013 Ne...  ...                       35666.0\n1                Astronaut Star Projector Night Light  ...             jumia_electronics\n2   \u3010Clearance Sale\u30115-in-1 Electronics Cleaner Kit...  ...                       match_8\n3   AILYONS SB502K 2.1 CH Subwoofer / Sound Bar Mu...  ...             jumia_electronics\n4                             redmi 15\" 256GB Monitor  ...                       15299.0\n5                             redmi 15\" 256GB Monitor  ...                     96.082668\n6                             redmi 15\" 256GB Monitor  ...               kilimall_phones\n7                             redmi 15\" 256GB Monitor  ...                       14999.0\n8                             redmi 15\" 256GB Monitor  ...                           2.0\n9                             vitron 32\" None QLED TV  ...                       13570.0\n10                            vitron 32\" None QLED TV  ...                         100.0\n11                            vitron 32\" None QLED TV  ...                       13570.0\n12                            refurbished 64GB 64GBGB  ...  refurbished_64gb_83_7adf5a57\n13                            refurbished 64GB 64GBGB  ...                     97.144825\n14                            refurbished 64GB 64GBGB  ...                   exact_match\n15                            refurbished 64GB 64GBGB  ...                        3699.0\n16                            refurbished 64GB 64GBGB  ...                        3699.0\n17  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_9\n\n[18 rows x 4 columns]",
+    "alerts": [
+      "No alerts triggered by workflow rules"
+    ],
+    "end_time": "2026-05-26T16:19:51.075817",
+    "completed_at": "2026-05-26T16:19:51.075817",
+    "total_duration": 69.751588,
+    "duration_ms": 69751
+  },
+  {
+    "run_id": "c4139b07-d50d-491f-96f9-78039197aeab",
+    "workflow_id": "quickmart_detergents_monitoring",
+    "workflow_name": "Quickmart Detergents Monitoring",
+    "start_time": "2026-05-26T16:28:01.681524",
+    "started_at": "2026-05-26T16:28:01.681524",
+    "status": "partial_success",
+    "error": "Step 'extract' failed: No valid datasets extracted",
+    "errors": [
+      {
+        "message": "No valid datasets extracted",
+        "error_type": "Exception",
+        "step": "extract",
+        "retryable": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "extract",
+        "status": "failed",
+        "duration": 64.420599,
+        "duration_ms": 64420,
+        "message": "No valid datasets extracted",
+        "attempts": 2
+      },
+      {
+        "name": "normalize",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed normalize",
+        "attempts": 1
+      },
+      {
+        "name": "fuzzy_match",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed fuzzy_match",
+        "attempts": 1
+      },
+      {
+        "name": "compare",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed compare",
+        "attempts": 1
+      },
+      {
+        "name": "detect_undercut",
+        "status": "success",
+        "duration": 0.187884,
+        "duration_ms": 187,
+        "message": "Detected 18 price changes",
+        "attempts": 1
+      },
+      {
+        "name": "generate_alerts",
+        "status": "success",
+        "duration": 0.004611,
+        "duration_ms": 4,
+        "message": "Generated 1 alerts",
+        "attempts": 1
+      },
+      {
+        "name": "generate_reports",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 0 reports",
+        "attempts": 1
+      }
+    ],
+    "alerts_generated": 1,
+    "report_paths": [],
+    "reports_generated": 0,
+    "comparison_shape": null,
+    "records_processed": 0,
+    "connector_type": "smart_playwright",
+    "triggered_by": "manual",
+    "metadata": {},
+    "undercut_opportunities": "Empty DataFrame\nColumns: []\nIndex: []",
+    "changes": "                                              product  ...                     new_price\n0   Vision Plus VP8850QV 50\" QLED 4K Smart TV \u2013 Ne...  ...                       35666.0\n1                Astronaut Star Projector Night Light  ...             jumia_electronics\n2   \u3010Clearance Sale\u30115-in-1 Electronics Cleaner Kit...  ...                       match_8\n3   AILYONS SB502K 2.1 CH Subwoofer / Sound Bar Mu...  ...             jumia_electronics\n4                             redmi 15\" 256GB Monitor  ...                       15299.0\n5                             redmi 15\" 256GB Monitor  ...                     96.082668\n6                             redmi 15\" 256GB Monitor  ...               kilimall_phones\n7                             redmi 15\" 256GB Monitor  ...                       14999.0\n8                             redmi 15\" 256GB Monitor  ...                           2.0\n9                             vitron 32\" None QLED TV  ...                       13570.0\n10                            vitron 32\" None QLED TV  ...                         100.0\n11                            vitron 32\" None QLED TV  ...                       13570.0\n12                            refurbished 64GB 64GBGB  ...  refurbished_64gb_83_7adf5a57\n13                            refurbished 64GB 64GBGB  ...                     97.144825\n14                            refurbished 64GB 64GBGB  ...                   exact_match\n15                            refurbished 64GB 64GBGB  ...                        3699.0\n16                            refurbished 64GB 64GBGB  ...                        3699.0\n17  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_9\n\n[18 rows x 4 columns]",
+    "alerts": [
+      "No alerts triggered by workflow rules"
+    ],
+    "end_time": "2026-05-26T16:29:06.295626",
+    "completed_at": "2026-05-26T16:29:06.295626",
+    "total_duration": 64.614102,
+    "duration_ms": 64614
+  },
+  {
+    "run_id": "636e73d5-0638-46cf-8bee-65a5d59af4dd",
+    "workflow_id": "quickmart_detergents_monitoring",
+    "workflow_name": "Quickmart Detergents Monitoring",
+    "start_time": "2026-05-26T16:29:21.277040",
+    "started_at": "2026-05-26T16:29:21.277040",
+    "status": "partial_success",
+    "error": "Step 'extract' failed: No valid datasets extracted",
+    "errors": [
+      {
+        "message": "No valid datasets extracted",
+        "error_type": "Exception",
+        "step": "extract",
+        "retryable": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "extract",
+        "status": "failed",
+        "duration": 66.942851,
+        "duration_ms": 66942,
+        "message": "No valid datasets extracted",
+        "attempts": 2
+      },
+      {
+        "name": "normalize",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed normalize",
+        "attempts": 1
+      },
+      {
+        "name": "fuzzy_match",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed fuzzy_match",
+        "attempts": 1
+      },
+      {
+        "name": "compare",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed compare",
+        "attempts": 1
+      },
+      {
+        "name": "detect_undercut",
+        "status": "success",
+        "duration": 0.180329,
+        "duration_ms": 180,
+        "message": "Detected 18 price changes",
+        "attempts": 1
+      },
+      {
+        "name": "generate_alerts",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 1 alerts",
+        "attempts": 1
+      },
+      {
+        "name": "generate_reports",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 0 reports",
+        "attempts": 1
+      }
+    ],
+    "alerts_generated": 1,
+    "report_paths": [],
+    "reports_generated": 0,
+    "comparison_shape": null,
+    "records_processed": 0,
+    "connector_type": "smart_playwright",
+    "triggered_by": "manual",
+    "metadata": {},
+    "undercut_opportunities": "Empty DataFrame\nColumns: []\nIndex: []",
+    "changes": "                                              product  ...                     new_price\n0   Vision Plus VP8850QV 50\" QLED 4K Smart TV \u2013 Ne...  ...                       35666.0\n1                Astronaut Star Projector Night Light  ...             jumia_electronics\n2   \u3010Clearance Sale\u30115-in-1 Electronics Cleaner Kit...  ...                       match_8\n3   AILYONS SB502K 2.1 CH Subwoofer / Sound Bar Mu...  ...             jumia_electronics\n4                             redmi 15\" 256GB Monitor  ...                       15299.0\n5                             redmi 15\" 256GB Monitor  ...                     96.082668\n6                             redmi 15\" 256GB Monitor  ...               kilimall_phones\n7                             redmi 15\" 256GB Monitor  ...                       14999.0\n8                             redmi 15\" 256GB Monitor  ...                           2.0\n9                             vitron 32\" None QLED TV  ...                       13570.0\n10                            vitron 32\" None QLED TV  ...                         100.0\n11                            vitron 32\" None QLED TV  ...                       13570.0\n12                            refurbished 64GB 64GBGB  ...  refurbished_64gb_83_7adf5a57\n13                            refurbished 64GB 64GBGB  ...                     97.144825\n14                            refurbished 64GB 64GBGB  ...                   exact_match\n15                            refurbished 64GB 64GBGB  ...                        3699.0\n16                            refurbished 64GB 64GBGB  ...                        3699.0\n17  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_9\n\n[18 rows x 4 columns]",
+    "alerts": [
+      "No alerts triggered by workflow rules"
+    ],
+    "end_time": "2026-05-26T16:30:28.401729",
+    "completed_at": "2026-05-26T16:30:28.401729",
+    "total_duration": 67.124689,
+    "duration_ms": 67124
+  },
+  {
+    "run_id": "1d5ea50b-f57a-4443-b1e5-a7b29699c648",
+    "workflow_id": "quickmart_detergents_monitoring",
+    "workflow_name": "Quickmart Detergents Monitoring",
+    "start_time": "2026-05-26T16:34:52.628775",
+    "started_at": "2026-05-26T16:34:52.628775",
+    "status": "partial_success",
+    "error": "Step 'extract' failed: No valid datasets extracted",
+    "errors": [
+      {
+        "message": "No valid datasets extracted",
+        "error_type": "Exception",
+        "step": "extract",
+        "retryable": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "extract",
+        "status": "failed",
+        "duration": 68.800073,
+        "duration_ms": 68800,
+        "message": "No valid datasets extracted",
+        "attempts": 2
+      },
+      {
+        "name": "normalize",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed normalize",
+        "attempts": 1
+      },
+      {
+        "name": "fuzzy_match",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed fuzzy_match",
+        "attempts": 1
+      },
+      {
+        "name": "compare",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed compare",
+        "attempts": 1
+      },
+      {
+        "name": "detect_undercut",
+        "status": "success",
+        "duration": 0.189044,
+        "duration_ms": 189,
+        "message": "Detected 18 price changes",
+        "attempts": 1
+      },
+      {
+        "name": "generate_alerts",
+        "status": "success",
+        "duration": 0.001546,
+        "duration_ms": 1,
+        "message": "Generated 1 alerts",
+        "attempts": 1
+      },
+      {
+        "name": "generate_reports",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 0 reports",
+        "attempts": 1
+      }
+    ],
+    "alerts_generated": 1,
+    "report_paths": [],
+    "reports_generated": 0,
+    "comparison_shape": null,
+    "records_processed": 0,
+    "connector_type": "smart_playwright",
+    "triggered_by": "manual",
+    "metadata": {},
+    "undercut_opportunities": "Empty DataFrame\nColumns: []\nIndex: []",
+    "changes": "                                              product  ...                     new_price\n0   Vision Plus VP8850QV 50\" QLED 4K Smart TV \u2013 Ne...  ...                       35666.0\n1                Astronaut Star Projector Night Light  ...             jumia_electronics\n2   \u3010Clearance Sale\u30115-in-1 Electronics Cleaner Kit...  ...                       match_8\n3   AILYONS SB502K 2.1 CH Subwoofer / Sound Bar Mu...  ...             jumia_electronics\n4                             redmi 15\" 256GB Monitor  ...                       15299.0\n5                             redmi 15\" 256GB Monitor  ...                     96.082668\n6                             redmi 15\" 256GB Monitor  ...               kilimall_phones\n7                             redmi 15\" 256GB Monitor  ...                       14999.0\n8                             redmi 15\" 256GB Monitor  ...                           2.0\n9                             vitron 32\" None QLED TV  ...                       13570.0\n10                            vitron 32\" None QLED TV  ...                         100.0\n11                            vitron 32\" None QLED TV  ...                       13570.0\n12                            refurbished 64GB 64GBGB  ...  refurbished_64gb_83_7adf5a57\n13                            refurbished 64GB 64GBGB  ...                     97.144825\n14                            refurbished 64GB 64GBGB  ...                   exact_match\n15                            refurbished 64GB 64GBGB  ...                        3699.0\n16                            refurbished 64GB 64GBGB  ...                        3699.0\n17  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_9\n\n[18 rows x 4 columns]",
+    "alerts": [
+      "No alerts triggered by workflow rules"
+    ],
+    "end_time": "2026-05-26T16:36:01.619438",
+    "completed_at": "2026-05-26T16:36:01.619438",
+    "total_duration": 68.990663,
+    "duration_ms": 68990
+  },
+  {
+    "run_id": "cec40d22-a0b3-44ac-8230-5eb3d37997e5",
+    "workflow_id": "quickmart_detergents_monitoring",
+    "workflow_name": "Quickmart Detergents Monitoring",
+    "start_time": "2026-05-26T16:48:50.195299",
+    "started_at": "2026-05-26T16:48:50.195299",
+    "status": "partial_success",
+    "error": "Step 'extract' failed: No valid datasets extracted",
+    "errors": [
+      {
+        "message": "No valid datasets extracted",
+        "error_type": "Exception",
+        "step": "extract",
+        "retryable": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "extract",
+        "status": "failed",
+        "duration": 141.694858,
+        "duration_ms": 141694,
+        "message": "No valid datasets extracted",
+        "attempts": 2
+      },
+      {
+        "name": "normalize",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed normalize",
+        "attempts": 1
+      },
+      {
+        "name": "fuzzy_match",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed fuzzy_match",
+        "attempts": 1
+      },
+      {
+        "name": "compare",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed compare",
+        "attempts": 1
+      },
+      {
+        "name": "detect_undercut",
+        "status": "success",
+        "duration": 0.175077,
+        "duration_ms": 175,
+        "message": "Detected 18 price changes",
+        "attempts": 1
+      },
+      {
+        "name": "generate_alerts",
+        "status": "success",
+        "duration": 0.002044,
+        "duration_ms": 2,
+        "message": "Generated 1 alerts",
+        "attempts": 1
+      },
+      {
+        "name": "generate_reports",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 0 reports",
+        "attempts": 1
+      }
+    ],
+    "alerts_generated": 1,
+    "report_paths": [],
+    "reports_generated": 0,
+    "comparison_shape": null,
+    "records_processed": 0,
+    "connector_type": "smart_playwright",
+    "triggered_by": "manual",
+    "metadata": {},
+    "undercut_opportunities": "Empty DataFrame\nColumns: []\nIndex: []",
+    "changes": "                                              product  ...                     new_price\n0   Vision Plus VP8850QV 50\" QLED 4K Smart TV \u2013 Ne...  ...                       35666.0\n1                Astronaut Star Projector Night Light  ...             jumia_electronics\n2   \u3010Clearance Sale\u30115-in-1 Electronics Cleaner Kit...  ...                       match_8\n3   AILYONS SB502K 2.1 CH Subwoofer / Sound Bar Mu...  ...             jumia_electronics\n4                             redmi 15\" 256GB Monitor  ...                       15299.0\n5                             redmi 15\" 256GB Monitor  ...                     96.082668\n6                             redmi 15\" 256GB Monitor  ...               kilimall_phones\n7                             redmi 15\" 256GB Monitor  ...                       14999.0\n8                             redmi 15\" 256GB Monitor  ...                           2.0\n9                             vitron 32\" None QLED TV  ...                       13570.0\n10                            vitron 32\" None QLED TV  ...                         100.0\n11                            vitron 32\" None QLED TV  ...                       13570.0\n12                            refurbished 64GB 64GBGB  ...  refurbished_64gb_83_7adf5a57\n13                            refurbished 64GB 64GBGB  ...                     97.144825\n14                            refurbished 64GB 64GBGB  ...                   exact_match\n15                            refurbished 64GB 64GBGB  ...                        3699.0\n16                            refurbished 64GB 64GBGB  ...                        3699.0\n17  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_9\n\n[18 rows x 4 columns]",
+    "alerts": [
+      "No alerts triggered by workflow rules"
+    ],
+    "end_time": "2026-05-26T16:51:12.069214",
+    "completed_at": "2026-05-26T16:51:12.069214",
+    "total_duration": 141.873915,
+    "duration_ms": 141873
+  },
+  {
+    "run_id": "9bc83a53-4413-43f2-9978-c01a746c9858",
+    "workflow_id": "quickmart_detergents_monitoring",
+    "workflow_name": "Quickmart Detergents Monitoring",
+    "start_time": "2026-05-26T17:27:26.262208",
+    "started_at": "2026-05-26T17:27:26.262208",
+    "status": "partial_success",
+    "error": "Step 'extract' failed: No valid datasets extracted",
+    "errors": [
+      {
+        "message": "No valid datasets extracted",
+        "error_type": "Exception",
+        "step": "extract",
+        "retryable": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "extract",
+        "status": "failed",
+        "duration": 139.370491,
+        "duration_ms": 139370,
+        "message": "No valid datasets extracted",
+        "attempts": 2
+      },
+      {
+        "name": "normalize",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed normalize",
+        "attempts": 1
+      },
+      {
+        "name": "fuzzy_match",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed fuzzy_match",
+        "attempts": 1
+      },
+      {
+        "name": "compare",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed compare",
+        "attempts": 1
+      },
+      {
+        "name": "detect_undercut",
+        "status": "success",
+        "duration": 0.172327,
+        "duration_ms": 172,
+        "message": "Detected 18 price changes",
+        "attempts": 1
+      },
+      {
+        "name": "generate_alerts",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 1 alerts",
+        "attempts": 1
+      },
+      {
+        "name": "generate_reports",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 0 reports",
+        "attempts": 1
+      }
+    ],
+    "alerts_generated": 1,
+    "report_paths": [],
+    "reports_generated": 0,
+    "comparison_shape": null,
+    "records_processed": 0,
+    "connector_type": "smart_playwright",
+    "triggered_by": "manual",
+    "metadata": {},
+    "undercut_opportunities": "Empty DataFrame\nColumns: []\nIndex: []",
+    "changes": "                                              product  ...                     new_price\n0   Vision Plus VP8850QV 50\" QLED 4K Smart TV \u2013 Ne...  ...                       35666.0\n1                Astronaut Star Projector Night Light  ...             jumia_electronics\n2   \u3010Clearance Sale\u30115-in-1 Electronics Cleaner Kit...  ...                       match_8\n3   AILYONS SB502K 2.1 CH Subwoofer / Sound Bar Mu...  ...             jumia_electronics\n4                             redmi 15\" 256GB Monitor  ...                       15299.0\n5                             redmi 15\" 256GB Monitor  ...                     96.082668\n6                             redmi 15\" 256GB Monitor  ...               kilimall_phones\n7                             redmi 15\" 256GB Monitor  ...                       14999.0\n8                             redmi 15\" 256GB Monitor  ...                           2.0\n9                             vitron 32\" None QLED TV  ...                       13570.0\n10                            vitron 32\" None QLED TV  ...                         100.0\n11                            vitron 32\" None QLED TV  ...                       13570.0\n12                            refurbished 64GB 64GBGB  ...  refurbished_64gb_83_7adf5a57\n13                            refurbished 64GB 64GBGB  ...                     97.144825\n14                            refurbished 64GB 64GBGB  ...                   exact_match\n15                            refurbished 64GB 64GBGB  ...                        3699.0\n16                            refurbished 64GB 64GBGB  ...                        3699.0\n17  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_9\n\n[18 rows x 4 columns]",
+    "alerts": [
+      "No alerts triggered by workflow rules"
+    ],
+    "end_time": "2026-05-26T17:29:45.806533",
+    "completed_at": "2026-05-26T17:29:45.806533",
+    "total_duration": 139.544325,
+    "duration_ms": 139544
+  },
+  {
+    "run_id": "40171305-2e26-4669-b27b-09dc80b8ba9f",
+    "workflow_id": "electronics_monitoring",
+    "workflow_name": "Electronics Price Monitoring",
+    "start_time": "2026-05-27T07:59:48.271171",
+    "started_at": "2026-05-27T07:59:48.271171",
+    "status": "partial_success",
+    "error": "Step 'generate_reports' failed: name 'workflow_id' is not defined",
+    "errors": [
+      {
+        "source_name": "jumia_electronics",
+        "source_type": "playwright",
+        "error": "Connector returned empty DataFrame"
+      },
+      {
+        "message": "name 'workflow_id' is not defined",
+        "error_type": "NameError",
+        "step": "generate_reports",
+        "retryable": false
+      }
+    ],
+    "steps": [
+      {
+        "name": "extract",
+        "status": "success",
+        "duration": 34.719284,
+        "duration_ms": 34719,
+        "message": "Extracted from 2 sources",
+        "attempts": 1
+      },
+      {
+        "name": "normalize",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed normalize",
+        "attempts": 1
+      },
+      {
+        "name": "fuzzy_match",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed fuzzy_match",
+        "attempts": 1
+      },
+      {
+        "name": "compare",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed compare",
+        "attempts": 1
+      },
+      {
+        "name": "detect_changes",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed detect_changes",
+        "attempts": 1
+      },
+      {
+        "name": "generate_alerts",
+        "status": "success",
+        "duration": 0.001471,
+        "duration_ms": 1,
+        "message": "Generated 0 alerts",
+        "attempts": 1
+      },
+      {
+        "name": "generate_reports",
+        "status": "failed",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "name 'workflow_id' is not defined",
+        "attempts": 1
+      }
+    ],
+    "alerts_generated": 0,
+    "report_paths": [],
+    "reports_generated": 0,
+    "comparison_shape": [
+      3,
+      8
+    ],
+    "records_processed": 3,
+    "connector_type": "playwright",
+    "triggered_by": "manual",
+    "metadata": {},
+    "matched": "                                        product_name  ...                                           features\n0  VITRON 32\" INCH QLED TV HTC3288QS ,BLUETOOTH E...  ...  {'brand': 'vitron', 'size': '32', 'model': 'HT...\n1  Vitron 32 Inch Qled BLUETOOTH Enabled TV, FRAM...  ...  {'brand': 'vitron', 'size': '32', 'model': Non...\n2  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...  {'brand': 'koocu', 'size': None, 'model': None...\n3  VITRON 32\" INCH QLED TV HTC3288QS ,BLUETOOTH E...  ...  {'brand': 'vitron', 'size': '32', 'model': 'HT...\n4  GORDAK 952H hot air station constant temperatu...  ...  {'brand': 'gordak', 'size': None, 'model': Non...\n5  VITRON 24\" INCH HTC2446 HD AC/DC Digital TELEV...  ...  {'brand': 'vitron', 'size': '24', 'model': 'HT...\n6  Wireless Neckband Headphone Electronics Sport ...  ...  {'brand': 'wireless', 'size': None, 'model': N...\n\n[7 rows x 12 columns]",
+    "comparison": "         canonical_id                                       product_name  ...  cheapest_price source_count\n0  vitron_32_3a780040                            vitron 32\" None QLED TV  ...          7999.0            1\n1             match_1  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...         12999.0            1\n2             match_2  Wireless Neckband Headphone Electronics Sport ...  ...           450.0            1\n\n[3 rows x 8 columns]",
+    "alerts": [],
+    "end_time": "2026-05-27T08:00:22.991926",
+    "completed_at": "2026-05-27T08:00:22.991926",
+    "total_duration": 34.720755,
+    "duration_ms": 34720
+  },
+  {
+    "run_id": "c413e0d1-ed40-4660-bc4c-055b22675c36",
+    "workflow_id": "quickmart_detergents_monitoring",
+    "workflow_name": "Quickmart Detergents Monitoring",
+    "start_time": "2026-05-27T11:52:55.903010",
+    "started_at": "2026-05-27T11:52:55.903010",
+    "status": "partial_success",
+    "error": "Step 'generate_reports' failed: name 'workflow_id' is not defined",
+    "errors": [
+      {
+        "message": "name 'workflow_id' is not defined",
+        "error_type": "NameError",
+        "step": "generate_reports",
+        "retryable": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "extract",
+        "status": "success",
+        "duration": 54.325287,
+        "duration_ms": 54325,
+        "message": "Extracted from 1 sources",
+        "attempts": 1
+      },
+      {
+        "name": "normalize",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed normalize",
+        "attempts": 1
+      },
+      {
+        "name": "fuzzy_match",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed fuzzy_match",
+        "attempts": 1
+      },
+      {
+        "name": "compare",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed compare",
+        "attempts": 1
+      },
+      {
+        "name": "detect_undercut",
+        "status": "success",
+        "duration": 0.21146,
+        "duration_ms": 211,
+        "message": "Detected 22 price changes",
+        "attempts": 1
+      },
+      {
+        "name": "generate_alerts",
+        "status": "success",
+        "duration": 0.002514,
+        "duration_ms": 2,
+        "message": "Generated 1 alerts",
+        "attempts": 1
+      },
+      {
+        "name": "generate_reports",
+        "status": "failed",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "name 'workflow_id' is not defined",
+        "attempts": 2
+      }
+    ],
+    "alerts_generated": 1,
+    "report_paths": [],
+    "reports_generated": 0,
+    "comparison_shape": [
+      1,
+      8
+    ],
+    "records_processed": 1,
+    "connector_type": "smart_playwright",
+    "triggered_by": "manual",
+    "metadata": {},
+    "matched": "                                        product_name  ...                                           features\n0  experience every time while providing our shop...  ...  {'brand': 'experience', 'size': None, 'model':...\n\n[1 rows x 24 columns]",
+    "comparison": "  canonical_id                                       product_name  ...  cheapest_price source_count\n0      match_0  experience every time while providing our shop...  ...             2.0            1\n\n[1 rows x 8 columns]",
+    "undercut_opportunities": "Empty DataFrame\nColumns: []\nIndex: []",
+    "changes": "                                              product  ...                     new_price\n0   Vision Plus VP8850QV 50\" QLED 4K Smart TV \u2013 Ne...  ...                       35666.0\n1                Astronaut Star Projector Night Light  ...             jumia_electronics\n2   \u3010Clearance Sale\u30115-in-1 Electronics Cleaner Kit...  ...                       match_8\n3   AILYONS SB502K 2.1 CH Subwoofer / Sound Bar Mu...  ...             jumia_electronics\n4                             redmi 15\" 256GB Monitor  ...                       15299.0\n5                             redmi 15\" 256GB Monitor  ...                     96.082668\n6                             redmi 15\" 256GB Monitor  ...               kilimall_phones\n7                             redmi 15\" 256GB Monitor  ...                       14999.0\n8                             redmi 15\" 256GB Monitor  ...                           2.0\n9                             vitron 32\" None QLED TV  ...                        7999.0\n10                            vitron 32\" None QLED TV  ...                     96.005357\n11                            vitron 32\" None QLED TV  ...                        7999.0\n12                            refurbished 64GB 64GBGB  ...  refurbished_64gb_83_7adf5a57\n13                            refurbished 64GB 64GBGB  ...                     97.144825\n14                            refurbished 64GB 64GBGB  ...                   exact_match\n15                            refurbished 64GB 64GBGB  ...                        3699.0\n16                            refurbished 64GB 64GBGB  ...                        3699.0\n17  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_9\n18  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       12999.0\n19  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_1\n20  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                     86.959459\n21  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       12999.0\n\n[22 rows x 4 columns]",
+    "alerts": [
+      "No alerts triggered by workflow rules"
+    ],
+    "end_time": "2026-05-27T11:53:50.442271",
+    "completed_at": "2026-05-27T11:53:50.442271",
+    "total_duration": 54.539261,
+    "duration_ms": 54539
+  },
+  {
+    "run_id": "dd444994-214c-489c-845e-ce857f5a1f32",
+    "workflow_id": "quickmart_detergents_monitoring",
+    "workflow_name": "Quickmart Detergents Monitoring",
+    "start_time": "2026-05-27T12:19:57.195363",
+    "started_at": "2026-05-27T12:19:57.195363",
+    "status": "partial_success",
+    "error": "Step 'extract' failed: No valid datasets extracted",
+    "errors": [
+      {
+        "message": "No valid datasets extracted",
+        "error_type": "Exception",
+        "step": "extract",
+        "retryable": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "extract",
+        "status": "failed",
+        "duration": 190.757543,
+        "duration_ms": 190757,
+        "message": "No valid datasets extracted",
+        "attempts": 2
+      },
+      {
+        "name": "normalize",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed normalize",
+        "attempts": 1
+      },
+      {
+        "name": "fuzzy_match",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed fuzzy_match",
+        "attempts": 1
+      },
+      {
+        "name": "compare",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed compare",
+        "attempts": 1
+      },
+      {
+        "name": "detect_undercut",
+        "status": "success",
+        "duration": 0.221045,
+        "duration_ms": 221,
+        "message": "Detected 22 price changes",
+        "attempts": 1
+      },
+      {
+        "name": "generate_alerts",
+        "status": "success",
+        "duration": 0.002009,
+        "duration_ms": 2,
+        "message": "Generated 1 alerts",
+        "attempts": 1
+      },
+      {
+        "name": "generate_reports",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 0 reports",
+        "attempts": 1
+      }
+    ],
+    "alerts_generated": 1,
+    "report_paths": [],
+    "reports_generated": 0,
+    "comparison_shape": null,
+    "records_processed": 0,
+    "connector_type": "smart_playwright",
+    "triggered_by": "manual",
+    "metadata": {},
+    "undercut_opportunities": "Empty DataFrame\nColumns: []\nIndex: []",
+    "changes": "                                              product  ...                     new_price\n0   Vision Plus VP8850QV 50\" QLED 4K Smart TV \u2013 Ne...  ...                       35666.0\n1                Astronaut Star Projector Night Light  ...             jumia_electronics\n2   \u3010Clearance Sale\u30115-in-1 Electronics Cleaner Kit...  ...                       match_8\n3   AILYONS SB502K 2.1 CH Subwoofer / Sound Bar Mu...  ...             jumia_electronics\n4                             redmi 15\" 256GB Monitor  ...                       15299.0\n5                             redmi 15\" 256GB Monitor  ...                     96.082668\n6                             redmi 15\" 256GB Monitor  ...               kilimall_phones\n7                             redmi 15\" 256GB Monitor  ...                       14999.0\n8                             redmi 15\" 256GB Monitor  ...                           2.0\n9                             vitron 32\" None QLED TV  ...                        7999.0\n10                            vitron 32\" None QLED TV  ...                     96.005357\n11                            vitron 32\" None QLED TV  ...                        7999.0\n12                            refurbished 64GB 64GBGB  ...  refurbished_64gb_83_7adf5a57\n13                            refurbished 64GB 64GBGB  ...                     97.144825\n14                            refurbished 64GB 64GBGB  ...                   exact_match\n15                            refurbished 64GB 64GBGB  ...                        3699.0\n16                            refurbished 64GB 64GBGB  ...                        3699.0\n17  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_9\n18  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       12999.0\n19  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_1\n20  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                     86.959459\n21  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       12999.0\n\n[22 rows x 4 columns]",
+    "alerts": [
+      "No alerts triggered by workflow rules"
+    ],
+    "end_time": "2026-05-27T12:23:08.175960",
+    "completed_at": "2026-05-27T12:23:08.175960",
+    "total_duration": 190.980597,
+    "duration_ms": 190980
+  },
+  {
+    "run_id": "07c4a5ca-edea-44c9-952a-a0e29ac14b5f",
+    "workflow_id": "quickmart_detergents_monitoring",
+    "workflow_name": "Quickmart Detergents Monitoring",
+    "start_time": "2026-05-27T12:37:43.299860",
+    "started_at": "2026-05-27T12:37:43.299860",
+    "status": "partial_success",
+    "error": "Step 'extract' failed: No valid datasets extracted",
+    "errors": [
+      {
+        "message": "No valid datasets extracted",
+        "error_type": "Exception",
+        "step": "extract",
+        "retryable": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "extract",
+        "status": "failed",
+        "duration": 64.210242,
+        "duration_ms": 64210,
+        "message": "No valid datasets extracted",
+        "attempts": 2
+      },
+      {
+        "name": "normalize",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed normalize",
+        "attempts": 1
+      },
+      {
+        "name": "fuzzy_match",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed fuzzy_match",
+        "attempts": 1
+      },
+      {
+        "name": "compare",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed compare",
+        "attempts": 1
+      },
+      {
+        "name": "detect_undercut",
+        "status": "success",
+        "duration": 0.240187,
+        "duration_ms": 240,
+        "message": "Detected 22 price changes",
+        "attempts": 1
+      },
+      {
+        "name": "generate_alerts",
+        "status": "success",
+        "duration": 0.001562,
+        "duration_ms": 1,
+        "message": "Generated 1 alerts",
+        "attempts": 1
+      },
+      {
+        "name": "generate_reports",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 0 reports",
+        "attempts": 1
+      }
+    ],
+    "alerts_generated": 1,
+    "report_paths": [],
+    "reports_generated": 0,
+    "comparison_shape": null,
+    "records_processed": 0,
+    "connector_type": "smart_playwright",
+    "triggered_by": "manual",
+    "metadata": {},
+    "undercut_opportunities": "Empty DataFrame\nColumns: []\nIndex: []",
+    "changes": "                                              product  ...                     new_price\n0   Vision Plus VP8850QV 50\" QLED 4K Smart TV \u2013 Ne...  ...                       35666.0\n1                Astronaut Star Projector Night Light  ...             jumia_electronics\n2   \u3010Clearance Sale\u30115-in-1 Electronics Cleaner Kit...  ...                       match_8\n3   AILYONS SB502K 2.1 CH Subwoofer / Sound Bar Mu...  ...             jumia_electronics\n4                             redmi 15\" 256GB Monitor  ...                       15299.0\n5                             redmi 15\" 256GB Monitor  ...                     96.082668\n6                             redmi 15\" 256GB Monitor  ...               kilimall_phones\n7                             redmi 15\" 256GB Monitor  ...                       14999.0\n8                             redmi 15\" 256GB Monitor  ...                           2.0\n9                             vitron 32\" None QLED TV  ...                        7999.0\n10                            vitron 32\" None QLED TV  ...                     96.005357\n11                            vitron 32\" None QLED TV  ...                        7999.0\n12                            refurbished 64GB 64GBGB  ...  refurbished_64gb_83_7adf5a57\n13                            refurbished 64GB 64GBGB  ...                     97.144825\n14                            refurbished 64GB 64GBGB  ...                   exact_match\n15                            refurbished 64GB 64GBGB  ...                        3699.0\n16                            refurbished 64GB 64GBGB  ...                        3699.0\n17  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_9\n18  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       12999.0\n19  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_1\n20  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                     86.959459\n21  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       12999.0\n\n[22 rows x 4 columns]",
+    "alerts": [
+      "No alerts triggered by workflow rules"
+    ],
+    "end_time": "2026-05-27T12:38:47.760288",
+    "completed_at": "2026-05-27T12:38:47.760288",
+    "total_duration": 64.460428,
+    "duration_ms": 64460
+  },
+  {
+    "run_id": "696dd4d3-6fbb-43e5-9f23-aba6e5dc92d9",
+    "workflow_id": "quickmart_detergents_monitoring",
+    "workflow_name": "Quickmart Detergents Monitoring",
+    "start_time": "2026-05-27T13:17:13.812350",
+    "started_at": "2026-05-27T13:17:13.812350",
+    "status": "partial_success",
+    "error": "Step 'generate_reports' failed: name 'workflow_id' is not defined",
+    "errors": [
+      {
+        "message": "name 'workflow_id' is not defined",
+        "error_type": "NameError",
+        "step": "generate_reports",
+        "retryable": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "extract",
+        "status": "success",
+        "duration": 46.066748,
+        "duration_ms": 46066,
+        "message": "Extracted from 1 sources",
+        "attempts": 1
+      },
+      {
+        "name": "normalize",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed normalize",
+        "attempts": 1
+      },
+      {
+        "name": "fuzzy_match",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed fuzzy_match",
+        "attempts": 1
+      },
+      {
+        "name": "compare",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed compare",
+        "attempts": 1
+      },
+      {
+        "name": "detect_undercut",
+        "status": "success",
+        "duration": 0.261614,
+        "duration_ms": 261,
+        "message": "Detected 22 price changes",
+        "attempts": 1
+      },
+      {
+        "name": "generate_alerts",
+        "status": "success",
+        "duration": 0.004673,
+        "duration_ms": 4,
+        "message": "Generated 1 alerts",
+        "attempts": 1
+      },
+      {
+        "name": "generate_reports",
+        "status": "failed",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "name 'workflow_id' is not defined",
+        "attempts": 2
+      }
+    ],
+    "alerts_generated": 1,
+    "report_paths": [],
+    "reports_generated": 0,
+    "comparison_shape": [
+      2,
+      8
+    ],
+    "records_processed": 2,
+    "connector_type": "smart_playwright",
+    "triggered_by": "manual",
+    "metadata": {},
+    "matched": "                                        product_name  ...                                           features\n0             Persil Detergent Powder Lavender - 1Kg  ...  {'brand': 'persil', 'size': None, 'model': Non...\n1                   Classic Detergent Lavender - 1Kg  ...  {'brand': 'classic', 'size': None, 'model': No...\n2  Sta Soft Fabric Softener Lavender Fields - 2 L...  ...  {'brand': 'sta', 'size': None, 'model': None, ...\n3                  Classic Detergent Lavender - 500G  ...  {'brand': 'classic', 'size': None, 'model': No...\n4  Sta Soft Fabric Softener Lavender Fields - 2 L...  ...  {'brand': 'sta', 'size': None, 'model': None, ...\n\n[5 rows x 24 columns]",
+    "comparison": "       canonical_id                                       product_name  ...  cheapest_price source_count\n1           match_1  Sta Soft Fabric Softener Lavender Fields - 2 L...  ...             1.0            1\n0  classic_f3d64714                                            classic  ...           109.0            1\n\n[2 rows x 8 columns]",
+    "undercut_opportunities": "Empty DataFrame\nColumns: []\nIndex: []",
+    "changes": "                                              product                source                     old_price                     new_price\n0   Vision Plus VP8850QV 50\" QLED 4K Smart TV \u2013 Ne...                 jumia                       34070.0                       35666.0\n1                Astronaut Star Projector Night Light              cheapest                         jumia             jumia_electronics\n2   \u3010Clearance Sale\u30115-in-1 Electronics Cleaner Kit...          canonical_id                       match_1                       match_8\n3   AILYONS SB502K 2.1 CH Subwoofer / Sound Bar Mu...              cheapest                         jumia             jumia_electronics\n4                             redmi 15\" 256GB Monitor          jumia_phones                        2500.0                       15299.0\n5                             redmi 15\" 256GB Monitor      match_confidence                     95.578104                     96.082668\n6                             redmi 15\" 256GB Monitor       cheapest_source                  jumia_phones               kilimall_phones\n7                             redmi 15\" 256GB Monitor        cheapest_price                        2500.0                       14999.0\n8                             redmi 15\" 256GB Monitor          source_count                           1.0                           2.0\n9                             vitron 32\" None QLED TV  kilimall_electronics                       13570.0                        7999.0\n10                            vitron 32\" None QLED TV      match_confidence                         100.0                     96.005357\n11                            vitron 32\" None QLED TV        cheapest_price                       13570.0                        7999.0\n12                            refurbished 64GB 64GBGB          canonical_id  refurbished_64gb_64_7adf5a57  refurbished_64gb_83_7adf5a57\n13                            refurbished 64GB 64GBGB      match_confidence                     77.215101                     97.144825\n14                            refurbished 64GB 64GBGB            match_type             medium_confidence                   exact_match\n15                            refurbished 64GB 64GBGB        cheapest_price                        6499.0                        3699.0\n16                            refurbished 64GB 64GBGB       kilimall_phones                        6499.0                        3699.0\n17  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...          canonical_id                       match_2                       match_9\n18  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  kilimall_electronics                         289.0                       12999.0\n19  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...          canonical_id                       match_2                       match_1\n20  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...      match_confidence                     82.249147                     86.959459\n21  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...        cheapest_price                         289.0                       12999.0",
+    "alerts": [
+      "No alerts triggered by workflow rules"
+    ],
+    "end_time": "2026-05-27T13:18:00.145385",
+    "completed_at": "2026-05-27T13:18:00.145385",
+    "total_duration": 46.333035,
+    "duration_ms": 46333
+  },
+  {
+    "run_id": "8d3f6cc9-9429-4a82-b990-8cd09ff72aaf",
+    "workflow_id": "quickmart_detergents_monitoring",
+    "workflow_name": "Quickmart Detergents Monitoring",
+    "start_time": "2026-05-28T11:39:29.526363",
+    "started_at": "2026-05-28T11:39:29.526363",
+    "status": "partial_success",
+    "error": "Step 'extract' failed: No valid datasets extracted",
+    "errors": [
+      {
+        "message": "No valid datasets extracted",
+        "error_type": "Exception",
+        "step": "extract",
+        "retryable": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "extract",
+        "status": "failed",
+        "duration": 123.575258,
+        "duration_ms": 123575,
+        "message": "No valid datasets extracted",
+        "attempts": 2
+      },
+      {
+        "name": "normalize",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed normalize",
+        "attempts": 1
+      },
+      {
+        "name": "fuzzy_match",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed fuzzy_match",
+        "attempts": 1
+      },
+      {
+        "name": "compare",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed compare",
+        "attempts": 1
+      },
+      {
+        "name": "detect_undercut",
+        "status": "success",
+        "duration": 0.26152,
+        "duration_ms": 261,
+        "message": "Detected 22 price changes",
+        "attempts": 1
+      },
+      {
+        "name": "generate_alerts",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 1 alerts",
+        "attempts": 1
+      },
+      {
+        "name": "generate_reports",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 0 reports",
+        "attempts": 1
+      }
+    ],
+    "alerts_generated": 1,
+    "report_paths": [],
+    "reports_generated": 0,
+    "comparison_shape": null,
+    "records_processed": 0,
+    "connector_type": "smart_playwright",
+    "triggered_by": "manual",
+    "metadata": {},
+    "undercut_opportunities": "Empty DataFrame\nColumns: []\nIndex: []",
+    "changes": "                                              product                source                     old_price                     new_price\n0   Vision Plus VP8850QV 50\" QLED 4K Smart TV \u2013 Ne...                 jumia                       34070.0                       35666.0\n1                Astronaut Star Projector Night Light              cheapest                         jumia             jumia_electronics\n2   \u3010Clearance Sale\u30115-in-1 Electronics Cleaner Kit...          canonical_id                       match_1                       match_8\n3   AILYONS SB502K 2.1 CH Subwoofer / Sound Bar Mu...              cheapest                         jumia             jumia_electronics\n4                             redmi 15\" 256GB Monitor          jumia_phones                        2500.0                       15299.0\n5                             redmi 15\" 256GB Monitor      match_confidence                     95.578104                     96.082668\n6                             redmi 15\" 256GB Monitor       cheapest_source                  jumia_phones               kilimall_phones\n7                             redmi 15\" 256GB Monitor        cheapest_price                        2500.0                       14999.0\n8                             redmi 15\" 256GB Monitor          source_count                           1.0                           2.0\n9                             vitron 32\" None QLED TV  kilimall_electronics                       13570.0                        7999.0\n10                            vitron 32\" None QLED TV      match_confidence                         100.0                     96.005357\n11                            vitron 32\" None QLED TV        cheapest_price                       13570.0                        7999.0\n12                            refurbished 64GB 64GBGB          canonical_id  refurbished_64gb_64_7adf5a57  refurbished_64gb_83_7adf5a57\n13                            refurbished 64GB 64GBGB      match_confidence                     77.215101                     97.144825\n14                            refurbished 64GB 64GBGB            match_type             medium_confidence                   exact_match\n15                            refurbished 64GB 64GBGB        cheapest_price                        6499.0                        3699.0\n16                            refurbished 64GB 64GBGB       kilimall_phones                        6499.0                        3699.0\n17  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...          canonical_id                       match_2                       match_9\n18  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  kilimall_electronics                         289.0                       12999.0\n19  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...          canonical_id                       match_2                       match_1\n20  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...      match_confidence                     82.249147                     86.959459\n21  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...        cheapest_price                         289.0                       12999.0",
+    "alerts": [
+      "No alerts triggered by workflow rules"
+    ],
+    "end_time": "2026-05-28T11:41:33.363141",
+    "completed_at": "2026-05-28T11:41:33.363141",
+    "total_duration": 123.836778,
+    "duration_ms": 123836
+  },
+  {
+    "run_id": "0b34cbb1-20a0-438d-9c4e-0b752b2653e0",
+    "workflow_id": "quickmart_detergents_monitoring",
+    "workflow_name": "Quickmart Detergents Monitoring",
+    "start_time": "2026-05-28T12:46:01.630290",
+    "started_at": "2026-05-28T12:46:01.630290",
+    "status": "partial_success",
+    "error": "Step 'extract' failed: No valid datasets extracted",
+    "errors": [
+      {
+        "message": "No valid datasets extracted",
+        "error_type": "Exception",
+        "step": "extract",
+        "retryable": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "extract",
+        "status": "failed",
+        "duration": 328.070657,
+        "duration_ms": 328070,
+        "message": "No valid datasets extracted",
+        "attempts": 2
+      },
+      {
+        "name": "normalize",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed normalize",
+        "attempts": 1
+      },
+      {
+        "name": "fuzzy_match",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed fuzzy_match",
+        "attempts": 1
+      },
+      {
+        "name": "compare",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed compare",
+        "attempts": 1
+      },
+      {
+        "name": "detect_undercut",
+        "status": "success",
+        "duration": 0.20735,
+        "duration_ms": 207,
+        "message": "Detected 22 price changes",
+        "attempts": 1
+      },
+      {
+        "name": "generate_alerts",
+        "status": "success",
+        "duration": 0.001964,
+        "duration_ms": 1,
+        "message": "Generated 1 alerts",
+        "attempts": 1
+      },
+      {
+        "name": "generate_reports",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 0 reports",
+        "attempts": 1
+      }
+    ],
+    "alerts_generated": 1,
+    "report_paths": [],
+    "reports_generated": 0,
+    "comparison_shape": null,
+    "records_processed": 0,
+    "connector_type": "smart_playwright",
+    "triggered_by": "manual",
+    "metadata": {},
+    "undercut_opportunities": "Empty DataFrame\nColumns: []\nIndex: []",
+    "changes": "                                              product  ...                     new_price\n0   Vision Plus VP8850QV 50\" QLED 4K Smart TV \u2013 Ne...  ...                       35666.0\n1                Astronaut Star Projector Night Light  ...             jumia_electronics\n2   \u3010Clearance Sale\u30115-in-1 Electronics Cleaner Kit...  ...                       match_8\n3   AILYONS SB502K 2.1 CH Subwoofer / Sound Bar Mu...  ...             jumia_electronics\n4                             redmi 15\" 256GB Monitor  ...                       15299.0\n5                             redmi 15\" 256GB Monitor  ...                     96.082668\n6                             redmi 15\" 256GB Monitor  ...               kilimall_phones\n7                             redmi 15\" 256GB Monitor  ...                       14999.0\n8                             redmi 15\" 256GB Monitor  ...                           2.0\n9                             vitron 32\" None QLED TV  ...                        7999.0\n10                            vitron 32\" None QLED TV  ...                     96.005357\n11                            vitron 32\" None QLED TV  ...                        7999.0\n12                            refurbished 64GB 64GBGB  ...  refurbished_64gb_83_7adf5a57\n13                            refurbished 64GB 64GBGB  ...                     97.144825\n14                            refurbished 64GB 64GBGB  ...                   exact_match\n15                            refurbished 64GB 64GBGB  ...                        3699.0\n16                            refurbished 64GB 64GBGB  ...                        3699.0\n17  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_9\n18  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       12999.0\n19  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_1\n20  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                     86.959459\n21  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       12999.0\n\n[22 rows x 4 columns]",
+    "alerts": [
+      "No alerts triggered by workflow rules"
+    ],
+    "end_time": "2026-05-28T12:51:29.910261",
+    "completed_at": "2026-05-28T12:51:29.910261",
+    "total_duration": 328.279971,
+    "duration_ms": 328279
+  },
+  {
+    "run_id": "0cf52a7d-df52-439c-8298-0bd5708075ba",
+    "workflow_id": "quickmart_detergents_monitoring",
+    "workflow_name": "Quickmart Detergents Monitoring",
+    "start_time": "2026-05-28T13:01:22.030499",
+    "started_at": "2026-05-28T13:01:22.030499",
+    "status": "partial_success",
+    "error": "Step 'extract' failed: No valid datasets extracted",
+    "errors": [
+      {
+        "message": "No valid datasets extracted",
+        "error_type": "Exception",
+        "step": "extract",
+        "retryable": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "extract",
+        "status": "failed",
+        "duration": 324.33554,
+        "duration_ms": 324335,
+        "message": "No valid datasets extracted",
+        "attempts": 2
+      },
+      {
+        "name": "normalize",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed normalize",
+        "attempts": 1
+      },
+      {
+        "name": "fuzzy_match",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed fuzzy_match",
+        "attempts": 1
+      },
+      {
+        "name": "compare",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Completed compare",
+        "attempts": 1
+      },
+      {
+        "name": "detect_undercut",
+        "status": "success",
+        "duration": 0.207398,
+        "duration_ms": 207,
+        "message": "Detected 22 price changes",
+        "attempts": 1
+      },
+      {
+        "name": "generate_alerts",
+        "status": "success",
+        "duration": 0.001997,
+        "duration_ms": 1,
+        "message": "Generated 1 alerts",
+        "attempts": 1
+      },
+      {
+        "name": "generate_reports",
+        "status": "success",
+        "duration": 0.0,
+        "duration_ms": 0,
+        "message": "Generated 0 reports",
+        "attempts": 1
+      }
+    ],
+    "alerts_generated": 1,
+    "report_paths": [],
+    "reports_generated": 0,
+    "comparison_shape": null,
+    "records_processed": 0,
+    "connector_type": "smart_playwright",
+    "triggered_by": "manual",
+    "metadata": {},
+    "undercut_opportunities": "Empty DataFrame\nColumns: []\nIndex: []",
+    "changes": "                                              product  ...                     new_price\n0   Vision Plus VP8850QV 50\" QLED 4K Smart TV \u2013 Ne...  ...                       35666.0\n1                Astronaut Star Projector Night Light  ...             jumia_electronics\n2   \u3010Clearance Sale\u30115-in-1 Electronics Cleaner Kit...  ...                       match_8\n3   AILYONS SB502K 2.1 CH Subwoofer / Sound Bar Mu...  ...             jumia_electronics\n4                             redmi 15\" 256GB Monitor  ...                       15299.0\n5                             redmi 15\" 256GB Monitor  ...                     96.082668\n6                             redmi 15\" 256GB Monitor  ...               kilimall_phones\n7                             redmi 15\" 256GB Monitor  ...                       14999.0\n8                             redmi 15\" 256GB Monitor  ...                           2.0\n9                             vitron 32\" None QLED TV  ...                        7999.0\n10                            vitron 32\" None QLED TV  ...                     96.005357\n11                            vitron 32\" None QLED TV  ...                        7999.0\n12                            refurbished 64GB 64GBGB  ...  refurbished_64gb_83_7adf5a57\n13                            refurbished 64GB 64GBGB  ...                     97.144825\n14                            refurbished 64GB 64GBGB  ...                   exact_match\n15                            refurbished 64GB 64GBGB  ...                        3699.0\n16                            refurbished 64GB 64GBGB  ...                        3699.0\n17  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_9\n18  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       12999.0\n19  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       match_1\n20  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                     86.959459\n21  KOOCU 8032 PORTABLE HOT AIR GUN Hand Held Air ...  ...                       12999.0\n\n[22 rows x 4 columns]",
+    "alerts": [
+      "No alerts triggered by workflow rules"
+    ],
+    "end_time": "2026-05-28T13:06:46.575434",
+    "completed_at": "2026-05-28T13:06:46.575434",
+    "total_duration": 324.544935,
+    "duration_ms": 324544
   }
 ]
