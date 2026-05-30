@@ -1,0 +1,5 @@
+ docs/ROADMAP.md                             | 4 [32m+++[m[31m-[m
+ docs/architecture/README.md                 | 3 [32m+++[m
+ src/workflow_runtime/operations/__init__.py | 2 [32m++[m
+ tests/test_workflow_runtime.py              | 4 [32m+++[m[31m-[m
+ 4 files changed, 11 insertions(+), 2 deletions(-)

@@ -88,9 +88,10 @@ Completed items:
 ### Matching Runtime
 
 Status:
-- Active architecture and design phase
+- Active implementation phase completed for v1
 - Architecture baseline coverage is complete, with practice documents in place
 - Document-level strategy is defined in `docs/architecture/MATCHING_RUNTIME_V1_ARCHITECTURE.md`
+- Implementation validated with `tests/test_matching_runtime.py`
 
 Objectives:
 - Reconcile extracted entities against master data sources
@@ -104,6 +105,7 @@ Planned deliverables:
 - Entity-specific confidence calculator design
 - Historical match strategy defined as a first-class path
 - Workflow integration points for the match stage
+- v1 implementation documentation in `docs/architecture/MATCHING_RUNTIME_V1_IMPLEMENTATION.md`
 
 Dependencies:
 - `Entity Runtime` output (`EntitySet`)

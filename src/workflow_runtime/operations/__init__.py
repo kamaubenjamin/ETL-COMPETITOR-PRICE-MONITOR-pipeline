@@ -13,6 +13,7 @@ from src.workflow_runtime.operations.compare_stage import CompareStage
 from src.workflow_runtime.operations.alert_stage import AlertStage
 from src.workflow_runtime.operations.report_stage import ReportStage
 from src.workflow_runtime.operations.entity_extract_stage import EntityExtractStage
+from src.workflow_runtime.operations.matching_stage import MatchingStage
 
 __all__ = [
     "BaseStage",
@@ -23,6 +24,7 @@ __all__ = [
     "FilterStage",
     "FuzzyMatchStage",
     "IngestStage",
+    "MatchingStage",
     "ReportStage",
     "TransformStage",
 ]

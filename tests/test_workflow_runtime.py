@@ -34,6 +34,7 @@ from src.workflow_runtime.operations.fuzzy_match_stage import FuzzyMatchStage
 from src.workflow_runtime.operations.compare_stage import CompareStage
 from src.workflow_runtime.operations.alert_stage import AlertStage
 from src.workflow_runtime.operations.entity_extract_stage import EntityExtractStage
+from src.workflow_runtime.operations.matching_stage import MatchingStage
 from src.workflow_runtime.operations.report_stage import ReportStage
 from src.workflow_runtime.runtime.workflow_runner import WorkflowRunner
 from src.workflow_runtime.workspace.workspace_registry import WorkspaceRegistry
@@ -386,7 +387,7 @@ class TestWorkflowValidator:
 
 class TestStageRegistry:
     def test_all_stages_registered(self):
-        expected = {"document_ingest", "entity_extract", "transform", "filter", "fuzzy_match", "compare", "alert", "report"}
+        expected = {"document_ingest", "entity_extract", "transform", "filter", "fuzzy_match", "compare", "alert", "matching", "report"}
         assert set(STAGE_REGISTRY.keys()) == expected
 
     def test_stage_class_types(self):
@@ -397,6 +398,7 @@ class TestStageRegistry:
         assert STAGE_REGISTRY["fuzzy_match"] is FuzzyMatchStage
         assert STAGE_REGISTRY["compare"] is CompareStage
         assert STAGE_REGISTRY["alert"] is AlertStage
+        assert STAGE_REGISTRY["matching"] is MatchingStage
         assert STAGE_REGISTRY["report"] is ReportStage
 
 
