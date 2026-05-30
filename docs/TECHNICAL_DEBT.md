@@ -197,3 +197,40 @@ This document tracks known limitations, deferred work, architectural compromises
 - Update priority and resolution plans when milestones complete.
 - Link runtime-specific issues to the corresponding architecture documents.
 - Use this register as a living guide for roadmap and release planning.
+
+## Additional Debt Notes
+
+### Deferred Work
+- **Description:** Architectural work remains for Review Runtime, API Runtime, Monitoring Runtime, ERP Runtime, and Agent Runtime.
+- **Impact:** The platform cannot yet support review feedback, external integration, observability, or automation runtimes.
+- **Priority:** High
+- **Proposed Resolution:** Prioritize architecture and implementation of Review, API, Monitoring, ERP, and Agent runtimes.
+- **Target Runtime:** Review Runtime, API Runtime, Monitoring Runtime, ERP Runtime, Agent Runtime
+
+### Known Limitations
+- **Description:** Existing design includes heuristic parsing, basic normalization, and lightweight validation.
+- **Impact:** Production readiness is limited by inconsistent document handling and match reliability.
+- **Priority:** High
+- **Proposed Resolution:** Strengthen validation, normalization, and parser adaptability for broader document coverage.
+- **Target Runtime:** Document Runtime, Entity Runtime
+
+### Persistence Gaps
+- **Description:** There is no durable persistence layer for match history, audit logs, or long-lived runtime state in the current architecture.
+- **Impact:** State is lost between executions and long-term reconciliation is restricted.
+- **Priority:** High
+- **Proposed Resolution:** Define persistence adapters for historical matching, audit trails, and master data state.
+- **Target Runtime:** Matching Runtime, ERP Runtime
+
+### Scalability Concerns
+- **Description:** Workflow orchestration and matching candidate generation are not yet designed for high-volume parallel workloads.
+- **Impact:** The platform may struggle to scale to large document batches or high throughput.
+- **Priority:** Medium
+- **Proposed Resolution:** Add batching, throttling, and orchestration scaling strategies in Workflow and Matching runtimes.
+- **Target Runtime:** Workflow Runtime, Matching Runtime
+
+### Review Workflow Limitations
+- **Description:** Review workflow and human feedback capture are currently architectural concepts, not implemented runtime behavior.
+- **Impact:** There is no formal feedback loop to correct and improve matching outcomes.
+- **Priority:** High
+- **Proposed Resolution:** Implement Review Runtime, feedback capture, and correction lifecycle processing.
+- **Target Runtime:** Review Runtime

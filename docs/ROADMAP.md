@@ -66,13 +66,31 @@ Delivered capabilities:
 - Validation, normalization, and confidence scoring modules
 - Workflow integration via `entity_extract` stage
 
+### Architecture Completion
+
+Purpose:
+- Establish baseline architecture coverage across major runtime boundaries
+- Provide ADR records and onboarding documentation for future development
+- Ensure runtime ownership and dependency direction are documented
+
+Completed items:
+- Workflow Runtime Architecture
+- Entity Runtime Architecture
+- Matching Runtime Architecture
+- Document Runtime Architecture
+- API Runtime Architecture
+- Review Runtime Architecture
+- Runtime Boundaries document
+- Agent onboarding context
+
 ## Current Milestone
 
 ### Matching Runtime
 
 Status:
 - Active architecture and design phase
-- Document-level roadmap and strategy are defined in `docs/architecture/MATCHING_RUNTIME_V1_ARCHITECTURE.md`
+- Architecture baseline coverage is complete, with practice documents in place
+- Document-level strategy is defined in `docs/architecture/MATCHING_RUNTIME_V1_ARCHITECTURE.md`
 
 Objectives:
 - Reconcile extracted entities against master data sources
@@ -142,6 +160,14 @@ Dependencies:
 - `Workflow Runtime` for stage execution and event handling
 - `Matching Runtime` and `Review Runtime` for decision context
 - Platform governance and security policies
+
+## Next Milestones
+
+- Monitoring Runtime Architecture
+- ERP Runtime Architecture
+- Agent Runtime Architecture
+- Review Runtime Implementation
+- API Runtime Implementation
 
 ## Cross-Cutting Initiatives
 
