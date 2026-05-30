@@ -1,0 +1,87 @@
+{
+  "workflow_id": "detergents_monitoring",
+  "name": "Quickmart Detergents Monitoring",
+  "version": "1.0.0",
+  "workspace_id": "quickmart",
+  "enabled": true,
+  "description": "Monitor Quickmart detergent prices",
+  "stages": [
+    {
+      "name": "ingest",
+      "type": "document_ingest",
+      "depends_on": [],
+      "config": {
+        "source_name": "quickmart_detergents",
+        "source_type": "smart_playwright",
+        "file_path": ""
+      }
+    },
+    {
+      "name": "normalize",
+      "type": "transform",
+      "depends_on": ["ingest"],
+      "config": {
+        "rules": [
+          { "type": "normalize", "source": "quickmart_detergents" },
+          { "type": "drop_nulls", "subset": ["current_price"] },
+          { "type": "deduplicate", "subset": ["normalized_name", "source", "current_price"] }
+        ]
+      }
+    },
+    {
+      "name": "filter_products",
+      "type": "filter",
+      "depends_on": ["normalize"],
+      "config": {
+        "category": "detergents",
+        "keywords": ["omo", "ariel", "sunlight", "toss", "geisha"]
+      }
+    },
+    {
+      "name": "fuzzy_match",
+      "type": "fuzzy_match",
+      "depends_on": ["filter_products"],
+      "config": {
+        "match_threshold": 78
+      }
+    },
+    {
+      "name": "compare",
+      "type": "compare",
+      "depends_on": ["fuzzy_match"],
+      "config": {
+        "comparison_type": "cross_source"
+      }
+    },
+    {
+      "name": "alert",
+      "type": "alert",
+      "depends_on": ["compare"],
+      "config": {
+        "price_drop_percentage": 5,
+        "undercut_threshold": 50
+      }
+    },
+    {
+      "name": "report",
+      "type": "report",
+      "depends_on": ["alert"],
+      "config": {
+        "export_csv": true,
+        "report_dir": "reports"
+      }
+    }
+  ],
+  "metadata": {
+    "alert_rules": {
+      "price_drop_percentage": 5,
+      "abnormal_discount_threshold": 35,
+      "undercut_threshold": 50
+    },
+    "schedule": {
+      "frequency": "daily",
+      "time_of_day": "09:00",
+      "enabled": false
+    }
+  }
+}
