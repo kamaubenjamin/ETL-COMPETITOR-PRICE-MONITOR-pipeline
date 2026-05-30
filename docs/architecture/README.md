@@ -21,6 +21,9 @@ The current runtime stack includes:
 - [ENTITY_RUNTIME_V1_ARCHITECTURE.md](./ENTITY_RUNTIME_V1_ARCHITECTURE.md)
 - [MATCHING_RUNTIME_V1_ARCHITECTURE.md](./MATCHING_RUNTIME_V1_ARCHITECTURE.md)
 - [RUNTIME_BOUNDARIES.md](./RUNTIME_BOUNDARIES.md)
+- [REVIEW_RUNTIME_IMPLEMENTATION.md](./REVIEW_RUNTIME_IMPLEMENTATION.md)
+- [REVIEW_RUNTIME_SUMMARY.md](./REVIEW_RUNTIME_SUMMARY.md)
+- [REVIEW_RUNTIME_HANDOFF.md](./REVIEW_RUNTIME_HANDOFF.md)
 - [IMPLEMENTATION_SUMMARY.md](./IMPLEMENTATION_SUMMARY.md)
 
 ## ADR Index
@@ -64,6 +67,9 @@ Future agents and developers should start with this file, then proceed in the fo
 1. `RUNTIME_BOUNDARIES.md` — understand runtime boundaries and allowed dependencies.
 2. `ENTITY_RUNTIME_V1_ARCHITECTURE.md` — understand Entity Runtime design and boundaries.
 3. `MATCHING_RUNTIME_V1_ARCHITECTURE.md` — understand Matching Runtime design and strategies.
-4. `IMPLEMENTATION_SUMMARY.md` — review the implementation-report-level summary.
+4. `REVIEW_RUNTIME_IMPLEMENTATION.md` — review Review Runtime implementation details.
+5. `REVIEW_RUNTIME_SUMMARY.md` — review Review Runtime summary and verification notes.
+6. `REVIEW_RUNTIME_HANDOFF.md` — review Review Runtime handoff and next steps.
+7. `IMPLEMENTATION_SUMMARY.md` — review the implementation-report-level summary.
 
 For broader platform context, use the runtime files and any existing documentation in the repo root.
