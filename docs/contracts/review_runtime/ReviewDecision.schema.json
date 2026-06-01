@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:project:review_runtime:ReviewDecision:1.0.0",
+  "schema_id": "urn:project:review_runtime:ReviewDecision",
+  "schema_version": "1.0.0",
+  "version": "1.0.0",
+  "title": "ReviewDecision",
+  "description": "ReviewDecision contract serialized to dict (from src/review_runtime.models.review_decision).",
+  "type": "object",
+  "properties": {
+    "decision": { "type": "string", "enum": ["approved", "rejected", "corrected"] },
+    "reviewer": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "comment": { "type": "string" }
+  },
+  "required": ["decision", "reviewer", "timestamp"]
+}

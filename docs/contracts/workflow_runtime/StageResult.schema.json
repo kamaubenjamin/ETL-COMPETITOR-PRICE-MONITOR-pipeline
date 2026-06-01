@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:project:workflow_runtime:StageResult:1.0.0",
+  "schema_id": "urn:project:workflow_runtime:StageResult",
+  "schema_version": "1.0.0",
+  "version": "1.0.0",
+  "title": "StageResult",
+  "description": "Serialized StageResult (to_dict) produced by a stage execution (see src/workflow_runtime/contracts/workflow_result.py).",
+  "type": "object",
+  "properties": {
+    "stage_name": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "queued", "running", "success", "failed", "partial_success", "cancelled", "timeout"]
+    },
+    "duration_ms": { "type": "integer", "minimum": 0 },
+    "error": { "type": ["string", "null"] },
+    "has_output": { "type": "boolean" },
+    "metadata": { "type": "object" }
+  },
+  "required": ["stage_name", "status"]
+}

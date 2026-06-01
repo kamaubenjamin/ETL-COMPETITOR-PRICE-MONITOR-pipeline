@@ -1,0 +1,7 @@
+{
+  "document_id": "doc-123",
+  "entity_type": "line_item",
+  "entity_value": "Widget A",
+  "confidence": 0.65,
+  "metadata": { "reason": "low_confidence", "source": "entity_extractor" }
+}

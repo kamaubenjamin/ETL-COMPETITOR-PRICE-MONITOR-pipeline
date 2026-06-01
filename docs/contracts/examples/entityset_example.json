@@ -1,0 +1,97 @@
+{
+  "source_document_id": "doc-123",
+  "extraction_confidence": 0.82,
+  "entity_counts": {
+    "references": 1,
+    "line_items": 1,
+    "suppliers": 1,
+    "customers": 0,
+    "financials": 1
+  },
+  "references": [
+    {
+      "entity_id": "ent-ref-1",
+      "entity_type": "document_reference",
+      "confidence": 0.97,
+      "source": {
+        "source_type": "ocr",
+        "source_path": "s3://bucket/docs/doc-123.pdf",
+        "ingestion_id": "ing-1",
+        "pipeline_run_id": "run-1",
+        "parsed_block_index": 0,
+        "line_number": 1,
+        "extraction_rule": "rule-1"
+      },
+      "document_type": "invoice",
+      "document_number": "INV-0001",
+      "invoice_number": "INV-0001",
+      "purchase_order": "PO-100",
+      "invoice_date": "2026-05-31",
+      "currency": "USD"
+    }
+  ],
+  "line_items": [
+    {
+      "entity_id": "line-1",
+      "entity_type": "line_item",
+      "confidence": 0.88,
+      "source": {
+        "source_type": "ocr",
+        "source_path": "s3://bucket/docs/doc-123.pdf",
+        "ingestion_id": "ing-1",
+        "pipeline_run_id": "run-1",
+        "parsed_block_index": 0,
+        "line_number": 10,
+        "extraction_rule": "rule-1"
+      },
+      "description": "Widget A",
+      "quantity": 1,
+      "unit_price": 10.5,
+      "total_price": 10.5,
+      "unit": "piece",
+      "sku": "WIDGET-A",
+      "line_number": 1
+    }
+  ],
+  "suppliers": [
+    {
+      "entity_id": "sup-1",
+      "entity_type": "supplier",
+      "confidence": 0.91,
+      "source": {
+        "source_type": "ocr",
+        "source_path": "s3://bucket/docs/doc-123.pdf",
+        "ingestion_id": "ing-1",
+        "pipeline_run_id": "run-1",
+        "parsed_block_index": 0,
+        "line_number": 2,
+        "extraction_rule": "rule-1"
+      },
+      "name": "Acme Supplies",
+      "email": "sales@acme.example"
+    }
+  ],
+  "customers": [],
+  "financials": [
+    {
+      "entity_id": "fin-1",
+      "entity_type": "document_financials",
+      "confidence": 0.95,
+      "source": {
+        "source_type": "ocr",
+        "source_path": "s3://bucket/docs/doc-123.pdf",
+        "ingestion_id": "ing-1",
+        "pipeline_run_id": "run-1",
+        "parsed_block_index": 0,
+        "line_number": 1,
+        "extraction_rule": "rule-1"
+      },
+      "subtotal": 9.0,
+      "tax_total": 1.5,
+      "grand_total": 10.5,
+      "currency": "USD"
+    }
+  ],
+  "extraction_metadata": { "source": "ocr", "version": "v1" },
+  "created_at": "2026-06-01T12:00:00Z"
+}

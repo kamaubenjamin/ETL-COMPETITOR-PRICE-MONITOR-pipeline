@@ -1,0 +1,20 @@
+{
+  "workflow_id": "test_workflow",
+  "pipeline_run_id": "run-1",
+  "workspace_id": "ws-1",
+  "overall_status": "success",
+  "started_at": "2026-06-01T12:00:00Z",
+  "completed_at": "2026-06-01T12:02:00Z",
+  "error": null,
+  "stage_count": 1,
+  "stage_results": [
+    {
+      "stage_name": "ingest",
+      "status": "success",
+      "duration_ms": 125,
+      "error": null,
+      "has_output": true,
+      "metadata": { "artifact_type": "entity_set" }
+    }
+  ]
+}

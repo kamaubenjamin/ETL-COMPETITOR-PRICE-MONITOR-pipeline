@@ -1,0 +1,56 @@
+{
+  "source_document_id": "doc-123",
+  "matches": [
+    {
+      "request_id": "req-1",
+      "entity_id": "ent-1",
+      "matched": true,
+      "match_type": "exact",
+      "best_match": {
+        "candidate_id": "cand-1",
+        "candidate_name": "Widget A",
+        "candidate_fields": { "sku": "WIDGET-A" },
+        "source": "masterdata",
+        "similarity_score": 0.98,
+        "match_explanation": {
+          "strategy_used": "default",
+          "match_signals": ["sku", "name"],
+          "confidence_factors": { "sku": 0.8, "name": 0.1 },
+          "fallback_strategies": [],
+          "notes": "High-confidence SKU match"
+        },
+        "confidence": 0.92
+      },
+      "all_candidates": [
+        {
+          "candidate_id": "cand-1",
+          "candidate_name": "Widget A",
+          "candidate_fields": { "sku": "WIDGET-A" },
+          "source": "masterdata",
+          "similarity_score": 0.98,
+          "match_explanation": {
+            "strategy_used": "default",
+            "match_signals": ["sku", "name"],
+            "confidence_factors": { "sku": 0.8, "name": 0.1 },
+            "fallback_strategies": [],
+            "notes": "High-confidence SKU match"
+          },
+          "confidence": 0.92
+        }
+      ],
+      "overall_confidence": 0.93,
+      "explanation": {
+        "strategy_used": "default",
+        "match_signals": ["sku"],
+        "confidence_factors": { "sku": 0.9 },
+        "fallback_strategies": [],
+        "notes": "Candidate chosen by SKU"
+      },
+      "created_at": "2026-06-01T12:34:00Z"
+    }
+  ],
+  "match_statistics": { "total_requests": 1, "matched": 1 },
+  "overall_confidence": 0.87,
+  "matching_metadata": { "strategy": "default" },
+  "created_at": "2026-06-01T12:34:00Z"
+}

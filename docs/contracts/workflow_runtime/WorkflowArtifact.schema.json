@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:project:workflow_runtime:WorkflowArtifact:1.0.0",
+  "schema_id": "urn:project:workflow_runtime:WorkflowArtifact",
+  "schema_version": "1.0.0",
+  "version": "1.0.0",
+  "title": "WorkflowArtifact",
+  "description": "Serialized WorkflowResult artifact for a workflow run (to_dict output from src/workflow_runtime.contracts.workflow_result).",
+  "type": "object",
+  "properties": {
+    "workflow_id": { "type": "string" },
+    "pipeline_run_id": { "type": "string" },
+    "workspace_id": { "type": "string" },
+    "overall_status": {
+      "type": "string",
+      "enum": ["pending", "queued", "running", "success", "failed", "partial_success", "cancelled", "timeout"]
+    },
+    "started_at": { "type": "string", "format": "date-time" },
+    "completed_at": { "type": ["string", "null"], "format": "date-time" },
+    "error": { "type": ["string", "null"] },
+    "stage_count": { "type": "integer", "minimum": 0 },
+    "stage_results": { "type": "array", "items": { "$ref": "StageResult.schema.json" } }
+  },
+  "required": ["workflow_id", "pipeline_run_id", "workspace_id", "overall_status", "stage_count", "stage_results"]
+}

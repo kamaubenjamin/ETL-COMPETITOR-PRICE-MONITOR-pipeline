@@ -1,0 +1,8 @@
+{
+  "stage_name": "ingest",
+  "status": "success",
+  "duration_ms": 125,
+  "error": null,
+  "has_output": true,
+  "metadata": { "artifact_type": "entity_set" }
+}
