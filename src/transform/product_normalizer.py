@@ -248,9 +248,9 @@ def extract_size_advanced(text: str) -> Optional[str]:
 
     # Look for size patterns
     patterns = [
-        r'(\d{2,3})\s*(?:inch|inches|\"|\'\')',  # 55 inch, 55"
+        r'(\d{2,3})\s*(?:inch|inches|["\'])',  # 55 inch, 55" or 55'
         r'(\d{2,3})\s*inch',                      # 55inch (no space)
-        r'(\d{2,3})[\"\'']',                      # 55"
+        r'(\d{2,3})["\']',                      # 55" or 55'
     ]
 
     for pattern in patterns:

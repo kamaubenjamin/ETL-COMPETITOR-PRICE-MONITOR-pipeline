@@ -257,15 +257,20 @@ class AdvancedProductNormalizer:
         model = features.get('model', '')
         category = features.get('category', 'other')
 
-        # Use template if available
+        # Use template if available. Use defensive formatting to avoid KeyError
         if category in self.canonical_forms:
             template = self.canonical_forms[category]
-            return template.format(
-                brand=brand,
-                size=size,
-                model=model,
-                **features.get('specifications', {})
-            )
+            specs = features.get('specifications') or {}
+            # Provide safe defaults for commonly used template keys so missing
+            # specification fields don't raise KeyError during formatting.
+            defaults = {
+                'technology': '',
+                'storage': '',
+                'ram': '',
+            }
+            fmt = {**defaults, **specs, 'brand': brand, 'size': size, 'model': model}
+            # Use format_map to tolerate missing keys gracefully.
+            return template.format_map(fmt)
 
         # Fallback canonical format
         parts = [brand]
@@ -463,7 +468,21 @@ class ConfidenceScorer:
             if context.get('recent_data'):
                 context_boost += 5.0
 
-        total_confidence = base_similarity + feature_confidence + length_confidence + context_boost
+        # Base similarity weight and dynamic adjustments: boost when key
+        # features (brand/size) align, penalize when brands explicitly differ.
+        base_similarity_weight = 0.5
+
+        brand_match = bool(features_a.get('brand') and features_b.get('brand') and features_a.get('brand') == features_b.get('brand'))
+        size_match = bool(features_a.get('size') and features_b.get('size') and features_a.get('size') == features_b.get('size'))
+
+        multiplier = 1.0 + (0.35 if brand_match else 0.0) + (0.15 if size_match else 0.0)
+        base_component = base_similarity * base_similarity_weight * multiplier
+
+        total_confidence = base_component + feature_confidence + length_confidence + context_boost
+
+        # Penalize explicit brand mismatch to avoid false positives across brands
+        if features_a.get('brand') and features_b.get('brand') and features_a.get('brand') != features_b.get('brand'):
+            total_confidence -= 25.0
 
         return min(total_confidence, 100.0)
 

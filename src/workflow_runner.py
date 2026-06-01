@@ -56,6 +56,15 @@ class WorkflowRunner:
                 try:
                     with open(filepath, 'r') as f:
                         workflow_def = json.load(f)
+                        # Backfill legacy `sources` key for tests and consumers that
+                        # expect a unified `sources` list. Merge internal and
+                        # external sources into `sources` when not present.
+                        if "sources" not in workflow_def:
+                            merged = []
+                            merged.extend(workflow_def.get("internal_sources", []) or [])
+                            merged.extend(workflow_def.get("external_sources", []) or [])
+                            merged.extend(workflow_def.get("sources", []) or [])
+                            workflow_def["sources"] = merged
                     workflow_id = workflow_def.get("workflow_id", filename.replace(".json", ""))
                     self.workflows[workflow_id] = workflow_def
                 except Exception as e:

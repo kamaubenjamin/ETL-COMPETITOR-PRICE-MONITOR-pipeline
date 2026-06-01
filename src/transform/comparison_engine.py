@@ -11,6 +11,16 @@ from src.transform.intelligence_engine import (
     ProductCanonical,
 )
 
+# Backwards-compatible re-exports: many callers/tests import normalization helpers
+# from `comparison_engine`. Re-export them from `product_normalizer` to preserve
+# the public API surface without moving implementation.
+from src.transform.product_normalizer import (
+    normalize_name,
+    extract_brand,
+    detect_category,
+    extract_features,
+)
+
 
 # -----------------------------
 # 🔗 COMBINE DATASETS
@@ -89,6 +99,16 @@ def match_products(
 
             similarity_score = similarity_matrix[i, j]
 
+            # Do not match across different high-level categories
+            try:
+                cat_i = df.loc[i, 'features'].get('category')
+                cat_j = df.loc[j, 'features'].get('category')
+            except Exception:
+                cat_i = None
+                cat_j = None
+            if cat_i and cat_j and cat_i != cat_j:
+                continue
+
             # Calculate confidence score
             context = {
                 'same_source': df.loc[i, "source"] == df.loc[j, "source"],
@@ -103,13 +123,20 @@ def match_products(
             # Determine effective threshold
             source_a = df.loc[i, "source"]
             source_b = df.loc[j, "source"]
+            # Determine effective threshold using source-specific overrides.
+            # If both sources provide thresholds below the global threshold,
+            # prefer the lower per-source threshold (more permissive).
+            # If both are above the global threshold, prefer the higher (more strict).
             effective_threshold = threshold
             if source_thresholds:
-                effective_threshold = max(
-                    threshold,
-                    source_thresholds.get(source_a, threshold),
-                    source_thresholds.get(source_b, threshold),
-                )
+                ta = source_thresholds.get(source_a, threshold)
+                tb = source_thresholds.get(source_b, threshold)
+                if ta <= threshold and tb <= threshold:
+                    effective_threshold = min(ta, tb)
+                elif ta >= threshold and tb >= threshold:
+                    effective_threshold = max(ta, tb)
+                else:
+                    effective_threshold = threshold
 
             # Check if this is a valid match
             if confidence >= effective_threshold:
@@ -173,11 +200,20 @@ def build_comparison_table(df: pd.DataFrame) -> pd.DataFrame:
         group = df[df["match_id"] == match_id]
 
         # Get canonical information
-        canonical_name = group["canonical_name"].dropna().iloc[0] if not group["canonical_name"].dropna().empty else group["product_name"].iloc[0]
-        canonical_id = group["canonical_id"].dropna().iloc[0] if not group["canonical_id"].dropna().empty else f"match_{match_id}"
+        # Support inputs that may not contain canonical columns (fallback to product_name)
+        canonical_name = (
+            group["canonical_name"].dropna().iloc[0]
+            if "canonical_name" in group.columns and not group["canonical_name"].dropna().empty
+            else group["product_name"].iloc[0]
+        )
+        canonical_id = (
+            group["canonical_id"].dropna().iloc[0]
+            if "canonical_id" in group.columns and not group["canonical_id"].dropna().empty
+            else f"match_{match_id}"
+        )
 
-        # Calculate average confidence for the group
-        avg_confidence = group["confidence_score"].mean()
+        # Calculate average confidence for the group (tolerate missing column)
+        avg_confidence = group["confidence_score"].mean() if "confidence_score" in group.columns else 0.0
 
         # Build price comparison by source
         prices_by_source = {}
@@ -201,9 +237,10 @@ def build_comparison_table(df: pd.DataFrame) -> pd.DataFrame:
                 "canonical_id": canonical_id,
                 "product_name": canonical_name,
                 "match_confidence": avg_confidence,
-                "match_type": group["match_type"].iloc[0],
+                "match_type": (group["match_type"].iloc[0] if "match_type" in group.columns else "no_match"),
                 **prices_by_source,
                 "cheapest_source": cheapest_source,
+                "cheapest": cheapest_source,
                 "cheapest_price": cheapest_price,
                 "source_count": len(prices_by_source),
             })

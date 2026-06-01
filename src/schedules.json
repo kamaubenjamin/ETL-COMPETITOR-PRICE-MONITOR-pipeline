@@ -9,6 +9,13 @@
     "next_run": "2026-05-28T08:00:00",
     "run_count": 5
   },
+  "naivas_detergents_monitoring": {
+    "workflow_id": "naivas_detergents_monitoring",
+    "frequency": "daily",
+    "time_of_day": "08:30",
+    "day_of_week": null,
+    "enabled": true
+  },
   "smartphones_monitoring": {
     "workflow_id": "smartphones_monitoring",
     "frequency": "daily",
@@ -18,5 +25,12 @@
     "last_run": "2026-05-20T07:09:01.508340",
     "next_run": "2026-05-20T10:00:00",
     "run_count": 2
+  },
+  "supplier_vs_market": {
+    "workflow_id": "supplier_vs_market",
+    "frequency": "daily",
+    "time_of_day": "09:00",
+    "day_of_week": null,
+    "enabled": true
   }
 }
