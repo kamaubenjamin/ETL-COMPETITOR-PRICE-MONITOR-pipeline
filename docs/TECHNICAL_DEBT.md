@@ -41,11 +41,11 @@ This document tracks known limitations, deferred work, architectural compromises
 - Proposed Resolution: Add execution context tracking, retry policies, and richer stage lifecycle hooks.
 - Target Runtime: Workflow Runtime
 
-### 6. Contract Registry Enforcement Is Not Yet CI-Gated
-- Description: Contract Registry v1 now standardizes core runtime artifact schemas, but validation is still local rather than enforced in hosted CI.
-- Impact: Schema regressions can still merge if contributors do not run the local validation commands before committing.
-- Priority: High
-- Proposed Resolution: Add CI Contract Validation for `pytest tests/contracts -v`, `python scripts/validate_contracts.py`, compatibility checks against the released baseline, and ADR checks for MAJOR schema changes.
+### 6. Contract Registry Compatibility and Runtime Enforcement Are Deferred
+- Description: Contract Registry v1 now standardizes core runtime artifact schemas, and CI Contract Validation v1 runs contract tests plus standalone fixture validation. Compatibility checks, ADR enforcement, version bump validation, runtime boundary validation, and runtime producer/consumer validation remain deferred.
+- Impact: The CI gate catches invalid fixtures and schemas, but it does not yet block all incompatible schema evolution or cross-runtime boundary drift.
+- Priority: Medium
+- Proposed Resolution: Add schema compatibility checks, ADR enforcement for MAJOR changes, version bump validation, Runtime Boundary Verification, and optional runtime producer/consumer validation in later v0.5 hardening phases.
 - Target Runtime: Workflow Runtime
 
 ### 7. No Review or Feedback Loop

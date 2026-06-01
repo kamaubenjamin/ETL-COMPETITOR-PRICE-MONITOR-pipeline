@@ -25,24 +25,26 @@ These items should be prioritized to make pipeline tests hermetic in CI environm
 
 ### Current Status
 
-Contract Registry v1 is formally closed with repository-owned JSON Schema Draft 07 contracts, example fixtures, local validation tests, and `scripts/validate_contracts.py`.
+Contract Registry v1 is formally closed with repository-owned JSON Schema Draft 07 contracts, example fixtures, local validation tests, and `scripts/validate_contracts.py`. CI Contract Validation v1 now runs the contract pytest suite and standalone validator in GitHub Actions with a minimal dependency install.
 
 ### Remaining Debt
 
-- CI Contract Validation is not yet implemented.
 - Schema compatibility checks against a released baseline are not yet implemented.
+- ADR enforcement for breaking schema changes is not yet implemented.
+- Schema version bump validation is not yet implemented.
+- Runtime boundary validation is not yet implemented.
 - Runtime producers and consumers do not yet perform mandatory contract validation.
 
 ### Recommended Solution
 
-1. Add a hosted CI job for `pytest tests/contracts -v`.
-2. Add a hosted CI step for `python scripts/validate_contracts.py`.
-3. Add compatibility diffing for schema changes.
-4. Require ADR validation for MAJOR schema version changes.
+1. Confirm GitHub Actions runs the new contract-validation workflow successfully.
+2. Add compatibility diffing for schema changes in a later hardening phase.
+3. Require ADR validation for MAJOR schema version changes in a later hardening phase.
+4. Implement Runtime Boundary Verification as the next v0.5 hardening objective.
 
 ### Priority
 
-High (next v0.5 Runtime Hardening objective).
+Medium (remaining v0.5 Runtime Hardening follow-up).
 
 ---
 

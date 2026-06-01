@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added CI Contract Validation v1 with a lightweight GitHub Actions workflow for contract tests and standalone registry validation.
 - Closed Contract Registry v1 with JSON Schema Draft 07 schemas, examples, local validation tooling, closure documentation, roadmap updates, and release notes.
 - Added FlowSync Supabase telemetry integration with reusable contracts, retry-aware REST client, and `.env`-driven credentials.
 - Added structured pipeline, ingestion, and alert telemetry services for `pipeline_runs`, `ingestion_logs`, and `operational_alerts`.

@@ -27,6 +27,9 @@ The current runtime stack includes:
 - [CONTRACT_REGISTRY_V1_IMPLEMENTATION.md](./CONTRACT_REGISTRY_V1_IMPLEMENTATION.md)
 - [CONTRACT_REGISTRY_V1_SUMMARY.md](./CONTRACT_REGISTRY_V1_SUMMARY.md)
 - [CONTRACT_REGISTRY_V1_HANDOFF.md](./CONTRACT_REGISTRY_V1_HANDOFF.md)
+- [CI_CONTRACT_VALIDATION_V1_IMPLEMENTATION.md](./CI_CONTRACT_VALIDATION_V1_IMPLEMENTATION.md)
+- [CI_CONTRACT_VALIDATION_V1_SUMMARY.md](./CI_CONTRACT_VALIDATION_V1_SUMMARY.md)
+- [CI_CONTRACT_VALIDATION_V1_HANDOFF.md](./CI_CONTRACT_VALIDATION_V1_HANDOFF.md)
 - [RUNTIME_BOUNDARIES.md](./RUNTIME_BOUNDARIES.md)
 - [REVIEW_RUNTIME_IMPLEMENTATION.md](./REVIEW_RUNTIME_IMPLEMENTATION.md)
 - [REVIEW_RUNTIME_SUMMARY.md](./REVIEW_RUNTIME_SUMMARY.md)
@@ -53,6 +56,7 @@ The current runtime stack includes:
 - Entity Runtime
 - Matching Runtime
 - Contract Registry v1
+- CI Contract Validation v1
 
 ### Architecture Completed
 
@@ -61,6 +65,7 @@ The current runtime stack includes:
 - Entity Runtime Architecture
 - Matching Runtime Architecture
 - Contract Registry v1 Architecture
+- CI Contract Validation v1 Implementation
 - API Runtime Architecture
 - Review Runtime Architecture
 
@@ -80,9 +85,11 @@ Future agents and developers should start with this file, then proceed in the fo
 4. `CONTRACT_REGISTRY_V1_ARCHITECTURE.md` — understand schema governance and versioning.
 5. `CONTRACT_REGISTRY_V1_IMPLEMENTATION.md` — review delivered registry artifacts and validation commands.
 6. `CONTRACT_REGISTRY_V1_HANDOFF.md` — confirm remaining CI validation and compatibility work.
-7. `REVIEW_RUNTIME_IMPLEMENTATION.md` — review Review Runtime implementation details.
-8. `REVIEW_RUNTIME_SUMMARY.md` — review Review Runtime summary and verification notes.
-9. `REVIEW_RUNTIME_HANDOFF.md` — review Review Runtime handoff and next steps.
-10. `IMPLEMENTATION_SUMMARY.md` — review the implementation-report-level summary.
+7. `CI_CONTRACT_VALIDATION_V1_IMPLEMENTATION.md` — review CI contract validation workflow design.
+8. `CI_CONTRACT_VALIDATION_V1_HANDOFF.md` — confirm deferred compatibility and boundary-validation work.
+9. `REVIEW_RUNTIME_IMPLEMENTATION.md` — review Review Runtime implementation details.
+10. `REVIEW_RUNTIME_SUMMARY.md` — review Review Runtime summary and verification notes.
+11. `REVIEW_RUNTIME_HANDOFF.md` — review Review Runtime handoff and next steps.
+12. `IMPLEMENTATION_SUMMARY.md` — review the implementation-report-level summary.
 
 For broader platform context, use the runtime files and any existing documentation in the repo root.

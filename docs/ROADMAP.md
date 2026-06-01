@@ -91,18 +91,19 @@ Completed items:
 Status:
 - Active milestone
 - Contract Registry v1 is formally closed
-- Next objective: CI Contract Validation
+- CI Contract Validation v1 is implemented
+- Next objective: Runtime Boundary Verification
 
 Completed foundation deliverable:
 - Contract Registry v1 with JSON Schema Draft 07 contracts, fixtures, local validation tests, and standalone validation script
+- CI Contract Validation v1 with a lightweight GitHub Actions workflow for contract tests and standalone validation
 
 Next planned objectives:
-1. CI Contract Validation
-2. Runtime Boundary Verification
-3. Workflow Runtime Locking
-4. Entity Runtime Concurrency Hardening
-5. Observability Improvements
-6. Review Runtime Audit Linking
+1. Runtime Boundary Verification
+2. Workflow Runtime Locking
+3. Entity Runtime Concurrency Hardening
+4. Observability Improvements
+5. Review Runtime Audit Linking
 
 ### Matching Runtime
 
@@ -134,15 +135,21 @@ Purpose:
 - Enforce Contract Registry v1 through hosted PR and release validation.
 - Prevent incompatible schema changes from merging without versioning and ADR review.
 
-Expected capabilities:
+Delivered capabilities:
 - CI job for `pytest tests/contracts -v`
 - CI job or step for `python scripts/validate_contracts.py`
+- Minimal dependency install for `pytest` and `jsonschema`
+
+Deferred capabilities:
 - Schema compatibility checks against a released baseline
 - Governance check for MAJOR schema changes and ADR presence
 
 Dependencies:
 - Contract Registry v1 schemas and fixtures
 - Existing validation script and contract test suite
+
+Status:
+- Implemented as CI Contract Validation v1
 
 ### Review Runtime
 
@@ -195,7 +202,6 @@ Dependencies:
 
 ## Next Milestones
 
-- CI Contract Validation
 - Runtime Boundary Verification
 - Workflow Runtime Locking
 - Entity Runtime Concurrency Hardening
