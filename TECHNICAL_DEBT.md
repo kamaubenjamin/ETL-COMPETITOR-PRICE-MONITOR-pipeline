@@ -21,6 +21,31 @@ These items should be prioritized to make pipeline tests hermetic in CI environm
 
 ---
 
+## Contract Registry v1 Follow-Up
+
+### Current Status
+
+Contract Registry v1 is formally closed with repository-owned JSON Schema Draft 07 contracts, example fixtures, local validation tests, and `scripts/validate_contracts.py`.
+
+### Remaining Debt
+
+- CI Contract Validation is not yet implemented.
+- Schema compatibility checks against a released baseline are not yet implemented.
+- Runtime producers and consumers do not yet perform mandatory contract validation.
+
+### Recommended Solution
+
+1. Add a hosted CI job for `pytest tests/contracts -v`.
+2. Add a hosted CI step for `python scripts/validate_contracts.py`.
+3. Add compatibility diffing for schema changes.
+4. Require ADR validation for MAJOR schema version changes.
+
+### Priority
+
+High (next v0.5 Runtime Hardening objective).
+
+---
+
 ## Scheduler State Separation
 
 ### Current Issue

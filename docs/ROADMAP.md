@@ -80,15 +80,34 @@ Completed items:
 - Document Runtime Architecture
 - API Runtime Architecture
 - Review Runtime Architecture
+- Contract Registry v1 Architecture
 - Runtime Boundaries document
 - Agent onboarding context
 
 ## Current Milestone
 
+### v0.5 Runtime Hardening
+
+Status:
+- Active milestone
+- Contract Registry v1 is formally closed
+- Next objective: CI Contract Validation
+
+Completed foundation deliverable:
+- Contract Registry v1 with JSON Schema Draft 07 contracts, fixtures, local validation tests, and standalone validation script
+
+Next planned objectives:
+1. CI Contract Validation
+2. Runtime Boundary Verification
+3. Workflow Runtime Locking
+4. Entity Runtime Concurrency Hardening
+5. Observability Improvements
+6. Review Runtime Audit Linking
+
 ### Matching Runtime
 
 Status:
-- Active implementation phase completed for v1
+- Released as v0.4
 - Architecture baseline coverage is complete, with practice documents in place
 - Document-level strategy is defined in `docs/architecture/MATCHING_RUNTIME_V1_ARCHITECTURE.md`
 - Implementation validated with `tests/test_matching_runtime.py`
@@ -100,12 +119,7 @@ Objectives:
 - Return immutable match results with audit explanations
 
 Planned deliverables:
-- Matching runtime architecture design
-- `MatchRequest`, `MatchCandidate`, `MatchResult`, and `MatchSet` contracts
-- Entity-specific confidence calculator design
-- Historical match strategy defined as a first-class path
-- Workflow integration points for the match stage
-- v1 implementation documentation in `docs/architecture/MATCHING_RUNTIME_V1_IMPLEMENTATION.md`
+- Completed in v0.4 Matching Runtime release
 
 Dependencies:
 - `Entity Runtime` output (`EntitySet`)
@@ -113,6 +127,22 @@ Dependencies:
 - Local or in-memory master data candidate sources
 
 ## Planned Milestones
+
+### CI Contract Validation
+
+Purpose:
+- Enforce Contract Registry v1 through hosted PR and release validation.
+- Prevent incompatible schema changes from merging without versioning and ADR review.
+
+Expected capabilities:
+- CI job for `pytest tests/contracts -v`
+- CI job or step for `python scripts/validate_contracts.py`
+- Schema compatibility checks against a released baseline
+- Governance check for MAJOR schema changes and ADR presence
+
+Dependencies:
+- Contract Registry v1 schemas and fixtures
+- Existing validation script and contract test suite
 
 ### Review Runtime
 
@@ -165,11 +195,15 @@ Dependencies:
 
 ## Next Milestones
 
+- CI Contract Validation
+- Runtime Boundary Verification
+- Workflow Runtime Locking
+- Entity Runtime Concurrency Hardening
+- Observability Improvements
+- Review Runtime Audit Linking
 - Monitoring Runtime Architecture
 - ERP Runtime Architecture
 - Agent Runtime Architecture
-- Review Runtime Implementation
-- API Runtime Implementation
 
 ## Cross-Cutting Initiatives
 
@@ -208,10 +242,11 @@ Dependencies:
 Path to v1.0 production deployment:
 
 1. Finish `Matching Runtime` with deterministic, audited master data matching.
-2. Deliver `Review Runtime` for human exception handling and correction.
-3. Build `ERP Runtime` for ERP source integration and reconciliation support.
-4. Add `Agent Runtime` for automation, notification, and workflow orchestration.
-5. Strengthen documentation, testing, and governance across runtime layers.
-6. Validate end-to-end workflows with production-like data and regression suites.
+2. Complete v0.5 Runtime Hardening, starting with CI enforcement for Contract Registry v1.
+3. Deliver `Review Runtime` for human exception handling and correction.
+4. Build `ERP Runtime` for ERP source integration and reconciliation support.
+5. Add `Agent Runtime` for automation, notification, and workflow orchestration.
+6. Strengthen documentation, testing, and governance across runtime layers.
+7. Validate end-to-end workflows with production-like data and regression suites.
 
 The v1.0 goal is a stable, explainable ETL platform that can ingest documents, extract entities, reconcile against master data, and support governance-aware review and automation.

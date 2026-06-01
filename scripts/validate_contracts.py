@@ -44,6 +44,7 @@ def validate_file(schema_path: Path, example_path: Path, store) -> list[str]:
     errors = []
     schema = _load_json(schema_path)
     instance = _load_json(example_path)
+    store[""] = schema
     base_uri = schema_path.name
     resolver = RefResolver(base_uri=base_uri, referrer=schema, store=store)
     validator = Draft7Validator(schema, resolver=resolver)

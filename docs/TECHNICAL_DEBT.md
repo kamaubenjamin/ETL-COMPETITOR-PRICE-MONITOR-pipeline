@@ -41,11 +41,11 @@ This document tracks known limitations, deferred work, architectural compromises
 - Proposed Resolution: Add execution context tracking, retry policies, and richer stage lifecycle hooks.
 - Target Runtime: Workflow Runtime
 
-### 6. Workflow Contracts Need Standardization
-- Description: Stage contract boundaries are defined, but there is limited formalization of upstream/downstream artifact types beyond `EntitySet` and `MatchSet`.
-- Impact: New stages may mis-handle artifact shapes or rely on inconsistent runtime assumptions.
-- Priority: Medium
-- Proposed Resolution: Create a runtime contract registry and shared artifact definitions for all stage inputs/outputs.
+### 6. Contract Registry Enforcement Is Not Yet CI-Gated
+- Description: Contract Registry v1 now standardizes core runtime artifact schemas, but validation is still local rather than enforced in hosted CI.
+- Impact: Schema regressions can still merge if contributors do not run the local validation commands before committing.
+- Priority: High
+- Proposed Resolution: Add CI Contract Validation for `pytest tests/contracts -v`, `python scripts/validate_contracts.py`, compatibility checks against the released baseline, and ADR checks for MAJOR schema changes.
 - Target Runtime: Workflow Runtime
 
 ### 7. No Review or Feedback Loop
