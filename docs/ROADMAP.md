@@ -92,18 +92,24 @@ Status:
 - Active milestone
 - Contract Registry v1 is formally closed
 - CI Contract Validation v1 is implemented
-- Next objective: Runtime Boundary Verification
+- Runtime Boundary Verification v1 (Tier 1) is completed
+- Next objective: Workflow Runtime Locking
 
-Completed foundation deliverable:
+Completed foundation deliverables:
 - Contract Registry v1 with JSON Schema Draft 07 contracts, fixtures, local validation tests, and standalone validation script
 - CI Contract Validation v1 with a lightweight GitHub Actions workflow for contract tests and standalone validation
+- Runtime Boundary Verification v1 — Tier 1 Static Import Isolation Analysis
+  - `scripts/verify_boundaries.py`: AST-based scanner for R01-R05, R12
+  - `tests/boundaries/`: 22-test suite, exemption registry with 4 legacy entries
+  - 0 active violations (compliant)
+  - See `docs/architecture/RUNTIME_BOUNDARY_VERIFICATION_V1_SUMMARY.md`
 
 Next planned objectives:
-1. Runtime Boundary Verification
-2. Workflow Runtime Locking
-3. Entity Runtime Concurrency Hardening
-4. Observability Improvements
-5. Review Runtime Audit Linking
+1. Workflow Runtime Locking
+2. Entity Runtime Concurrency Hardening
+3. Observability Improvements
+4. Review Runtime Audit Linking
+5. Runtime Boundary Verification Tier 2 & 3 (future)
 
 ### Matching Runtime
 
@@ -202,7 +208,6 @@ Dependencies:
 
 ## Next Milestones
 
-- Runtime Boundary Verification
 - Workflow Runtime Locking
 - Entity Runtime Concurrency Hardening
 - Observability Improvements

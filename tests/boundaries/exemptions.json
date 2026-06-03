@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "description": "Runtime boundary exemption registry for Tier 1 static import analysis.",
+  "schema": {
+    "rule_id": "The boundary rule identifier (R01-R12) being exempted.",
+    "source_file": "Relative path to the source file containing the exempted import.",
+    "forbidden_import": "The exact forbidden module name being imported.",
+    "adr_reference": "Optional ADR document reference justifying the exemption.",
+    "reason": "Human-readable justification for the exemption.",
+    "active": "Boolean flag; set to false to disable an expired exemption.",
+    "expires": "Optional expiration date (ISO 8601) after which the exemption must be reviewed."
+  },
+  "exemptions": [
+    {
+      "rule_id": "R05",
+      "source_file": "src/api/app.py",
+      "forbidden_import": "src.contracts.api",
+      "adr_reference": "LEGACY-PRE-EXISTING",
+      "reason": "Pre-existing: API Runtime imports contracts API schema. Requires ADR to define contracts as shared utility package.",
+      "active": true,
+      "expires": "2026-09-01"
+    },
+    {
+      "rule_id": "R05",
+      "source_file": "src/api/app.py",
+      "forbidden_import": "src.contracts.payloads",
+      "adr_reference": "LEGACY-PRE-EXISTING",
+      "reason": "Pre-existing: API Runtime imports contracts payloads. Requires ADR to define contracts as shared utility package.",
+      "active": true,
+      "expires": "2026-09-01"
+    },
+    {
+      "rule_id": "R05",
+      "source_file": "src/api/app.py",
+      "forbidden_import": "src.services.workflow_execution_service",
+      "adr_reference": "LEGACY-PRE-EXISTING",
+      "reason": "Pre-existing: API Runtime imports service module. Requires ADR or service extraction to Workflow Runtime.",
+      "active": true,
+      "expires": "2026-09-01"
+    },
+    {
+      "rule_id": "R05",
+      "source_file": "src/api/app.py",
+      "forbidden_import": "src.telemetry.telemetry_manager",
+      "adr_reference": "LEGACY-PRE-EXISTING",
+      "reason": "Pre-existing: API Runtime imports telemetry module. Requires ADR or telemetry extraction to Monitoring Runtime.",
+      "active": true,
+      "expires": "2026-09-01"
+    }
+  ]
+}
