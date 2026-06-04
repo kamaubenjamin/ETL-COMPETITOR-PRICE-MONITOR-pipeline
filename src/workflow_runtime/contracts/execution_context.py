@@ -5,6 +5,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Dict, Optional
 
+from src.workflow_runtime.locking.models import LockAcquisition
+
 
 @dataclass(frozen=True, slots=True)
 class ExecutionContext:
@@ -19,3 +21,5 @@ class ExecutionContext:
     started_at: str  # ISO timestamp
     metadata: Dict[str, Any] = field(default_factory=dict)
     debug_path: Optional[str] = None
+    lock_acquisition: Optional[LockAcquisition] = None
+    idempotency_key: Optional[str] = None

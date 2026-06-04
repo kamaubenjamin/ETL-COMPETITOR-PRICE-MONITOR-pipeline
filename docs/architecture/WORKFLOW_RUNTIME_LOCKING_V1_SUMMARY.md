@@ -1,10 +1,10 @@
 # Workflow Runtime Locking v1 — Implementation Summary
 
-**Date**: 2026-06-03  
+**Date**: 2026-06-04  
 **Author**: Platform Architecture Review  
-**Status**: Phase 1 Complete  
+**Status**: Phase 3 Complete  
 **Milestone**: v0.5-workflow-runtime-locking  
-**Phase**: 1 — Foundation
+**Phase**: 3 — Workflow Integration
 
 ---
 
@@ -18,9 +18,13 @@ The Workflow Runtime had no mechanism to prevent the same workflow from being ex
 - No audit trail for duplicate runs
 - No execution leasing or crash recovery
 
-## Solution (Phase 1 — Foundation)
+## Solution (All Phases 1-3)
 
-Phase 1 establishes the structural foundation for the locking subsystem: package layout, immutable data contracts, abstract interfaces, custom exceptions, database schema, and configuration defaults.
+The locking subsystem is now fully integrated into the Workflow Runtime. Three phases of implementation deliver:
+
+1. **Foundation (Phase 1)**: Package layout, immutable data contracts, abstract interfaces, custom exceptions, database schema, configuration defaults.
+2. **Locking Infrastructure (Phase 2)**: Three concrete lock providers (Memory, File, DB), `LockProviderRegistry` with fallback chain, `WorkflowExecutionGuard` with lease refresh, `WorkflowIdempotencyRegistry` with DB and memory implementations.
+3. **Workflow Integration (Phase 3)**: Updated `ExecutionContext` and `WorkflowResult` contracts with optional lock fields, `WorkflowRunner.run()` integration with guard lifecycle, idempotency key support with `generate_idempotency_key()` helper.
 
 ### Strategy
 
@@ -28,10 +32,11 @@ Phase 1 establishes the structural foundation for the locking subsystem: package
 - **Fallback**: File-based advisory locking for single-host deployments
 - **Development/Test**: In-memory locking
 - **Complementary**: Idempotency keys for deduplication of completed runs
+- **Lock Status Values**: `"acquired"`, `"rejected_busy"`, `"rejected_duplicate"`, `"not_locked"`
 
-## Files Created
+## Files Created / Modified
 
-### Source Files (8 files)
+### Source Files (Phase 1 — Foundation)
 
 | File | Purpose |
 |------|---------|
@@ -39,32 +44,41 @@ Phase 1 establishes the structural foundation for the locking subsystem: package
 | `src/workflow_runtime/locking/models.py` | `LockAcquisition` and `IdempotencyRecord` frozen dataclasses with `__slots__` |
 | `src/workflow_runtime/locking/exceptions.py` | `LockAcquisitionError`, `IdempotencyRejectionError`, `LockProviderError`, `LeaseRefreshError` |
 | `src/workflow_runtime/locking/lock_provider.py` | `LockProvider` ABC (acquire, release, refresh) + `LockProviderRegistry` with priority ordering |
-| `src/workflow_runtime/locking/execution_guard.py` | `WorkflowExecutionGuard` ABC — wraps execution lifecycle with lock lifecycle. Context manager support. |
-| `src/workflow_runtime/locking/idempotency.py` | `WorkflowIdempotencyRegistry` ABC (check, record, cleanup) |
-| `src/workflow_runtime/locking/providers/__init__.py` | Package init for concrete provider implementations (Phase 2) |
+| `src/workflow_runtime/locking/execution_guard.py` | `WorkflowExecutionGuard` — wraps execution lifecycle with lock lifecycle. Context manager support. |
+| `src/workflow_runtime/locking/idempotency.py` | `WorkflowIdempotencyRegistry` ABC + `MemoryIdempotencyRegistry` + `DBIdempotencyRegistry` |
+| `src/workflow_runtime/locking/providers/__init__.py` | Package init exporting `MemoryLockProvider`, `FileLockProvider`, `DBLockProvider` |
 | `src/workflow_runtime/locking/config.py` | 13 configuration constants with documented defaults |
 
-### Migration Scripts (2 files)
+### Migration Scripts
 
 | File | Purpose |
 |------|---------|
 | `scripts/migrations/006_create_workflow_locks_table.sql` | `workflow_locks` table with UPSERT support, indexes on `expires_at` and `holder_id` |
 | `scripts/migrations/007_create_workflow_idempotency_table.sql` | `workflow_idempotency` table with CHECK constraint on status, indexes on `created_at` and `status` |
 
-### Modified Files (1 file)
+### Modified Files (Phase 3)
 
 | File | Change |
 |------|--------|
-| `src/workflow_runtime/__init__.py` | Re-exports all locking classes for convenient importing |
+| `src/workflow_runtime/contracts/execution_context.py` | Added `lock_acquisition: Optional[LockAcquisition]` and `idempotency_key: Optional[str]` fields |
+| `src/workflow_runtime/contracts/workflow_result.py` | Added `idempotency_key: Optional[str]` and `lock_status: Optional[str]` fields |
+| `src/workflow_runtime/runtime/workflow_runner.py` | Added `execution_guard` and `idempotency_registry` params to `__init__()`. Integrated guard lifecycle into `run()`: idempotency check, lock acquisition, lease refresh, lock release, idempotency recording. Added `generate_idempotency_key()` helper function. |
 
-### Test Files (4 files)
+### Test Files
 
 | File | Tests |
 |------|-------|
 | `tests/locking/__init__.py` | Test package init |
-| `tests/locking/conftest.py` | Shared fixtures: `sample_lock_acquisition`, `sample_idempotency_record`, expired/in-progress/failed variants |
+| `tests/locking/conftest.py` | Shared fixtures: `sample_lock_acquisition`, `sample_idempotency_record`, expired/in-progress/failed variants, all provider fixtures |
 | `tests/locking/test_models.py` | 21 tests — construction, immutability, slots, equality, repr |
 | `tests/locking/test_exceptions.py` | 19 tests — construction, attributes on catch, custom messages, hierarchy |
+| `tests/locking/test_memory_lock_provider.py` | 12 tests — acquire, release, refresh, concurrent access |
+| `tests/locking/test_file_lock_provider.py` | 10 tests — acquire, release, refresh, stale detection |
+| `tests/locking/test_db_lock_provider.py` | 10 tests — acquire, release, refresh, stale cleanup |
+| `tests/locking/test_lock_provider_registry.py` | 6 tests — priority ordering, fallback chain |
+| `tests/locking/test_workflow_idempotency_registry.py` | 10 tests — check, record, cleanup, duplicate rejection |
+| `tests/locking/test_workflow_execution_guard.py` | 6 tests — execute, duplicate rejection, lock release on failure |
+| `tests/locking/test_integration_workflow_runner.py` | 17 tests — backward compatibility, guarded execution, idempotency skip, concurrent rejection, error propagation, lock lifecycle |
 
 ## Key Design Decisions
 

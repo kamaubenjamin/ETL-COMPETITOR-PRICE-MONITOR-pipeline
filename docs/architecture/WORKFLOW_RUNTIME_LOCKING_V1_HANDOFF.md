@@ -1,51 +1,99 @@
 # Workflow Runtime Locking v1 — Handoff Document
 
-**Date**: 2026-06-03  
+**Date**: 2026-06-04  
 **Author**: Platform Architecture Review  
-**Status**: Phase 1 Complete  
+**Status**: Phase 3 Complete  
 **Milestone**: v0.5-workflow-runtime-locking  
-**Phase**: 1 — Foundation
+**Phase**: 3 — Workflow Integration
 
 ---
 
-## Phase 1 Runbook
+## Phase 3 Runbook
 
 ### What Was Built
 
-Phase 1 establishes the **structural foundation** for the locking subsystem. It produces only abstractions — no executable locking logic. The following components are defined:
+Phase 3 integrates the locking infrastructure (Phases 1-2) into the Workflow Runtime. The following components were modified/created:
 
-1. **Package structure** — `src/workflow_runtime/locking/` with sub-packages
-2. **Data models** — `LockAcquisition` and `IdempotencyRecord` frozen dataclasses
-3. **Abstract interfaces** — `LockProvider`, `WorkflowExecutionGuard`, `WorkflowIdempotencyRegistry`
-4. **Custom exceptions** — `LockAcquisitionError`, `IdempotencyRejectionError`, `LockProviderError`, `LeaseRefreshError`
-5. **Database schema** — `workflow_locks` and `workflow_idempotency` SQL migration scripts
-6. **Configuration defaults** — 13 constants in `src/workflow_runtime/locking/config.py`
+1. **Contract updates** — `ExecutionContext` gained `lock_acquisition: Optional[LockAcquisition]` and `idempotency_key: Optional[str]` fields. `WorkflowResult` gained `idempotency_key: Optional[str]` and `lock_status: Optional[str]` fields. All fields default to `None` for backward compatibility.
 
-### How to Verify Phase 1
+2. **WorkflowRunner integration** — `WorkflowRunner.__init__()` now accepts optional `execution_guard` and `idempotency_registry` parameters (default `None`). When configured, `run()` executes the full lock lifecycle:
+   - Idempotency check (skip if key already completed)
+   - Lock acquisition via guard (with retry + exponential backoff)
+   - Stage execution with periodic lease refresh
+   - Lock release on completion or failure
+   - Idempotency recording
+
+3. **Idempotency key generation** — `generate_idempotency_key(workflow_id, schedule_time, scope)` function provides deterministic keys for scheduled runs and UUID-based keys for manual runs.
+
+4. **Lock status values** — `WorkflowResult.lock_status` reports one of: `"acquired"`, `"rejected_busy"`, `"rejected_duplicate"`, `"not_locked"`.
+
+5. **Integration tests** — 17 tests covering backward compatibility, guarded execution, idempotency skip, concurrent rejection, error propagation, and lock lifecycle.
+
+### Execution Flow
+
+```
+WorkflowRunner.run(definition, initial_artifact, metadata, idempotency_key)
+│
+├── [If guard configured]
+│   ├── 1. Check idempotency → skip if key completed (rejected_duplicate)
+│   ├── 2. Acquire lock via WorkflowExecutionGuard
+│   │   └── On failure → return WorkflowResult(lock_status="rejected_busy")
+│   ├── 3. Execute stages with periodic lease refresh
+│   ├── 4. Release lock
+│   ├── 5. Record idempotency outcome
+│   └── 6. Return WorkflowResult(lock_status="acquired")
+│
+└── [If no guard]
+    ├── 1. Execute stages (original behaviour)
+    └── 2. Return WorkflowResult(lock_status="not_locked")
+```
+
+### How to Verify Phase 3
 
 ```bash
-# 1. Verify imports work
-python -c "from src.workflow_runtime.locking import LockAcquisition, LockProvider, WorkflowExecutionGuard, WorkflowIdempotencyRegistry, LockAcquisitionError, IdempotencyRejectionError, LockProviderError, LeaseRefreshError, LockProviderRegistry; print('OK')"
+# 1. Run all locking tests (158 tests)
+python -m pytest tests/locking/ tests/test_workflow_runtime.py -v --tb=short
 
-# 2. Run Phase 1 unit tests
-python -m pytest tests/locking/ -v --tb=short
+# 2. Run boundary verification
+python scripts/verify_boundaries.py
 
-# 3. Verify migration scripts
+# 3. Integration smoke test — guarded runner
 python -c "
-import sqlite3
-conn = sqlite3.connect(':memory:')
-conn.executescript(open('scripts/migrations/006_create_workflow_locks_table.sql').read())
-conn.executescript(open('scripts/migrations/007_create_workflow_idempotency_table.sql').read())
-print('Migrations OK')
+from src.workflow_runtime.runtime.workflow_runner import WorkflowRunner, generate_idempotency_key
+from src.workflow_runtime.locking import WorkflowExecutionGuard, MemoryLockProvider, MemoryIdempotencyRegistry
+from src.workflow_runtime.contracts.workflow_definition import WorkflowDefinition, StageDefinition
+
+guard = WorkflowExecutionGuard(MemoryLockProvider(), MemoryIdempotencyRegistry(), max_retries=0)
+runner = WorkflowRunner(execution_guard=guard, idempotency_registry=MemoryIdempotencyRegistry())
+
+wf = WorkflowDefinition(workflow_id='smoke', name='Smoke', workspace_id='ws', version='1.0.0', enabled=True)
+result = runner.run(wf, idempotency_key=generate_idempotency_key('smoke', '2026-06-04T08:00:00'))
+print(f'Status: {result.overall_status}, Lock: {result.lock_status}')
+assert result.lock_status == 'acquired'
+print('Phase 3 integration verified ✓')
+"
+# 4. Verify backward compatibility — unguarded runner
+python -c "
+from src.workflow_runtime.runtime.workflow_runner import WorkflowRunner
+from src.workflow_runtime.contracts.workflow_definition import WorkflowDefinition, StageDefinition
+
+runner = WorkflowRunner()
+wf = WorkflowDefinition(workflow_id='smoke2', name='Smoke2', workspace_id='ws', version='1.0.0', enabled=True)
+result = runner.run(wf)
+print(f'Status: {result.overall_status}, Lock: {result.lock_status}')
+assert result.lock_status == 'not_locked'
+print('Backward compatibility verified ✓')
 "
 ```
 
-### What NOT To Do
+### Phase 3-Specific Troubleshooting
 
-- **Do not** start Phase 2 (concrete provider implementations) — the abstractions need to be stable first
-- **Do not** modify the ABC method signatures once Phase 2 begins — they are the contract all providers implement
-- **Do not** change `frozen=True` or `slots=True` on the models — downstream code depends on immutability
-- **Do not** import from `src/workflow_runtime/locking/providers/` yet — the implementations are stubs
+| Symptom | Likely Cause | Fix |
+|---------|--------------|-----|
+| `LockAcquisitionError` on every run | Workflow from previous run not releasing lock | Wait for lease expiry (default 300s) or set `LOCK_PROVIDER=memory` |
+| Idempotency key falsely rejected | Registry not cleared between tests | Use fresh `MemoryIdempotencyRegistry` per test |
+| Integration tests timeout on concurrent test | Thread synchronization issue | Increase timeout or simplify test (use direct provider.acquire()) |
+| `AttributeError: 'WorkflowResult' object has no attribute 'lock_status'` | Old WorkflowResult import | Ensure `src/workflow_runtime/contracts/workflow_result.py` is updated |
 
 ---
 

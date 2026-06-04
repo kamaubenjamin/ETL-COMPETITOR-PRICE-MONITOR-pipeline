@@ -46,6 +46,8 @@ class WorkflowResult:
     started_at: str = ""
     completed_at: str = ""
     error: Optional[str] = None
+    idempotency_key: Optional[str] = None
+    lock_status: Optional[str] = None
 
     def to_dict(self) -> Dict[str, Any]:
         return {
