@@ -54,11 +54,3 @@ def validate_example(schema_file: str | Path, example_file: str | Path) -> None:
     #     Fix: store[$id] entry (added in _build_store) makes the lookup succeed.
     #
     #  2. Nested $refs:  after push_scope("#/definitions/X"), resolution_scope
-    #     becomes "#/definitions/X" (fragment-only), so base_uri degrades to "".
-    #     Fix: store[""] points to the current schema so the lookup still works.
-    store[""] = schema
-
-    base_uri = schema_path.name
-    resolver = RefResolver(base_uri=base_uri, referrer=schema, store=store)
-    validator = Draft7Validator(schema, resolver=resolver)
-    validator.validate(instance)

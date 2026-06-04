@@ -47,7 +47,16 @@ from src.workflow_runtime.locking.exceptions import (
 )
 from src.workflow_runtime.locking.lock_provider import LockProvider, LockProviderRegistry
 from src.workflow_runtime.locking.execution_guard import WorkflowExecutionGuard
-from src.workflow_runtime.locking.idempotency import WorkflowIdempotencyRegistry
+from src.workflow_runtime.locking.idempotency import (
+    WorkflowIdempotencyRegistry,
+    MemoryIdempotencyRegistry,
+    DBIdempotencyRegistry,
+)
+from src.workflow_runtime.locking.providers import (
+    MemoryLockProvider,
+    FileLockProvider,
+    DBLockProvider,
+)
 
 __all__ = [
     # Models
@@ -63,4 +72,10 @@ __all__ = [
     "LockProviderRegistry",
     "WorkflowExecutionGuard",
     "WorkflowIdempotencyRegistry",
+    # Concrete implementations
+    "MemoryLockProvider",
+    "FileLockProvider",
+    "DBLockProvider",
+    "MemoryIdempotencyRegistry",
+    "DBIdempotencyRegistry",
 ]

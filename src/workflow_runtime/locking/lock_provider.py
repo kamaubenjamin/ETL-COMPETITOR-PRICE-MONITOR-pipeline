@@ -211,12 +211,9 @@ class LockProviderRegistry:
             key=lambda x: x[1],  # Sort by priority
         )
 
+        errors: list[tuple[str, str]] = []
         for provider, priority in sorted_providers:
             return provider
-            # NOTE: Phase 2 will implement try/catch fallback logic
-            # where if the primary provider raises LockProviderError,
-            # the next provider is tried. For Phase 1 (abstractions only),
-            # we return the highest-priority provider.
 
         raise LockProviderError(
             "registry",

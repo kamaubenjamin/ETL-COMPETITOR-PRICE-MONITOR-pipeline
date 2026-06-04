@@ -32,8 +32,7 @@ Contract Registry v1 is formally closed with repository-owned JSON Schema Draft 
 - Schema compatibility checks against a released baseline are not yet implemented.
 - ADR enforcement for breaking schema changes is not yet implemented.
 - Schema version bump validation is not yet implemented.
-- Runtime Boundary Verification v1 (Tier 1) is complete. Static import isolation enforced for R01-R05, R12. See `docs/architecture/RUNTIME_BOUNDARY_VERIFICATION_V1_SUMMARY.md`.
-- 4 pre-existing legacy R05 exemptions registered in `tests/boundaries/exemptions.json` (expiring 2026-09-01). These violations in `src/api/app.py` require remediation.
+- Runtime boundary validation is not yet implemented.
 - Runtime producers and consumers do not yet perform mandatory contract validation.
 
 ### Recommended Solution
@@ -41,7 +40,7 @@ Contract Registry v1 is formally closed with repository-owned JSON Schema Draft 
 1. Confirm GitHub Actions runs the new contract-validation workflow successfully.
 2. Add compatibility diffing for schema changes in a later hardening phase.
 3. Require ADR validation for MAJOR schema version changes in a later hardening phase.
-4. Implement Runtime Boundary Verification Tier 2 (Contract Adherence) and Tier 3 (Interaction Boundary) as future hardening phases.
+4. Implement Runtime Boundary Verification as the next v0.5 hardening objective.
 
 ### Priority
 

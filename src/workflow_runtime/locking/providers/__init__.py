@@ -10,7 +10,12 @@ These are registered with ``LockProviderRegistry`` and selected via
 configuration.
 """
 
-# Provider implementations will be imported here once Phase 2 is complete.
-# Phase 1 only defines the ABC — concrete providers are implemented in Phase 2.
+from src.workflow_runtime.locking.providers.memory_lock_provider import MemoryLockProvider
+from src.workflow_runtime.locking.providers.file_lock_provider import FileLockProvider
+from src.workflow_runtime.locking.providers.db_lock_provider import DBLockProvider
 
-__all__: list[str] = []
+__all__ = [
+    "MemoryLockProvider",
+    "FileLockProvider",
+    "DBLockProvider",
+]
