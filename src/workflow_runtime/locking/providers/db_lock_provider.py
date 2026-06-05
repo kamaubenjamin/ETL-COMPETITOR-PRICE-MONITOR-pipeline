@@ -117,7 +117,7 @@ class DBLockProvider(LockProvider):
                 lease_duration_s=lease_duration_s,
             )
 
-        except sqlite3.OperationalError as e:
+        except (sqlite3.OperationalError, sqlite3.ProgrammingError) as e:
             raise LockProviderError(
                 self.name,
                 original_exception=e,

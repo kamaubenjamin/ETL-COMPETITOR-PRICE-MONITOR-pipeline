@@ -21,6 +21,34 @@ These items should be prioritized to make pipeline tests hermetic in CI environm
 
 ---
 
+## Workflow Runtime Locking v1 (CLOSED)
+
+### Current Status
+
+**Resolved in v0.5-workflow-runtime-locking milestone.**
+
+The Workflow Runtime now has a complete locking subsystem that prevents duplicate concurrent execution of the same workflow. The solution includes three lock providers (database-backed with execution leases, file-based advisory locking, and in-memory for development), a pluggable provider registry with fallback chain, idempotency key deduplication for scheduled runs, and lease-based crash recovery.
+
+### Resolution
+
+- **Locking Infrastructure**: `src/workflow_runtime/locking/` package with 13 source files
+- **Database Schema**: `scripts/migrations/006_create_workflow_locks_table.sql` and `007_create_workflow_idempotency_table.sql`
+- **Configuration**: 13 constants in `src/workflow_runtime/locking/config.py` with documented defaults
+- **Test Coverage**: 158 locking-specific tests (all passing) + full regression suite (363/364 passing)
+- **Architecture Decision**: ADR-008-workflow-runtime-locking.md
+- **Implementation Plan**: `docs/architecture/WORKFLOW_RUNTIME_LOCKING_V1_PLAN.md`
+
+### Effort
+
+~13.5 person-days across 5 phases: Foundation → Infrastructure → Integration → Verification → Documentation & Release
+
+### Reference
+
+- `docs/architecture/WORKFLOW_RUNTIME_LOCKING_V1_SUMMARY.md`
+- `docs/adr/ADR-008-workflow-runtime-locking.md`
+
+---
+
 ## Contract Registry v1 Follow-Up
 
 ### Current Status

@@ -93,7 +93,8 @@ Status:
 - Contract Registry v1 is formally closed
 - CI Contract Validation v1 is implemented
 - Runtime Boundary Verification v1 (Tier 1) is completed
-- Next objective: Workflow Runtime Locking
+- ✅ **Workflow Runtime Locking v1 is completed**
+- Next objective: Entity Runtime Concurrency Hardening
 
 Completed foundation deliverables:
 - Contract Registry v1 with JSON Schema Draft 07 contracts, fixtures, local validation tests, and standalone validation script
@@ -103,9 +104,12 @@ Completed foundation deliverables:
   - `tests/boundaries/`: 22-test suite, exemption registry with 4 legacy entries
   - 0 active violations (compliant)
   - See `docs/architecture/RUNTIME_BOUNDARY_VERIFICATION_V1_SUMMARY.md`
+- **Workflow Runtime Locking v1** — database-backed row-level locking with execution leases, file-based fallback, idempotency keys for deduplication, and comprehensive test suite (158/158 passing)
+  - See `docs/architecture/WORKFLOW_RUNTIME_LOCKING_V1_SUMMARY.md`
+  - See `docs/adr/ADR-008-workflow-runtime-locking.md`
 
 Next planned objectives:
-1. Workflow Runtime Locking
+1. ✅ **Workflow Runtime Locking** (completed)
 2. Entity Runtime Concurrency Hardening
 3. Observability Improvements
 4. Review Runtime Audit Linking

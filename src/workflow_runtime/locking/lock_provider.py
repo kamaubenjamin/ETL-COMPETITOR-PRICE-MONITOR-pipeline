@@ -211,9 +211,31 @@ class LockProviderRegistry:
             key=lambda x: x[1],  # Sort by priority
         )
 
-        errors: list[tuple[str, str]] = []
+        last_error: Exception | None = None
         for provider, priority in sorted_providers:
-            return provider
+            try:
+                # Test the provider by attempting a trivial acquire (no-op)
+                # If it raises LockProviderError, try next provider
+                lock = provider.acquire(
+                    lock_id="__registry_health_check__",
+                    holder_id="registry",
+                    lease_duration_s=1,
+                )
+                if lock is not None:
+                    provider.release(lock)
+                return provider
+            except LockProviderError:
+                continue
+            except Exception as e:
+                last_error = e
+                continue
+
+        if last_error:
+            raise LockProviderError(
+                "registry",
+                message=f"All lock providers failed. Last error: {last_error}",
+                original_exception=last_error,
+            )
 
         raise LockProviderError(
             "registry",

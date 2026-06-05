@@ -1,10 +1,10 @@
 # Workflow Runtime Locking v1 — Handoff Document
 
-**Date**: 2026-06-04  
+**Date**: 2026-06-05  
 **Author**: Platform Architecture Review  
-**Status**: Phase 3 Complete  
+**Status**: Phase 5 Complete — Milestone Delivered  
 **Milestone**: v0.5-workflow-runtime-locking  
-**Phase**: 3 — Workflow Integration
+**Phase**: 5 — Documentation And Release
 
 ---
 
@@ -178,24 +178,35 @@ The `slots=True` tests may raise `TypeError` instead of `AttributeError` on some
 
 ---
 
-## Future Work (Phases 2-5)
+## All Phases Complete
 
-| Phase | Description | Dependencies |
-|-------|-------------|--------------|
-| **Phase 2** | Implement MemoryLockProvider, FileLockProvider, DBLockProvider, ExecutionGuard, IdempotencyRegistry | Phase 1 (complete) |
-| **Phase 3** | Update ExecutionContext/WorkflowResult contracts, integrate guard into WorkflowRunner.run() | Phase 2 |
-| **Phase 4** | Unit/integration/performance tests, boundary verification | Phase 3 |
-| **Phase 5** | Handoff, ADR, ROADMAP/TECHDEBT updates, CHANGELOG, git commit/tag | Phase 4 |
+The v0.5-workflow-runtime-locking milestone is **fully delivered** across all 5 phases:
+
+| Phase | Status | Description |
+|-------|--------|-------------|
+| **Phase 1 — Foundation** | ✅ Complete | Package layout, data models, ABCs, exceptions, config, migration scripts |
+| **Phase 2 — Locking Infrastructure** | ✅ Complete | MemoryLockProvider, FileLockProvider, DBLockProvider, Registry, ExecutionGuard, IdempotencyRegistry, lease refresh, stale cleanup |
+| **Phase 3 — Workflow Integration** | ✅ Complete | ExecutionContext/WorkflowResult contracts updated, WorkflowRunner integrated, idempotency key support |
+| **Phase 4 — Verification** | ✅ Complete | 158 locking tests, 17 integration tests, 9 performance benchmarks, boundary verification, full regression suite |
+| **Phase 5 — Documentation & Release** | ✅ Complete | ADR-008, ROADMAP, TECHDEBT, CHANGELOG, release notes, handoff finalized |
 
 ---
 
 ## Next Agent Instructions
 
-When starting Phase 2:
+The next agent should proceed to the next milestone after v0.5-workflow-runtime-locking:
 
-1. Read `docs/architecture/WORKFLOW_RUNTIME_LOCKING_V1_PLAN.md` (architecture decisions)
-2. Read `docs/architecture/WORKFLOW_RUNTIME_LOCKING_V1_IMPLEMENTATION_PLAN.md` (detailed implementation specs)
-3. Read `docs/architecture/WORKFLOW_RUNTIME_LOCKING_V1_SUMMARY.md` (what's already built)
-4. Implement providers in this order: MemoryLockProvider → FileLockProvider → DBLockProvider → LockProviderRegistry → IdempotencyRegistry → ExecutionGuard → LeaseRefresh → StaleCleanup
-5. Run `python -m pytest tests/locking/ -v` after each provider implementation
-6. Update `tests/locking/conftest.py` with provider-specific fixtures as needed
+1. Read `docs/architecture/NEXT_MILESTONE_RECOMMENDATION.md` for recommended next steps
+2. The next planned objectives per `docs/ROADMAP.md`:
+   - Entity Runtime Concurrency Hardening
+   - Observability Improvements
+   - Review Runtime Audit Linking
+3. Read `docs/architecture/WORKFLOW_RUNTIME_LOCKING_V1_SUMMARY.md` for full implementation context
+4. Read `docs/adr/ADR-008-workflow-runtime-locking.md` for the architecture decision
+
+For any future work on locking specifically (v2):
+- Multi-host deployments should replace `DBLockProvider` with `RedisLockProvider` or similar distributed strategy
+- Dynamic lease TTL estimation from historical execution times
+- Dead-letter queue for persistent lock failures
+- Cross-workflow lock ordering for workflow dependency graphs
+- See `docs/architecture/WORKFLOW_RUNTIME_LOCKING_V1_PLAN.md` appendix for full v2 roadmap

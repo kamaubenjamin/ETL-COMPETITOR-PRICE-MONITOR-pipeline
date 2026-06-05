@@ -10,12 +10,11 @@
       "technology": "QLED"
     },
     "confidence_score": 100.0,
-    "match_count": 3,
-    "last_updated": "2026-05-08T06:51:23.383525",
+    "match_count": 2,
+    "last_updated": "2026-06-05T09:45:13.740585",
     "source_products": [
-      "Samsung 55\" QLED TV 4K UHD",
-      "Samsung 55 Inch QLED Television",
-      "Samsung 55\" QLED 4K TV"
+      "Samsung 55\" QLED TV",
+      "Samsung 55 inch QLED Television"
     ]
   },
   "lg_65_c6df5acc": {
@@ -240,6 +239,38 @@
     "source_products": [
       "Classic Detergent Lavender - 1Kg",
       "Classic Detergent Lavender - 500G"
+    ]
+  },
+  "samsung_55_47f8bf53": {
+    "canonical_id": "samsung_55_47f8bf53",
+    "canonical_name": "samsung 55\" None  TV",
+    "brand": "samsung",
+    "category": "tv",
+    "model": null,
+    "size": "55",
+    "specifications": {},
+    "confidence_score": 73.86767070863434,
+    "match_count": 2,
+    "last_updated": "2026-06-05T09:45:13.889672",
+    "source_products": [
+      "Samsung 55 inch TV",
+      "LG 55 inch TV"
+    ]
+  },
+  "product_f5bf48aa": {
+    "canonical_id": "product_f5bf48aa",
+    "canonical_name": "product",
+    "brand": "product",
+    "category": "other",
+    "model": null,
+    "size": null,
+    "specifications": {},
+    "confidence_score": 99.0404411764706,
+    "match_count": 2,
+    "last_updated": "2026-06-05T09:45:13.930039",
+    "source_products": [
+      "Product A",
+      "Product B"
     ]
   }
 }
