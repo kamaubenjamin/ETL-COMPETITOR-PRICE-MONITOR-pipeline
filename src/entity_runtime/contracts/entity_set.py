@@ -29,6 +29,8 @@ class EntitySet:
     extraction_metadata: Dict[str, Any] = field(default_factory=dict)
     extraction_confidence: float = 0.0
     created_at: str = ""
+    entity_version: int = 0
+    """Version number for concurrency hardening. 0 = no versioning (legacy)."""
 
     def to_dict(self) -> Dict[str, Any]:
         return {

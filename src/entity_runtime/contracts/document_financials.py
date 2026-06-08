@@ -33,6 +33,8 @@ class DocumentFinancials:
     tax_rate: Optional[float] = None
     currency: Optional[str] = None
     net_total: Optional[float] = None
+    entity_version: int = 0
+    """Version number for concurrency hardening. 0 = no versioning (legacy)."""
 
     def to_dict(self) -> Dict[str, Any]:
         return {

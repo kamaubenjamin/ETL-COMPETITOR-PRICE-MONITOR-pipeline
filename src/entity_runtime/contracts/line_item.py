@@ -28,6 +28,8 @@ class LineItem:
     tax_amount: Optional[float] = None
     discount_amount: Optional[float] = None
     line_number: Optional[int] = None
+    entity_version: int = 0
+    """Version number for concurrency hardening. 0 = no versioning (legacy)."""
 
     def to_dict(self) -> Dict[str, Any]:
         return {

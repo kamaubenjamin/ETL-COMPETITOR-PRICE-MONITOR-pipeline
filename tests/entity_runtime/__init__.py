@@ -1,0 +1,1 @@
+"""Entity Runtime Concurrency Hardening — Phase 1 foundation tests."""

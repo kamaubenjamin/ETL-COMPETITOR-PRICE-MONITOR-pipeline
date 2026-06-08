@@ -26,6 +26,8 @@ class Customer:
     phone: Optional[str] = None
     customer_id: Optional[str] = None
     tax_id: Optional[str] = None
+    entity_version: int = 0
+    """Version number for concurrency hardening. 0 = no versioning (legacy)."""
 
     def to_dict(self) -> Dict[str, Any]:
         return {

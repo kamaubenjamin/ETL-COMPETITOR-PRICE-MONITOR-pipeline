@@ -25,6 +25,8 @@ class Supplier:
     email: Optional[str] = None
     phone: Optional[str] = None
     registration_number: Optional[str] = None
+    entity_version: int = 0
+    """Version number for concurrency hardening. 0 = no versioning (legacy)."""
 
     def to_dict(self) -> Dict[str, Any]:
         return {

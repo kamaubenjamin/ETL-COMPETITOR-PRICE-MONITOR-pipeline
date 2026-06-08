@@ -33,6 +33,8 @@ class DocumentReference:
     payment_terms: Optional[str] = None
     currency: Optional[str] = None
     document_status: Optional[str] = None
+    entity_version: int = 0
+    """Version number for concurrency hardening. 0 = no versioning (legacy)."""
 
     def to_dict(self) -> Dict[str, Any]:
         return {
