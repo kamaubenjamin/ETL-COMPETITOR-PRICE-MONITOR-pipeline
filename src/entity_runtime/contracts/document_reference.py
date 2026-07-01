@@ -51,6 +51,7 @@ class DocumentReference:
             "payment_terms": self.payment_terms,
             "currency": self.currency,
             "document_status": self.document_status,
+            "entity_version": self.entity_version,
         }
 
     def to_json(self, **kwargs: Any) -> str:

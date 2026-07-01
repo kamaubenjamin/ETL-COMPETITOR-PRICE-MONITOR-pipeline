@@ -33,6 +33,7 @@ from src.entity_runtime.concurrency import (
     PessimisticLockManager,
     PessimisticLockReleasePolicy,
 )
+from src.entity_runtime.integration import EntityWorkflowAdapter
 from src.entity_runtime.confidence import ConfidenceScorer
 from src.entity_runtime.contracts import (
     Customer,

@@ -40,6 +40,7 @@ class Supplier:
             "email": self.email,
             "phone": self.phone,
             "registration_number": self.registration_number,
+            "entity_version": self.entity_version,
         }
 
     def to_json(self, **kwargs: Any) -> str:

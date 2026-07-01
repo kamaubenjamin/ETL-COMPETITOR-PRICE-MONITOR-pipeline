@@ -50,6 +50,7 @@ class DocumentFinancials:
             "tax_rate": self.tax_rate,
             "currency": self.currency,
             "net_total": self.net_total,
+            "entity_version": self.entity_version,
         }
 
     def to_json(self, **kwargs: Any) -> str:

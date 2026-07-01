@@ -42,6 +42,7 @@ class Customer:
             "phone": self.phone,
             "customer_id": self.customer_id,
             "tax_id": self.tax_id,
+            "entity_version": self.entity_version,
         }
 
     def to_json(self, **kwargs: Any) -> str:

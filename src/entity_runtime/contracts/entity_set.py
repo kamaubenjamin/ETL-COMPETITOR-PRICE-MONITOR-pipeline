@@ -36,6 +36,7 @@ class EntitySet:
         return {
             "source_document_id": self.source_document_id,
             "extraction_confidence": round(float(self.extraction_confidence), 2),
+            "entity_version": self.entity_version,
             "entity_counts": {
                 "references": len(self.references),
                 "line_items": len(self.line_items),

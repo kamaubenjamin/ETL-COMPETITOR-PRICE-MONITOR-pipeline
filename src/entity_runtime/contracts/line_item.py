@@ -46,6 +46,7 @@ class LineItem:
             "tax_amount": self.tax_amount,
             "discount_amount": self.discount_amount,
             "line_number": self.line_number,
+            "entity_version": self.entity_version,
         }
 
     def to_json(self, **kwargs: Any) -> str:
