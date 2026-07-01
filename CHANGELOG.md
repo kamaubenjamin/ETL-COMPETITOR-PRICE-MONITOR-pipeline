@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Added Workflow Runtime Locking v1 (v0.5) — database-backed row-level locking with execution leases, file-based fallback, idempotency key deduplication, and comprehensive test suite (158/158 locking tests passing).
+- Added Entity Runtime Concurrency Hardening (v0.5) — versioned entity persistence, optimistic and pessimistic locking, execution leasing, idempotency protection, graceful degradation, and verification coverage.
 - Added CI Contract Validation v1 with a lightweight GitHub Actions workflow for contract tests and standalone registry validation.
 - Closed Contract Registry v1 with JSON Schema Draft 07 schemas, examples, local validation tooling, closure documentation, roadmap updates, and release notes.
 - Added FlowSync Supabase telemetry integration with reusable contracts, retry-aware REST client, and `.env`-driven credentials.

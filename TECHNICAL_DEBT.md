@@ -76,6 +76,30 @@ Medium (remaining v0.5 Runtime Hardening follow-up).
 
 ---
 
+## Entity Runtime Concurrency Hardening (CLOSED)
+
+### Current Status
+
+**Resolved in the v0.5-entity-runtime-concurrency-hardening milestone.**
+
+The Entity Runtime now supports versioned persistence, optimistic locking, pessimistic lock escalation, execution leases, and idempotency protection for entity writes. The implementation includes runtime integration, graceful degradation, and regression coverage for unit, integration, crash-recovery, and verification scenarios.
+
+### Resolution
+
+- Versioned entity persistence and history via `src/entity_runtime/store/`
+- Concurrency orchestration via `src/entity_runtime/concurrency/guard.py`
+- Runtime integration via `src/entity_runtime/orchestration/orchestrator.py`
+- Regression and verification coverage under `tests/entity_runtime/`
+- Architecture and handoff documentation under `docs/architecture/` and `docs/adr/`
+
+### Reference
+
+- `docs/architecture/ENTITY_RUNTIME_CONCURRENCY_HARDENING_V1_SUMMARY.md`
+- `docs/architecture/ENTITY_RUNTIME_CONCURRENCY_HARDENING_V1_HANDOFF.md`
+- `docs/adr/ADR-010-entity-runtime-concurrency-hardening.md`
+
+---
+
 ## Scheduler State Separation
 
 ### Current Issue

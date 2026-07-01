@@ -94,7 +94,8 @@ Status:
 - CI Contract Validation v1 is implemented
 - Runtime Boundary Verification v1 (Tier 1) is completed
 - ✅ **Workflow Runtime Locking v1 is completed**
-- Next objective: Entity Runtime Concurrency Hardening
+- ✅ **Entity Runtime Concurrency Hardening is completed**
+- Next objective: Observability Improvements
 
 Completed foundation deliverables:
 - Contract Registry v1 with JSON Schema Draft 07 contracts, fixtures, local validation tests, and standalone validation script
@@ -110,7 +111,7 @@ Completed foundation deliverables:
 
 Next planned objectives:
 1. ✅ **Workflow Runtime Locking** (completed)
-2. Entity Runtime Concurrency Hardening
+2. ✅ **Entity Runtime Concurrency Hardening** (completed)
 3. Observability Improvements
 4. Review Runtime Audit Linking
 5. Runtime Boundary Verification Tier 2 & 3 (future)
