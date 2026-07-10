@@ -10,9 +10,22 @@ from .contracts import (
     RuntimeStatus,
     RuntimeTraceContext,
 )
+from .emitter import EmitResult, ObservabilityEmitter, emit_event, emit_metric
+from .sinks import (
+    InMemoryObservabilitySink,
+    JsonlObservabilitySink,
+    NoOpObservabilitySink,
+    ObservabilitySink,
+)
 
 __all__ = [
+    "EmitResult",
+    "InMemoryObservabilitySink",
+    "JsonlObservabilitySink",
     "MetricType",
+    "NoOpObservabilitySink",
+    "ObservabilityEmitter",
+    "ObservabilitySink",
     "RuntimeErrorRecord",
     "RuntimeEvent",
     "RuntimeMetric",
@@ -20,4 +33,6 @@ __all__ = [
     "RuntimeSeverity",
     "RuntimeStatus",
     "RuntimeTraceContext",
+    "emit_event",
+    "emit_metric",
 ]
