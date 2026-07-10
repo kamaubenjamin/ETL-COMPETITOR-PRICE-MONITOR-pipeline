@@ -13,10 +13,11 @@ IMPLEMENTED_STAGE_TYPES = frozenset(
         "alert",
         "matching",
         "report",
+        "validate_data",
     }
 )
 
-RESERVED_STAGE_TYPES = frozenset({"validate_data", "sort", "aggregate"})
+RESERVED_STAGE_TYPES = frozenset({"sort", "aggregate"})
 WORKFLOW_STAGE_TYPES = IMPLEMENTED_STAGE_TYPES | RESERVED_STAGE_TYPES
 
 
@@ -26,4 +27,3 @@ def is_workflow_stage_type(stage_type: str) -> bool:
 
 def is_implemented_stage_type(stage_type: str) -> bool:
     return stage_type in IMPLEMENTED_STAGE_TYPES
-

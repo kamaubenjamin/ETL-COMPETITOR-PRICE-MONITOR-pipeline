@@ -30,6 +30,7 @@ from src.workflow_runtime.dsl.workflow_validator import WorkflowValidator
 from src.workflow_runtime.operations.base import STAGE_REGISTRY
 from src.workflow_runtime.operations.ingest_stage import IngestStage
 from src.workflow_runtime.operations.transform_stage import TransformStage
+from src.workflow_runtime.operations.validation_stage import ValidationStage
 from src.workflow_runtime.operations.filter_stage import FilterStage
 from src.workflow_runtime.operations.fuzzy_match_stage import FuzzyMatchStage
 from src.workflow_runtime.operations.compare_stage import CompareStage
@@ -388,7 +389,7 @@ class TestWorkflowValidator:
 
 class TestStageRegistry:
     def test_all_stages_registered(self):
-        expected = {"document_ingest", "entity_extract", "transform", "filter", "fuzzy_match", "compare", "alert", "matching", "report"}
+        expected = {"document_ingest", "entity_extract", "transform", "filter", "fuzzy_match", "compare", "alert", "matching", "report", "validate_data"}
         assert set(STAGE_REGISTRY.keys()) == expected
 
     def test_stage_class_types(self):
@@ -401,6 +402,7 @@ class TestStageRegistry:
         assert STAGE_REGISTRY["alert"] is AlertStage
         assert STAGE_REGISTRY["matching"] is MatchingStage
         assert STAGE_REGISTRY["report"] is ReportStage
+        assert STAGE_REGISTRY["validate_data"] is ValidationStage
 
 
 class TestIngestStage:
@@ -488,6 +490,103 @@ class TestTransformStage:
         assert "private-name" not in serialized_metadata
         assert "sensitive" not in serialized_metadata
         assert "rules" not in result.metadata
+
+
+class TestValidationStage:
+    @staticmethod
+    def _context():
+        return ExecutionContext(
+            pipeline_run_id="run-validation",
+            workspace_id="ws",
+            workflow_id="wf-validation",
+            started_at="2025-01-01T00:00:00",
+        )
+
+    def test_fail_stage_returns_failed_result_for_errors(self):
+        stage = ValidationStage(config={
+            "plan": {
+                "contract_version": 1,
+                "failure_policy": "fail_stage",
+                "rules": [{"id": "required", "type": "required", "field": "name"}],
+            }
+        })
+        result = stage.run(pd.DataFrame({"name": ["Acme", None]}), self._context())
+        assert result.status == ExecutionStatus.FAILED.value
+        assert result.output_artifact is None
+        assert result.metadata["validation"]["error_count"] == 1
+        assert result.error == "Data validation failed with 1 error issue(s)."
+
+    def test_warning_only_fail_stage_succeeds_with_unchanged_dataframe(self):
+        source = pd.DataFrame({"currency": ["EUR"]})
+        stage = ValidationStage(config={
+            "plan": {
+                "contract_version": 1,
+                "failure_policy": "fail_stage",
+                "rules": [
+                    {"id": "currency", "type": "allowed_values", "field": "currency", "values": ["KES"], "severity": "warning"}
+                ],
+            }
+        })
+        result = stage.run(source, self._context())
+        assert result.status == ExecutionStatus.SUCCESS.value
+        assert isinstance(result.output_artifact, pd.DataFrame)
+        assert result.output_artifact is not source
+        pd.testing.assert_frame_equal(result.output_artifact, source)
+        assert result.metadata["validation"]["warning_count"] == 1
+        assert result.metadata["validation"]["valid"] is True
+
+    def test_report_only_succeeds_with_errors_and_preserves_list_artifact(self):
+        source = [{"name": None}, {"name": "Acme"}]
+        stage = ValidationStage(config={
+            "plan": {
+                "contract_version": 1,
+                "failure_policy": "report_only",
+                "rules": [{"id": "required", "type": "required", "field": "name"}],
+            }
+        })
+        result = stage.run(source, self._context())
+        assert result.status == ExecutionStatus.SUCCESS.value
+        assert result.output_artifact == source
+        assert result.output_artifact is not source
+        assert result.metadata["validation"]["error_count"] == 1
+        assert source == [{"name": None}, {"name": "Acme"}]
+
+    def test_invalid_plan_returns_failed_result(self):
+        stage = ValidationStage(config={
+            "plan": {
+                "contract_version": 1,
+                "rules": [{"id": "missing", "type": "required", "field": "absent"}],
+            }
+        })
+        result = stage.run(pd.DataFrame({"present": ["private-value"]}), self._context())
+        assert result.status == ExecutionStatus.FAILED.value
+        assert result.metadata == {}
+        assert "private-value" not in result.error
+        assert "$.rules[0].field" in result.error
+
+    def test_unsupported_artifact_returns_failed_result(self):
+        stage = ValidationStage(config={"plan": {"contract_version": 1, "rules": []}})
+        result = stage.run({"name": "Acme"}, self._context())
+        assert result.status == ExecutionStatus.FAILED.value
+        assert "DataFrame or list[dict]" in result.error
+
+    def test_metadata_is_bounded_and_privacy_safe(self):
+        secret = "customer-secret-123"
+        stage = ValidationStage(config={
+            "plan": {
+                "contract_version": 1,
+                "failure_policy": "report_only",
+                "issue_limit": 1,
+                "rules": [{"id": "required", "type": "required", "field": "name"}],
+            }
+        })
+        result = stage.run(pd.DataFrame({"name": [None, None], "other": [secret, secret]}), self._context())
+        serialized = json.dumps(result.metadata)
+        assert result.status == ExecutionStatus.SUCCESS.value
+        assert result.metadata["validation"]["error_count"] == 2
+        assert result.metadata["validation"]["detail_count"] == 1
+        assert result.metadata["validation"]["truncated"] is True
+        assert secret not in serialized
 
 
 class TestFilterStage:

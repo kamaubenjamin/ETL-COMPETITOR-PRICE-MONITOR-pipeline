@@ -128,13 +128,18 @@ def test_validation_plan_and_result_contracts():
             ],
         }
     )
-    issue = ValidationIssue(row_index=3, rule_id="required-price", field="price", severity="error", message="Required field is missing.")
+    issue = ValidationIssue(
+        row_index=3, rule_id="required-price", field="price", severity="error",
+        code="required_missing", message="Required field is missing.",
+    )
     result = DataValidationResult(
         valid=False, total_rows=4, valid_rows=3, invalid_rows=1,
         error_count=1, warning_count=0, issues=(issue,), truncated=False,
     )
     assert plan.to_dict()["failure_policy"] == "report_only"
     assert result.to_dict()["issues"][0]["row_index"] == 3
+    assert result.to_dict()["issues"][0]["code"] == "required_missing"
+    assert result.to_dict()["total_issue_count"] == 1
     json.dumps(plan.to_dict())
     json.dumps(result.to_dict())
     assert isinstance(result, ValidationResult)

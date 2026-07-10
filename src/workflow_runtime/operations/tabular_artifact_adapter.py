@@ -19,6 +19,5 @@ def to_dataframe(input_artifact: Any) -> pd.DataFrame:
     if isinstance(input_artifact, list) and all(isinstance(row, dict) for row in input_artifact):
         return pd.DataFrame(deepcopy(input_artifact))
     raise UnsupportedTabularArtifactError(
-        "TransformStage supports only pandas DataFrame or list[dict] input artifacts."
+        "Tabular workflow stages support only pandas DataFrame or list[dict] input artifacts."
     )
-

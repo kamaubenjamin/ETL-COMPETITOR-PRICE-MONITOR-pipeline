@@ -303,6 +303,8 @@ class ValidationRule:
         data = _mapping(payload, path)
         allowed = {"id", "type", "field", "severity", "value", "values", "pattern_id"}
         _check_keys(data, allowed=allowed, required={"id", "type", "field"}, path=path)
+        if "values" in data and not isinstance(data["values"], list):
+            raise _error(INVALID_TYPE, "values must be an array.", (*path, "values"))
         try:
             return cls(
                 id=data["id"], type=data["type"], field=data["field"], severity=data.get("severity", "error"),
@@ -371,6 +373,7 @@ class ValidationIssue:
     field: str
     severity: str
     message: str
+    code: str = "validation_failed"
 
     def __post_init__(self) -> None:
         if not isinstance(self.row_index, (int, str)) or isinstance(self.row_index, bool):
@@ -379,9 +382,17 @@ class ValidationIssue:
         object.__setattr__(self, "field", _nonempty_string(self.field, ("field",)))
         object.__setattr__(self, "severity", _choice(self.severity, VALIDATION_SEVERITIES, ("severity",)))
         object.__setattr__(self, "message", _nonempty_string(self.message, ("message",)))
+        object.__setattr__(self, "code", _nonempty_string(self.code, ("code",)))
 
     def to_dict(self) -> dict[str, Any]:
-        return {"row_index": self.row_index, "rule_id": self.rule_id, "field": self.field, "severity": self.severity, "message": self.message}
+        return {
+            "row_index": self.row_index,
+            "rule_id": self.rule_id,
+            "field": self.field,
+            "severity": self.severity,
+            "code": self.code,
+            "message": self.message,
+        }
 
 
 @dataclass(frozen=True, slots=True)
@@ -413,6 +424,8 @@ class ValidationResult:
         return {
             "valid": self.valid, "total_rows": self.total_rows, "valid_rows": self.valid_rows,
             "invalid_rows": self.invalid_rows, "error_count": self.error_count, "warning_count": self.warning_count,
+            "total_issue_count": self.error_count + self.warning_count,
+            "detail_count": len(self.issues),
             "issues": [issue.to_dict() for issue in self.issues], "truncated": self.truncated,
         }
 

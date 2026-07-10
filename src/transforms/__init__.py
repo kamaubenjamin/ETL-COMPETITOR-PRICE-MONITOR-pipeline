@@ -21,6 +21,7 @@ from src.transforms.field_mapping import apply_field_mappings, coerce_series
 from src.transforms.pipeline import TransformationPipeline
 from src.transforms.regex_registry import RegexRegistry
 from src.transforms.registry import DEFAULT_OPERATION_REGISTRY, OperationRegistry
+from src.transforms.validation import TabularDataValidator, validate_data
 
 __all__ = [
     "AggregationDefinition",
@@ -35,6 +36,7 @@ __all__ = [
     "RegexRegistry",
     "SortKey",
     "SortPlan",
+    "TabularDataValidator",
     "TransformationPipeline",
     "TransformationExecutor",
     "TransformationPlan",
@@ -44,4 +46,5 @@ __all__ = [
     "ValidationRule",
     "apply_field_mappings",
     "coerce_series",
+    "validate_data",
 ]
