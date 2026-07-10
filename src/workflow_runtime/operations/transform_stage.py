@@ -27,6 +27,19 @@ class TransformStage(BaseStage):
     def run(self, input_artifact: Any, context: ExecutionContext) -> StageResult:
         start = time.monotonic()
         try:
+            if self._config == {"operation": "identity"}:
+                elapsed_ms = int((time.monotonic() - start) * 1000)
+                return StageResult(
+                    stage_name="transform",
+                    status=ExecutionStatus.SUCCESS.value,
+                    output_artifact=input_artifact,
+                    duration_ms=elapsed_ms,
+                    metadata={
+                        "operation_ids": ["identity"],
+                        "operation_count": 1,
+                    },
+                )
+
             if "plan" in self._config and "rules" in self._config:
                 raise ValueError("TransformStage config must use either 'plan' or 'rules', not both.")
 

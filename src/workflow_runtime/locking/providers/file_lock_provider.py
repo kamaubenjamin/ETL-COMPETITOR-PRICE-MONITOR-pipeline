@@ -175,7 +175,6 @@ class FileLockProvider(LockProvider):
         """
         lock_path = self._lock_path(lock.lock_id)
         now = datetime.utcnow()
-        new_expires_at = now + timedelta(seconds=lock.lease_duration_s)
 
         try:
             metadata = self._read_metadata(lock_path)
@@ -187,6 +186,11 @@ class FileLockProvider(LockProvider):
 
         if metadata.get("holder_id") != lock.holder_id:
             return None  # Not our lock
+
+        existing_expires_at = datetime.fromisoformat(lock.expires_at)
+        new_expires_at = max(now, existing_expires_at) + timedelta(
+            seconds=lock.lease_duration_s
+        )
 
         # Update metadata
         metadata["expires_at"] = new_expires_at.isoformat()

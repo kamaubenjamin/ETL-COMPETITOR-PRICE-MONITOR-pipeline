@@ -35,7 +35,12 @@ def test_pipeline():
             # Sample of matched data
             if len(matched_products) > 0:
                 print("Sample matched products:")
-                print(matched_products[['product_name', 'source', '_source_type', 'match_id', 'supplier_price', 'price']].head(10).to_string())
+                sample_columns = [
+                    column
+                    for column in ['product_name', 'source', '_source_type', 'match_id', 'supplier_price', 'price']
+                    if column in matched_products.columns
+                ]
+                print(matched_products[sample_columns].head(10).to_string())
 
                 # Check for external sources in matched data
                 external_matched = matched_products[matched_products['_source_type'] == 'external']

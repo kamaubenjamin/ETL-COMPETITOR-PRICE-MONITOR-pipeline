@@ -458,6 +458,36 @@ class TestTransformStage:
         assert result.output_artifact["source"].tolist() == ["legacy", "legacy"]
         assert source == [{"name": "A"}, {"name": "B"}]
 
+    def test_legacy_identity_passes_through_dict_artifact(self):
+        stage = TransformStage(config={"operation": "identity"})
+        ctx = ExecutionContext(
+            pipeline_run_id="run-identity", workspace_id="ws", workflow_id="wf-identity",
+            started_at="2025-01-01T00:00:00",
+        )
+        source = {"data": 1}
+
+        result = stage.run(source, ctx)
+
+        assert result.status == ExecutionStatus.SUCCESS.value
+        assert result.output_artifact is source
+        assert result.metadata == {
+            "operation_ids": ["identity"],
+            "operation_count": 1,
+        }
+
+    def test_non_identity_operation_does_not_bypass_artifact_validation(self):
+        stage = TransformStage(config={"operation": "rename"})
+        ctx = ExecutionContext(
+            pipeline_run_id="run-non-identity", workspace_id="ws", workflow_id="wf-non-identity",
+            started_at="2025-01-01T00:00:00",
+        )
+
+        result = stage.run({"data": 1}, ctx)
+
+        assert result.status == ExecutionStatus.FAILED.value
+        assert result.output_artifact is None
+        assert "DataFrame or list[dict]" in result.error
+
     def test_invalid_plan_returns_failed_result(self):
         stage = TransformStage(config={"plan": {"contract_version": 1, "operations": [{"id": "bad", "type": "execute_python"}]}})
         ctx = ExecutionContext(
