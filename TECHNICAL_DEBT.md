@@ -4,7 +4,7 @@ Technical debt and missing test fixtures
 
 ### Current Status
 
-**Implementation complete for v0.6; final tag pending full-suite environment verification.**
+**Closed and tagged as `v0.6-extraction-transformation-capability-hardening`.**
 
 Delivered under `src/transforms/` and Workflow Runtime:
 
@@ -15,9 +15,6 @@ Delivered under `src/transforms/` and Workflow Runtime:
 
 ### Remaining Verification Debt
 
-- The active Codex Python environment does not contain `rapidfuzz` or `playwright`, although both are declared in `requirements.txt`.
-- `python -m pytest -q` stops during collection with nine dependency-related errors; no result is available for affected tests.
-- Before tagging v0.6, provision declared requirements and rerun the complete suite.
 - The boundary verifier still skips `src/alerts/alert_engine.py` and `src/entity_runtime/engine.py` because of existing U+FEFF characters; these warnings predate v0.6 and should be corrected separately.
 
 ### Deferred Capability Debt
@@ -33,6 +30,29 @@ Delivered under `src/transforms/` and Workflow Runtime:
 - `docs/architecture/EXTRACTION_TRANSFORMATION_CAPABILITY_HARDENING_V1_SUMMARY.md`
 - `docs/architecture/EXTRACTION_TRANSFORMATION_CAPABILITY_HARDENING_V1_HANDOFF.md`
 - `docs/releases/v0.6-extraction-transformation-capability-hardening.md`
+
+---
+
+## Review / Correction Runtime v1
+
+### Current Status
+
+**v0.7 architecture and implementation planning complete; implementation not started.**
+
+Confirmed debt in the existing prototype:
+
+- Partial lifecycle (`pending`, `in_review`, `approved`, `rejected`, `corrected`) without skip, reprocess, or resolved semantics
+- Corrections are not field-addressed, artifact-version-aware, or separated from unsafe metadata
+- Feedback storage is replaceable rather than an append-only ordered audit trail
+- No idempotent case commands, expected-version conflict handling, or declarative reprocess contract
+- Unrestricted metadata and embedded review snapshots can expose sensitive values
+- No production persistence, authenticated reviewer boundary, API, or UI; these remain deferred
+
+Planned resolution is documented in:
+
+- `docs/architecture/REVIEW_CORRECTION_RUNTIME_V1_PLAN.md`
+- `docs/architecture/REVIEW_CORRECTION_RUNTIME_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-013-review-correction-runtime.md`
 
 ---
 

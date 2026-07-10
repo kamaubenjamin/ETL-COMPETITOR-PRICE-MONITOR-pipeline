@@ -89,9 +89,8 @@ Completed items:
 ### v0.6 Extraction & Transformation Capability Hardening
 
 Status:
-- Phases 1-5 implemented
-- Targeted regression and runtime-boundary verification pass
-- Final release tag pending a full-suite run in an environment with all declared requirements
+- Closed and tagged as `v0.6-extraction-transformation-capability-hardening`
+- Full regression and runtime-boundary verification pass
 
 Delivered capabilities:
 - Versioned deterministic transformation, mapping, validation, sorting, and aggregation contracts
@@ -105,8 +104,22 @@ References:
 - `docs/adr/ADR-012-extraction-transformation-capability-hardening.md`
 - `docs/releases/v0.6-extraction-transformation-capability-hardening.md`
 
-Release caveat:
-- The active Codex interpreter lacks declared requirements `rapidfuzz` and `playwright`, causing nine full-suite collection errors. Provision dependencies and complete the full suite before tagging.
+### v0.7 Review / Correction Runtime
+
+Status:
+- Architecture and phased implementation planning complete
+- Implementation not started
+
+Planned capabilities:
+- Deterministic review case lifecycle and reviewer decisions
+- Field-level, version-aware corrections with append-only audit and lineage
+- Non-blocking declarative reprocess requests owned by Workflow Runtime
+- Backend source of truth for future Streamlit and FlowSync consumers
+
+References:
+- `docs/architecture/REVIEW_CORRECTION_RUNTIME_V1_PLAN.md`
+- `docs/architecture/REVIEW_CORRECTION_RUNTIME_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-013-review-correction-runtime.md`
 
 ## Prior Milestone Context
 
@@ -237,7 +250,7 @@ Dependencies:
 
 ## Next Milestones
 
-- Complete environment-provisioned v0.6 full regression and create the final tag
+- Implement v0.7 Review / Correction Runtime one phase at a time
 - Workflow Runtime Locking
 - Entity Runtime Concurrency Hardening
 - Observability Improvements
