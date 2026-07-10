@@ -1,7 +1,7 @@
 # Extraction & Transformation Capability Hardening v1 Implementation Plan
 
 **Milestone:** v0.6  
-**Status:** Approved for phased implementation  
+**Status:** Phases 1-5 implemented; final tag pending full-suite environment verification
 **Architecture:** `docs/architecture/EXTRACTION_TRANSFORMATION_CAPABILITY_HARDENING_V1_PLAN.md`  
 **Delivery model:** One phase per Codex session  
 
@@ -435,3 +435,7 @@ After Phase 5 verification and release documentation are complete:
 - Push the branch and tag only when explicitly requested.
 
 No phase automatically starts, commits, pushes, or tags the next phase.
+
+## Completion Record
+
+All five implementation phases are complete. Phase 5 added deterministic integration coverage and closure documentation. Targeted regression (210 tests), boundary tests (22), and the standalone boundary verifier pass. The full suite is blocked during collection in the active interpreter because declared requirements `rapidfuzz` and `playwright` are not installed; the release tag must wait for a provisioned full-suite pass.

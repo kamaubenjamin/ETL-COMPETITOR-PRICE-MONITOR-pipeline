@@ -84,7 +84,31 @@ Completed items:
 - Runtime Boundaries document
 - Agent onboarding context
 
-## Current Milestone
+## Latest Delivery
+
+### v0.6 Extraction & Transformation Capability Hardening
+
+Status:
+- Phases 1-5 implemented
+- Targeted regression and runtime-boundary verification pass
+- Final release tag pending a full-suite run in an environment with all declared requirements
+
+Delivered capabilities:
+- Versioned deterministic transformation, mapping, validation, sorting, and aggregation contracts
+- Real Workflow Runtime `transform`, `validate_data`, `sort`, and `aggregate` behavior
+- Authoritative workflow stage catalog aligned with runtime registration and validation
+- Privacy-safe metadata, immutable inputs, deterministic integration coverage, and legacy rule compatibility
+
+References:
+- `docs/architecture/EXTRACTION_TRANSFORMATION_CAPABILITY_HARDENING_V1_SUMMARY.md`
+- `docs/architecture/EXTRACTION_TRANSFORMATION_CAPABILITY_HARDENING_V1_HANDOFF.md`
+- `docs/adr/ADR-012-extraction-transformation-capability-hardening.md`
+- `docs/releases/v0.6-extraction-transformation-capability-hardening.md`
+
+Release caveat:
+- The active Codex interpreter lacks declared requirements `rapidfuzz` and `playwright`, causing nine full-suite collection errors. Provision dependencies and complete the full suite before tagging.
+
+## Prior Milestone Context
 
 ### v0.5 Runtime Hardening
 
@@ -213,6 +237,7 @@ Dependencies:
 
 ## Next Milestones
 
+- Complete environment-provisioned v0.6 full regression and create the final tag
 - Workflow Runtime Locking
 - Entity Runtime Concurrency Hardening
 - Observability Improvements

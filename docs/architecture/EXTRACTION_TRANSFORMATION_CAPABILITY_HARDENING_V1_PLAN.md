@@ -1,7 +1,7 @@
 # Extraction & Transformation Capability Hardening v1 Architecture Plan
 
 **Milestone:** v0.6  
-**Status:** Proposed  
+**Status:** Implemented; final release tag pending full-suite environment verification
 **Scope:** Deterministic extraction, transformation, validation, sorting, and aggregation capabilities  
 
 ## 1. Problem Statement
@@ -139,7 +139,7 @@ Supported v1 operation types are intentionally small: `rename`, `field_map`, `re
 ```json
 {
   "id": "product_sku_v1",
-  "pattern": "\\b(?<sku>[A-Z]{2,5}-[0-9]{2,8})\\b",
+  "pattern": "\\b(?P<sku>[A-Z]{2,5}-[0-9]{2,8})\\b",
   "flags": ["IGNORECASE"],
   "description": "Deterministic product SKU extraction"
 }
@@ -350,3 +350,9 @@ v0.6 is ready for release when:
 - The roadmap and technical debt distinguish completed v0.6 work from deferred OCR, MDM, UI, API, LLM, streaming, and advanced analytics work.
 - A release summary and `docs/releases/v0.6-extraction-transformation-capability-hardening.md` are prepared.
 - The working tree is clean after the release commit, and the final tag is created manually only after verification.
+
+## 16. Completion Status
+
+Phases 1-5 are implemented. Deterministic end-to-end coverage for `transform -> validate_data -> sort -> aggregate` passes, along with 210 targeted regression tests, 22 boundary tests, and a compliant standalone boundary scan. See `EXTRACTION_TRANSFORMATION_CAPABILITY_HARDENING_V1_SUMMARY.md` for delivered behavior and exact verification results.
+
+The final release tag remains pending because the active verification interpreter lacks declared requirements `rapidfuzz` and `playwright`, causing nine full-suite collection errors. Provision the declared dependencies and complete `python -m pytest -q` before tagging.

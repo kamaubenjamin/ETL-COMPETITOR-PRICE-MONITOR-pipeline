@@ -1,5 +1,41 @@
 Technical debt and missing test fixtures
 
+## Extraction & Transformation Capability Hardening v1
+
+### Current Status
+
+**Implementation complete for v0.6; final tag pending full-suite environment verification.**
+
+Delivered under `src/transforms/` and Workflow Runtime:
+
+- Versioned transform, mapping, validation, sorting, and aggregation contracts
+- Deterministic `transform`, `validate_data`, `sort`, and `aggregate` workflow stages
+- Strict configuration validation, input immutability, bounded privacy-safe validation results, and deterministic integration coverage
+- Legacy transformation compatibility and stage catalog/validator alignment
+
+### Remaining Verification Debt
+
+- The active Codex Python environment does not contain `rapidfuzz` or `playwright`, although both are declared in `requirements.txt`.
+- `python -m pytest -q` stops during collection with nine dependency-related errors; no result is available for affected tests.
+- Before tagging v0.6, provision declared requirements and rerun the complete suite.
+- The boundary verifier still skips `src/alerts/alert_engine.py` and `src/entity_runtime/engine.py` because of existing U+FEFF characters; these warnings predate v0.6 and should be corrected separately.
+
+### Deferred Capability Debt
+
+- Nested field mapping and persistent/external mapping registries
+- Streaming or distributed transformation execution
+- Pivoting, window functions, and time-series aggregation
+- Full MDM/golden-record lifecycle and survivorship
+- OCR and LLM-based extraction remain explicitly outside v0.6
+
+### Reference
+
+- `docs/architecture/EXTRACTION_TRANSFORMATION_CAPABILITY_HARDENING_V1_SUMMARY.md`
+- `docs/architecture/EXTRACTION_TRANSFORMATION_CAPABILITY_HARDENING_V1_HANDOFF.md`
+- `docs/releases/v0.6-extraction-transformation-capability-hardening.md`
+
+---
+
 - Missing internal test data files required by `test_pipeline.py`:
   - `data/internal/supplier_prices.csv` (expected by `supplier_price_list` source)
   - `data/internal/erp_export.xlsx` (expected by `erp_inventory` source)

@@ -73,6 +73,8 @@ The Phase 1 decision is to:
 
 ## Follow-up
 
-Phase 2 will implement the canonical generic executor, field and regex mapping, artifact adaptation, and real `TransformStage` execution. Phase 3 will implement data-level validation. Phase 4 will implement sorting and aggregation. No later phase starts automatically.
+Phases 2-4 implemented the canonical executor, mapping, real `TransformStage`, data validation, sorting, and aggregation. Phase 5 added deterministic integration verification and release documentation. The implementation follows this decision without new runtime-boundary exemptions or dependencies.
+
+The final tag is pending an environment-complete full regression run because the active interpreter lacks declared requirements `rapidfuzz` and `playwright`.
 
 End of document.

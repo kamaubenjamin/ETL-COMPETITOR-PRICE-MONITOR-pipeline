@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Implemented v0.6 Extraction & Transformation Capability Hardening with versioned deterministic plans, real `TransformStage` execution, field/regex mapping, data validation, stable sorting, grouped/dataset aggregation, privacy-safe metadata, legacy compatibility, and end-to-end workflow verification. Final tag remains pending a full-suite run with all declared requirements installed.
+
 - Added Workflow Runtime Locking v1 (v0.5) — database-backed row-level locking with execution leases, file-based fallback, idempotency key deduplication, and comprehensive test suite (158/158 locking tests passing).
 - Added Entity Runtime Concurrency Hardening (v0.5) — versioned entity persistence, optimistic and pessimistic locking, execution leasing, idempotency protection, graceful degradation, and verification coverage.
 - Added CI Contract Validation v1 with a lightweight GitHub Actions workflow for contract tests and standalone registry validation.
