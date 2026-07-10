@@ -1,15 +1,13 @@
-"""Review Runtime exceptions package."""
+"""Backward-compatible Review Runtime exception exports."""
 
-from __future__ import annotations
-
-
-class ReviewRuntimeError(Exception):
-    pass
+from src.review_runtime.errors import ReviewRuntimeError
 
 
 class ReviewItemNotFoundError(ReviewRuntimeError):
-    pass
+    def __init__(self, message: str) -> None:
+        super().__init__("review_item_not_found", message)
 
 
 class InvalidReviewStateError(ReviewRuntimeError):
-    pass
+    def __init__(self, message: str) -> None:
+        super().__init__("invalid_review_state", message)
