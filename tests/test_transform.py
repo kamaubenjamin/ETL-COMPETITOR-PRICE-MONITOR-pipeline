@@ -2,6 +2,7 @@ import pandas as pd
 import pytest
 from src.transform.engine import TransformEngine
 from src.transform.product_parser import extract_product_info
+from src.transforms.pipeline import TransformationPipeline
 
 
 @pytest.fixture
@@ -74,16 +75,44 @@ class TestTransformEngine:
         df = pd.DataFrame({
             'content': ['TV A $1000', 'TV B $2000', 'TV C $3000']
         })
-        
+
         rules = [
             {'type': 'add_column', 'column': 'source', 'value': 'test'}
         ]
-        
+
         engine = TransformEngine(df)
         result = engine.apply(rules)
-        
+
         assert len(result) > 0
         assert 'source' in result.columns
+
+
+class TestLegacyTransformationPipelineCompatibility:
+    def test_legacy_rule_names_preserve_behavior(self):
+        source = pd.DataFrame({
+            "old_name": [" A ", " A ", None],
+            "price": ["10", "10", "30"],
+        })
+        rules = [
+            {"type": "rename", "columns": {"old_name": "name"}},
+            {"type": "drop_nulls", "subset": ["name"]},
+            {"type": "filter", "condition": "price == '10'"},
+            {"type": "type_coercion", "columns": {"price": "float"}},
+            {"type": "deduplicate", "subset": ["name", "price"]},
+            {"type": "add_column", "column": "source", "value": "legacy"},
+        ]
+        result = TransformationPipeline(source).apply(rules)
+        assert result.columns.tolist() == ["name", "price", "source"]
+        assert result["name"].tolist() == [" A "]
+        assert result["price"].tolist() == [10.0]
+        assert result["source"].tolist() == ["legacy"]
+
+    def test_legacy_normalize_rule_remains_available(self):
+        result = TransformationPipeline(pd.DataFrame({"name": ["Omo 1kg"]})).apply(
+            [{"type": "normalize", "source": "fixture", "url": "https://example.test"}]
+        )
+        assert "normalized_name" in result.columns
+        assert result["source"].iloc[0] == "fixture"
 
 
 class TestProductParser:

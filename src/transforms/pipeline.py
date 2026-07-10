@@ -2,7 +2,10 @@ from __future__ import annotations
 
 import pandas as pd
 
+from src.transforms.contracts import TransformationPlan
+from src.transforms.executor import TransformationExecutor
 from src.transforms.product_identity import normalize_product_frame
+from src.transforms.regex_registry import RegexRegistry
 
 
 class TransformationPipeline:
@@ -37,6 +40,16 @@ class TransformationPipeline:
                 )
             elif rule_type == "add_column":
                 self.add_column(rule.get("column"), rule.get("value"))
+        return self.df
+
+    def apply_plan(
+        self,
+        plan: TransformationPlan | dict,
+        *,
+        regex_registry: RegexRegistry | None = None,
+    ) -> pd.DataFrame:
+        """Apply a strict versioned plan through the canonical executor."""
+        self.df = TransformationExecutor(regex_registry=regex_registry).execute(self.df, plan)
         return self.df
 
     def rename_columns(self, columns: dict) -> None:

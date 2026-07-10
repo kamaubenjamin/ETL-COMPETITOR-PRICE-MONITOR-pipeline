@@ -11,6 +11,7 @@ Covers:
 """
 
 import json
+import pandas as pd
 import pytest
 
 from src.core.execution.status import ExecutionStatus
@@ -410,16 +411,83 @@ class TestIngestStage:
 
 class TestTransformStage:
     def test_run(self):
-        stage = TransformStage(config={"rules": []})
+        stage = TransformStage(config={
+            "plan": {
+                "contract_version": 1,
+                "operations": [
+                    {"id": "rename", "type": "rename", "options": {"columns": {"raw": "name"}}},
+                    {"id": "source", "type": "add_constant", "options": {"column": "source", "value": "workflow"}},
+                ],
+            }
+        })
         ctx = ExecutionContext(
             pipeline_run_id="run-1",
             workspace_id="ws",
             workflow_id="wf-1",
             started_at="2025-01-01T00:00:00",
         )
-        result = stage.run(input_artifact=None, context=ctx)
+        source = pd.DataFrame({"raw": ["A", "B"]})
+        result = stage.run(input_artifact=source, context=ctx)
         assert result.status == ExecutionStatus.SUCCESS.value
         assert result.stage_name == "transform"
+        assert isinstance(result.output_artifact, pd.DataFrame)
+        assert result.output_artifact.columns.tolist() == ["name", "source"]
+        assert result.output_artifact is not source
+        assert result.metadata == {
+            "operation_ids": ["rename", "source"],
+            "operation_count": 2,
+            "rows_in": 2,
+            "rows_out": 2,
+        }
+
+    def test_run_accepts_list_of_row_dicts(self):
+        stage = TransformStage(config={"rules": [{"type": "add_column", "column": "source", "value": "legacy"}]})
+        ctx = ExecutionContext(
+            pipeline_run_id="run-list", workspace_id="ws", workflow_id="wf-list",
+            started_at="2025-01-01T00:00:00",
+        )
+        source = [{"name": "A"}, {"name": "B"}]
+        result = stage.run(source, ctx)
+        assert result.status == ExecutionStatus.SUCCESS.value
+        assert result.output_artifact["source"].tolist() == ["legacy", "legacy"]
+        assert source == [{"name": "A"}, {"name": "B"}]
+
+    def test_invalid_plan_returns_failed_result(self):
+        stage = TransformStage(config={"plan": {"contract_version": 1, "operations": [{"id": "bad", "type": "execute_python"}]}})
+        ctx = ExecutionContext(
+            pipeline_run_id="run-invalid", workspace_id="ws", workflow_id="wf-invalid",
+            started_at="2025-01-01T00:00:00",
+        )
+        result = stage.run(pd.DataFrame({"name": ["private"]}), ctx)
+        assert result.status == ExecutionStatus.FAILED.value
+        assert result.output_artifact is None
+        assert "execute_python" in result.error
+        assert "private" not in result.error
+
+    @pytest.mark.parametrize("artifact", [None, {}, [1, 2]])
+    def test_unsupported_input_returns_failed_result(self, artifact):
+        stage = TransformStage(config={"rules": []})
+        ctx = ExecutionContext(
+            pipeline_run_id="run-unsupported", workspace_id="ws", workflow_id="wf-unsupported",
+            started_at="2025-01-01T00:00:00",
+        )
+        result = stage.run(artifact, ctx)
+        assert result.status == ExecutionStatus.FAILED.value
+        assert result.output_artifact is None
+        assert "DataFrame or list[dict]" in result.error
+
+    def test_metadata_does_not_include_source_values_or_rules(self):
+        stage = TransformStage(config={"rules": [{"type": "add_column", "column": "secret", "value": "sensitive"}]})
+        ctx = ExecutionContext(
+            pipeline_run_id="run-private", workspace_id="ws", workflow_id="wf-private",
+            started_at="2025-01-01T00:00:00",
+        )
+        result = stage.run(pd.DataFrame({"customer": ["private-name"]}), ctx)
+        serialized_metadata = json.dumps(result.metadata)
+        assert result.status == ExecutionStatus.SUCCESS.value
+        assert "private-name" not in serialized_metadata
+        assert "sensitive" not in serialized_metadata
+        assert "rules" not in result.metadata
 
 
 class TestFilterStage:
@@ -479,7 +547,7 @@ class TestEntityExtractStage:
 class TestWorkflowRunner:
     def test_sequential_execution(self, valid_definition):
         runner = WorkflowRunner()
-        result = runner.run(valid_definition)
+        result = runner.run(valid_definition, initial_artifact=pd.DataFrame({"value": [1]}))
         assert result.overall_status == ExecutionStatus.SUCCESS.value
         assert len(result.stage_results) == 6
         for stage_result in result.stage_results:
@@ -511,13 +579,13 @@ class TestWorkflowRunner:
             ],
         )
         runner = WorkflowRunner()
-        result = runner.run(wf)
+        result = runner.run(wf, initial_artifact=pd.DataFrame({"value": [1]}))
         assert result.overall_status == ExecutionStatus.SUCCESS.value
 
     def test_creates_debug_artifact(self, tmp_path, valid_definition):
         debug_dir = tmp_path / "debug"
         runner = WorkflowRunner(debug_path=str(debug_dir))
-        result = runner.run(valid_definition)
+        result = runner.run(valid_definition, initial_artifact=pd.DataFrame({"value": [1]}))
 
         artifacts = list(debug_dir.glob("workflow_*.json"))
         assert len(artifacts) == 1
@@ -528,14 +596,15 @@ class TestWorkflowRunner:
     def test_artifact_replayability(self, tmp_path, valid_definition):
         debug_dir = tmp_path / "debug"
         runner = WorkflowRunner(debug_path=str(debug_dir))
-        result1 = runner.run(valid_definition)
-        result2 = runner.run(valid_definition)
+        initial = pd.DataFrame({"value": [1]})
+        result1 = runner.run(valid_definition, initial_artifact=initial)
+        result2 = runner.run(valid_definition, initial_artifact=initial)
         assert len(result1.stage_results) == len(result2.stage_results)
         assert result1.overall_status == result2.overall_status
 
     def test_initial_artifact_passthrough(self, valid_definition):
         runner = WorkflowRunner()
-        initial = {"external_input": "test_value"}
+        initial = [{"external_input": "test_value"}]
         result = runner.run(valid_definition, initial_artifact=initial)
         assert result.overall_status == ExecutionStatus.SUCCESS.value
 
