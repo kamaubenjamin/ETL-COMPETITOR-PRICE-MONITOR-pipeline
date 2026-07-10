@@ -7,6 +7,7 @@ from typing import Any, Dict, Type
 
 from src.workflow_runtime.contracts.execution_context import ExecutionContext
 from src.workflow_runtime.contracts.workflow_result import StageResult
+from src.workflow_runtime.operations.stage_catalog import WORKFLOW_STAGE_TYPES
 
 
 class BaseStage(ABC):
@@ -37,5 +38,12 @@ class BaseStage(ABC):
 
 
 # Stage type → implementation class mapping.
-# v1 uses a simple dict — no plugin system needed for 7 stages.
+# v1 uses a simple dict; public names are owned by stage_catalog.
 STAGE_REGISTRY: Dict[str, Type[BaseStage]] = {}
+
+
+def validate_registered_stage_type(stage_type: str) -> str:
+    """Reject implementation registration names outside the public catalog."""
+    if stage_type not in WORKFLOW_STAGE_TYPES:
+        raise ValueError(f"Unknown workflow stage type: {stage_type}")
+    return stage_type

@@ -9,19 +9,12 @@ from src.document_engine.structure.models.validation_result import (
     ValidationResult,
     ValidationRuleResult,
 )
+from src.workflow_runtime.operations.stage_catalog import WORKFLOW_STAGE_TYPES
 
 REQUIRED_WORKFLOW_FIELDS = ["workflow_id", "stages"]
 REQUIRED_STAGE_FIELDS = ["name", "type"]
-VALID_STAGE_TYPES = {
-    "document_ingest",
-    "entity_extract",
-    "transform",
-    "filter",
-    "fuzzy_match",
-    "compare",
-    "alert",
-    "report",
-}
+# Backward-compatible export; authoritative values live in stage_catalog.
+VALID_STAGE_TYPES = WORKFLOW_STAGE_TYPES
 
 
 class WorkflowValidator:
