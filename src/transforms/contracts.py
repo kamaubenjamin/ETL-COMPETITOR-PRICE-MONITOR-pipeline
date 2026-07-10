@@ -449,7 +449,12 @@ class SortKey:
     @classmethod
     def from_dict(cls, payload: Mapping[str, Any], path: tuple[PathComponent, ...] = ()) -> "SortKey":
         data = _mapping(payload, path)
-        _check_keys(data, allowed={"field", "direction", "nulls"}, required={"field"}, path=path)
+        _check_keys(
+            data,
+            allowed={"field", "direction", "nulls"},
+            required={"field", "direction", "nulls"},
+            path=path,
+        )
         try:
             return cls(field=data["field"], direction=data.get("direction", "asc"), nulls=data.get("nulls", "last"))
         except ConfigurationError as exc:
@@ -474,6 +479,13 @@ class SortPlan:
             raise _error(INVALID_TYPE, "keys must contain SortKey records.", ("keys",))
         if not isinstance(self.stable, bool):
             raise _error(INVALID_TYPE, "stable must be a boolean.", ("stable",))
+        if not self.stable:
+            raise _error(INVALID_VALUE, "Sort plans must use stable sorting.", ("stable",))
+        seen_fields: set[str] = set()
+        for index, key in enumerate(keys):
+            if key.field in seen_fields:
+                raise _error(DUPLICATE_ID, f"Duplicate sort field '{key.field}'.", ("keys", index, "field"))
+            seen_fields.add(key.field)
         object.__setattr__(self, "keys", keys)
 
     @classmethod
@@ -495,21 +507,29 @@ class SortPlan:
 
 @dataclass(frozen=True, slots=True)
 class AggregationDefinition:
-    field: str
+    field: str | None
     function: str
     output: str
 
     def __post_init__(self) -> None:
-        object.__setattr__(self, "field", _nonempty_string(self.field, ("field",)))
         object.__setattr__(self, "function", _choice(self.function, AGGREGATION_FUNCTIONS, ("function",)))
         object.__setattr__(self, "output", _nonempty_string(self.output, ("output",)))
+        if self.field is not None:
+            object.__setattr__(self, "field", _nonempty_string(self.field, ("field",)))
+        if self.function != "count" and self.field is None:
+            raise _error(MISSING_FIELD, f"Aggregation '{self.function}' requires field.", ("field",))
 
     @classmethod
     def from_dict(cls, payload: Mapping[str, Any], path: tuple[PathComponent, ...] = ()) -> "AggregationDefinition":
         data = _mapping(payload, path)
-        _check_keys(data, allowed={"field", "function", "output"}, required={"field", "function", "output"}, path=path)
+        _check_keys(
+            data,
+            allowed={"field", "function", "output"},
+            required={"function", "output"},
+            path=path,
+        )
         try:
-            return cls(field=data["field"], function=data["function"], output=data["output"])
+            return cls(function=data["function"], output=data["output"], field=data.get("field"))
         except ConfigurationError as exc:
             raise _repath(exc, path) from exc
 
@@ -539,6 +559,12 @@ class AggregationPlan:
             if aggregation.output in outputs:
                 raise _error(DUPLICATE_OUTPUT, f"Duplicate aggregation output '{aggregation.output}'.", ("aggregations", index, "output"))
             outputs.add(aggregation.output)
+            if aggregation.output in group_by:
+                raise _error(
+                    DUPLICATE_OUTPUT,
+                    f"Aggregation output '{aggregation.output}' conflicts with group_by.",
+                    ("aggregations", index, "output"),
+                )
         if not isinstance(self.drop_null_groups, bool):
             raise _error(INVALID_TYPE, "drop_null_groups must be a boolean.", ("drop_null_groups",))
         object.__setattr__(self, "group_by", group_by)
@@ -551,9 +577,12 @@ class AggregationPlan:
         raw_aggregations = data["aggregations"]
         if not isinstance(raw_aggregations, list):
             raise _error(INVALID_TYPE, "Expected an array.", ("aggregations",))
+        raw_group_by = data.get("group_by", [])
+        if not isinstance(raw_group_by, list):
+            raise _error(INVALID_TYPE, "group_by must be an array.", ("group_by",))
         return cls(
             contract_version=_version(data["contract_version"], ("contract_version",)),
-            group_by=tuple(data.get("group_by", ())),
+            group_by=tuple(raw_group_by),
             aggregations=tuple(AggregationDefinition.from_dict(item, ("aggregations", index)) for index, item in enumerate(raw_aggregations)),
             drop_null_groups=data.get("drop_null_groups", False),
         )

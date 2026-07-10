@@ -27,7 +27,7 @@ def test_catalog_has_existing_matching_stage():
 
 
 def test_catalog_reserves_v06_stage_names():
-    assert RESERVED_STAGE_TYPES == frozenset({"sort", "aggregate"})
+    assert RESERVED_STAGE_TYPES == frozenset()
     for stage_type in RESERVED_STAGE_TYPES:
         assert is_workflow_stage_type(stage_type)
         assert not is_implemented_stage_type(stage_type)
@@ -38,6 +38,13 @@ def test_validate_data_is_implemented():
     assert "validate_data" in IMPLEMENTED_STAGE_TYPES
     assert is_implemented_stage_type("validate_data")
     assert "validate_data" in STAGE_REGISTRY
+
+
+def test_sort_and_aggregate_are_implemented():
+    for stage_type in ("sort", "aggregate"):
+        assert stage_type in IMPLEMENTED_STAGE_TYPES
+        assert is_implemented_stage_type(stage_type)
+        assert stage_type in STAGE_REGISTRY
 
 
 def test_validator_uses_authoritative_catalog():

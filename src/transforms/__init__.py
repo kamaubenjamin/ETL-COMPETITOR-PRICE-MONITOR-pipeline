@@ -15,12 +15,14 @@ from src.transforms.contracts import (
     ValidationResult,
     ValidationRule,
 )
+from src.transforms.aggregation import aggregate_data
 from src.transforms.errors import ConfigurationError
 from src.transforms.executor import TransformationExecutor
 from src.transforms.field_mapping import apply_field_mappings, coerce_series
 from src.transforms.pipeline import TransformationPipeline
 from src.transforms.regex_registry import RegexRegistry
 from src.transforms.registry import DEFAULT_OPERATION_REGISTRY, OperationRegistry
+from src.transforms.sorting import sort_data
 from src.transforms.validation import TabularDataValidator, validate_data
 
 __all__ = [
@@ -44,7 +46,9 @@ __all__ = [
     "ValidationPlan",
     "ValidationResult",
     "ValidationRule",
+    "aggregate_data",
     "apply_field_mappings",
     "coerce_series",
+    "sort_data",
     "validate_data",
 ]

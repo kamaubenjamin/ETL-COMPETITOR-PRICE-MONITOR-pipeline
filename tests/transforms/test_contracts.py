@@ -180,6 +180,30 @@ def test_sort_plan_requires_a_key():
     assert caught.value.path == "$.keys"
 
 
+def test_sort_plan_requires_explicit_direction_and_nulls():
+    with pytest.raises(ConfigurationError) as caught:
+        SortPlan.from_dict({"contract_version": 1, "keys": [{"field": "price"}]})
+    assert caught.value.code == "missing_field"
+
+
+def test_sort_plan_rejects_unstable_and_duplicate_keys():
+    with pytest.raises(ConfigurationError, match="stable sorting"):
+        SortPlan.from_dict(
+            {"contract_version": 1, "keys": [{"field": "price", "direction": "asc", "nulls": "last"}], "stable": False}
+        )
+    with pytest.raises(ConfigurationError) as caught:
+        SortPlan.from_dict(
+            {
+                "contract_version": 1,
+                "keys": [
+                    {"field": "price", "direction": "asc", "nulls": "last"},
+                    {"field": "price", "direction": "desc", "nulls": "first"},
+                ],
+            }
+        )
+    assert caught.value.path == "$.keys[1].field"
+
+
 def test_aggregation_plan_contract():
     plan = AggregationPlan.from_dict(
         {
@@ -209,3 +233,39 @@ def test_aggregation_plan_rejects_duplicate_outputs():
         )
     assert caught.value.code == "duplicate_output"
     assert caught.value.path == "$.aggregations[1].output"
+
+
+def test_dataset_count_contract_allows_omitted_field():
+    plan = AggregationPlan.from_dict(
+        {"contract_version": 1, "aggregations": [{"function": "count", "output": "row_count"}]}
+    )
+    assert plan.aggregations[0].field is None
+    assert plan.to_dict()["aggregations"][0]["field"] is None
+
+
+def test_non_count_aggregation_requires_field():
+    with pytest.raises(ConfigurationError) as caught:
+        AggregationPlan.from_dict(
+            {"contract_version": 1, "aggregations": [{"function": "sum", "output": "total"}]}
+        )
+    assert caught.value.path == "$.aggregations[0].field"
+
+
+def test_aggregation_output_cannot_conflict_with_group_by():
+    with pytest.raises(ConfigurationError) as caught:
+        AggregationPlan.from_dict(
+            {
+                "contract_version": 1,
+                "group_by": ["supplier"],
+                "aggregations": [{"function": "count", "output": "supplier"}],
+            }
+        )
+    assert caught.value.code == "duplicate_output"
+
+
+def test_aggregation_group_by_must_be_array():
+    with pytest.raises(ConfigurationError) as caught:
+        AggregationPlan.from_dict(
+            {"contract_version": 1, "group_by": "supplier", "aggregations": [{"function": "count", "output": "count"}]}
+        )
+    assert caught.value.path == "$.group_by"

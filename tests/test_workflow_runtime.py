@@ -31,6 +31,8 @@ from src.workflow_runtime.operations.base import STAGE_REGISTRY
 from src.workflow_runtime.operations.ingest_stage import IngestStage
 from src.workflow_runtime.operations.transform_stage import TransformStage
 from src.workflow_runtime.operations.validation_stage import ValidationStage
+from src.workflow_runtime.operations.sort_stage import SortStage
+from src.workflow_runtime.operations.aggregation_stage import AggregationStage
 from src.workflow_runtime.operations.filter_stage import FilterStage
 from src.workflow_runtime.operations.fuzzy_match_stage import FuzzyMatchStage
 from src.workflow_runtime.operations.compare_stage import CompareStage
@@ -389,7 +391,7 @@ class TestWorkflowValidator:
 
 class TestStageRegistry:
     def test_all_stages_registered(self):
-        expected = {"document_ingest", "entity_extract", "transform", "filter", "fuzzy_match", "compare", "alert", "matching", "report", "validate_data"}
+        expected = {"document_ingest", "entity_extract", "transform", "filter", "fuzzy_match", "compare", "alert", "matching", "report", "validate_data", "sort", "aggregate"}
         assert set(STAGE_REGISTRY.keys()) == expected
 
     def test_stage_class_types(self):
@@ -403,6 +405,8 @@ class TestStageRegistry:
         assert STAGE_REGISTRY["matching"] is MatchingStage
         assert STAGE_REGISTRY["report"] is ReportStage
         assert STAGE_REGISTRY["validate_data"] is ValidationStage
+        assert STAGE_REGISTRY["sort"] is SortStage
+        assert STAGE_REGISTRY["aggregate"] is AggregationStage
 
 
 class TestIngestStage:
@@ -587,6 +591,98 @@ class TestValidationStage:
         assert result.metadata["validation"]["detail_count"] == 1
         assert result.metadata["validation"]["truncated"] is True
         assert secret not in serialized
+
+
+class TestSortAndAggregationStages:
+    @staticmethod
+    def _context():
+        return ExecutionContext(
+            pipeline_run_id="run-tabular",
+            workspace_id="ws",
+            workflow_id="wf-tabular",
+            started_at="2025-01-01T00:00:00",
+        )
+
+    def test_sort_stage_success_and_metadata(self):
+        source = pd.DataFrame({"price": [2, 1], "private": ["secret-b", "secret-a"]})
+        stage = SortStage(config={
+            "plan": {
+                "contract_version": 1,
+                "keys": [{"field": "price", "direction": "asc", "nulls": "last"}],
+                "stable": True,
+            }
+        })
+        result = stage.run(source, self._context())
+        assert result.status == ExecutionStatus.SUCCESS.value
+        assert result.output_artifact["price"].tolist() == [1, 2]
+        assert source["price"].tolist() == [2, 1]
+        assert result.metadata == {"sort_keys": ["price"], "operation_count": 1, "rows_in": 2, "rows_out": 2}
+        assert "secret" not in json.dumps(result.metadata)
+
+    def test_sort_stage_accepts_list_of_dicts(self):
+        source = [{"price": 2}, {"price": 1}]
+        stage = SortStage(config={
+            "plan": {"contract_version": 1, "keys": [{"field": "price", "direction": "desc", "nulls": "last"}]}
+        })
+        result = stage.run(source, self._context())
+        assert result.status == ExecutionStatus.SUCCESS.value
+        assert result.output_artifact["price"].tolist() == [2, 1]
+        assert source == [{"price": 2}, {"price": 1}]
+
+    def test_sort_stage_invalid_plan_and_artifact_fail_safely(self):
+        stage = SortStage(config={
+            "plan": {"contract_version": 1, "keys": [{"field": "missing", "direction": "asc", "nulls": "last"}]}
+        })
+        missing = stage.run(pd.DataFrame({"present": ["private-value"]}), self._context())
+        unsupported = stage.run({"present": 1}, self._context())
+        assert missing.status == ExecutionStatus.FAILED.value
+        assert missing.output_artifact is None
+        assert "private-value" not in missing.error
+        assert unsupported.status == ExecutionStatus.FAILED.value
+
+    def test_aggregation_stage_success_and_metadata(self):
+        source = pd.DataFrame({"supplier": ["B", "A", "B"], "price": [2, 3, 1], "private": ["x", "y", "z"]})
+        stage = AggregationStage(config={
+            "plan": {
+                "contract_version": 1,
+                "group_by": ["supplier"],
+                "aggregations": [
+                    {"function": "count", "output": "rows"},
+                    {"field": "price", "function": "sum", "output": "total"},
+                ],
+                "drop_null_groups": False,
+            }
+        })
+        result = stage.run(source, self._context())
+        assert result.status == ExecutionStatus.SUCCESS.value
+        assert result.output_artifact.to_dict("records") == [
+            {"supplier": "A", "rows": 1, "total": 3},
+            {"supplier": "B", "rows": 2, "total": 3},
+        ]
+        assert source.columns.tolist() == ["supplier", "price", "private"]
+        assert result.metadata == {
+            "aggregate_ids": ["rows", "total"],
+            "group_by": ["supplier"],
+            "operation_count": 2,
+            "rows_in": 3,
+            "rows_out": 2,
+        }
+        assert "private" not in json.dumps(result.metadata)
+
+    def test_aggregation_stage_accepts_list_and_fails_invalid_inputs(self):
+        stage = AggregationStage(config={
+            "plan": {
+                "contract_version": 1,
+                "aggregations": [{"function": "count", "output": "rows"}],
+            }
+        })
+        source = [{"value": 1}, {"value": 2}]
+        success = stage.run(source, self._context())
+        unsupported = stage.run({"value": 1}, self._context())
+        assert success.status == ExecutionStatus.SUCCESS.value
+        assert success.output_artifact.to_dict("records") == [{"rows": 2}]
+        assert source == [{"value": 1}, {"value": 2}]
+        assert unsupported.status == ExecutionStatus.FAILED.value
 
 
 class TestFilterStage:

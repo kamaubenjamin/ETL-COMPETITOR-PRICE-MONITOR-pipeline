@@ -15,11 +15,14 @@ from src.workflow_runtime.operations.report_stage import ReportStage
 from src.workflow_runtime.operations.entity_extract_stage import EntityExtractStage
 from src.workflow_runtime.operations.matching_stage import MatchingStage
 from src.workflow_runtime.operations.validation_stage import ValidationStage
+from src.workflow_runtime.operations.sort_stage import SortStage
+from src.workflow_runtime.operations.aggregation_stage import AggregationStage
 
 __all__ = [
     "BaseStage",
     "STAGE_REGISTRY",
     "AlertStage",
+    "AggregationStage",
     "CompareStage",
     "EntityExtractStage",
     "FilterStage",
@@ -27,6 +30,7 @@ __all__ = [
     "IngestStage",
     "MatchingStage",
     "ReportStage",
+    "SortStage",
     "TransformStage",
     "ValidationStage",
 ]

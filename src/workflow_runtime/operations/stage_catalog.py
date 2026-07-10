@@ -14,10 +14,12 @@ IMPLEMENTED_STAGE_TYPES = frozenset(
         "matching",
         "report",
         "validate_data",
+        "sort",
+        "aggregate",
     }
 )
 
-RESERVED_STAGE_TYPES = frozenset({"sort", "aggregate"})
+RESERVED_STAGE_TYPES = frozenset()
 WORKFLOW_STAGE_TYPES = IMPLEMENTED_STAGE_TYPES | RESERVED_STAGE_TYPES
 
 
