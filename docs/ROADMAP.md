@@ -107,8 +107,7 @@ References:
 ### v0.7 Review / Correction Runtime
 
 Status:
-- Implemented and verified; release commit and tag pending
-- Recommended tag: `v0.7-review-correction-runtime`
+- Closed and tagged as `v0.7-review-correction-runtime`
 
 Delivered capabilities:
 - Deterministic review case lifecycle and reviewer decisions
@@ -123,6 +122,22 @@ References:
 - `docs/architecture/REVIEW_CORRECTION_RUNTIME_V1_HANDOFF.md`
 - `docs/adr/ADR-013-review-correction-runtime.md`
 - `docs/releases/v0.7-review-correction-runtime.md`
+
+### v0.8 Document Intelligence Operator Console
+
+Status:
+- Streamlit v1 implemented with deterministic local mock data
+- Backend integration and release tag pending
+
+Delivered capabilities:
+- Separate Document Intelligence console beside the legacy competitor-price dashboard
+- Operational overview, inbox, upload placeholder, processing, validation, matching, review, workflow, and audit views
+- Display-only document and review lifecycle filters with no runtime mutation
+- No API, database, external service, OCR, or LLM dependency
+
+References:
+- `docs/architecture/DOCUMENT_INTELLIGENCE_OPERATOR_CONSOLE_V1_PLAN.md`
+- `docs/releases/v0.8-document-intelligence-operator-console.md`
 
 ## Prior Milestone Context
 

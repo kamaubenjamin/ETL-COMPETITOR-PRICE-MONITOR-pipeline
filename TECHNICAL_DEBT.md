@@ -37,7 +37,7 @@ Delivered under `src/transforms/` and Workflow Runtime:
 
 ### Current Status
 
-**v0.7 implemented and verified; release commit and tag pending.**
+**Closed and tagged as `v0.7-review-correction-runtime`.**
 
 Resolved in v0.7:
 
@@ -64,6 +64,29 @@ Closure is documented in:
 - `docs/architecture/REVIEW_CORRECTION_RUNTIME_V1_HANDOFF.md`
 - `docs/adr/ADR-013-review-correction-runtime.md`
 - `docs/releases/v0.7-review-correction-runtime.md`
+
+---
+
+## Document Intelligence Operator Console v1
+
+### Current Status
+
+**v0.8 Streamlit v1 implemented with deterministic local mock data; backend integration deferred.**
+
+Remaining debt:
+
+- Replace local fixtures with bounded read-only application-service contracts
+- Add authenticated operator identity and role-based authorization
+- Add protected access rules for sensitive document and correction values
+- Implement production upload through a backend-owned ingestion boundary
+- Add command submission through runtime services with idempotency and optimistic versions
+- Add accessibility, responsive-layout, deployment, and browser-level regression verification
+- Keep the legacy competitor-price `dashboard.py` separate until an explicit retirement milestone
+
+References:
+
+- `docs/architecture/DOCUMENT_INTELLIGENCE_OPERATOR_CONSOLE_V1_PLAN.md`
+- `docs/releases/v0.8-document-intelligence-operator-console.md`
 
 ---
 

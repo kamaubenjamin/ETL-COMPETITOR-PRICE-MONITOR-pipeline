@@ -2,7 +2,9 @@
 
 ## Unreleased
 
-- Completed v0.7 Review / Correction Runtime with immutable contracts, an explicit lifecycle state machine, deterministic in-memory case services, field-level controlled corrections, five reviewer decisions, append-only audit lineage, and declarative dry-run reprocess planning. Release commit and tag remain pending.
+- Added v0.8 Document Intelligence Operator Console Streamlit v1 with deterministic local document, validation, matching, review, workflow, and audit fixtures; display-only filters; operational metrics; and a non-persistent upload placeholder.
+
+- Closed and tagged v0.7 Review / Correction Runtime with immutable contracts, an explicit lifecycle state machine, deterministic in-memory case services, field-level controlled corrections, five reviewer decisions, append-only audit lineage, and declarative dry-run reprocess planning.
 
 - Closed and tagged v0.6 Extraction & Transformation Capability Hardening with versioned deterministic plans, real `TransformStage` execution, field/regex mapping, data validation, stable sorting, grouped/dataset aggregation, privacy-safe metadata, legacy compatibility, and end-to-end workflow verification.
 
