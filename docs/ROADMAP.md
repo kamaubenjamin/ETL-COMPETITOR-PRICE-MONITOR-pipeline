@@ -126,13 +126,14 @@ References:
 ### v0.8 Document Intelligence Operator Console
 
 Status:
-- Streamlit v1 implemented with deterministic local mock data
+- Phases 1-2 implemented with deterministic local mock data and a defensive provider/view-model layer
 - Backend integration and release tag pending
 
 Delivered capabilities:
 - Separate Document Intelligence console beside the legacy competitor-price dashboard
 - Operational overview, inbox, upload placeholder, processing, validation, matching, review, workflow, and audit views
 - Display-only document and review lifecycle filters with no runtime mutation
+- Local provider adapters, stable view models, reusable display components, and focused UI tests
 - No API, database, external service, OCR, or LLM dependency
 
 References:

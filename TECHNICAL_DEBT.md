@@ -71,11 +71,11 @@ Closure is documented in:
 
 ### Current Status
 
-**v0.8 Streamlit v1 implemented with deterministic local mock data; backend integration deferred.**
+**v0.8 Phases 1-2 implemented with deterministic local mock data and a provider/view-model boundary; live backend integration deferred.**
 
 Remaining debt:
 
-- Replace local fixtures with bounded read-only application-service contracts
+- Replace `LocalOperatorConsoleProvider` fixtures with bounded read-only application-service adapters behind the same display contract
 - Add authenticated operator identity and role-based authorization
 - Add protected access rules for sensitive document and correction values
 - Implement production upload through a backend-owned ingestion boundary

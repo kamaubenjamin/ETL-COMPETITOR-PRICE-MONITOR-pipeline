@@ -1,7 +1,7 @@
 # Document Intelligence Operator Console v1 Plan
 
 **Milestone:** v0.8
-**Status:** Streamlit v1 implemented; backend integration deferred
+**Status:** Phases 1-2 implemented; live backend integration deferred
 
 ## Purpose
 
@@ -9,7 +9,7 @@ Provide document operators with one read-only workspace for inspecting document 
 
 ## Scope
 
-v1 is a standalone Streamlit application at `src/ui/streamlit/document_intelligence_app.py`. It uses deterministic local fixtures and includes sidebar filters, operational summary metrics, and nine task-oriented tabs.
+v1 is a standalone Streamlit application at `src/ui/streamlit/document_intelligence_app.py`. It uses deterministic local fixtures through a provider/adapter boundary and includes sidebar filters, operational summary metrics, and nine task-oriented tabs.
 
 The legacy competitor-price `dashboard.py` remains separate and unchanged.
 
@@ -34,6 +34,16 @@ The legacy competitor-price `dashboard.py` remains separate and unchanged.
 - No competitor-price, API, database, external service, OCR, or LLM imports are permitted.
 - Mock records contain no real document payloads or sensitive values.
 
+## Phase 2 Provider Architecture
+
+- `data_providers.py` owns immutable module fixtures and returns defensive copies through `LocalOperatorConsoleProvider`.
+- Provider methods expose documents, processing statuses, validation issues, matching results, review cases, workflow runs, audit events, and summary counts.
+- `view_models.py` contains pure shaping functions that project provider records into stable JSON- and DataFrame-friendly display rows.
+- `components.py` contains reusable metric, table, status-label, and section-header rendering helpers. Importing it does not render Streamlit elements.
+- `document_intelligence_app.py` composes providers, view models, and components; it no longer owns fixture records.
+
+Provider ordering is deterministic. Every call returns a fresh copy so table shaping or future display formatting cannot mutate fixture state.
+
 ## Interaction Model
 
 Sidebar controls filter local tables by workspace, document type, workflow, runtime status, and review status. No action mutates data. Upload is visibly disabled to avoid implying persistence or backend capability.
@@ -53,6 +63,10 @@ A later milestone may replace fixtures with a read-only application service or A
 
 ```text
 python -m py_compile src/ui/streamlit/document_intelligence_app.py
+python -m py_compile src/ui/streamlit/data_providers.py
+python -m py_compile src/ui/streamlit/view_models.py
+python -m py_compile src/ui/streamlit/components.py
+python -m pytest tests/ui/streamlit -q
 python -m pytest tests/review_runtime -q
 python scripts/verify_boundaries.py
 git diff --check
@@ -63,6 +77,8 @@ git status --short --branch
 
 - The new app exists beside and independently from `dashboard.py`.
 - All required filters, metrics, tabs, tables, lifecycle values, and mock datasets are represented.
+- Display data is supplied through a defensive provider and pure view-model boundary.
+- Provider determinism, filtering, copying, metric counts, and display shaping are covered by tests.
 - Upload cannot persist or call a backend.
 - Runtime boundaries remain compliant and Review Runtime regression tests pass.
 - Release notes and repository trackers accurately describe the mock-data-only scope.
@@ -70,4 +86,3 @@ git status --short --branch
 ## Deferred Work
 
 Backend adapters, API, persistence, authentication, authorization, mutation commands, protected-value viewing, production upload, OCR, LLM processing, notifications, accessibility testing, and deployment configuration are deferred.
-
