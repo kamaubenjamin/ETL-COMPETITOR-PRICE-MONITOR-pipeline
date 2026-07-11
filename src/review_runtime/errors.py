@@ -50,3 +50,49 @@ UNKNOWN_FIELD = "unknown_field"
 UNSUPPORTED_VERSION = "unsupported_version"
 UNSAFE_METADATA = "unsafe_metadata"
 INVALID_TRANSITION = "invalid_transition"
+NOT_FOUND = "not_found"
+VERSION_CONFLICT = "version_conflict"
+ALREADY_EXISTS = "already_exists"
+IDEMPOTENCY_CONFLICT = "idempotency_conflict"
+AUDIT_CONFLICT = "audit_conflict"
+
+
+class ReviewCaseNotFoundError(ReviewRuntimeError):
+    def __init__(self) -> None:
+        super().__init__(NOT_FOUND, "Review case was not found.", ("review_case_id",))
+
+
+class ReviewCaseVersionConflictError(ReviewRuntimeError):
+    def __init__(self) -> None:
+        super().__init__(
+            VERSION_CONFLICT,
+            "Review case version does not match the expected version.",
+            ("version",),
+        )
+
+
+class ReviewCaseAlreadyExistsError(ReviewRuntimeError):
+    def __init__(self) -> None:
+        super().__init__(
+            ALREADY_EXISTS,
+            "Review case identifier already exists.",
+            ("review_case_id",),
+        )
+
+
+class ReviewCaseIdempotencyConflictError(ReviewRuntimeError):
+    def __init__(self) -> None:
+        super().__init__(
+            IDEMPOTENCY_CONFLICT,
+            "Idempotency key was already used for a different case request.",
+            ("idempotency_key",),
+        )
+
+
+class ReviewAuditConflictError(ReviewRuntimeError):
+    def __init__(self) -> None:
+        super().__init__(
+            AUDIT_CONFLICT,
+            "Audit event is inconsistent with the review case update.",
+            ("audit_event",),
+        )

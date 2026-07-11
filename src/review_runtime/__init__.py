@@ -1,27 +1,14 @@
-"""Review Runtime v1 package."""
+"""Review / Correction Runtime public surface."""
 
 from src.review_runtime.models.review_item import ReviewItem
 from src.review_runtime.models.review_decision import ReviewDecision
 from src.review_runtime.models.review_correction import ReviewCorrection
 from src.review_runtime.models.feedback_record import FeedbackRecord
-from src.review_runtime.models.status import ReviewStatus
+from src.review_runtime.models.status import ReviewStatus as LegacyReviewStatus
 from src.review_runtime.services.feedback_service import FeedbackService
 from src.review_runtime.services.review_service import ReviewService
 from src.review_runtime.repositories.in_memory_feedback_repository import InMemoryFeedbackRepository
 from src.review_runtime.repositories.in_memory_review_repository import InMemoryReviewRepository
-
-__all__ = [
-    "FeedbackRecord",
-    "FeedbackService",
-    "InMemoryFeedbackRepository",
-    "InMemoryReviewRepository",
-    "ReviewCorrection",
-    "ReviewDecision",
-    "ReviewItem",
-    "ReviewService",
-    "ReviewStatus",
-]
-"""Review / Correction Runtime public Phase 1 surface."""
 
 from .contracts import (
     ControlledValue,
@@ -39,6 +26,8 @@ from .contracts import (
     SourceRuntime,
 )
 from .errors import ReviewRuntimeError
+from .repositories import InMemoryReviewCaseRepository, ReviewCaseRepository
+from .services.review_case_service import ReviewCaseService
 from .state_machine import (
     ALLOWED_TRANSITIONS,
     ReviewTransition,
@@ -53,13 +42,25 @@ __all__ = [
     "ControlledValue",
     "ControlledValueType",
     "CorrectionOperation",
+    "FeedbackRecord",
+    "FeedbackService",
     "FieldCorrection",
+    "InMemoryFeedbackRepository",
+    "InMemoryReviewCaseRepository",
+    "InMemoryReviewRepository",
+    "LegacyReviewStatus",
     "ReprocessRequest",
     "ReviewAuditEvent",
     "ReviewCase",
+    "ReviewCaseRepository",
+    "ReviewCaseService",
     "ReviewCaseType",
+    "ReviewCorrection",
+    "ReviewDecision",
+    "ReviewItem",
     "ReviewPriority",
     "ReviewRuntimeError",
+    "ReviewService",
     "ReviewerDecision",
     "ReviewerDecisionType",
     "ReviewStatus",

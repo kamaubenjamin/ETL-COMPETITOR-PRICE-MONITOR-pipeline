@@ -1,0 +1,53 @@
+"""Repository boundary for Review Case projections and audit events."""
+
+from __future__ import annotations
+
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
+
+from src.review_runtime.contracts.audit import ReviewAuditEvent
+from src.review_runtime.contracts.review_case import ReviewCase
+
+
+@dataclass(frozen=True, slots=True)
+class CaseCreateResult:
+    review_case: ReviewCase
+    created: bool
+
+
+class ReviewCaseRepository(ABC):
+    """Storage-neutral compare-version and append-only audit boundary."""
+
+    @abstractmethod
+    def create_case(
+        self,
+        review_case: ReviewCase,
+        audit_event: ReviewAuditEvent,
+        *,
+        idempotency_key: str,
+        creation_fingerprint: str,
+    ) -> CaseCreateResult:
+        """Atomically create a case and its first audit event."""
+
+    @abstractmethod
+    def get_case(self, review_case_id: str) -> ReviewCase:
+        """Return a defensive case copy or raise ReviewCaseNotFoundError."""
+
+    @abstractmethod
+    def list_cases(self) -> tuple[ReviewCase, ...]:
+        """Return defensive copies without exposing repository state."""
+
+    @abstractmethod
+    def update_case(
+        self,
+        review_case: ReviewCase,
+        audit_event: ReviewAuditEvent,
+        *,
+        expected_version: int,
+    ) -> ReviewCase:
+        """Atomically compare version, update the projection, and append audit."""
+
+    @abstractmethod
+    def list_audit_events(self, review_case_id: str) -> tuple[ReviewAuditEvent, ...]:
+        """Return append-only audit events ordered by sequence."""
+
