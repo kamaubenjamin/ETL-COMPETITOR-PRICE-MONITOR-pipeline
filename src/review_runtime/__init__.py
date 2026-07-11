@@ -29,6 +29,8 @@ from .errors import ReviewRuntimeError
 from .repositories import InMemoryReviewCaseRepository, ReviewCaseRepository
 from .services.review_case_service import ReviewCaseService
 from .services.correction_decision_service import CorrectionDecisionService
+from .services.reprocess_service import ReprocessService
+from .reprocess import ReprocessPlan, ReprocessPlanner
 from .state_machine import (
     ALLOWED_TRANSITIONS,
     ReviewTransition,
@@ -52,6 +54,9 @@ __all__ = [
     "InMemoryReviewRepository",
     "LegacyReviewStatus",
     "ReprocessRequest",
+    "ReprocessPlan",
+    "ReprocessPlanner",
+    "ReprocessService",
     "ReviewAuditEvent",
     "ReviewCase",
     "ReviewCaseRepository",

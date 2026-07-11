@@ -15,7 +15,9 @@ from src.review_runtime.errors import (
     ReviewCaseIdempotencyConflictError,
     ReviewCaseNotFoundError,
     ReviewCaseVersionConflictError,
+    ReviewReprocessPlanConflictError,
 )
+from src.review_runtime.reprocess.contracts import ReprocessPlan
 
 from .base import CaseCreateResult, ReviewCaseRepository
 
@@ -40,6 +42,10 @@ def _copy_reprocess_request(request: ReprocessRequest) -> ReprocessRequest:
     return ReprocessRequest.from_dict(request.to_dict())
 
 
+def _copy_reprocess_plan(plan: ReprocessPlan) -> ReprocessPlan:
+    return ReprocessPlan.from_dict(plan.to_dict())
+
+
 class InMemoryReviewCaseRepository(ReviewCaseRepository):
     """Thread-safe process-local repository for tests and local execution."""
 
@@ -49,6 +55,7 @@ class InMemoryReviewCaseRepository(ReviewCaseRepository):
         self._corrections: dict[str, list[FieldCorrection]] = {}
         self._decisions: dict[str, list[ReviewerDecision]] = {}
         self._reprocess_requests: dict[str, list[ReprocessRequest]] = {}
+        self._reprocess_plans: dict[str, list[ReprocessPlan]] = {}
         self._idempotency: dict[str, tuple[str, str]] = {}
         self._lock = RLock()
 
@@ -82,6 +89,7 @@ class InMemoryReviewCaseRepository(ReviewCaseRepository):
             self._corrections[stored_case.review_case_id] = []
             self._decisions[stored_case.review_case_id] = []
             self._reprocess_requests[stored_case.review_case_id] = []
+            self._reprocess_plans[stored_case.review_case_id] = []
             self._idempotency[idempotency_key] = (
                 creation_fingerprint,
                 stored_case.review_case_id,
@@ -228,6 +236,55 @@ class InMemoryReviewCaseRepository(ReviewCaseRepository):
                 for item in sorted(
                     self._reprocess_requests[review_case_id],
                     key=lambda item: (item.created_at, item.request_id),
+                )
+            )
+
+    def store_reprocess_plan(
+        self,
+        plan: ReprocessPlan,
+        audit_event: ReviewAuditEvent,
+        *,
+        expected_version: int,
+    ) -> ReprocessPlan:
+        with self._lock:
+            current = self._cases.get(plan.review_case_id)
+            if current is None:
+                raise ReviewCaseNotFoundError()
+            if current.version != expected_version:
+                raise ReviewCaseVersionConflictError()
+            if any(
+                existing.plan_id == plan.plan_id
+                for existing in self._reprocess_plans[plan.review_case_id]
+            ):
+                raise ReviewReprocessPlanConflictError()
+            events = self._audit_events[plan.review_case_id]
+            if any(existing.event_id == audit_event.event_id for existing in events):
+                raise ReviewAuditConflictError()
+            if (
+                audit_event.review_case_id != plan.review_case_id
+                or audit_event.event_type != "reprocess_plan_created"
+                or audit_event.previous_status != current.status
+                or audit_event.new_status != current.status
+                or audit_event.sequence != len(events) + 1
+                or audit_event.case_version != current.version
+            ):
+                raise ReviewAuditConflictError()
+
+            stored_plan = _copy_reprocess_plan(plan)
+            stored_event = _copy_event(audit_event)
+            self._reprocess_plans[plan.review_case_id].append(stored_plan)
+            events.append(stored_event)
+            return _copy_reprocess_plan(stored_plan)
+
+    def list_reprocess_plans(self, review_case_id: str) -> tuple[ReprocessPlan, ...]:
+        with self._lock:
+            if review_case_id not in self._cases:
+                raise ReviewCaseNotFoundError()
+            return tuple(
+                _copy_reprocess_plan(item)
+                for item in sorted(
+                    self._reprocess_plans[review_case_id],
+                    key=lambda item: (item.created_at, item.plan_id),
                 )
             )
 

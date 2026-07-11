@@ -10,6 +10,7 @@ from src.review_runtime.contracts.correction import FieldCorrection
 from src.review_runtime.contracts.decision import ReviewerDecision
 from src.review_runtime.contracts.reprocess import ReprocessRequest
 from src.review_runtime.contracts.review_case import ReviewCase
+from src.review_runtime.reprocess.contracts import ReprocessPlan
 
 
 @dataclass(frozen=True, slots=True)
@@ -82,3 +83,17 @@ class ReviewCaseRepository(ABC):
     @abstractmethod
     def list_reprocess_requests(self, review_case_id: str) -> tuple[ReprocessRequest, ...]:
         """Return declarative reprocess intents without executing them."""
+
+    @abstractmethod
+    def store_reprocess_plan(
+        self,
+        plan: ReprocessPlan,
+        audit_event: ReviewAuditEvent,
+        *,
+        expected_version: int,
+    ) -> ReprocessPlan:
+        """Atomically append a dry-run plan and its audit event."""
+
+    @abstractmethod
+    def list_reprocess_plans(self, review_case_id: str) -> tuple[ReprocessPlan, ...]:
+        """Return dry-run plans in deterministic order."""

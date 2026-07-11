@@ -58,6 +58,8 @@ AUDIT_CONFLICT = "audit_conflict"
 CORRECTION_NOT_FOUND = "correction_not_found"
 CORRECTION_LINEAGE_CONFLICT = "correction_lineage_conflict"
 REVIEWER_CONFLICT = "reviewer_conflict"
+REPROCESS_REQUEST_NOT_FOUND = "reprocess_request_not_found"
+REPROCESS_PLAN_CONFLICT = "reprocess_plan_conflict"
 
 
 class ReviewCaseNotFoundError(ReviewRuntimeError):
@@ -125,4 +127,22 @@ class ReviewReviewerConflictError(ReviewRuntimeError):
             REVIEWER_CONFLICT,
             "Reviewer does not match the assigned review case owner.",
             ("reviewer_id",),
+        )
+
+
+class ReviewReprocessRequestNotFoundError(ReviewRuntimeError):
+    def __init__(self) -> None:
+        super().__init__(
+            REPROCESS_REQUEST_NOT_FOUND,
+            "Reprocess request was not found for this review case.",
+            ("request_id",),
+        )
+
+
+class ReviewReprocessPlanConflictError(ReviewRuntimeError):
+    def __init__(self) -> None:
+        super().__init__(
+            REPROCESS_PLAN_CONFLICT,
+            "Reprocess plan identifier already exists.",
+            ("plan_id",),
         )
