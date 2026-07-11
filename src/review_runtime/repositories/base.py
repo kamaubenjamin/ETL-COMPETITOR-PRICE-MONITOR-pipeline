@@ -6,6 +6,9 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
 from src.review_runtime.contracts.audit import ReviewAuditEvent
+from src.review_runtime.contracts.correction import FieldCorrection
+from src.review_runtime.contracts.decision import ReviewerDecision
+from src.review_runtime.contracts.reprocess import ReprocessRequest
 from src.review_runtime.contracts.review_case import ReviewCase
 
 
@@ -51,3 +54,31 @@ class ReviewCaseRepository(ABC):
     def list_audit_events(self, review_case_id: str) -> tuple[ReviewAuditEvent, ...]:
         """Return append-only audit events ordered by sequence."""
 
+    @abstractmethod
+    def next_audit_sequence(self, review_case_id: str) -> int:
+        """Return the next sequence for an atomic action on the case."""
+
+    @abstractmethod
+    def commit_action(
+        self,
+        review_case: ReviewCase,
+        audit_events: tuple[ReviewAuditEvent, ...],
+        *,
+        expected_version: int,
+        corrections: tuple[FieldCorrection, ...] = (),
+        decision: ReviewerDecision | None = None,
+        reprocess_request: ReprocessRequest | None = None,
+    ) -> ReviewCase:
+        """Atomically update a case and append immutable action records."""
+
+    @abstractmethod
+    def list_corrections(self, review_case_id: str) -> tuple[FieldCorrection, ...]:
+        """Return append-only corrections in deterministic order."""
+
+    @abstractmethod
+    def list_decisions(self, review_case_id: str) -> tuple[ReviewerDecision, ...]:
+        """Return append-only reviewer decisions in deterministic order."""
+
+    @abstractmethod
+    def list_reprocess_requests(self, review_case_id: str) -> tuple[ReprocessRequest, ...]:
+        """Return declarative reprocess intents without executing them."""

@@ -55,6 +55,9 @@ VERSION_CONFLICT = "version_conflict"
 ALREADY_EXISTS = "already_exists"
 IDEMPOTENCY_CONFLICT = "idempotency_conflict"
 AUDIT_CONFLICT = "audit_conflict"
+CORRECTION_NOT_FOUND = "correction_not_found"
+CORRECTION_LINEAGE_CONFLICT = "correction_lineage_conflict"
+REVIEWER_CONFLICT = "reviewer_conflict"
 
 
 class ReviewCaseNotFoundError(ReviewRuntimeError):
@@ -95,4 +98,31 @@ class ReviewAuditConflictError(ReviewRuntimeError):
             AUDIT_CONFLICT,
             "Audit event is inconsistent with the review case update.",
             ("audit_event",),
+        )
+
+
+class ReviewCorrectionNotFoundError(ReviewRuntimeError):
+    def __init__(self) -> None:
+        super().__init__(
+            CORRECTION_NOT_FOUND,
+            "Referenced correction was not found for this review case.",
+            ("correction_ids",),
+        )
+
+
+class ReviewCorrectionLineageConflictError(ReviewRuntimeError):
+    def __init__(self) -> None:
+        super().__init__(
+            CORRECTION_LINEAGE_CONFLICT,
+            "Correction lineage does not match the review case source.",
+            ("correction",),
+        )
+
+
+class ReviewReviewerConflictError(ReviewRuntimeError):
+    def __init__(self) -> None:
+        super().__init__(
+            REVIEWER_CONFLICT,
+            "Reviewer does not match the assigned review case owner.",
+            ("reviewer_id",),
         )

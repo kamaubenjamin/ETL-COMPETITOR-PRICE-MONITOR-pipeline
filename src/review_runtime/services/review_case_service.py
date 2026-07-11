@@ -326,7 +326,7 @@ class ReviewCaseService:
             occurred_at=updated.updated_at,
             previous_status=current.status,
             new_status=updated.status,
-            sequence=updated.version,
+            sequence=self._repository.next_audit_sequence(updated.review_case_id),
             case_version=updated.version,
             metadata=metadata or {},
         )
