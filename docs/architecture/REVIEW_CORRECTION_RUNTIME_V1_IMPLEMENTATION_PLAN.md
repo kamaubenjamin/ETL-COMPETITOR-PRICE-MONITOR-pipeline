@@ -1,7 +1,7 @@
 # Review / Correction Runtime v1 Implementation Plan
 
 **Milestone:** v0.7  
-**Status:** Planned; implementation not started  
+**Status:** Phases 1-5 complete and verified; release commit and tag pending
 **Architecture:** `docs/architecture/REVIEW_CORRECTION_RUNTIME_V1_PLAN.md`
 
 ## 1. Milestone Overview
@@ -185,6 +185,8 @@ Stop after correction, decision, audit, and compatibility verification. Do not i
 
 ## 6. Phase 4: Reprocess Planning and Workflow Integration
 
+**Completion note:** Completed as a safe dry-run planning boundary. Review Runtime creates and stores declarative plans and emits safe audit events. Workflow stage implementation, acknowledgement handling, observability registration, and execution were deferred to preserve runtime boundaries and the approved Phase 4 scope.
+
 ### Objectives
 
 - Validate deterministic reprocess plans and create idempotent requests.
@@ -243,6 +245,8 @@ git status --short --branch
 Stop after reprocess planning, Workflow integration, observability, and focused verification. Do not begin release closure.
 
 ## 7. Phase 5: Verification, Docs, and Release Closure
+
+**Completion note:** Completed with focused Review Runtime tests, boundary tests, the static boundary verifier, full regression, and release documentation. No production runtime feature was added in this phase.
 
 ### Objectives
 
@@ -330,7 +334,7 @@ Stop after verification and release documentation. Do not commit, push, or tag u
 - State transitions, assignment, idempotency, and expected-version conflicts are deterministic.
 - Audit history is append-only and lineage-aware.
 - Corrected values are absent from unsafe metadata, errors, logs, metrics, and audit summaries.
-- Workflow integration is non-blocking and reprocess execution remains Workflow-owned.
+- Reprocess planning is non-blocking and dry-run only; future execution remains Workflow-owned.
 - Existing review compatibility and runtime boundaries pass.
 - Full regression passes in the provisioned project environment.
 - Release documentation is complete and the recommended tag is documented, not created.
@@ -348,4 +352,3 @@ One commit per completed phase is recommended:
 Recommended final tag after Phase 5 verification:
 
 `v0.7-review-correction-runtime`
-

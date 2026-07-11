@@ -107,19 +107,22 @@ References:
 ### v0.7 Review / Correction Runtime
 
 Status:
-- Architecture and phased implementation planning complete
-- Implementation not started
+- Implemented and verified; release commit and tag pending
+- Recommended tag: `v0.7-review-correction-runtime`
 
-Planned capabilities:
+Delivered capabilities:
 - Deterministic review case lifecycle and reviewer decisions
 - Field-level, version-aware corrections with append-only audit and lineage
-- Non-blocking declarative reprocess requests owned by Workflow Runtime
+- Non-blocking declarative reprocess requests and dry-run plans; execution remains Workflow-owned and deferred
 - Backend source of truth for future Streamlit and FlowSync consumers
 
 References:
 - `docs/architecture/REVIEW_CORRECTION_RUNTIME_V1_PLAN.md`
 - `docs/architecture/REVIEW_CORRECTION_RUNTIME_V1_IMPLEMENTATION_PLAN.md`
+- `docs/architecture/REVIEW_CORRECTION_RUNTIME_V1_SUMMARY.md`
+- `docs/architecture/REVIEW_CORRECTION_RUNTIME_V1_HANDOFF.md`
 - `docs/adr/ADR-013-review-correction-runtime.md`
+- `docs/releases/v0.7-review-correction-runtime.md`
 
 ## Prior Milestone Context
 
@@ -250,7 +253,8 @@ Dependencies:
 
 ## Next Milestones
 
-- Implement v0.7 Review / Correction Runtime one phase at a time
+- Close and tag v0.7 Review / Correction Runtime after the Phase 5 documentation commit
+- Plan durable Review Runtime persistence and trusted service boundaries
 - Workflow Runtime Locking
 - Entity Runtime Concurrency Hardening
 - Observability Improvements

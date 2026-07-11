@@ -37,22 +37,33 @@ Delivered under `src/transforms/` and Workflow Runtime:
 
 ### Current Status
 
-**v0.7 architecture and implementation planning complete; implementation not started.**
+**v0.7 implemented and verified; release commit and tag pending.**
 
-Confirmed debt in the existing prototype:
+Resolved in v0.7:
 
-- Partial lifecycle (`pending`, `in_review`, `approved`, `rejected`, `corrected`) without skip, reprocess, or resolved semantics
-- Corrections are not field-addressed, artifact-version-aware, or separated from unsafe metadata
-- Feedback storage is replaceable rather than an append-only ordered audit trail
-- No idempotent case commands, expected-version conflict handling, or declarative reprocess contract
-- Unrestricted metadata and embedded review snapshots can expose sensitive values
-- No production persistence, authenticated reviewer boundary, API, or UI; these remain deferred
+- Canonical eight-state lifecycle and five reviewer decisions
+- Field-addressed, lineage-aware controlled corrections
+- Ordered append-only audit records for canonical services
+- Idempotent creation, optimistic case versions, and declarative dry-run reprocess plans
+- Bounded allowlisted metadata and privacy-safe errors/audit summaries
 
-Planned resolution is documented in:
+Remaining debt:
+
+- Durable database persistence, atomic multi-process transactions, migrations, retention, and audit signing
+- Authenticated/authorized reviewer identity and protected correction-value access
+- Workflow review-stage adapter, reprocess acknowledgement, and execution
+- Shared neutral stage catalog; the dry-run planner currently mirrors a local safe allowlist
+- API, UI, Streamlit, FlowSync, notifications, and observability instrumentation
+- Legacy prototype modules remain alongside canonical v1 services and need a future deprecation plan
+
+Closure is documented in:
 
 - `docs/architecture/REVIEW_CORRECTION_RUNTIME_V1_PLAN.md`
 - `docs/architecture/REVIEW_CORRECTION_RUNTIME_V1_IMPLEMENTATION_PLAN.md`
+- `docs/architecture/REVIEW_CORRECTION_RUNTIME_V1_SUMMARY.md`
+- `docs/architecture/REVIEW_CORRECTION_RUNTIME_V1_HANDOFF.md`
 - `docs/adr/ADR-013-review-correction-runtime.md`
+- `docs/releases/v0.7-review-correction-runtime.md`
 
 ---
 

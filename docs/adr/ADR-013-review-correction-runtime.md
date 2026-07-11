@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.7 planning; implementation pending.
+Accepted and implemented for v0.7; release commit and tag pending.
 
 ## Context
 
@@ -28,7 +28,7 @@ Field corrections reference a source artifact ID/version and canonical field pat
 
 Every accepted command produces ordered append-only audit events with actor, state transition, reason, correlation, and artifact lineage. Generic metadata, errors, logs, metrics, and audit summaries must not contain full source rows or raw sensitive values.
 
-Review Runtime emits a bounded declarative `ReprocessRequest`. Workflow Runtime executes or rejects that request asynchronously and returns an acknowledgement. Review Runtime never synchronously invokes Workflow Runtime and never holds a workflow execution open for a human.
+Review Runtime emits a bounded declarative `ReprocessRequest` and can convert it into a dry-run `ReprocessPlan`. It does not execute workflows, call WorkflowRunner, or hold workflow execution open for a human. Workflow execution and acknowledgement remain future Workflow Runtime responsibilities.
 
 ## Runtime Boundary Decision
 
@@ -93,5 +93,4 @@ Rejected for v1 because decisions must remain human-authored, deterministic, exp
 
 ## Follow-Up
 
-Implement the five phases in `docs/architecture/REVIEW_CORRECTION_RUNTIME_V1_IMPLEMENTATION_PLAN.md`, then produce summary, handoff, release notes, full regression evidence, and final tag instructions.
-
+The five phases are implemented and verified. Closure evidence is recorded in `docs/architecture/REVIEW_CORRECTION_RUNTIME_V1_SUMMARY.md`, the future-agent guidance is in `docs/architecture/REVIEW_CORRECTION_RUNTIME_V1_HANDOFF.md`, and release instructions are in `docs/releases/v0.7-review-correction-runtime.md`. Durable persistence, trusted identity, Workflow execution/acknowledgement, UI, and API remain follow-up work.

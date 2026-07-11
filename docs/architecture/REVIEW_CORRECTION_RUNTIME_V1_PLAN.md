@@ -1,7 +1,7 @@
 # Review / Correction Runtime v1 Architecture Plan
 
 **Milestone:** v0.7  
-**Status:** Planned  
+**Status:** Implemented and verified; release commit and tag pending
 **Scope:** Deterministic backend review, field correction, decision, audit, lineage, and reprocess-request contracts
 
 ## 1. Problem Statement
@@ -239,6 +239,8 @@ No test requires network access, a browser, OCR, LLMs, external services, UI, AP
 4. **Reprocess planning and workflow integration:** declarative plans/requests, Workflow-owned review adapter/stage, acknowledgement flow, and fail-open observability.
 5. **Verification and release closure:** integration/privacy/boundary regression, summary/handoff/release notes, roadmap/debt/changelog closure, and tag instructions.
 
+All five phases are complete. Phase 4 intentionally stopped at dependency-free dry-run reprocess planning. Workflow review-stage adapters, acknowledgements, observability registration, and workflow execution remain deferred and are not release claims for v0.7.
+
 ## 20. Risks and Deferred Work
 
 | Risk | Mitigation / Deferred Work |
@@ -267,4 +269,3 @@ v0.7 is complete when:
 - Existing runtime boundaries remain compliant and the legacy prototype has one documented compatibility path.
 - Streamlit and FlowSync remain consumers only; no UI, API, database, OCR, LLM, or external dependency is introduced.
 - Focused, boundary, and full regression suites pass and release documentation accurately states remaining limitations.
-
