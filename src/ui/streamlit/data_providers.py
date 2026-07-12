@@ -5,6 +5,15 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import Any
 
+from src.review_runtime.contracts import (
+    ControlledValue,
+    FieldCorrection,
+    ReviewAuditEvent,
+    ReviewCase,
+    ReviewerDecision,
+)
+from src.review_runtime.reprocess import ReprocessPlan
+
 
 Record = dict[str, Any]
 
@@ -51,19 +60,46 @@ _MATCHING_RESULTS: tuple[Record, ...] = (
     {"document_id": "DOC-1046", "entity": "Tailspin Toys", "candidate_match": "Tailspin Toys Ltd", "confidence": 0.96, "match_status": "matched"},
 )
 
-_REVIEW_CASES: tuple[Record, ...] = (
-    {"review_case_id": "REV-2198", "document_id": "DOC-1042", "reason": "validation_failure", "priority": "normal", "status": "resolved", "assigned_reviewer": "A. Kamau"},
-    {"review_case_id": "REV-2199", "document_id": "DOC-1046", "reason": "duplicate_detection", "priority": "normal", "status": "corrected", "assigned_reviewer": "J. Njeri"},
-    {"review_case_id": "REV-2201", "document_id": "DOC-1043", "reason": "matching_ambiguity", "priority": "high", "status": "in_review", "assigned_reviewer": "M. Otieno"},
-    {"review_case_id": "REV-2202", "document_id": "DOC-1045", "reason": "invalid_data", "priority": "urgent", "status": "review_required", "assigned_reviewer": "Unassigned"},
-)
-
 _WORKFLOW_RUNS: tuple[Record, ...] = (
     {"run_id": "RUN-8807", "workflow_name": "Invoice Standard", "status": "completed", "started_at": "2026-07-11 09:15 UTC", "duration": "00:02:14"},
     {"run_id": "RUN-8808", "workflow_name": "Purchase Order Standard", "status": "review_required", "started_at": "2026-07-11 09:18 UTC", "duration": "00:01:42"},
     {"run_id": "RUN-8809", "workflow_name": "Statement Reconciliation", "status": "completed", "started_at": "2026-07-11 09:21 UTC", "duration": "00:00:36"},
     {"run_id": "RUN-8810", "workflow_name": "Receipt Standard", "status": "failed", "started_at": "2026-07-11 09:24 UTC", "duration": "00:00:08"},
 )
+
+
+def _review_runtime_samples() -> tuple[
+    tuple[ReviewCase, ...],
+    tuple[FieldCorrection, ...],
+    tuple[ReviewerDecision, ...],
+    tuple[ReviewAuditEvent, ...],
+    tuple[ReprocessPlan, ...],
+]:
+    cases = (
+        ReviewCase("REV-2198", "transforms", "validate_data", "DOC-1042", "resolved", "validation_failure", "normal", "2026-07-11T09:10:00+00:00", "2026-07-11T09:17:00+00:00", 4, assigned_reviewer_id="reviewer-003"),
+        ReviewCase("REV-2199", "matching", "matching", "DOC-1046", "corrected", "duplicate_detection", "normal", "2026-07-11T09:12:00+00:00", "2026-07-11T09:28:00+00:00", 3, assigned_reviewer_id="reviewer-002"),
+        ReviewCase("REV-2201", "matching", "matching", "DOC-1043", "in_review", "matching_ambiguity", "high", "2026-07-11T09:20:00+00:00", "2026-07-11T09:31:00+00:00", 2, assigned_reviewer_id="reviewer-001"),
+        ReviewCase("REV-2202", "document", "parsed", "DOC-1045", "review_required", "invalid_data", "critical", "2026-07-11T09:24:00+00:00", "2026-07-11T09:24:00+00:00", 1),
+        ReviewCase("REV-2204", "transforms", "validate_data", "DOC-1044", "reprocess_requested", "corrected_fields", "high", "2026-07-11T09:25:00+00:00", "2026-07-11T09:34:00+00:00", 4, assigned_reviewer_id="reviewer-004"),
+    )
+    corrections = (
+        FieldCorrection("COR-1001", "REV-2199", "supplier.reference", ControlledValue("string", "corrected-reference"), "corrected_fields", "reviewer-002", "2026-07-11T09:27:00+00:00", "matching", "matching", "DOC-1046"),
+        FieldCorrection("COR-1002", "REV-2204", "account.currency", ControlledValue("string", "KES"), "corrected_fields", "reviewer-004", "2026-07-11T09:32:00+00:00", "transforms", "validate_data", "DOC-1044"),
+    )
+    decisions = (
+        ReviewerDecision("DEC-1001", "REV-2198", "approve", "reviewer-003", "2026-07-11T09:16:00+00:00", 3, "IDEM-DEC-1001", reason_code="validation_confirmed"),
+        ReviewerDecision("DEC-1002", "REV-2199", "correct", "reviewer-002", "2026-07-11T09:28:00+00:00", 2, "IDEM-DEC-1002", reason_code="corrected_fields", correction_ids=("COR-1001",)),
+        ReviewerDecision("DEC-1004", "REV-2204", "request_reprocess", "reviewer-004", "2026-07-11T09:33:00+00:00", 3, "IDEM-DEC-1004", reason_code="corrected_fields", reprocess_request_id="REQ-1004"),
+    )
+    audit_events = (
+        ReviewAuditEvent("EVT-2001", "REV-2201", "review_assigned", "reviewer-001", "2026-07-11T09:31:12+00:00", "review_required", "in_review", {"reason_code": "matching_ambiguity"}, sequence=2, case_version=2),
+        ReviewAuditEvent("EVT-2002", "REV-2199", "correction_recorded", "reviewer-002", "2026-07-11T09:28:00+00:00", "in_review", "corrected", {"field_count": 1, "reason_code": "corrected_fields"}, sequence=3, case_version=3),
+        ReviewAuditEvent("EVT-2003", "REV-2204", "reprocess_plan_created", "reviewer-004", "2026-07-11T09:34:00+00:00", "reprocess_requested", "reprocess_requested", {"invalidated_count": 1, "retained_count": 1, "requested_from_stage": "validate_data", "requested_target_stage": "transform", "dry_run": True}, sequence=5, case_version=4),
+    )
+    plans = (
+        ReprocessPlan("PLAN-1004", "REV-2204", "validate_data", "transform", ("ART-1044-VALIDATED",), ("ART-1044-PARSED",), "corrected_fields", "reviewer-004", "2026-07-11T09:34:00+00:00", {"dry_run": True}),
+    )
+    return cases, corrections, decisions, audit_events, plans
 
 _AUDIT_EVENTS: tuple[Record, ...] = (
     {"timestamp": "2026-07-11 09:31:12 UTC", "event_type": "review_assigned", "actor": "M. Otieno", "safe_metadata": "case=REV-2201; priority=high"},
@@ -100,7 +136,31 @@ class LocalOperatorConsoleProvider:
         return _copy(_MATCHING_RESULTS)
 
     def review_cases(self, *, status: str | None = None) -> list[Record]:
-        rows = _copy(_REVIEW_CASES)
+        cases, corrections, decisions, _, plans = _review_runtime_samples()
+        correction_counts = {
+            case.review_case_id: sum(item.review_case_id == case.review_case_id for item in corrections)
+            for case in cases
+        }
+        decision_by_case = {item.review_case_id: item for item in decisions}
+        planned_cases = {item.review_case_id for item in plans}
+        rows = []
+        for case in cases:
+            decision = decision_by_case.get(case.review_case_id)
+            rows.append(
+                {
+                    "review_case_id": case.review_case_id,
+                    "document_id": case.source_artifact_id,
+                    "reason_code": decision.reason_code if decision and decision.reason_code else case.reason_code,
+                    "priority": case.priority.value,
+                    "status": case.status.value,
+                    "assigned_reviewer": case.assigned_reviewer_id or "Unassigned",
+                    "correction_count": correction_counts[case.review_case_id],
+                    "decision": decision.decision.value if decision else "pending",
+                    "reprocess_state": "planned" if case.review_case_id in planned_cases else (
+                        "requested" if case.status.value == "reprocess_requested" else "not_requested"
+                    ),
+                }
+            )
         return [row for row in rows if row["status"] == status] if status else rows
 
     def workflow_runs(self, *, workflow_name: str | None = None) -> list[Record]:
@@ -108,7 +168,22 @@ class LocalOperatorConsoleProvider:
         return [row for row in rows if row["workflow_name"] == workflow_name] if workflow_name else rows
 
     def audit_events(self) -> list[Record]:
-        return _copy(_AUDIT_EVENTS)
+        _, _, _, review_events, _ = _review_runtime_samples()
+        rows = _copy(_AUDIT_EVENTS)
+        rows.extend(
+            {
+                "timestamp": event.occurred_at,
+                "event_type": event.event_type,
+                "actor": event.actor_id,
+                "safe_metadata": (
+                    f"case={event.review_case_id}; status={event.new_status.value}; "
+                    f"sequence={event.sequence}"
+                ),
+                "source_runtime": "review",
+            }
+            for event in review_events
+        )
+        return sorted(rows, key=lambda row: (row["timestamp"], row["event_type"]), reverse=True)
 
     def summary_metrics(self, *, documents: list[Record] | None = None) -> Record:
         rows = deepcopy(documents) if documents is not None else self.documents()
@@ -120,4 +195,3 @@ class LocalOperatorConsoleProvider:
             "failed": sum(row["status"] == "failed" for row in rows),
             "export_ready": sum(row["status"] == "export_ready" for row in rows),
         }
-

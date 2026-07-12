@@ -1,7 +1,7 @@
 # Document Intelligence Operator Console v1 Plan
 
 **Milestone:** v0.8
-**Status:** Phases 1-2 implemented; live backend integration deferred
+**Status:** Phases 1-3 implemented; live backend integration deferred
 
 ## Purpose
 
@@ -44,6 +44,16 @@ The legacy competitor-price `dashboard.py` remains separate and unchanged.
 
 Provider ordering is deterministic. Every call returns a fresh copy so table shaping or future display formatting cannot mutate fixture state.
 
+## Phase 3 Review Runtime Preview
+
+The local provider constructs deterministic samples with the public Review Runtime contracts: `ReviewCase`, `FieldCorrection`, `ReviewerDecision`, `ReviewAuditEvent`, and dry-run `ReprocessPlan`.
+
+- Review Queue rows now originate from contract-validated cases and include correction count, decision/reason code, assigned reviewer, canonical status, and reprocess state.
+- Audit Logs merge display-safe Review Runtime events with the existing deterministic platform events.
+- Controlled correction values are used only to validate sample contracts. They are never projected into review rows, audit rows, generic metadata, or UI messages.
+- Provider calls rebuild or copy their outputs, so display code cannot mutate sample contracts or affect later calls.
+- The console does not call Review Runtime services, repositories, workflow execution, or persistence and exposes no mutation controls.
+
 ## Interaction Model
 
 Sidebar controls filter local tables by workspace, document type, workflow, runtime status, and review status. No action mutates data. Upload is visibly disabled to avoid implying persistence or backend capability.
@@ -79,10 +89,11 @@ git status --short --branch
 - All required filters, metrics, tabs, tables, lifecycle values, and mock datasets are represented.
 - Display data is supplied through a defensive provider and pure view-model boundary.
 - Provider determinism, filtering, copying, metric counts, and display shaping are covered by tests.
+- Review Queue and Audit Logs display read-only Review Runtime-compatible preview records without exposing correction payloads.
 - Upload cannot persist or call a backend.
 - Runtime boundaries remain compliant and Review Runtime regression tests pass.
 - Release notes and repository trackers accurately describe the mock-data-only scope.
 
 ## Deferred Work
 
-Backend adapters, API, persistence, authentication, authorization, mutation commands, protected-value viewing, production upload, OCR, LLM processing, notifications, accessibility testing, and deployment configuration are deferred.
+Live Review Runtime repositories/services, backend adapters, API, persistence, authentication, authorization, mutation commands, protected-value viewing, production upload, OCR, LLM processing, notifications, accessibility testing, and deployment configuration are deferred.

@@ -71,11 +71,12 @@ Closure is documented in:
 
 ### Current Status
 
-**v0.8 Phases 1-2 implemented with deterministic local mock data and a provider/view-model boundary; live backend integration deferred.**
+**v0.8 Phases 1-3 implemented with deterministic local data, a provider/view-model boundary, and a read-only Review Runtime contract preview; live backend integration deferred.**
 
 Remaining debt:
 
 - Replace `LocalOperatorConsoleProvider` fixtures with bounded read-only application-service adapters behind the same display contract
+- Replace constructed Review Runtime samples with an authorized read-only repository/service adapter
 - Add authenticated operator identity and role-based authorization
 - Add protected access rules for sensitive document and correction values
 - Implement production upload through a backend-owned ingestion boundary

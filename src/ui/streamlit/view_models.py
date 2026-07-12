@@ -35,7 +35,19 @@ def matching_rows(records: Iterable[Record]) -> list[Record]:
 
 
 def review_queue_rows(records: Iterable[Record]) -> list[Record]:
-    return _rows(records, ("review_case_id", "reason", "priority", "status", "assigned_reviewer"))
+    return _rows(
+        records,
+        (
+            "review_case_id",
+            "reason_code",
+            "priority",
+            "status",
+            "assigned_reviewer",
+            "correction_count",
+            "decision",
+            "reprocess_state",
+        ),
+    )
 
 
 def workflow_run_rows(records: Iterable[Record]) -> list[Record]:
@@ -44,4 +56,3 @@ def workflow_run_rows(records: Iterable[Record]) -> list[Record]:
 
 def audit_log_rows(records: Iterable[Record]) -> list[Record]:
     return _rows(records, ("timestamp", "event_type", "actor", "safe_metadata"))
-
