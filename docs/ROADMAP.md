@@ -126,7 +126,7 @@ References:
 ### v0.8 Document Intelligence Operator Console
 
 Status:
-- Phases 1-3 implemented with deterministic local data, provider/view-model layers, and a read-only Review Runtime contract preview
+- Phases 1-4 implemented with deterministic local data, provider/view-model layers, a read-only Review Runtime preview, and operator-console visual polish
 - Backend integration and release tag pending
 
 Delivered capabilities:
@@ -135,6 +135,7 @@ Delivered capabilities:
 - Display-only document and review lifecycle filters with no runtime mutation
 - Local provider adapters, stable view models, reusable display components, and focused UI tests
 - Review Queue and Audit Logs shaped from deterministic public Review Runtime contracts
+- Consistent navigation, grouped workloads, status/priority labels, run-mode messaging, and filtered empty states
 - No API, database, external service, OCR, or LLM dependency
 
 References:

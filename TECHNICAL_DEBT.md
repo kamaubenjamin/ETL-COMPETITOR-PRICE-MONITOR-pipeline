@@ -71,7 +71,7 @@ Closure is documented in:
 
 ### Current Status
 
-**v0.8 Phases 1-3 implemented with deterministic local data, a provider/view-model boundary, and a read-only Review Runtime contract preview; live backend integration deferred.**
+**v0.8 Phases 1-4 implemented with deterministic local data, provider/view-model boundaries, a read-only Review Runtime preview, and visual/navigation polish; live backend integration deferred.**
 
 Remaining debt:
 
@@ -82,6 +82,7 @@ Remaining debt:
 - Implement production upload through a backend-owned ingestion boundary
 - Add command submission through runtime services with idempotency and optimistic versions
 - Add accessibility, responsive-layout, deployment, and browser-level regression verification
+- Validate status/priority labels with operators before treating the display vocabulary as a stable external contract
 - Keep the legacy competitor-price `dashboard.py` separate until an explicit retirement milestone
 
 References:

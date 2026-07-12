@@ -49,5 +49,16 @@ def test_view_models_do_not_mutate_provider_rows():
 
 def test_components_import_has_no_streamlit_render_side_effects():
     components = importlib.import_module("src.ui.streamlit.components")
-    assert components.format_status("review_required") == "Review Required"
+    assert components.format_status("review_required") == "Review - Review Required"
+    assert components.format_status("failed") == "Issue - Failed"
+    assert components.format_status("export_ready") == "Ready - Export Ready"
+    assert components.format_priority("critical") == "P1 - Critical"
+    assert components.format_priority("normal") == "P3 - Normal"
 
+
+def test_display_formatting_does_not_mutate_rows():
+    components = importlib.import_module("src.ui.streamlit.components")
+    rows = [{"status": "review_required", "priority": "high"}]
+    displayed = components._display_rows(rows)
+    assert displayed == [{"status": "Review - Review Required", "priority": "P2 - High"}]
+    assert rows == [{"status": "review_required", "priority": "high"}]

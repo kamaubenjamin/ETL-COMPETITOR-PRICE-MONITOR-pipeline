@@ -1,7 +1,7 @@
 # Document Intelligence Operator Console v1 Plan
 
 **Milestone:** v0.8
-**Status:** Phases 1-3 implemented; live backend integration deferred
+**Status:** Phases 1-4 implemented; live backend integration deferred
 
 ## Purpose
 
@@ -54,6 +54,17 @@ The local provider constructs deterministic samples with the public Review Runti
 - Provider calls rebuild or copy their outputs, so display code cannot mutate sample contracts or affect later calls.
 - The console does not call Review Runtime services, repositories, workflow execution, or persistence and exposes no mutation controls.
 
+## Phase 4 Visual And Navigation Polish
+
+- A consistent page header, descriptive subtitle, and prominent local read-only run-mode banner establish context before operational content.
+- Numbered tabs improve scanning across overview, inbox, upload, processing, validation, matching, reviews, workflows, and audit activity.
+- The overview groups document workload, lifecycle distribution, review workload, and workflow activity into stable operational sections.
+- Sidebar controls are grouped into scope and runtime filters with a compact run-mode indicator.
+- Display-only labels distinguish active, review, ready, and issue statuses; review priorities use stable P1-P4 labels.
+- Tables preserve view-model field order and render explicit empty states when filters remove all rows.
+- Upload remains disabled inside a clearly bounded preview panel with an explicit non-persistence warning.
+- Presentation formatting copies rows before applying labels, preserving provider immutability.
+
 ## Interaction Model
 
 Sidebar controls filter local tables by workspace, document type, workflow, runtime status, and review status. No action mutates data. Upload is visibly disabled to avoid implying persistence or backend capability.
@@ -90,10 +101,11 @@ git status --short --branch
 - Display data is supplied through a defensive provider and pure view-model boundary.
 - Provider determinism, filtering, copying, metric counts, and display shaping are covered by tests.
 - Review Queue and Audit Logs display read-only Review Runtime-compatible preview records without exposing correction payloads.
+- Navigation, empty states, run-mode messaging, status/priority formatting, and display-copy isolation are covered by focused UI tests and headless rendering.
 - Upload cannot persist or call a backend.
 - Runtime boundaries remain compliant and Review Runtime regression tests pass.
 - Release notes and repository trackers accurately describe the mock-data-only scope.
 
 ## Deferred Work
 
-Live Review Runtime repositories/services, backend adapters, API, persistence, authentication, authorization, mutation commands, protected-value viewing, production upload, OCR, LLM processing, notifications, accessibility testing, and deployment configuration are deferred.
+Live Review Runtime repositories/services, backend adapters, API, persistence, authentication, authorization, mutation commands, protected-value viewing, production upload, OCR, LLM processing, notifications, formal accessibility testing, responsive browser-matrix testing, and deployment configuration are deferred.
