@@ -126,8 +126,8 @@ References:
 ### v0.8 Document Intelligence Operator Console
 
 Status:
-- Phases 1-4 implemented with deterministic local data, provider/view-model layers, a read-only Review Runtime preview, and operator-console visual polish
-- Backend integration and release tag pending
+- Phases 1-5 implemented and verified
+- Release commit and tag pending; backend integration remains deferred
 
 Delivered capabilities:
 - Separate Document Intelligence console beside the legacy competitor-price dashboard
@@ -140,6 +140,8 @@ Delivered capabilities:
 
 References:
 - `docs/architecture/DOCUMENT_INTELLIGENCE_OPERATOR_CONSOLE_V1_PLAN.md`
+- `docs/architecture/DOCUMENT_INTELLIGENCE_OPERATOR_CONSOLE_V1_SUMMARY.md`
+- `docs/architecture/DOCUMENT_INTELLIGENCE_OPERATOR_CONSOLE_V1_HANDOFF.md`
 - `docs/releases/v0.8-document-intelligence-operator-console.md`
 
 ## Prior Milestone Context

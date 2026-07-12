@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Added v0.8 Document Intelligence Operator Console Streamlit v1 with deterministic local document, validation, matching, workflow, and audit fixtures; defensive provider/view-model layers; reusable display components; a read-only Review Runtime preview; grouped operational navigation; status/priority labels; filtered empty states; run-mode safety messaging; and a non-persistent upload placeholder.
+- Completed v0.8 Document Intelligence Operator Console Streamlit v1 with deterministic local document, validation, matching, workflow, and audit fixtures; defensive provider/view-model layers; reusable display components; a read-only Review Runtime preview; grouped operational navigation; status/priority labels; filtered empty states; run-mode safety messaging; a non-persistent upload placeholder; full regression verification; and release handoff documentation.
 
 - Closed and tagged v0.7 Review / Correction Runtime with immutable contracts, an explicit lifecycle state machine, deterministic in-memory case services, field-level controlled corrections, five reviewer decisions, append-only audit lineage, and declarative dry-run reprocess planning.
 

@@ -71,7 +71,7 @@ Closure is documented in:
 
 ### Current Status
 
-**v0.8 Phases 1-4 implemented with deterministic local data, provider/view-model boundaries, a read-only Review Runtime preview, and visual/navigation polish; live backend integration deferred.**
+**v0.8 Phases 1-5 implemented and verified; release commit/tag pending and live backend integration deferred.**
 
 Remaining debt:
 
@@ -88,6 +88,8 @@ Remaining debt:
 References:
 
 - `docs/architecture/DOCUMENT_INTELLIGENCE_OPERATOR_CONSOLE_V1_PLAN.md`
+- `docs/architecture/DOCUMENT_INTELLIGENCE_OPERATOR_CONSOLE_V1_SUMMARY.md`
+- `docs/architecture/DOCUMENT_INTELLIGENCE_OPERATOR_CONSOLE_V1_HANDOFF.md`
 - `docs/releases/v0.8-document-intelligence-operator-console.md`
 
 ---

@@ -1,7 +1,7 @@
 # Document Intelligence Operator Console v1 Plan
 
 **Milestone:** v0.8
-**Status:** Phases 1-4 implemented; live backend integration deferred
+**Status:** Phases 1-5 implemented and verified; release commit and tag pending
 
 ## Purpose
 
@@ -65,6 +65,13 @@ The local provider constructs deterministic samples with the public Review Runti
 - Upload remains disabled inside a clearly bounded preview panel with an explicit non-persistence warning.
 - Presentation formatting copies rows before applying labels, preserving provider immutability.
 
+## Phase 5 Verification And Release Closure
+
+- Completed focused UI and Review Runtime regression verification, static boundary analysis, and the full repository test suite.
+- Confirmed the full suite modifies only the four documented generated artifacts and restored them before release closure.
+- Added milestone summary and future-agent handoff documentation.
+- Updated release notes, roadmap, technical debt, and changelog without claiming live backend or production deployment readiness.
+
 ## Interaction Model
 
 Sidebar controls filter local tables by workspace, document type, workflow, runtime status, and review status. No action mutates data. Upload is visibly disabled to avoid implying persistence or backend capability.
@@ -90,6 +97,7 @@ python -m py_compile src/ui/streamlit/components.py
 python -m pytest tests/ui/streamlit -q
 python -m pytest tests/review_runtime -q
 python scripts/verify_boundaries.py
+python -m pytest -q
 git diff --check
 git status --short --branch
 ```
@@ -105,6 +113,7 @@ git status --short --branch
 - Upload cannot persist or call a backend.
 - Runtime boundaries remain compliant and Review Runtime regression tests pass.
 - Release notes and repository trackers accurately describe the mock-data-only scope.
+- Summary and handoff documentation record verification evidence, boundaries, extension rules, and release instructions.
 
 ## Deferred Work
 
