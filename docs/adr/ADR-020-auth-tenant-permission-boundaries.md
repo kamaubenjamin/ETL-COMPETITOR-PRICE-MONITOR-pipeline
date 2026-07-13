@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.15. Phase 1 contracts, catalogs, context, decisions, privacy-safe errors, and pure default-deny policy evaluation are implemented; provider adapters, guards, and runtime integration remain pending.
+Accepted for v0.15. Phases 1-2 implement contracts, catalogs, context, decisions, privacy-safe errors, pure default-deny policy evaluation, provider-neutral identity resolution, an explicit local provider, authorization requests, and a pure permission guard. Tenant-aware storage/read contracts and runtime integration remain pending.
 
 ## Context
 

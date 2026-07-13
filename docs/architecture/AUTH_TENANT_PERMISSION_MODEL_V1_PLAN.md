@@ -1,7 +1,7 @@
 # Auth, Tenant, And Permission Model v1 Plan
 
 **Milestone:** v0.15
-**Status:** Phase 1 implemented; Phases 2-5 not started
+**Status:** Phases 1-2 implemented; Phases 3-5 not started
 
 ## 1. Problem Statement
 
@@ -356,6 +356,8 @@ No migration file or schema change is part of this planning task.
 5. **Verification, documentation, and release closure:** boundary/privacy verification, full regression, summary, handoff, release notes, and migration/production-readiness decision.
 
 Phase 1 delivered the standard-library-only `src/security/` contracts, exact permission and role catalogs, explicit anonymous/user/service/system principals, immutable authorization context and decisions, privacy-safe errors, and a pure default-deny policy evaluator. Identity-provider adapters, reusable guards, and all API, UI, storage, Query Facade, and writer integration remain deferred to later phases.
+
+Phase 2 delivered a provider-neutral identity resolution Protocol and safe result contract, an explicit local/dev/test provider with deterministic demo identities, a bounded authorization request contract, and a pure permission guard that delegates to the Phase 1 policy evaluator. API, Streamlit, Document State, Query Facade, writer, persistence, and external identity-provider integration remain deferred.
 
 ## 24. Risks And Mitigations
 

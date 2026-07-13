@@ -354,7 +354,7 @@ References:
 
 ### Current Status
 
-**v0.15 Phase 1 is implemented; Phases 2-5 have not started.**
+**v0.15 Phases 1-2 are implemented; Phases 3-5 have not started.**
 
 Current security debt:
 
@@ -368,7 +368,9 @@ Current security debt:
 
 Phase 1 establishes the provider-neutral `src/security/` boundary with immutable contracts, exact role/permission catalogs, explicit anonymous/user/service/system principals, tenant and resource scopes, authorization contexts and decisions, privacy-safe errors, and pure default-deny policy evaluation. Security policy remains outside API routes, Streamlit, repositories, Query Facade logic, and writers.
 
-Remaining implementation is phased and deferred. No identity-provider adapter, enforcement guard, tenant schema, migration, endpoint, UI behavior, database integration, or dependency was added in Phase 1.
+Phase 2 adds a structural identity-provider boundary, privacy-safe resolution results, deterministic local demo/test identities, bounded authorization requests, and a reusable pure permission guard. The local provider rejects production mode and performs no token verification or environment mutation.
+
+Remaining implementation is phased and deferred. No external identity-provider adapter, tenant schema, migration, endpoint integration, UI behavior, database integration, or dependency has been added.
 
 References:
 

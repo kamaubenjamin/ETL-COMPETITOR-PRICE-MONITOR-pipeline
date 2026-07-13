@@ -50,7 +50,7 @@ def test_existing_production_modules_do_not_import_security_yet():
         assert all(not module.startswith("src.security") for module in _imports(path)), path
 
 
-def test_security_package_contains_no_provider_or_guard_integration():
-    assert not (SECURITY_ROOT / "guards.py").exists()
-    assert not (SECURITY_ROOT / "providers").exists()
-
+def test_security_package_contains_no_consumer_or_repository_integration():
+    assert not (SECURITY_ROOT / "api.py").exists()
+    assert not (SECURITY_ROOT / "streamlit.py").exists()
+    assert not (SECURITY_ROOT / "repositories.py").exists()

@@ -1,7 +1,7 @@
 # Auth, Tenant, And Permission Model v1 Implementation Plan
 
 **Milestone:** v0.15
-**Status:** Phase 1 implemented; Phases 2-5 not started
+**Status:** Phases 1-2 implemented; Phases 3-5 not started
 
 ## 1. Milestone Overview
 
@@ -93,15 +93,18 @@ Stop after contracts, catalogs, context, pure policy, privacy, and boundary test
 
 Create:
 
-- `src/security/context.py`
-- `src/security/policies.py`
+- `src/security/providers/__init__.py`
+- `src/security/providers/contracts.py`
+- `src/security/providers/local.py`
 - `src/security/guards.py`
-- `tests/security/test_context.py`
-- `tests/security/test_policies.py`
-- `tests/security/test_guards.py`
-- `tests/security/test_tenant_isolation.py`
+- `src/security/requests.py`
+- `tests/security/test_identity_provider_contracts.py`
+- `tests/security/test_local_identity_provider.py`
+- `tests/security/test_authorization_guards.py`
+- `tests/security/test_authorization_requests.py`
+- `tests/security/test_phase2_boundaries.py`
 
-Modify Phase 1 contracts only for verified gaps.
+Modify Phase 1 exports and obsolete Phase 1 stop-condition tests only as needed.
 
 ### Required Tests
 
@@ -130,6 +133,8 @@ git status --short --branch
 ### Stop Condition
 
 Stop after pure policy and guard verification. Do not modify Document State, Query Facade, API, UI, or writers.
+
+**Completion:** Implemented and verified. Local identities remain explicit demo/test fixtures and cannot select production mode; no consumer, repository, writer, migration, or external-provider integration was added.
 
 ## 5. Phase 3: Tenant-Aware Document State And Query Facade Contracts
 

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.15 Phase 2 provider-neutral identity resolution contracts, deterministic local demo/test identities, bounded authorization requests, and a pure permission guard that reuses Phase 1 default-deny tenant policy; API, UI, repository, Query Facade, writer, migration, and external-provider integration remain deferred.
+
 - Added v0.15 Phase 1 provider-neutral security contracts with immutable principals and scopes, exact permission and role catalogs, explicit anonymous/user/service/system actors, authorization contexts and decisions, privacy-safe errors, and pure default-deny tenant policy evaluation; provider adapters, guards, and runtime integration remain deferred.
 
 - Added v0.15 Auth / Tenants / Permissions planning and ADR-020, defining a provider-neutral default-deny security boundary, immutable principal/tenant/role/permission/context/decision contracts, explicit tenant isolation, reusable API guards, tenant-aware storage and Query Facade migration, trusted writer/audit attribution, deterministic local identities, and future Supabase/PostgreSQL adapters while preserving current read-only local preview and deferring implementation, migrations, dependencies, public mutations, UI changes, OCR, LLM, and external services.
