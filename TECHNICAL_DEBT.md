@@ -165,7 +165,7 @@ References:
 
 ### Current Status
 
-**v0.11 architecture plan, implementation plan, and ADR are proposed; implementation has not started.**
+**v0.11 Phase 1 is implemented; deterministic repositories, Query Facade adapter, hardening, and closure remain pending.**
 
 The milestone plans persistence-neutral contracts and deterministic repositories but deliberately defers:
 
@@ -182,6 +182,8 @@ Guardrails:
 - Core `src/document_state/` must remain independent of API, UI, runtime implementations, storage, telemetry, database, and competitor-price modules.
 - Query-facing repositories must not store raw documents, rows, correction values, artifact payloads, stack traces, or arbitrary metadata.
 - Deterministic in-memory repository behavior must not be represented as durable production persistence.
+
+Phase 1 provides persistence-neutral contracts only: ten immutable record types, bounded pagination, fixed filters/orderings, safe coded errors, privacy allowlists, and separate structural read/write repository ports. It contains no repository implementation, database, migration, adapter, API/UI integration, or live writer.
 
 References:
 

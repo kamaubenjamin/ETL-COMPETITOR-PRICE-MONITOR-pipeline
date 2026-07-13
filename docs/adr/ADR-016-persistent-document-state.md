@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed; implementation not started.
+Accepted; Phase 1 implemented and Phases 2-5 pending.
 
 ## Context
 

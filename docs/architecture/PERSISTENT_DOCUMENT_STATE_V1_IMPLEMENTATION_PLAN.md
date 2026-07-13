@@ -1,13 +1,15 @@
 # Persistent Document State v1 Implementation Plan
 
 **Milestone:** v0.11
-**Status:** Proposed; implementation not started
+**Status:** Phase 1 complete; Phases 2-5 pending
 
 ## 1. Milestone Overview
 
 v0.11 implements persistence-neutral Document State contracts, deterministic in-memory repositories, and a read-only adapter to the existing Workflow Query Facade. Each phase is one narrow Codex session and stops before the next phase. No database, migration, API/UI change, live runtime writer, auth, OCR, LLM, or external service is included.
 
 ## 2. Phase 1: Persistent State Contracts And Repository Interfaces
+
+**Completion note:** Added dependency-free `src/document_state/` contracts with ten frozen JSON-compatible record types, safe enums and filters, deterministic ordering declarations, bounded pagination, six stable privacy-safe error codes, strict scalar metadata allowlisting, and separate runtime-checkable read/write repository protocols. Mutable write ports expose `expected_version`; append-only ports expose `idempotency_key`. Focused verification: 44 tests passed. Existing Query Facade, API, Streamlit, and Review Runtime regression: 307 passed and 9 conditional transport tests skipped. Boundary verification remained compliant. No repository implementation, adapter, database, migration, API, UI, or runtime integration was added.
 
 ### Objectives
 
@@ -25,12 +27,14 @@ Create:
 - `src/document_state/contracts.py`
 - `src/document_state/errors.py`
 - `src/document_state/pagination.py`
-- `src/document_state/ports.py`
+- `src/document_state/privacy.py`
+- `src/document_state/repositories.py`
 - `src/document_state/records.py`
 - `tests/document_state/__init__.py`
 - `tests/document_state/test_contracts.py`
 - `tests/document_state/test_pagination.py`
-- `tests/document_state/test_ports.py`
+- `tests/document_state/test_privacy.py`
+- `tests/document_state/test_repositories.py`
 - `tests/document_state/test_records.py`
 
 Modify documentation status files only as required.

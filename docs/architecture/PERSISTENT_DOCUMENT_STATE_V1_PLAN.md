@@ -1,7 +1,7 @@
 # Persistent Document State v1 Plan
 
 **Milestone:** v0.11
-**Status:** Proposed; implementation not started
+**Status:** Phase 1 implemented; Phases 2-5 pending
 
 ## 1. Problem Statement
 
@@ -85,7 +85,7 @@ Common record rules:
 - `created_at`; mutable snapshots also include `updated_at` and integer `version`.
 - Bounded source runtime/stage identifiers and correlation identifiers where required.
 - No arbitrary object values, callbacks, storage handles, or implementation metadata.
-- Repository error codes: `invalid_record`, `not_found`, `duplicate`, `version_conflict`, `source_unavailable`, and `internal_error`.
+- Repository error codes: `invalid_record`, `invalid_query`, `not_found`, `conflict`, `source_unavailable`, and `internal_error`.
 
 ## 7. Repository Boundaries
 
@@ -95,9 +95,9 @@ Repository ports are explicit rather than generic CRUD abstractions.
 |---|---|---|
 | Document records | Versioned current snapshot | create, get, list, update with expected version |
 | Lifecycle history | Append-only | append event, list by document |
-| Processing status | Versioned stage/attempt snapshot | put with expected version, list by document/run |
-| Validation issues | Immutable per validation execution | append/replace an identified result set, list |
-| Matching summaries | Immutable per matching execution | append/replace an identified result set, list |
+| Processing status | Versioned stage/attempt snapshot | create/update with expected version, list by document/run |
+| Validation issues | Immutable per validation execution | idempotent append, get/list |
+| Matching summaries | Immutable per matching execution | idempotent append, get/list |
 | Review case references | Versioned safe summary | put with expected version, get/list |
 | Correction history | Append-only safe summary | append, list by review case; never store raw old/new values |
 | Reprocess plans | Append-only declarative summary | append, list by review case |
