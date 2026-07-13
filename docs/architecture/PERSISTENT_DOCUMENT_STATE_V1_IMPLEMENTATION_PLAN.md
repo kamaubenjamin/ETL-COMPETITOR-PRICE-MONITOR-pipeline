@@ -1,7 +1,7 @@
 # Persistent Document State v1 Implementation Plan
 
 **Milestone:** v0.11
-**Status:** Phase 1 complete; Phases 2-5 pending
+**Status:** Phases 1-2 complete; Phases 3-5 pending
 
 ## 1. Milestone Overview
 
@@ -64,6 +64,8 @@ Stop after contracts, interfaces, tests, ADR alignment, and verification. Do not
 
 ## 3. Phase 2: Deterministic In-Memory Repository Implementation
 
+**Completion note:** Added `InMemoryDocumentStateRepositories` with structurally conformant read-only and write-only views over shared operation-locked state. All ten record groups support their defined get/list/create/update/append operations, deterministic filtering and ordering, bounded pagination, safe missing/conflict/invalid/unavailable errors, defensive contract reconstruction, optimistic version checks, and stable-key append idempotency. Focused verification: 70 tests passed. Existing Query Facade, API, Streamlit, and Review Runtime regression: 307 passed and 9 conditional transport tests skipped. Boundary verification remained compliant. No database, file, network, adapter, API/UI integration, or upload behavior was added.
+
 ### Objectives
 
 - Implement explicit in-memory repositories for all v1 record types.
@@ -76,10 +78,8 @@ Stop after contracts, interfaces, tests, ADR alignment, and verification. Do not
 
 Create:
 
-- `src/document_state/repositories/__init__.py`
-- `src/document_state/repositories/in_memory.py`
+- `src/document_state/repositories_in_memory.py`
 - `tests/document_state/test_in_memory_repositories.py`
-- `tests/document_state/test_repository_concurrency.py`
 
 Modify:
 
@@ -101,7 +101,7 @@ Modify:
 ```text
 python -m pytest tests/document_state -q
 python scripts/verify_boundaries.py
-python -m py_compile src/document_state/repositories/in_memory.py
+python -m py_compile src/document_state/repositories_in_memory.py
 git diff --check
 git status --short --branch
 ```

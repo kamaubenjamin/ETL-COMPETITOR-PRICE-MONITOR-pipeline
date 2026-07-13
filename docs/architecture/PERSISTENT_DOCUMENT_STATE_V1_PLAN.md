@@ -1,7 +1,7 @@
 # Persistent Document State v1 Plan
 
 **Milestone:** v0.11
-**Status:** Phase 1 implemented; Phases 2-5 pending
+**Status:** Phases 1-2 implemented; Phases 3-5 pending
 
 ## 1. Problem Statement
 
@@ -74,6 +74,8 @@ Future ingestion / processing / review / workflow writers
 ```
 
 The API and Streamlit never receive repository objects. v0.11 proves adapter compatibility through explicit test composition; production source selection remains deferred until identity, tenant, persistence, and deployment decisions exist.
+
+Phases 1-2 now provide the dependency-free contract surface and deterministic in-memory repositories. The implementation exposes separate read-only and write-only views over shared lock-protected state, reconstructs records through their validated JSON contracts before storage, and makes no durability claim. Query Facade integration remains pending.
 
 ## 6. State Contracts
 

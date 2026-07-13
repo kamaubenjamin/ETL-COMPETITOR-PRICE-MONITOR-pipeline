@@ -36,12 +36,19 @@ from .records import (
     WorkflowRunRecord,
 )
 from .repositories import DocumentStateReadRepositories, DocumentStateWriteRepositories
+from .repositories_in_memory import (
+    InMemoryDocumentStateReader,
+    InMemoryDocumentStateRepositories,
+    InMemoryDocumentStateWriter,
+)
 
 __all__ = [
     "AuditEventRecord", "AuditQuery", "CorrectionSummaryRecord", "DEFAULT_PAGE_LIMIT",
     "DETERMINISTIC_ORDERING", "DocumentLifecycleEvent", "DocumentQuery", "DocumentRecord",
     "DocumentStateError", "DocumentStateErrorCode", "DocumentStateReadRepositories",
-    "DocumentStateWriteRepositories", "DocumentStatus", "DocumentType", "LifecycleQuery",
+    "DocumentStateWriteRepositories", "DocumentStatus", "DocumentType",
+    "InMemoryDocumentStateReader", "InMemoryDocumentStateRepositories",
+    "InMemoryDocumentStateWriter", "LifecycleQuery",
     "MAX_PAGE_LIMIT", "MatchingQuery", "MatchingStatus", "MatchingSummaryRecord", "OrderingSpec",
     "PageRequest", "PageResult", "Priority", "ProcessingQuery", "ProcessingSnapshot",
     "ProcessingState", "ReprocessPlanRecord", "ReviewQuery", "ReviewReferenceRecord",

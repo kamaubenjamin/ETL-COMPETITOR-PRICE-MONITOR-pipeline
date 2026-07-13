@@ -58,7 +58,7 @@ def test_document_state_package_has_only_standard_or_local_imports():
     root = Path(document_state.__file__).parent
     standard = {
         "__future__", "collections", "dataclasses", "datetime", "enum", "math",
-        "types", "typing",
+        "threading", "types", "typing",
     }
     forbidden_tokens = {
         "api", "competitor", "database", "document_engine", "entity_runtime", "external",
@@ -79,9 +79,9 @@ def test_document_state_package_has_only_standard_or_local_imports():
                 assert not set(module.lower().split(".")) & forbidden_tokens
 
 
-def test_no_repository_implementation_or_database_surface_exists():
+def test_no_database_migration_or_adapter_surface_exists():
     root = Path(document_state.__file__).parent
     assert not (root / "providers").exists()
     assert not (root / "adapters").exists()
     assert not (root / "migrations").exists()
-    assert not any(path.name == "in_memory.py" for path in root.rglob("*.py"))
+    assert not (root / "repositories").exists()
