@@ -1,7 +1,7 @@
 # Document Intelligence API Foundation v1 Plan
 
 **Milestone:** v0.9
-**Status:** Planned; implementation not started
+**Status:** Phase 1 implemented; Phases 2-5 pending
 
 ## 1. Problem Statement
 
@@ -68,6 +68,7 @@ The application is independently runnable and titled **Document Intelligence API
 ## 7. API Contract Conventions
 
 - Base path: `/api/v1/document-intelligence`.
+- Foundation health aliases are `/health`, `/api/v1/health`, and `/api/v1/status`; domain collection routes introduced later remain under the Document Intelligence base path.
 - JSON only; UTF-8; UTC ISO-8601 timestamps.
 - Read methods only: `GET`, plus framework-required `HEAD`/`OPTIONS` behavior.
 - Stable deterministic ordering with documented tie-breaker IDs.
@@ -168,4 +169,3 @@ v0.9 adds an optional API process only. Backend runtime execution must not depen
 - R05 and all runtime boundaries are compliant without new exemptions.
 - Privacy, method allowlist, pagination, errors, OpenAPI, UI parity, and full regressions pass.
 - Summary, handoff, release notes, and recommended tag are complete.
-

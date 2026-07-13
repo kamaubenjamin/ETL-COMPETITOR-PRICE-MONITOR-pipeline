@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.9 planning; implementation pending.
+Accepted; Phase 1 implemented and later phases pending.
 
 ## Context
 
@@ -95,4 +95,3 @@ Rejected because API Runtime must not become a second source of truth. Durable s
 ## Follow-Up
 
 Implement the five phases in `docs/architecture/DOCUMENT_INTELLIGENCE_API_FOUNDATION_V1_IMPLEMENTATION_PLAN.md`. Do not add live providers or mutation routes until the required Workflow query facade and security decisions are separately approved.
-

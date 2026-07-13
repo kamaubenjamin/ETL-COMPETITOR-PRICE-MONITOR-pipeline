@@ -1,13 +1,15 @@
 # Document Intelligence API Foundation v1 Implementation Plan
 
 **Milestone:** v0.9
-**Status:** Planned; implementation not started
+**Status:** Phase 1 complete; Phases 2-5 pending
 
 ## 1. Milestone Overview
 
 v0.9 delivers a separate read-only Document Intelligence API foundation for Streamlit and future FlowSync Document Intelligence consumers. Each phase is scoped for one Codex session and stops after focused implementation and verification. The legacy competitor-price API and dashboard remain unchanged.
 
 ## 2. Phase 1: API Contracts And App Skeleton
+
+**Completion note:** Implemented the separate FastAPI factory, strict standard-library response contracts, safe errors, pagination metadata, and `/health`, `/api/v1/health`, and `/api/v1/status` routes. Domain data endpoints remain unimplemented. The active FastAPI/Starlette environment lacks its undeclared optional `httpx2` TestClient dependency, so transport-only TestClient assertions skip; route functions, OpenAPI, and live Uvicorn HTTP smoke checks provide endpoint verification without adding dependencies.
 
 ### Objectives
 
@@ -278,4 +280,3 @@ Recommended one commit per phase:
 Recommended final tag after Phase 5 verification:
 
 `v0.9-document-intelligence-api-foundation`
-
