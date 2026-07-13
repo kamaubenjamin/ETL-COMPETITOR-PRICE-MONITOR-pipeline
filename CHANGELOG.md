@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Completed v0.13 Upload-to-Processing Writer Integration with immutable runtime-neutral writer commands, deterministic idempotency and governed mappings, ingestion/processing/review/workflow writer services, in-memory/SQLite parity, end-to-end read-after-write and API-provider compatibility verification, unchanged read-only API/UI behavior, and release handoff documentation; owner commit and `v0.13-upload-processing-writer-integration` tag remain pending.
+
 - Added v0.13 Phase 4 end-to-end read-after-write verification across writer services, in-memory and reconstructed SQLite repositories, Document State Query Facade adaptation, and the existing API provider, covering backend equivalence, replay, partial resume, filters, pagination, privacy projection, v0.9 payload compatibility, and GET-only routes without production changes.
 
 - Added v0.13 Phase 3 internal processing, validation, matching, review, correction, reprocess, workflow-run, lifecycle, and audit writers with explicit repository injection, deterministic append idempotency, optimistic mutable-record updates, bounded partial retry behavior, privacy-safe results, and in-memory/SQLite verification.

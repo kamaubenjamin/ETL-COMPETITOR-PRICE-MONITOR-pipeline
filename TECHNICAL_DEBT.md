@@ -256,9 +256,9 @@ References:
 
 ### Current Status
 
-**v0.13 Phases 1-4 are complete; release closure remains pending.**
+**v0.13 is implemented and verified; closed pending owner commit and tag.**
 
-Document State has durable local/dev repositories and explicit composition, but upload, ingestion, workflow, validation, matching, and review outcomes do not yet populate it. API and Streamlit remain read-only and must not receive repository write ports.
+Document State has durable local/dev repositories, explicit composition, and internal writer services that can populate all operational record families from normalized commands. Concrete upload, ingestion, workflow, validation, matching, and review producer adapters are not yet connected. API and Streamlit remain read-only and must not receive repository write ports.
 
 Planned debt addressed by v0.13:
 
@@ -278,8 +278,12 @@ Phase 3 provides internal processing, validation, matching, review, correction, 
 
 Phase 4 verifies deterministic writer output through Document State repositories, `DocumentStateQueryFacadeAdapter`, the Workflow Query Facade port, and `FacadeDocumentIntelligenceProvider`. Both active backends produce equivalent projections, SQLite survives reconstruction, replay remains duplicate-free, filters/pagination remain correct, and v0.9 API shapes and GET-only routes remain unchanged. Direct runtime producer adapters are still deferred.
 
+Phase 5 confirms 72 writer tests, 247 Document State tests, 45 API tests with 9 skips, 266 Query Facade/UI/Review tests, and 1,235 full-regression tests with 9 skips. Boundary verification is compliant. Release documentation explicitly records that the mutable document projection remains `received`; append-only lifecycle events do not yet advance it.
+
 Still deferred beyond v0.13:
 
+- Runtime producer adapters and application bootstrap injection
+- Governed lifecycle-driven document snapshot advancement
 - Cross-record unit-of-work and transactional outbox
 - PostgreSQL/Supabase and production composition activation
 - Public mutation endpoints and Streamlit write actions
@@ -291,7 +295,10 @@ References:
 
 - `docs/architecture/UPLOAD_PROCESSING_WRITER_INTEGRATION_V1_PLAN.md`
 - `docs/architecture/UPLOAD_PROCESSING_WRITER_INTEGRATION_V1_IMPLEMENTATION_PLAN.md`
+- `docs/architecture/UPLOAD_PROCESSING_WRITER_INTEGRATION_V1_SUMMARY.md`
+- `docs/architecture/UPLOAD_PROCESSING_WRITER_INTEGRATION_V1_HANDOFF.md`
 - `docs/adr/ADR-018-upload-processing-writer-integration.md`
+- `docs/releases/v0.13-upload-processing-writer-integration.md`
 
 ---
 

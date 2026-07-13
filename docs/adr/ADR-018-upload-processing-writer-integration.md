@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted. Phases 1-4 are implemented and verified; release closure remains pending. Runtime producer adapters remain deferred from the current internal writer foundation.
+Accepted and implemented. All five phases are verified; closure is pending owner commit and tag. Runtime producer adapters and lifecycle-driven document snapshot advancement remain deferred from the internal writer foundation.
 
 ## Context
 
@@ -94,6 +94,12 @@ Upload / processing producer
 ```
 
 Existing API paths, GET-only methods, successful payload meanings, envelopes, pagination, request IDs, security headers, and Streamlit modes must remain unchanged.
+
+The verified v0.13 path begins with normalized deterministic writer commands. Concrete producer adapters are not part of this decision's implementation closure.
+
+## Document Projection Decision
+
+Lifecycle records remain append-only. v0.13 does not infer or apply mutable `DocumentRecord` status transitions from lifecycle events, so the document projection currently remains `received`. Advancing that snapshot requires a separately governed transition policy with explicit version and retry behavior.
 
 ## Consequences
 

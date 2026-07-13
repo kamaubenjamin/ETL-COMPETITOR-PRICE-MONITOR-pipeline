@@ -1,7 +1,7 @@
 # Upload-to-Processing Writer Integration v1 Implementation Plan
 
 **Milestone:** v0.13
-**Status:** Phases 1-4 complete; Phase 5 not started
+**Status:** All phases complete; closed pending owner commit and tag
 
 ## 1. Milestone Overview
 
@@ -279,6 +279,8 @@ git status --short --branch
 ### Stop Condition
 
 Stop after documentation and verification. Do not commit, push, or tag unless explicitly instructed.
+
+Phase 5 completed with focused writer, Document State, API, Query Facade, Streamlit, Review Runtime, boundary, compile, and full-regression verification. Summary, handoff, release notes, roadmap, technical debt, ADR, plan, and changelog now record the implemented scope, unchanged API/UI behavior, deferred producer adapters, and lifecycle projection limitation.
 
 ## 7. Boundary Requirements
 

@@ -240,11 +240,12 @@ References:
 
 Status:
 - Architecture plan, implementation plan, and ADR accepted
+- Implemented and verified; closed pending owner commit and tag
 - Phase 1 implemented: immutable writer commands, safe errors/results, deterministic idempotency helpers, fixed mapping catalog, and structural internal writer ports
 - Phase 2 implemented: injected ingestion writer with idempotent document/lifecycle/audit behavior, optimistic classification snapshots, partial retry continuation, and in-memory/SQLite parity
 - Phase 3 implemented: processing, validation, matching, review, correction, reprocess, workflow, lifecycle, and audit writers with optimistic versions, append idempotency, and backend parity
 - Phase 4 implemented: full writer-to-Query-Facade/API-provider read-after-write verification, backend equivalence, SQLite reconstruction, replay, filters, pagination, privacy, and GET-only compatibility
-- Phase 5 not started
+- Phase 5 completed: release verification, summary, handoff, release notes, roadmap, debt, plan, ADR, and changelog closure
 
 Planned capabilities:
 - Runtime-neutral internal Document State writer commands and services
@@ -258,7 +259,10 @@ Planned capabilities:
 References:
 - `docs/architecture/UPLOAD_PROCESSING_WRITER_INTEGRATION_V1_PLAN.md`
 - `docs/architecture/UPLOAD_PROCESSING_WRITER_INTEGRATION_V1_IMPLEMENTATION_PLAN.md`
+- `docs/architecture/UPLOAD_PROCESSING_WRITER_INTEGRATION_V1_SUMMARY.md`
+- `docs/architecture/UPLOAD_PROCESSING_WRITER_INTEGRATION_V1_HANDOFF.md`
 - `docs/adr/ADR-018-upload-processing-writer-integration.md`
+- `docs/releases/v0.13-upload-processing-writer-integration.md`
 
 ## Prior Milestone Context
 
