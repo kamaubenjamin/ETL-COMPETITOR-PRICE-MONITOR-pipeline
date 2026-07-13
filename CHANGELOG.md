@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.13 Phase 1 Document State writer contracts with immutable JSON-compatible commands, safe opaque artifact references, fixed writer errors/results, bounded non-disclosing idempotency keys, deterministic ingestion/processing/review/workflow mapping definitions, structural internal writer ports, and recursive boundary/privacy tests; repository writes and runtime integration remain deferred.
+
 - Added v0.13 Upload-to-Processing Writer Integration planning and ADR-018, defining runtime-neutral internal writer commands, producer-side result adapters, deterministic retry/idempotency/version rules, privacy-safe opaque artifact references, operation-level replay behavior, explicit repository-port injection, and read-after-write verification while deferring public mutation APIs, UI writes, production activation, raw blob storage, PostgreSQL, auth/tenant logic, OCR, LLM, and external services.
 
 - Completed v0.12 Durable Document State with persistence contracts, explicit relational SQLite storage, checksum-verified migrations, durable repositories, optimistic versions, content-hash idempotency, shared backend conformance, reopen and basic concurrency verification, explicit fail-closed repository composition, unchanged API/UI contracts, and release handoff documentation; owner commit and `v0.12-durable-document-state` tag remain pending.

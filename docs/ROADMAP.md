@@ -239,8 +239,9 @@ References:
 ### v0.13 Upload-to-Processing Writer Integration
 
 Status:
-- Architecture plan, implementation plan, and ADR proposed
-- Implementation not started
+- Architecture plan, implementation plan, and ADR accepted
+- Phase 1 implemented: immutable writer commands, safe errors/results, deterministic idempotency helpers, fixed mapping catalog, and structural internal writer ports
+- Phases 2-5 not started
 
 Planned capabilities:
 - Runtime-neutral internal Document State writer commands and services

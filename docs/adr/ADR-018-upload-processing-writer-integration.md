@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed; planning complete and implementation not started.
+Accepted. Phase 1 contract and mapping decisions are implemented; writer services and runtime integration remain pending.
 
 ## Context
 

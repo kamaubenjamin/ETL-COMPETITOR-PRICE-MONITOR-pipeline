@@ -57,8 +57,8 @@ def test_write_protocols_expose_optimistic_and_idempotent_semantics():
 def test_document_state_package_has_only_standard_or_local_imports():
     root = Path(document_state.__file__).parent
     standard = {
-        "__future__", "collections", "dataclasses", "datetime", "enum", "math",
-        "threading", "types", "typing",
+        "__future__", "collections", "dataclasses", "datetime", "enum", "hashlib",
+        "json", "math", "re", "threading", "types", "typing",
     }
     forbidden_tokens = {
         "api", "competitor", "database", "document_engine", "entity_runtime", "external",

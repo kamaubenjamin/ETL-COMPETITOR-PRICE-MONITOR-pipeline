@@ -256,7 +256,7 @@ References:
 
 ### Current Status
 
-**v0.13 planning is complete; implementation has not started.**
+**v0.13 Phase 1 is complete; writer services and producer integration remain pending.**
 
 Document State has durable local/dev repositories and explicit composition, but upload, ingestion, workflow, validation, matching, and review outcomes do not yet populate it. API and Streamlit remain read-only and must not receive repository write ports.
 
@@ -269,6 +269,8 @@ Planned debt addressed by v0.13:
 - Privacy-safe opaque artifact references with no raw payload storage
 - Replay-safe handling of operation-level partial writes
 - In-memory/SQLite writer parity and Query Facade/API read-after-write verification
+
+Phase 1 provides immutable JSON-compatible commands for all planned writer domains, privacy-safe opaque artifact references, fixed coded errors and result statuses, hashed domain-separated idempotency keys, deterministic mapping definitions, and structural internal writer ports. It contains no repository calls, runtime adapters, API/UI integration, or persistence-engine imports.
 
 Still deferred beyond v0.13:
 

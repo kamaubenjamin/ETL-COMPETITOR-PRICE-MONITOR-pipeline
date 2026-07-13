@@ -1,7 +1,7 @@
 # Upload-to-Processing Writer Integration v1 Implementation Plan
 
 **Milestone:** v0.13
-**Status:** Proposed; implementation not started
+**Status:** Phase 1 complete; Phases 2-5 not started
 
 ## 1. Milestone Overview
 
@@ -24,14 +24,18 @@ Each phase is limited to one Codex session. No phase may proceed automatically. 
 Create:
 
 - `src/document_state/writers/__init__.py`
-- `src/document_state/writers/contracts.py`
+- `src/document_state/writers/commands.py`
 - `src/document_state/writers/errors.py`
 - `src/document_state/writers/idempotency.py`
 - `src/document_state/writers/mappings.py`
+- `src/document_state/writers/ports.py`
+- `src/document_state/writers/results.py`
 - `tests/document_state/writers/__init__.py`
-- `tests/document_state/writers/test_contracts.py`
+- `tests/document_state/writers/test_commands.py`
 - `tests/document_state/writers/test_idempotency.py`
 - `tests/document_state/writers/test_mappings.py`
+- `tests/document_state/writers/test_ports.py`
+- `tests/document_state/writers/test_results.py`
 - `tests/document_state/writers/test_boundaries.py`
 
 Modify only if narrowly required:
@@ -55,7 +59,9 @@ Modify only if narrowly required:
 python -m pytest tests/document_state/writers -q
 python -m pytest tests/document_state -q
 python scripts/verify_boundaries.py
-python -m py_compile src/document_state/writers/contracts.py
+python -m py_compile src/document_state/writers/commands.py
+python -m py_compile src/document_state/writers/mappings.py
+python -m py_compile src/document_state/writers/idempotency.py
 git diff --check
 git status --short --branch
 ```
@@ -63,6 +69,8 @@ git status --short --branch
 ### Stop Condition
 
 Stop after contracts, mappings, privacy rules, and focused verification. Do not implement repository writes or producer integration.
+
+Phase 1 completed with immutable JSON-compatible commands, opaque artifact references, fixed safe errors/results, hashed domain-separated idempotency keys, deterministic mappings, structural writer ports, and boundary tests. No repository or producer integration was added.
 
 ## 3. Phase 2: Ingestion-To-Document-State Writer Service
 

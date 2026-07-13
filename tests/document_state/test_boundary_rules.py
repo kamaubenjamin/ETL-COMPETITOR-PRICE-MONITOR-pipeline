@@ -10,8 +10,8 @@ from src.document_state.adapters import DocumentStateQueryFacadeAdapter
 ROOT = Path(document_state.__file__).parent
 REPO_ROOT = ROOT.parents[1]
 STANDARD_ROOTS = {
-    "__future__", "collections", "dataclasses", "datetime", "enum", "math",
-    "threading", "types", "typing",
+    "__future__", "collections", "dataclasses", "datetime", "enum", "hashlib",
+    "json", "math", "re", "threading", "types", "typing",
 }
 
 
