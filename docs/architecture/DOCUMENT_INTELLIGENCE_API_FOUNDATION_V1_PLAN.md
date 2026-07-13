@@ -1,7 +1,7 @@
 # Document Intelligence API Foundation v1 Plan
 
 **Milestone:** v0.9
-**Status:** Phases 1-2 implemented; Phases 3-5 pending
+**Status:** Phases 1-3 implemented; Phases 4-5 pending
 
 ## 1. Problem Statement
 
@@ -117,6 +117,8 @@ R05 remains authoritative: `src/api/` imports only Workflow Runtime public inter
 Phase 3 adds an API-backed provider implementing the same read-only semantic methods as `LocalOperatorConsoleProvider`. Streamlit chooses the provider through explicit local configuration and keeps the deterministic provider as a fallback for development and tests.
 
 The adapter must define connect/read timeouts, map API errors to unavailable/empty UI states, validate response contract versions, avoid background mutation, and never silently fall back from a configured live endpoint in a way that could misrepresent operational state.
+
+Phase 3 implements explicit `local_preview` and `api_preview` modes. Local preview remains the default. API preview uses a bounded GET-only standard-library client, validates the complete v1 envelope, maps neutral API projections into existing console records, and surfaces unavailable state without silently substituting local fixtures.
 
 ## 12. Future FlowSync Document Intelligence Model
 

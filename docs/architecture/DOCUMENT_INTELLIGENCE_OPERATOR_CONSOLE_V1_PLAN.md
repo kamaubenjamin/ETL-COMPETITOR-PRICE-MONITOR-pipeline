@@ -80,6 +80,10 @@ Sidebar controls filter local tables by workspace, document type, workflow, runt
 
 A later milestone may replace fixtures with a read-only application service or API contract. Integration must return bounded view models, authenticate operators, enforce authorization outside Streamlit, and submit all commands through runtime-owned services with idempotency and optimistic versions.
 
+### v0.9 API Preview Extension
+
+v0.9 Phase 3 adds an optional read-only `api_preview` provider beside the default `local_preview` mode. The adapter uses only Document Intelligence API GET endpoints, retains existing view-model shapes, exposes safe unavailable states, and does not add authentication, mutation, persistence, or live runtime ownership to Streamlit.
+
 ## Privacy And Security
 
 - Never render raw full documents, complete source rows, correction payloads, credentials, or tokens in generic tables.

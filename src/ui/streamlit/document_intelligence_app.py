@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+import os
 from pathlib import Path
 import sys
 
@@ -20,7 +21,15 @@ from src.ui.streamlit.components import (
     run_mode_banner,
     section_header,
 )
-from src.ui.streamlit.data_providers import DOCUMENT_STATUSES, REVIEW_STATUSES, LocalOperatorConsoleProvider
+from src.ui.streamlit.api_client import DocumentIntelligenceAPIClient
+from src.ui.streamlit.api_provider import DocumentIntelligenceAPIProvider
+from src.ui.streamlit.data_providers import (
+    DEFAULT_PROVIDER_MODE,
+    DOCUMENT_STATUSES,
+    PROVIDER_MODES,
+    REVIEW_STATUSES,
+    LocalOperatorConsoleProvider,
+)
 from src.ui.streamlit.view_models import (
     audit_log_rows,
     inbox_rows,
@@ -40,6 +49,18 @@ def _sidebar_filters() -> dict[str, str | None]:
     with st.sidebar:
         st.header("Operator Console")
         st.caption("Document Intelligence workspace")
+        provider_mode = st.selectbox(
+            "Provider mode",
+            PROVIDER_MODES,
+            index=PROVIDER_MODES.index(DEFAULT_PROVIDER_MODE),
+            format_func=lambda value: value.replace("_", " ").title(),
+        )
+        api_base_url = None
+        if provider_mode == "api_preview":
+            api_base_url = st.text_input(
+                "API base URL",
+                value=os.getenv("DOCUMENT_INTELLIGENCE_API_URL", "http://127.0.0.1:8001"),
+            )
         st.subheader("Scope")
         workspace = st.selectbox("Workspace", ["Operations", "Finance", "Procurement"])
         document_type = st.selectbox("Document Type", ["All", "Invoice", "Purchase Order", "Bank Statement", "Receipt"])
@@ -49,10 +70,12 @@ def _sidebar_filters() -> dict[str, str | None]:
         review_status = st.selectbox("Review Filter", ["All", *REVIEW_STATUSES])
         st.divider()
         st.markdown("**Run mode**")
-        st.caption("Local deterministic preview")
-        st.caption("No API | No database | No mutation")
+        st.caption("Local deterministic preview" if provider_mode == "local_preview" else "Read-only API preview")
+        st.caption("GET only | No database | No mutation")
     return {
         "workspace": workspace,
+        "provider_mode": provider_mode,
+        "api_base_url": api_base_url,
         "document_type": None if document_type == "All" else document_type,
         "workflow": None if workflow == "All" else workflow,
         "runtime_status": None if runtime_status == "All" else runtime_status,
@@ -60,7 +83,7 @@ def _sidebar_filters() -> dict[str, str | None]:
     }
 
 
-def _render_overview(provider: LocalOperatorConsoleProvider, filters: dict[str, str | None]) -> None:
+def _render_overview(provider, filters: dict[str, str | None]) -> None:
     documents = provider.documents(document_type=filters["document_type"], status=filters["runtime_status"])
     reviews = provider.review_cases(status=filters["review_status"])
     runs = provider.workflow_runs(workflow_name=filters["workflow"])
@@ -111,12 +134,27 @@ def main() -> None:
         """,
         unsafe_allow_html=True,
     )
-    provider = LocalOperatorConsoleProvider()
     filters = _sidebar_filters()
+    if filters["provider_mode"] == "api_preview":
+        try:
+            client = DocumentIntelligenceAPIClient(filters["api_base_url"] or "")
+            provider = DocumentIntelligenceAPIProvider(client)
+        except ValueError:
+            provider = DocumentIntelligenceAPIProvider(None, initial_error="invalid_configuration: API base URL is invalid.")
+    else:
+        provider = LocalOperatorConsoleProvider()
     documents = provider.documents(document_type=filters["document_type"], status=filters["runtime_status"])
 
     page_header(PAGE_TITLE, "Document operations, exception review, workflow activity, and audit visibility")
-    run_mode_banner()
+    if filters["provider_mode"] == "local_preview":
+        run_mode_banner()
+    else:
+        st.info(
+            f"Run mode: Read-only API preview | {filters['api_base_url']} | GET only | No mutation",
+            icon=":material/api:",
+        )
+        if provider.last_error:
+            st.warning(f"API preview unavailable. {provider.last_error}", icon=":material/cloud_off:")
     tabs = st.tabs(["01 Overview", "02 Inbox", "03 Upload", "04 Processing", "05 Validation", "06 Matching", "07 Reviews", "08 Workflows", "09 Audit"])
 
     with tabs[0]:

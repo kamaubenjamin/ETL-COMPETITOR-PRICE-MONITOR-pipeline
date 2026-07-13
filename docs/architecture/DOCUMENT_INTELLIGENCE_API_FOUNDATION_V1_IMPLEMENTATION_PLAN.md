@@ -1,7 +1,7 @@
 # Document Intelligence API Foundation v1 Implementation Plan
 
 **Milestone:** v0.9
-**Status:** Phases 1-2 complete; Phases 3-5 pending
+**Status:** Phases 1-3 complete; Phases 4-5 pending
 
 ## 1. Milestone Overview
 
@@ -106,6 +106,8 @@ Stop after deterministic read-only endpoints and verification. Do not connect St
 
 ## 4. Phase 3: Streamlit API-Provider Adapter Preview
 
+**Completion note:** Added explicit `local_preview` and `api_preview` modes, a GET-only standard-library API client with strict v1 envelope validation, and an API provider that preserves the console provider interface and view-model shapes. Local mode remains the default; API errors produce visible bounded empty states with no silent local fallback.
+
 ### Objectives
 
 - Add an API-backed provider matching the Streamlit console's read-only semantic interface.
@@ -117,11 +119,13 @@ Stop after deterministic read-only endpoints and verification. Do not connect St
 
 Create or modify:
 
-- `src/ui/streamlit/api_data_provider.py`
+- `src/ui/streamlit/api_client.py`
+- `src/ui/streamlit/api_provider.py`
 - `src/ui/streamlit/data_providers.py`
 - `src/ui/streamlit/document_intelligence_app.py`
 - `src/ui/streamlit/components.py`
-- `tests/ui/streamlit/test_api_data_provider.py`
+- `tests/ui/streamlit/test_api_client.py`
+- `tests/ui/streamlit/test_api_provider.py`
 - `tests/ui/streamlit/test_document_intelligence_app.py`
 
 No FlowSync UI code is created in this phase.

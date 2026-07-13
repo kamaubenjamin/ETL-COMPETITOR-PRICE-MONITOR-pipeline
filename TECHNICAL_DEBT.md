@@ -98,7 +98,7 @@ References:
 
 ### Current Status
 
-**v0.9 Phases 1-2 implemented; Streamlit adapter and Phases 3-5 remain pending.**
+**v0.9 Phases 1-3 implemented; boundary/security hardening and release closure remain pending.**
 
 Planning resolves the API ownership direction but does not yet resolve:
 
@@ -111,6 +111,8 @@ Planning resolves the API ownership direction but does not yet resolve:
 - Declared test-client transport dependency alignment: the active Starlette build requires optional `httpx2`, which is not currently declared or installed
 
 Phase 2 uses deterministic API-owned preview records only; replacement with a live R05-compliant query provider remains deferred.
+
+Phase 3 adds an unauthenticated local/user-configured HTTP preview client. Production endpoint allowlisting, TLS policy, authentication, authorization, retry policy, and operational telemetry remain deferred; unavailable API mode intentionally does not fall back silently to local fixtures.
 
 References:
 

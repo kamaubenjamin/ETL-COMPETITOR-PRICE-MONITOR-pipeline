@@ -16,6 +16,8 @@ from src.review_runtime.reprocess import ReprocessPlan
 
 
 Record = dict[str, Any]
+PROVIDER_MODES = ("local_preview", "api_preview")
+DEFAULT_PROVIDER_MODE = "local_preview"
 
 DOCUMENT_STATUSES = (
     "received", "ingested", "classified", "parsed", "extracted", "transformed",

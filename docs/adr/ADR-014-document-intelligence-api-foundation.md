@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted; Phases 1-2 implemented and later phases pending.
+Accepted; Phases 1-3 implemented and later phases pending.
 
 ## Context
 
@@ -34,6 +34,8 @@ This ADR refines ADR-007 and does not replace it. ADR-007 remains the general AP
 - Future FlowSync Document Intelligence uses the same HTTP contracts as an independent client.
 - Neither client owns runtime rules, review transitions, corrections, workflow execution, or audit truth.
 - Existing FlowSync Competitor Price and root `dashboard.py` remain separate and unchanged.
+
+Phase 3 implements the Streamlit decision with `local_preview` as the default and `api_preview` as an explicit GET-only option. API unavailability is displayed as an unavailable/empty state and never triggers a silent switch to local records.
 
 ## Read-Only Decision
 
