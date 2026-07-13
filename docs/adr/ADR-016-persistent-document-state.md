@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted; Phases 1-2 implemented and Phases 3-5 pending.
+Accepted; Phases 1-3 implemented and Phases 4-5 pending.
 
 ## Context
 

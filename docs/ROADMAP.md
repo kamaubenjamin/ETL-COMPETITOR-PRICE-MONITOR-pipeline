@@ -190,8 +190,8 @@ References:
 
 Status:
 - Architecture plan, implementation plan, and ADR proposed
-- Phases 1-2 implemented: immutable contracts plus deterministic in-memory repositories with separate read/write views, bounded queries, optimistic versions, and append idempotency
-- Phases 3-5 pending
+- Phases 1-3 implemented: immutable contracts, deterministic in-memory repositories, and a read-only Workflow Query Facade repository adapter
+- Phases 4-5 pending
 
 Planned capabilities:
 - Persistence-neutral operational document state under `src/document_state/`

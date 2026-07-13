@@ -1,7 +1,7 @@
 # Persistent Document State v1 Plan
 
 **Milestone:** v0.11
-**Status:** Phases 1-2 implemented; Phases 3-5 pending
+**Status:** Phases 1-3 implemented; Phases 4-5 pending
 
 ## 1. Problem Statement
 
@@ -144,6 +144,8 @@ Phase 3 adds a repository-backed adapter under `src/document_state/adapters/` th
 - Maps repository records explicitly into existing immutable v0.10 read models.
 - Translates pagination, filters, ordering, not-found, unavailable, and internal errors safely.
 - Exposes no write repository or mutation method.
+
+**Implementation note:** Phase 3 is complete. `DocumentStateQueryFacadeAdapter` accepts an injected aggregate read port, maps all supported Document State records into v0.10 immutable read models, reapplies facade ordering and bounded pagination, filters privacy-safe audit metadata, and translates repository errors into facade-safe errors. It is not wired into API or UI composition.
 - Preserves v0.9 API payload meanings through existing `FacadeDocumentIntelligenceProvider` parity tests.
 
 The Query Facade package does not import Document State. API and UI packages do not import Document State. Production composition remains outside those packages and is deferred.

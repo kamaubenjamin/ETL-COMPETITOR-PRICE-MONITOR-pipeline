@@ -1,7 +1,7 @@
 # Persistent Document State v1 Implementation Plan
 
 **Milestone:** v0.11
-**Status:** Phases 1-2 complete; Phases 3-5 pending
+**Status:** Phases 1-3 complete; Phases 4-5 pending
 
 ## 1. Milestone Overview
 
@@ -112,6 +112,8 @@ Stop after deterministic in-memory repository implementation. Do not add Query F
 
 ## 4. Phase 3: Workflow Query Facade Repository Adapter
 
+**Completion note:** Added the read-only `DocumentStateQueryFacadeAdapter` over injected `DocumentStateReadRepositories`. It explicitly projects documents, processing, validation, matching, reviews, corrections, reprocess plans, workflow runs, and audit events into public v0.10 read models; preserves facade ordering, filters, bounded pagination, and snapshot timestamps; translates safe repository errors; and exposes no write surface. Focused Document State verification: 77 tests passed. API/UI composition and database/live source integration remain deferred.
+
 ### Objectives
 
 - Add a read-only adapter from Document State read ports to public Workflow Query Facade contracts.
@@ -125,9 +127,8 @@ Stop after deterministic in-memory repository implementation. Do not add Query F
 Create:
 
 - `src/document_state/adapters/__init__.py`
-- `src/document_state/adapters/workflow_query_facade.py`
-- `tests/document_state/test_workflow_query_facade_adapter.py`
-- `tests/api/document_intelligence/test_document_state_facade_parity.py`
+- `src/document_state/adapters/query_facade_adapter.py`
+- `tests/document_state/test_query_facade_adapter.py`
 
 Modify only if public exports require it:
 

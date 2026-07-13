@@ -7,6 +7,8 @@
 
 The Document Intelligence API now reads deterministic preview records through a Workflow-owned public query facade. The API facade adapter is preferred; the original API-local provider remains available for compatibility. No live runtime state, persistence, auth, mutation, or external service is connected.
 
+v0.11 Phase 3 adds `src/document_state/adapters/query_facade_adapter.py`, a read-only adapter from injected Document State read repositories to this facade port. The adapter is verified but is not selected by the API composition root; current API behavior therefore remains unchanged.
+
 ## Important Files
 
 - `src/workflow_runtime/query_facade/__init__.py`: public exports.
@@ -17,6 +19,7 @@ The Document Intelligence API now reads deterministic preview records through a 
 - `ports.py`: narrow read-only structural ports.
 - `providers/in_memory.py`: deterministic facade implementation.
 - `src/api/document_intelligence/providers/facade_provider.py`: v0.9 API adapter.
+- `src/document_state/adapters/query_facade_adapter.py`: optional repository-backed facade source added in v0.11.
 - `tests/workflow_runtime/query_facade/`: contract, provider, privacy, and boundary tests.
 - `tests/api/document_intelligence/`: API parity and security tests.
 - `docs/adr/ADR-015-workflow-query-facade.md`: ownership and dependency decision.
@@ -67,4 +70,4 @@ The Document Intelligence API owns HTTP behavior. Streamlit and future FlowSync 
 
 ## Next Recommended Milestone
 
-Plan a live query source adapter and composition-root milestone. Define source ownership, snapshot consistency, unavailable-source behavior, identity, authorization, tenant filtering, persistence strategy, and operational telemetry before connecting production state. Mutation endpoints remain a separate later architecture decision.
+Complete v0.11 boundary/privacy hardening and release closure. A later milestone must define database-backed repositories and an explicit composition root before selecting the Document State adapter for production reads. Mutation endpoints remain a separate architecture decision.

@@ -66,6 +66,7 @@ def test_document_state_package_has_only_standard_or_local_imports():
         "streamlit", "telemetry", "transform", "transforms", "ui", "workflow_runtime",
     }
     for path in root.rglob("*.py"):
+        is_adapter = "adapters" in path.relative_to(root).parts
         tree = ast.parse(path.read_text(encoding="utf-8-sig"), filename=str(path))
         for node in ast.walk(tree):
             if isinstance(node, ast.Import):
@@ -75,13 +76,14 @@ def test_document_state_package_has_only_standard_or_local_imports():
             else:
                 continue
             for module in modules:
+                if is_adapter and module.startswith(("src.document_state", "src.workflow_runtime.query_facade")):
+                    continue
                 assert module.split(".")[0] in standard
                 assert not set(module.lower().split(".")) & forbidden_tokens
 
 
-def test_no_database_migration_or_adapter_surface_exists():
+def test_no_database_migration_or_provider_surface_exists():
     root = Path(document_state.__file__).parent
     assert not (root / "providers").exists()
-    assert not (root / "adapters").exists()
     assert not (root / "migrations").exists()
     assert not (root / "repositories").exists()
