@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Planned v0.12 Durable Document State with SQLite as the local/dev durable implementation, PostgreSQL as the production target, Supabase/Postgres as a future managed option, a dedicated persistence package, explicit relational schema and migrations, transactional optimistic versioning, database-enforced append idempotency, repository conformance tests, and explicit backend selection while preserving API/UI boundaries.
+- Added v0.12 Durable Document State Phase 1 with explicit in-memory/SQLite/deferred-PostgreSQL configuration, privacy-safe persistence errors, deterministic metadata for eleven planned tables, immutable migration and applied-ledger contracts, and sequence/engine/checksum validation; SQL, database connections, repositories, API/UI integration, and file/network behavior remain deferred.
 
 - Closed and tagged v0.11 Persistent Document State with ten immutable privacy-safe record families, bounded repository contracts, deterministic lock-protected in-memory repositories, optimistic versions, append idempotency, a read-only Workflow Query Facade adapter, recursive boundary/privacy verification, full regression verification, and release handoff documentation.
 

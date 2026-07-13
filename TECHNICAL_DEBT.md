@@ -208,7 +208,7 @@ References:
 
 ### Current Status
 
-**v0.12 is planned; implementation has not started.**
+**v0.12 Phase 1 is implemented; durable repositories, conformance, composition, and closure remain pending.**
 
 The approved phased recommendation is SQLite for local/dev durability, PostgreSQL as the production target, and Supabase/Postgres as a possible future managed deployment. The milestone must preserve v0.11 repository interfaces and keep API/UI consumers behind the Workflow Query Facade.
 
@@ -221,6 +221,8 @@ Planned debt addressed by v0.12:
 - Indexed deterministic filters/orderings and bounded pagination
 - Shared repository conformance across in-memory and SQLite implementations
 - Explicit repository selection with no silent fallback
+
+Phase 1 provides standard-library-only configuration contracts for `in_memory`, `sqlite`, and deferred `future_postgres`; seven privacy-safe persistence error codes; deterministic metadata for all planned durable tables; and immutable migration definition/applied-ledger contracts with duplicate, sequence, engine, and checksum-conflict validation. It opens no database, writes no file, and contains no SQL or repository implementation.
 
 Still deferred beyond v0.12:
 

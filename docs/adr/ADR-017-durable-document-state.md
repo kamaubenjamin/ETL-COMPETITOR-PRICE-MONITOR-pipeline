@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed; implementation not started.
+Accepted; Phase 1 implemented and Phases 2-5 pending.
 
 ## Context
 
@@ -47,13 +47,15 @@ A persistence subpackage is preferred over flat engine files:
 ```text
 src/document_state/persistence/
   config.py
+  errors.py
   factory.py
-  migration_runner.py
+  migrations.py
+  schema.py
   sqlite/
     connection.py
     mappings.py
     repositories.py
-  migrations/sqlite/
+  sql/sqlite/
 ```
 
 This keeps database concerns out of core contracts, gives migrations and mappings explicit ownership, and permits a future `postgres/` sibling with separate engine policy.

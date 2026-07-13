@@ -1,7 +1,7 @@
 # Durable Document State v1 Plan
 
 **Milestone:** v0.12
-**Status:** Proposed; implementation not started
+**Status:** Phase 1 implemented; Phases 2-5 pending
 
 ## 1. Problem Statement
 
@@ -92,17 +92,15 @@ Use a dedicated persistence subpackage:
 src/document_state/persistence/
   __init__.py
   config.py
+  errors.py
   factory.py
-  migration_runner.py
+  migrations.py
+  schema.py
   sqlite/
     __init__.py
-    connection.py
-    mappings.py
-    repositories.py
-  migrations/
-    __init__.py
+    # connection, mappings, and repositories begin in Phase 2
+  sql/                    # begins with real migration SQL in Phase 2
     sqlite/
-      __init__.py
       0001_initial.sql
 tests/document_state/persistence/
   test_migrations.py
@@ -150,7 +148,7 @@ Foreign keys should protect known parent relationships where lifecycle is clear.
 - Keep destructive or lossy migrations out of automatic startup paths until backup and rollback procedures are approved.
 - Provide explicit migration inspection/apply functions; production startup auto-migration remains a deployment policy decision.
 
-Phase 1 implementation will create the layout and initial SQLite migration. This planning task creates no migration files.
+Phase 1 defines immutable migration identities, ledger records, checksum/engine/sequence validation, and deterministic schema metadata. It intentionally creates no SQL or migration execution. Phase 2 begins the initial SQLite SQL migration together with connection and repository behavior.
 
 ## 9. Transaction And Consistency Rules
 

@@ -1,7 +1,7 @@
 # Durable Document State v1 Implementation Plan
 
 **Milestone:** v0.12
-**Status:** Proposed; implementation not started
+**Status:** Phase 1 complete; Phases 2-5 pending
 
 ## 1. Milestone Overview
 
@@ -11,13 +11,15 @@ No API endpoint, payload, Streamlit UI, upload processing, auth, tenant isolatio
 
 ## 2. Phase 1: Persistence Contracts, Schema Plan, And Migration Layout
 
+**Completion note:** Added standard-library-only persistence configuration, safe error, logical schema, migration definition, applied-ledger, sequence, checksum, and engine validation contracts. The deterministic schema catalog covers all eleven planned tables and classifies keys, ordering, indexes, privacy, and mutable/append-only semantics. SQLite and future PostgreSQL are explicit; future PostgreSQL cannot be activated. Focused persistence tests: 30 passed. Full Document State suite: 127 passed. No SQL, database connection, file write, repository implementation, API/UI integration, dependency, or root public export was added.
+
 ### Objectives
 
 - Add persistence-local configuration and connection/migration contracts without changing public repository ports.
-- Create the package layout and initial SQLite schema migration for all ten record families.
+- Create the persistence contract layout and logical schema metadata for all ten record families plus the migration ledger.
 - Add migration ledger, checksum, ordering, gap, and newer-schema validation.
 - Define explicit column mappings, canonical metadata JSON, internal idempotency fields, indexes, and foreign-key decisions.
-- Keep migration execution explicit and transaction-safe.
+- Keep migration execution and real SQL deferred to Phase 2.
 
 ### Expected Files
 
@@ -25,16 +27,15 @@ Create:
 
 - `src/document_state/persistence/__init__.py`
 - `src/document_state/persistence/config.py`
-- `src/document_state/persistence/migration_runner.py`
+- `src/document_state/persistence/errors.py`
+- `src/document_state/persistence/migrations.py`
+- `src/document_state/persistence/schema.py`
 - `src/document_state/persistence/sqlite/__init__.py`
-- `src/document_state/persistence/sqlite/connection.py`
-- `src/document_state/persistence/sqlite/mappings.py`
-- `src/document_state/persistence/migrations/__init__.py`
-- `src/document_state/persistence/migrations/sqlite/__init__.py`
-- `src/document_state/persistence/migrations/sqlite/0001_initial.sql`
 - `tests/document_state/persistence/__init__.py`
+- `tests/document_state/persistence/test_config.py`
 - `tests/document_state/persistence/test_migrations.py`
-- `tests/document_state/persistence/test_sqlite_schema.py`
+- `tests/document_state/persistence/test_schema.py`
+- `tests/document_state/persistence/test_boundaries.py`
 
 Modify only if public persistence exports are required:
 
@@ -43,28 +44,30 @@ Modify only if public persistence exports are required:
 
 ### Tests
 
-- Blank file database migrates to the expected version.
-- Migration replay is idempotent.
+- Configuration rejects unknown backends and requires explicit SQLite file settings.
+- Future PostgreSQL remains represented but deferred from active selection.
 - Duplicate versions, gaps, checksum drift, and newer schemas fail safely.
-- All tables, explicit columns, indexes, constraints, and migration metadata exist.
-- Foreign keys, busy timeout, and configured journal policy are applied.
-- Mappings round-trip every immutable record without unsafe fields.
-- Migration and connection errors expose no path, SQL, values, or driver text.
+- All planned table metadata includes keys, ordering, indexes, privacy, and semantics.
+- Migration definitions and applied-ledger records are immutable and JSON-compatible.
+- Persistence errors expose no path, SQL, values, or driver text.
+- No database, file, network, repository, or execution behavior exists.
 
 ### Verification
 
 ```text
-python -m pytest tests/document_state/persistence/test_migrations.py tests/document_state/persistence/test_sqlite_schema.py -q
+python -m pytest tests/document_state/persistence -q
 python -m pytest tests/document_state -q
 python scripts/verify_boundaries.py
-python -m py_compile src/document_state/persistence/migration_runner.py
+python -m py_compile src/document_state/persistence/config.py
+python -m py_compile src/document_state/persistence/migrations.py
+python -m py_compile src/document_state/persistence/schema.py
 git diff --check
 git status --short --branch
 ```
 
 ### Stop Condition
 
-Stop after persistence contracts, migration runner, initial SQLite migration, and schema verification. Do not implement repositories or composition.
+Stop after persistence contracts, schema metadata, migration validation, and boundary verification. Do not create SQL, open databases, implement repositories, or add composition.
 
 ## 3. Phase 2: SQLite Durable Repository Implementation
 
@@ -81,7 +84,10 @@ Stop after persistence contracts, migration runner, initial SQLite migration, an
 
 Create:
 
+- `src/document_state/persistence/sqlite/connection.py`
+- `src/document_state/persistence/sqlite/mappings.py`
 - `src/document_state/persistence/sqlite/repositories.py`
+- `src/document_state/persistence/sql/sqlite/0001_initial.sql`
 - `tests/document_state/persistence/test_sqlite_repositories.py`
 - `tests/document_state/persistence/test_sqlite_durability.py`
 

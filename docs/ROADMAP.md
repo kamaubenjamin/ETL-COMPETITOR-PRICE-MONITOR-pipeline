@@ -212,7 +212,8 @@ References:
 
 Status:
 - Architecture plan, implementation plan, and ADR proposed
-- Implementation not started
+- Phase 1 implemented: persistence configuration, safe errors, deterministic schema metadata, and immutable migration/ledger validation contracts
+- Phases 2-5 pending
 
 Planned capabilities:
 - SQLite-backed local/dev durable repositories behind existing Document State ports
