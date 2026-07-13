@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted. Phase 1 contract and mapping decisions are implemented; writer services and runtime integration remain pending.
+Accepted. Phase 1 contracts and Phase 2 ingestion writer decisions are implemented; processing/review writers and runtime producer integration remain pending.
 
 ## Context
 

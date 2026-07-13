@@ -1,7 +1,7 @@
 # Upload-to-Processing Writer Integration v1 Plan
 
 **Milestone:** v0.13
-**Status:** Accepted; Phase 1 contracts and mapping definitions implemented
+**Status:** Accepted; Phases 1-2 implemented
 
 ## 1. Problem Statement
 
@@ -106,6 +106,8 @@ Writer commands are immutable, JSON-compatible, bounded, and backend-neutral. Pr
 Commands carry required stable IDs rather than generating random IDs inside repository services. Producer adapters may derive deterministic IDs from trusted source event IDs using a fixed namespace and documented canonical fields.
 
 Phase 1 implements these contracts under `src/document_state/writers/` as immutable commands, safe errors/results, deterministic idempotency helpers, a fixed mapping catalog, and structural internal writer ports. It performs no repository writes and imports no runtime, persistence-engine, API, or UI implementation.
+
+Phase 2 implements `IngestionDocumentStateWriter` with explicitly injected Document State read/write repository ports. It supports replay-safe document creation, received/classified lifecycle appends, classification processing snapshot create/update, and optional safe ingestion audit events against either active repository backend. It does not select a backend or import producer, API, UI, Query Facade, or persistence-engine implementations.
 
 ## 7. Runtime Output Mapping
 

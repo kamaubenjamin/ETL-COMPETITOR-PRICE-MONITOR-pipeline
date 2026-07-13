@@ -241,7 +241,8 @@ References:
 Status:
 - Architecture plan, implementation plan, and ADR accepted
 - Phase 1 implemented: immutable writer commands, safe errors/results, deterministic idempotency helpers, fixed mapping catalog, and structural internal writer ports
-- Phases 2-5 not started
+- Phase 2 implemented: injected ingestion writer with idempotent document/lifecycle/audit behavior, optimistic classification snapshots, partial retry continuation, and in-memory/SQLite parity
+- Phases 3-5 not started
 
 Planned capabilities:
 - Runtime-neutral internal Document State writer commands and services

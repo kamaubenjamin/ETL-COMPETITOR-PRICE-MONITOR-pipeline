@@ -1,7 +1,7 @@
 # Upload-to-Processing Writer Integration v1 Implementation Plan
 
 **Milestone:** v0.13
-**Status:** Phase 1 complete; Phases 2-5 not started
+**Status:** Phases 1-2 complete; Phases 3-5 not started
 
 ## 1. Milestone Overview
 
@@ -121,6 +121,8 @@ git status --short --branch
 ### Stop Condition
 
 Stop after ingestion writer integration and verification. Do not add workflow, validation, matching, review, API, or UI writes.
+
+Phase 2 completed with an injected `IngestionDocumentStateWriter`, read-compare-create retry handling, idempotent received/classified lifecycle writes, optimistic classification snapshot updates, safe optional audit writes, partial-retry continuation, and in-memory/SQLite verification. No producer adapter, backend selection, public endpoint, or UI integration was added.
 
 ## 4. Phase 3: Processing, Validation, Matching, And Review Writers
 

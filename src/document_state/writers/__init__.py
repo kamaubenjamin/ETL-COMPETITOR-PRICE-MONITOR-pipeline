@@ -17,6 +17,7 @@ from .commands import (
 )
 from .errors import DocumentStateWriterError, WriterErrorCode
 from .idempotency import IdempotencyDomain, make_idempotency_key
+from .ingestion_writer import IngestionDocumentStateWriter
 from .mappings import WRITER_MAPPING_CATALOG, WriterMappingDefinition, WriterMappingEvent, get_writer_mapping
 from .ports import (
     AuditDocumentStateWriterPort,
@@ -37,6 +38,7 @@ __all__ = [
     "DocumentStateWriterPort",
     "IdempotencyDomain",
     "IngestionDocumentStateWriterPort",
+    "IngestionDocumentStateWriter",
     "MatchingSummaryInput",
     "ProcessingDocumentStateWriterPort",
     "ReviewDocumentStateWriterPort",
