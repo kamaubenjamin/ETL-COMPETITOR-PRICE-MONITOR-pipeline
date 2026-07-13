@@ -1,7 +1,7 @@
 # Workflow Query Facade v1 Implementation Plan
 
 **Milestone:** v0.10
-**Status:** Phases 1-2 complete; Phases 3-5 pending
+**Status:** Phases 1-3 complete; Phases 4-5 pending
 
 ## 1. Milestone Overview
 
@@ -97,6 +97,8 @@ git status --short --branch
 Stop after deterministic facade behavior. Do not modify API routes or connect live runtime sources.
 
 ## 4. Phase 3: API Facade Provider Adapter
+
+**Completion note:** Added `FacadeDocumentIntelligenceProvider`, which translates only public Workflow Query Facade read models into the unchanged v0.9 API provider shapes. The facade-backed deterministic provider is now preferred through the existing package export; the API-local provider remains explicitly available for compatibility. Routes, endpoints, envelopes, pagination metadata, payload meanings, and GET-only behavior are unchanged. Focused API verification: 31 passed and 9 conditional transport tests skipped. No live source, persistence, auth, mutation, or UI behavior was added.
 
 ### Objectives
 

@@ -44,7 +44,7 @@ v0.9 establishes a separate, versioned, read-only HTTP boundary for Document Int
 
 The Document Intelligence API imports only its own package, the standard library, and existing FastAPI/Starlette dependencies. It does not directly import Review Runtime, Document Engine, Entity Runtime, Transform Runtime, Matching Runtime, Workflow Runtime, storage, telemetry, UI, Streamlit, FlowSync, or competitor-price internals.
 
-The deterministic provider is preview-only. Future live data must be aggregated behind a public Workflow-owned query facade. Backend runtimes remain the source of truth, and the API remains a transport boundary.
+The deterministic provider is preview-only. v0.10 Phase 3 adds a preferred API adapter backed by the public Workflow Query Facade and preserves the API-local provider for compatibility. Both sources remain deterministic; future live data still requires approved facade source adapters. Backend runtimes remain the source of truth, and the API remains a transport boundary.
 
 ## Consumer Model
 

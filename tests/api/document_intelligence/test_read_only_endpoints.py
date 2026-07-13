@@ -41,7 +41,7 @@ def test_direct_list_routes_return_filtered_paginated_envelopes():
     audit = list_audit_events(_request(), event_type="review_case_created", limit=10, offset=0)
     assert [row["document_id"] for row in documents["data"]] == ["doc-002"]
     assert [row["review_case_id"] for row in reviews["data"]] == ["review-001"]
-    assert [row["event_id"] for row in audit["data"]] == ["audit-002"]
+    assert [row["event_id"] for row in audit["data"]] == ["audit-003"]
     assert documents["metadata"]["pagination"] == {"limit": 10, "offset": 0, "total": 1}
 
 

@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted; Phases 1-2 implemented and later phases pending.
+Accepted; Phases 1-3 implemented and Phases 4-5 pending.
 
 ## Context
 
@@ -117,4 +117,4 @@ Rejected because commands require separate identity, authorization, idempotency,
 
 Implement the five phases in `docs/architecture/WORKFLOW_QUERY_FACADE_V1_IMPLEMENTATION_PLAN.md`. Do not connect live runtime sources or add mutation behavior without a separately approved boundary and security decision.
 
-Phase 1 implements dependency-free contracts, pagination, read models, safe errors, and structural read ports. Phase 2 adds a deterministic in-memory facade using only those public contracts. API integration and live runtime adapters remain pending.
+Phase 1 implements dependency-free contracts, pagination, read models, safe errors, and structural read ports. Phase 2 adds a deterministic in-memory facade using only those public contracts. Phase 3 adds an API-side adapter using only facade public exports, makes the deterministic facade-backed provider preferred, and preserves the API-local provider for compatibility. Live runtime adapters remain pending.

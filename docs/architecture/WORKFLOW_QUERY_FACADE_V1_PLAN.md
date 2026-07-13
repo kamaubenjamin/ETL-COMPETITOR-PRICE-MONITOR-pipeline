@@ -1,7 +1,7 @@
 # Workflow Query Facade v1 Plan
 
 **Milestone:** v0.10
-**Status:** Phases 1-2 implemented; Phases 3-5 pending
+**Status:** Phases 1-3 implemented; Phases 4-5 pending
 
 ## 1. Problem Statement
 
@@ -96,7 +96,7 @@ src/workflow_runtime/query_facade/
 - `errors.py`: stable path/code errors without source payloads.
 - `__init__.py`: intentionally small public export surface.
 
-Phases 1-2 implement the dependency-free contract surface and deterministic in-memory facade. API integration and live sources remain unimplemented.
+Phases 1-3 implement the dependency-free contract surface, deterministic in-memory facade, and API-side facade adapter. The adapter is the preferred deterministic API source while the API-local provider remains available for compatibility. Live sources remain unimplemented.
 
 ## 7. Read Model Contracts
 

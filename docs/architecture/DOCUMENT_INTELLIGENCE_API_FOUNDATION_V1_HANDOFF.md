@@ -49,6 +49,8 @@ git diff --check
 - `src/api/document_intelligence/middleware.py`
 - `src/api/document_intelligence/security.py`
 - `src/api/document_intelligence/providers/local_provider.py`
+- `src/api/document_intelligence/providers/facade_provider.py`
+- `src/workflow_runtime/query_facade/`
 - `src/api/document_intelligence/routers/`
 - `src/ui/streamlit/api_client.py`
 - `src/ui/streamlit/api_provider.py`
@@ -59,7 +61,7 @@ git diff --check
 ## Extension Rules
 
 - Keep API contracts consumer-neutral and version breaking changes under a new major path.
-- Add live reads only through a public Workflow-owned query facade; do not import individual runtime internals.
+- Extend live reads only through approved public Workflow Query Facade source ports; the API adapter must not import individual runtime internals.
 - Preserve strict envelopes, bounded pagination, request IDs, safe errors, security headers, and GET-only behavior until mutation architecture is approved.
 - Keep Streamlit shaping in its provider/view-model layers and never make the UI a source of truth.
 - Add privacy, OpenAPI, unavailable-state, method, boundary, and full-regression tests with every extension.
@@ -79,7 +81,7 @@ Streamlit is the internal operator console and can use local or API preview data
 
 ## Known Risks And Deviations
 
-- API data is deterministic preview data, not live operational truth.
+- API data is supplied by the preferred deterministic Workflow Query Facade adapter, with the API-local provider retained for compatibility; neither is live operational truth.
 - No auth, tenant controls, persistence, production CORS, rate limiting, TLS policy, or telemetry exists.
 - Optional Starlette TestClient transport requires undeclared `httpx2`; nine transport tests skip in the current environment, while direct and live smoke coverage passes.
 - Boundary verification skips two pre-existing BOM-affected files.
@@ -87,4 +89,4 @@ Streamlit is the internal operator console and can use local or API preview data
 
 ## Next Recommended Milestone
 
-Plan trusted live read integration through a Workflow-owned query facade together with identity, authorization, tenant, and persistence boundaries. Keep mutation endpoints deferred until those foundations and their audit/idempotency requirements are approved.
+Complete Workflow Query Facade boundary/security verification, then plan trusted live source adapters together with identity, authorization, tenant, and persistence boundaries. Keep mutation endpoints deferred until those foundations and their audit/idempotency requirements are approved.
