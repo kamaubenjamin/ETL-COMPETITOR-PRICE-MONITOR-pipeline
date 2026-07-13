@@ -208,7 +208,7 @@ References:
 
 ### Current Status
 
-**v0.12 is implemented and verified; closed pending owner commit and tag.**
+**v0.12 is closed and tagged as `v0.12-durable-document-state`.**
 
 The approved phased recommendation is SQLite for local/dev durability, PostgreSQL as the production target, and Supabase/Postgres as a possible future managed deployment. The milestone must preserve v0.11 repository interfaces and keep API/UI consumers behind the Workflow Query Facade.
 
@@ -256,7 +256,7 @@ References:
 
 ### Current Status
 
-**v0.13 is implemented and verified; closed pending owner commit and tag.**
+**v0.13 is closed and tagged as `v0.13-upload-processing-writer-integration`.**
 
 Document State has durable local/dev repositories, explicit composition, and internal writer services that can populate all operational record families from normalized commands. Concrete upload, ingestion, workflow, validation, matching, and review producer adapters are not yet connected. API and Streamlit remain read-only and must not receive repository write ports.
 
@@ -299,6 +299,41 @@ References:
 - `docs/architecture/UPLOAD_PROCESSING_WRITER_INTEGRATION_V1_HANDOFF.md`
 - `docs/adr/ADR-018-upload-processing-writer-integration.md`
 - `docs/releases/v0.13-upload-processing-writer-integration.md`
+
+---
+
+## Lifecycle Snapshot Advancement v1
+
+### Current Status
+
+**v0.14 planning is complete; implementation has not started.**
+
+v0.13 lifecycle events are append-only and authoritative, but the mutable `DocumentRecord` remains at `received`. v0.14 plans a dedicated Document State lifecycle service that applies one explicit transition catalog and advances the projection through existing optimistic repository ports.
+
+Planned debt addressed by v0.14:
+
+- Central lifecycle graph instead of writer-specific or rank-based transition inference
+- Deterministic status/current-stage/version advancement
+- Same-event replay without duplicate version increments
+- Safe stale-version, invalid-transition, missing-document, and source-unavailable behavior
+- Linked reprocess recovery without treating a dry-run plan as execution
+- In-memory/SQLite parity and Query Facade/API/Streamlit read-after-advance verification
+
+Still deferred beyond v0.14:
+
+- Runtime producer adapters and production bootstrap activation
+- Cross-record unit of work, transactional outbox, and background reconciliation
+- Bulk historical projection rebuild/backfill
+- Public mutation endpoints and upload UI/API
+- Authentication, authorization, tenants, and production database activation
+- New document-level skipped/cancelled disposition contracts
+- Raw encrypted blob storage, FlowSync, OCR, LLM, and external services
+
+References:
+
+- `docs/architecture/LIFECYCLE_SNAPSHOT_ADVANCEMENT_V1_PLAN.md`
+- `docs/architecture/LIFECYCLE_SNAPSHOT_ADVANCEMENT_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-019-lifecycle-snapshot-advancement.md`
 
 ---
 

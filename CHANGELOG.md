@@ -2,7 +2,9 @@
 
 ## Unreleased
 
-- Completed v0.13 Upload-to-Processing Writer Integration with immutable runtime-neutral writer commands, deterministic idempotency and governed mappings, ingestion/processing/review/workflow writer services, in-memory/SQLite parity, end-to-end read-after-write and API-provider compatibility verification, unchanged read-only API/UI behavior, and release handoff documentation; owner commit and `v0.13-upload-processing-writer-integration` tag remain pending.
+- Added v0.14 Lifecycle Snapshot Advancement planning and ADR-019, selecting a dedicated Document State lifecycle service with an explicit transition graph, optimistic projection updates, replay-safe audit-first writer integration, linked reprocess recovery, unchanged read-only API/UI contracts, and in-memory/SQLite read-after-advance verification while deferring public mutations, producer adapters, OCR, LLM, and external services.
+
+- Closed and tagged v0.13 Upload-to-Processing Writer Integration as `v0.13-upload-processing-writer-integration`, with immutable runtime-neutral writer commands, deterministic idempotency and governed mappings, ingestion/processing/review/workflow writer services, in-memory/SQLite parity, end-to-end read-after-write and API-provider compatibility verification, unchanged read-only API/UI behavior, and release handoff documentation.
 
 - Added v0.13 Phase 4 end-to-end read-after-write verification across writer services, in-memory and reconstructed SQLite repositories, Document State Query Facade adaptation, and the existing API provider, covering backend equivalence, replay, partial resume, filters, pagination, privacy projection, v0.9 payload compatibility, and GET-only routes without production changes.
 
@@ -14,7 +16,7 @@
 
 - Added v0.13 Upload-to-Processing Writer Integration planning and ADR-018, defining runtime-neutral internal writer commands, producer-side result adapters, deterministic retry/idempotency/version rules, privacy-safe opaque artifact references, operation-level replay behavior, explicit repository-port injection, and read-after-write verification while deferring public mutation APIs, UI writes, production activation, raw blob storage, PostgreSQL, auth/tenant logic, OCR, LLM, and external services.
 
-- Completed v0.12 Durable Document State with persistence contracts, explicit relational SQLite storage, checksum-verified migrations, durable repositories, optimistic versions, content-hash idempotency, shared backend conformance, reopen and basic concurrency verification, explicit fail-closed repository composition, unchanged API/UI contracts, and release handoff documentation; owner commit and `v0.12-durable-document-state` tag remain pending.
+- Closed and tagged v0.12 Durable Document State as `v0.12-durable-document-state`, with persistence contracts, explicit relational SQLite storage, checksum-verified migrations, durable repositories, optimistic versions, content-hash idempotency, shared backend conformance, reopen and basic concurrency verification, explicit fail-closed repository composition, unchanged API/UI contracts, and release handoff documentation.
 
 - Added v0.12 Durable Document State Phase 4 with explicit validated `in_memory` or file-backed `sqlite` composition, a frozen result exposing the active backend and separate read/write protocol surfaces, lazy SQLite initialization, fail-closed deferred/invalid backend handling, no silent fallback, and no automatic API/UI wiring.
 

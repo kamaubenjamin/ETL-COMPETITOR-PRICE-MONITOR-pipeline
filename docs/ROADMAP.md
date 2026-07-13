@@ -211,7 +211,7 @@ References:
 ### v0.12 Durable Document State
 
 Status:
-- Implemented and verified; closed pending owner commit and tag
+- Closed and tagged as `v0.12-durable-document-state`
 - Phase 1 implemented: persistence configuration, safe errors, deterministic schema metadata, and immutable migration/ledger validation contracts
 - Phase 2 implemented: file-backed SQLite repositories, explicit relational schema, transactional migrations, optimistic updates, append idempotency, and reopen durability
 - Phase 3 implemented: shared in-memory/SQLite conformance, rollback and snapshot consistency, migration replay, and deterministic basic writer concurrency verification
@@ -240,7 +240,7 @@ References:
 
 Status:
 - Architecture plan, implementation plan, and ADR accepted
-- Implemented and verified; closed pending owner commit and tag
+- Closed and tagged as `v0.13-upload-processing-writer-integration`
 - Phase 1 implemented: immutable writer commands, safe errors/results, deterministic idempotency helpers, fixed mapping catalog, and structural internal writer ports
 - Phase 2 implemented: injected ingestion writer with idempotent document/lifecycle/audit behavior, optimistic classification snapshots, partial retry continuation, and in-memory/SQLite parity
 - Phase 3 implemented: processing, validation, matching, review, correction, reprocess, workflow, lifecycle, and audit writers with optimistic versions, append idempotency, and backend parity
@@ -263,6 +263,26 @@ References:
 - `docs/architecture/UPLOAD_PROCESSING_WRITER_INTEGRATION_V1_HANDOFF.md`
 - `docs/adr/ADR-018-upload-processing-writer-integration.md`
 - `docs/releases/v0.13-upload-processing-writer-integration.md`
+
+### v0.14 Lifecycle Snapshot Advancement
+
+Status:
+- Architecture plan, implementation plan, and ADR-019 created
+- Planning complete; implementation not started
+
+Planned capabilities:
+- Dedicated Document State lifecycle policy and advancement service
+- Explicit allowed, terminal, failure, replay, and reprocess recovery transitions
+- Optimistic `DocumentRecord` status/current-stage/version advancement
+- Shared integration across v0.13 writer services
+- In-memory/SQLite parity and read-after-advance verification
+- Updated Query Facade/API/Streamlit status through existing read contracts
+- No endpoint, UI, public mutation, backend-selection, OCR, LLM, or external-service changes
+
+References:
+- `docs/architecture/LIFECYCLE_SNAPSHOT_ADVANCEMENT_V1_PLAN.md`
+- `docs/architecture/LIFECYCLE_SNAPSHOT_ADVANCEMENT_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-019-lifecycle-snapshot-advancement.md`
 
 ## Prior Milestone Context
 
