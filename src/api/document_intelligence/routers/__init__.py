@@ -1,6 +1,20 @@
 """Routers for the Document Intelligence API."""
 
+from .audit import router as audit_router
+from .documents import router as documents_router
 from .health import root_router, versioned_router
+from .matching import router as matching_router
+from .reviews import router as reviews_router
+from .validation import router as validation_router
+from .workflows import router as workflows_router
 
-__all__ = ["root_router", "versioned_router"]
+domain_routers = (
+    documents_router,
+    validation_router,
+    matching_router,
+    reviews_router,
+    workflows_router,
+    audit_router,
+)
 
+__all__ = ["domain_routers", "root_router", "versioned_router"]
