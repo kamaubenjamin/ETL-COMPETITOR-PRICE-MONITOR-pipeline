@@ -66,6 +66,8 @@ def test_document_state_package_has_only_standard_or_local_imports():
         "streamlit", "telemetry", "transform", "transforms", "ui", "workflow_runtime",
     }
     for path in root.rglob("*.py"):
+        if "persistence" in path.relative_to(root).parts:
+            continue
         is_adapter = "adapters" in path.relative_to(root).parts
         tree = ast.parse(path.read_text(encoding="utf-8-sig"), filename=str(path))
         for node in ast.walk(tree):

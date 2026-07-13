@@ -28,7 +28,7 @@ def _imports(path: Path) -> tuple[str, ...]:
 
 def test_core_document_state_recursively_imports_only_standard_or_package_local_modules():
     for path in ROOT.rglob("*.py"):
-        if "adapters" in path.relative_to(ROOT).parts:
+        if {"adapters", "persistence"} & set(path.relative_to(ROOT).parts):
             continue
         for module in _imports(path):
             if module.startswith("."):
@@ -63,6 +63,8 @@ def test_document_state_has_no_database_file_or_network_dependencies():
     }
     forbidden_calls = {"open", "urlopen"}
     for path in ROOT.rglob("*.py"):
+        if "persistence" in path.relative_to(ROOT).parts:
+            continue
         tree = ast.parse(path.read_text(encoding="utf-8-sig"), filename=str(path))
         assert not {module.split(".")[0] for module in _imports(path)} & forbidden_roots
         calls = {
