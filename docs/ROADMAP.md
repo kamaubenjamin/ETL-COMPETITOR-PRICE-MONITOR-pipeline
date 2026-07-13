@@ -236,6 +236,26 @@ References:
 - `docs/adr/ADR-017-durable-document-state.md`
 - `docs/releases/v0.12-durable-document-state.md`
 
+### v0.13 Upload-to-Processing Writer Integration
+
+Status:
+- Architecture plan, implementation plan, and ADR proposed
+- Implementation not started
+
+Planned capabilities:
+- Runtime-neutral internal Document State writer commands and services
+- Producer-side ingestion, workflow, validation, matching, and review adapters
+- Deterministic create retry, append idempotency, and optimistic version behavior
+- Privacy-safe opaque artifact references without raw payload storage
+- In-memory and SQLite writer parity
+- Read-after-write verification through Workflow Query Facade and existing API provider shapes
+- No public mutation endpoints, UI writes, production activation, or silent backend fallback
+
+References:
+- `docs/architecture/UPLOAD_PROCESSING_WRITER_INTEGRATION_V1_PLAN.md`
+- `docs/architecture/UPLOAD_PROCESSING_WRITER_INTEGRATION_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-018-upload-processing-writer-integration.md`
+
 ## Prior Milestone Context
 
 ### v0.5 Runtime Hardening

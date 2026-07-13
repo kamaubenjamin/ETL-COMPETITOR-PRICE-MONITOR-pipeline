@@ -252,6 +252,41 @@ References:
 
 ---
 
+## Upload-to-Processing Writer Integration v1
+
+### Current Status
+
+**v0.13 planning is complete; implementation has not started.**
+
+Document State has durable local/dev repositories and explicit composition, but upload, ingestion, workflow, validation, matching, and review outcomes do not yet populate it. API and Streamlit remain read-only and must not receive repository write ports.
+
+Planned debt addressed by v0.13:
+
+- Normalized internal writer commands instead of persisting runtime result payloads
+- Deterministic ingestion create retries and append idempotency
+- Explicit compare-and-swap version behavior for mutable snapshots
+- Producer-side mapping for ingestion, workflow, validation, matching, review, correction, and reprocess outcomes
+- Privacy-safe opaque artifact references with no raw payload storage
+- Replay-safe handling of operation-level partial writes
+- In-memory/SQLite writer parity and Query Facade/API read-after-write verification
+
+Still deferred beyond v0.13:
+
+- Cross-record unit-of-work and transactional outbox
+- PostgreSQL/Supabase and production composition activation
+- Public mutation endpoints and Streamlit write actions
+- Authentication, authorization, tenant isolation, and rate limiting
+- Raw encrypted blob storage, malware scanning, backup/recovery, retention/archive/legal hold
+- Production telemetry, FlowSync Document Intelligence, OCR, LLM, and external services
+
+References:
+
+- `docs/architecture/UPLOAD_PROCESSING_WRITER_INTEGRATION_V1_PLAN.md`
+- `docs/architecture/UPLOAD_PROCESSING_WRITER_INTEGRATION_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-018-upload-processing-writer-integration.md`
+
+---
+
 - Missing internal test data files required by `test_pipeline.py`:
   - `data/internal/supplier_prices.csv` (expected by `supplier_price_list` source)
   - `data/internal/erp_export.xlsx` (expected by `erp_inventory` source)
