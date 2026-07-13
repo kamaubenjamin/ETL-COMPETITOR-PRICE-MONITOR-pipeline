@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted. Phases 1-3 contracts, pure policy, repository-injected advancement service, and optional writer integration are implemented and verified; read-after-advance verification and release closure remain pending.
+Accepted. Phases 1-4 contracts, pure policy, repository-injected advancement service, optional writer integration, and read-after-advance verification are implemented; release closure remains pending.
 
 ## Context
 
@@ -67,6 +67,8 @@ This preserves lifecycle history if projection update fails. Because existing re
 No distributed exactly-once or atomic multi-record claim is made.
 
 Phase 3 applies this ordering in the shared lifecycle append helper: policy is prevalidated from the current document, the event is appended idempotently, and the injected service is called with persisted-event context. Projection conflicts return the new bounded writer status `projection_pending`; replay reuses the event identity and can repair the snapshot. Writers without an injected service preserve v0.13 append-only behavior.
+
+Phase 4 verifies this decision across explicit in-memory and SQLite compositions, including reconstruction of the durable composition before readback. Advanced projections flow through the existing Query Facade adapter and API provider without direct persistence imports, endpoint changes, payload changes, or UI mutation behavior.
 
 ## Version And Replay Decision
 

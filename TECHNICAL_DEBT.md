@@ -306,7 +306,7 @@ References:
 
 ### Current Status
 
-**v0.14 Phases 1-3 are implemented; Phases 4-5 have not started.**
+**v0.14 Phases 1-4 are implemented; Phase 5 has not started.**
 
 v0.13 lifecycle events are append-only and authoritative, but the mutable `DocumentRecord` remains at `received`. v0.14 plans a dedicated Document State lifecycle service that applies one explicit transition catalog and advances the projection through existing optimistic repository ports.
 
@@ -324,6 +324,8 @@ Phase 1 provides immutable JSON-compatible transition, recovery, policy-decision
 Phase 2 provides `LifecycleAdvancementService` over explicit narrow document read/write ports. It validates current state and expected version, applies policy, updates status/current stage/time/version through compare-and-swap, preserves metadata, maps repository failures safely, and distinguishes ordinary conflicts from projection-pending conflicts after an event append. Both active backends are verified; writer integration and automatic event append remain deferred.
 
 Phase 3 integrates all four writer services through optional explicit lifecycle-service injection. The shared helper prevalidates policy, appends history idempotently, advances the snapshot with persisted-event context, reports projection-pending conflicts safely, and supports replay repair. Explicit processing/review/workflow status allowlists prevent inference and unsupported states. Legacy behavior remains unchanged without injection; application bootstrap and producer adapters remain deferred.
+
+Phase 4 verifies read-after-advance through explicit in-memory and SQLite compositions, `DocumentStateQueryFacadeAdapter`, the structural Workflow Query Facade port, and `FacadeDocumentIntelligenceProvider`. SQLite state survives composition reconstruction; advanced-status filters, bounded pagination, replay no-op, projection repair, privacy projections, v0.9 provider shapes, and GET-only routes remain compatible. No production modules required modification.
 
 Still deferred beyond v0.14:
 

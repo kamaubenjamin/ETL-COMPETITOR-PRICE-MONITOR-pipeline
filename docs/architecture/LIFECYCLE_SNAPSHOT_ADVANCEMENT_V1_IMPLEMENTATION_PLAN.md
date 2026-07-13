@@ -1,7 +1,7 @@
 # Lifecycle Snapshot Advancement v1 Implementation Plan
 
 **Milestone:** v0.14
-**Status:** Phases 1-3 complete; Phases 4-5 not started
+**Status:** Phases 1-4 complete; Phase 5 not started
 
 ## 1. Milestone Overview
 
@@ -229,6 +229,8 @@ git status --short --branch
 ### Stop Condition
 
 Stop after read-after-advance, privacy, compatibility, and boundary verification.
+
+Phase 4 completed with deterministic read-after-advance integration tests over explicit in-memory and file-backed SQLite compositions. The tests prove document status/current-stage/version visibility through the Document State Query Facade adapter, the structural Workflow Query Facade port, and existing API-provider shapes; SQLite reconstruction, replay no-op, projection-pending repair, advanced-status filters, pagination, privacy projection, and GET-only routes are verified. No production, endpoint, payload, or UI change was required.
 
 ## 6. Phase 5: Documentation, Release Closure, And Handoff
 
