@@ -1,13 +1,15 @@
 # Workflow Query Facade v1 Implementation Plan
 
 **Milestone:** v0.10
-**Status:** Proposed; implementation not started
+**Status:** Phase 1 complete; Phases 2-5 pending
 
 ## 1. Milestone Overview
 
 v0.10 adds a Workflow-owned, read-only query boundary for Document Intelligence. Each phase is limited to one Codex session, retains deterministic behavior, and stops before the next phase. The milestone does not connect live runtime stores; it establishes contracts, a deterministic provider, and API integration architecture that future live adapters can safely implement.
 
 ## 2. Phase 1: Query Facade Contracts And Read Models
+
+**Completion note:** Implemented frozen standard-library contracts for filters, ordering, bounded pagination, ten privacy-safe read models, four stable facade error codes, seven narrow source protocols, and the aggregate read-only facade protocol. The package has zero runtime/API/UI/storage/telemetry dependencies. Focused verification: 34 tests passed. No provider, service, API adapter, live source, persistence, or mutation behavior was added.
 
 ### Objectives
 
@@ -22,13 +24,15 @@ Create:
 
 - `src/workflow_runtime/query_facade/__init__.py`
 - `src/workflow_runtime/query_facade/contracts.py`
-- `src/workflow_runtime/query_facade/filters.py`
+- `src/workflow_runtime/query_facade/pagination.py`
 - `src/workflow_runtime/query_facade/errors.py`
 - `src/workflow_runtime/query_facade/ports.py`
+- `src/workflow_runtime/query_facade/read_models.py`
 - `tests/workflow_runtime/query_facade/__init__.py`
 - `tests/workflow_runtime/query_facade/test_contracts.py`
-- `tests/workflow_runtime/query_facade/test_filters.py`
-- `tests/workflow_runtime/query_facade/test_boundaries.py`
+- `tests/workflow_runtime/query_facade/test_pagination.py`
+- `tests/workflow_runtime/query_facade/test_read_models.py`
+- `tests/workflow_runtime/query_facade/test_ports.py`
 
 ### Tests
 

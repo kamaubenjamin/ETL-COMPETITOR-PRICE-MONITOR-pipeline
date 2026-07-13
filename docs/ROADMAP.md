@@ -169,7 +169,7 @@ References:
 
 Status:
 - Architecture, implementation plan, and ADR proposed
-- Implementation not started
+- Phase 1 contracts/read models implemented; Phases 2-5 pending
 
 Planned capabilities:
 - Workflow-owned public read facade under `src/workflow_runtime/query_facade/`

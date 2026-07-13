@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed; implementation not started.
+Accepted; Phase 1 implemented and later phases pending.
 
 ## Context
 
@@ -116,3 +116,5 @@ Rejected because commands require separate identity, authorization, idempotency,
 ## Follow-Up
 
 Implement the five phases in `docs/architecture/WORKFLOW_QUERY_FACADE_V1_IMPLEMENTATION_PLAN.md`. Do not connect live runtime sources or add mutation behavior without a separately approved boundary and security decision.
+
+Phase 1 implements only dependency-free contracts, pagination, read models, safe errors, and structural read ports. Deterministic providers and query services remain Phase 2 work.
