@@ -354,6 +354,8 @@ class DocumentStateQueryFacadeAdapter:
         projected = tuple(self._workflow_summary(record) for record in records)
         if safe_query.status is not None:
             projected = tuple(record for record in projected if record.status == safe_query.status)
+        if safe_query.tenant_id is not None:
+            projected = tuple(record for record in projected if record.tenant_id == safe_query.tenant_id)
         return self._page(projected, page, lambda record: record)
 
     @staticmethod

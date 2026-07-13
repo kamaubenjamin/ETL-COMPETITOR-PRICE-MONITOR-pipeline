@@ -103,6 +103,30 @@ class TestBaselineCompliance:
             if empty_exemptions.exists():
                 os.unlink(empty_exemptions)
 
+    def test_document_intelligence_api_may_import_security_only(self, temp_exemptions_file, tmp_path):
+        package = tmp_path / "src" / "api" / "document_intelligence"
+        package.mkdir(parents=True)
+        (package / "auth.py").write_text(
+            "from src.security import PermissionGuard\n",
+            encoding="utf-8",
+        )
+        allowed = run_verification(
+            exemptions_path=temp_exemptions_file,
+            src_dir=str(tmp_path / "src"),
+            quiet=False,
+        )
+        assert allowed.returncode == 0, allowed.stdout
+
+        legacy_api = tmp_path / "src" / "api" / "legacy.py"
+        legacy_api.write_text("from src.security import PermissionGuard\n", encoding="utf-8")
+        denied = run_verification(
+            exemptions_path=temp_exemptions_file,
+            src_dir=str(tmp_path / "src"),
+            quiet=False,
+        )
+        assert denied.returncode != 0
+        assert "R05" in denied.stdout
+
 
 # ===========================================================================
 # Exemption Handling
