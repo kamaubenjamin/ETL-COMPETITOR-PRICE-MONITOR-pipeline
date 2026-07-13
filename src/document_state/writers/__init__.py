@@ -27,7 +27,10 @@ from .ports import (
     ReviewDocumentStateWriterPort,
     WorkflowDocumentStateWriterPort,
 )
+from .processing_writer import ProcessingDocumentStateWriter
+from .review_writer import ReviewDocumentStateWriter
 from .results import WriterResult, WriterResultStatus
+from .workflow_writer import WorkflowDocumentStateWriter
 
 __all__ = [
     "AppendLifecycleEventCommand",
@@ -41,9 +44,12 @@ __all__ = [
     "IngestionDocumentStateWriter",
     "MatchingSummaryInput",
     "ProcessingDocumentStateWriterPort",
+    "ProcessingDocumentStateWriter",
     "ReviewDocumentStateWriterPort",
+    "ReviewDocumentStateWriter",
     "ValidationIssueInput",
     "WorkflowDocumentStateWriterPort",
+    "WorkflowDocumentStateWriter",
     "WRITER_MAPPING_CATALOG",
     "WriteAuditEventCommand",
     "WriteCorrectionSummaryCommand",

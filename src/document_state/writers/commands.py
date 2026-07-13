@@ -219,6 +219,8 @@ class WriteValidationIssuesCommand(WriterContract):
         issues = tuple(self.issues)
         if any(not isinstance(item, ValidationIssueInput) for item in issues):
             raise ValueError("issues must contain ValidationIssueInput values")
+        if len({item.issue_id for item in issues}) != len(issues):
+            raise ValueError("issue IDs must be unique")
         object.__setattr__(self, "issues", tuple(sorted(issues, key=lambda item: (item.field, item.rule_id, item.issue_id))))
 
 
@@ -235,6 +237,8 @@ class WriteMatchingSummariesCommand(WriterContract):
         summaries = tuple(self.summaries)
         if any(not isinstance(item, MatchingSummaryInput) for item in summaries):
             raise ValueError("summaries must contain MatchingSummaryInput values")
+        if len({item.match_id for item in summaries}) != len(summaries):
+            raise ValueError("match IDs must be unique")
         object.__setattr__(self, "summaries", tuple(sorted(summaries, key=lambda item: (-item.confidence, item.candidate_id, item.match_id))))
 
 

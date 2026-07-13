@@ -1,7 +1,7 @@
 # Upload-to-Processing Writer Integration v1 Implementation Plan
 
 **Milestone:** v0.13
-**Status:** Phases 1-2 complete; Phases 3-5 not started
+**Status:** Phases 1-3 complete; Phases 4-5 not started
 
 ## 1. Milestone Overview
 
@@ -181,6 +181,8 @@ git status --short --branch
 ### Stop Condition
 
 Stop after processing/review writer services and verification. Do not add API endpoints, Streamlit actions, production activation, or cross-record transactions.
+
+Phase 3 completed with injected processing, review, and workflow writer services; deterministic validation/matching/correction/reprocess/lifecycle/audit append keys; optimistic processing/review/workflow updates; partial validation retry verification; and in-memory/SQLite parity. No producer runtime adapter, API/UI write path, backend selection, or cross-record transaction was added.
 
 ## 5. Phase 4: End-To-End Read-After-Write Verification
 
