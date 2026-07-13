@@ -131,7 +131,7 @@ References:
 
 ### Current Status
 
-**v0.10 Phase 1 implemented; deterministic provider, API adapter, hardening, and closure remain pending.**
+**v0.10 Phases 1-2 implemented; API adapter, hardening, and closure remain pending.**
 
 The planned facade resolves API dependency direction but deliberately does not yet resolve:
 

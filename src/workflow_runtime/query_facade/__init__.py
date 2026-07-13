@@ -17,6 +17,7 @@ from .contracts import (
 from .errors import QueryErrorCode, QueryFacadeError
 from .pagination import DEFAULT_PAGE_LIMIT, MAX_PAGE_LIMIT, PageRequest, PageResult
 from .ports import WorkflowQueryFacadePort
+from .providers import InMemoryWorkflowQueryFacade
 from .read_models import (
     AuditEventSummary,
     CorrectionHistorySummary,
@@ -34,7 +35,7 @@ __all__ = [
     "AuditEventQuery", "AuditEventSummary", "AuditEventType",
     "CorrectionHistorySummary", "DEFAULT_PAGE_LIMIT", "DocumentDetail",
     "DocumentInboxItem", "DocumentQuery", "DocumentStatus", "DocumentType",
-    "MAX_PAGE_LIMIT", "MatchingResult", "OrderingSpec", "PageRequest",
+    "InMemoryWorkflowQueryFacade", "MAX_PAGE_LIMIT", "MatchingResult", "OrderingSpec", "PageRequest",
     "PageResult", "Priority", "ProcessingStatus", "QueryErrorCode",
     "QueryFacadeError", "ReprocessPlanSummary", "ReviewCaseQuery",
     "ReviewCaseSummary", "ReviewStatus", "SortDirection", "ValidationIssue",

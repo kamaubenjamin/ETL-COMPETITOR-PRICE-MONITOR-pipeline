@@ -1,7 +1,7 @@
 # Workflow Query Facade v1 Plan
 
 **Milestone:** v0.10
-**Status:** Phase 1 implemented; Phases 2-5 pending
+**Status:** Phases 1-2 implemented; Phases 3-5 pending
 
 ## 1. Problem Statement
 
@@ -84,20 +84,19 @@ src/workflow_runtime/query_facade/
   pagination.py
   ports.py
   read_models.py
-  service.py
-  memory.py
+  providers/
+    in_memory.py
 ```
 
 - `contracts.py`: bounded typed filters, enums, and deterministic ordering contracts.
 - `pagination.py`: immutable bounded page request/result contracts.
 - `ports.py`: narrow read-only protocols for injected sources.
 - `read_models.py`: immutable privacy-safe JSON-compatible projections.
-- `service.py`: facade orchestration, ordering, pagination, and safe composition.
-- `memory.py`: deterministic in-memory v1 provider used by tests and preview integration.
+- `providers/in_memory.py`: deterministic in-memory v1 facade used by tests and later adapter integration.
 - `errors.py`: stable path/code errors without source payloads.
 - `__init__.py`: intentionally small public export surface.
 
-Phase 1 implements the dependency-free contract surface above. Provider and service modules remain unimplemented until Phase 2.
+Phases 1-2 implement the dependency-free contract surface and deterministic in-memory facade. API integration and live sources remain unimplemented.
 
 ## 7. Read Model Contracts
 

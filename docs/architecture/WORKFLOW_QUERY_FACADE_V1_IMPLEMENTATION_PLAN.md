@@ -1,7 +1,7 @@
 # Workflow Query Facade v1 Implementation Plan
 
 **Milestone:** v0.10
-**Status:** Phase 1 complete; Phases 2-5 pending
+**Status:** Phases 1-2 complete; Phases 3-5 pending
 
 ## 1. Milestone Overview
 
@@ -56,6 +56,8 @@ Stop after contracts, filters, ports, and tests. Do not implement providers, API
 
 ## 3. Phase 2: Deterministic In-Memory Facade Provider
 
+**Completion note:** Implemented `InMemoryWorkflowQueryFacade` with deterministic immutable fixtures, all Phase 1 port methods, requested processing/correction read aliases, safe filters, bounded pagination, stable ordering, safe not-found/invalid-query/source-unavailable errors, and no mutation or persistence surface. The provider is structurally compatible with `WorkflowQueryFacadePort`; 60 query-facade tests pass. No API, UI, database, external service, or live runtime integration was added.
+
 ### Objectives
 
 - Implement the explicit query service and deterministic in-memory source/provider.
@@ -67,12 +69,10 @@ Stop after contracts, filters, ports, and tests. Do not implement providers, API
 
 Create or modify:
 
-- `src/workflow_runtime/query_facade/service.py`
-- `src/workflow_runtime/query_facade/memory.py`
+- `src/workflow_runtime/query_facade/providers/__init__.py`
+- `src/workflow_runtime/query_facade/providers/in_memory.py`
 - `src/workflow_runtime/query_facade/__init__.py`
-- `tests/workflow_runtime/query_facade/test_service.py`
-- `tests/workflow_runtime/query_facade/test_memory.py`
-- `tests/workflow_runtime/query_facade/test_privacy.py`
+- `tests/workflow_runtime/query_facade/test_in_memory_provider.py`
 
 ### Tests
 
