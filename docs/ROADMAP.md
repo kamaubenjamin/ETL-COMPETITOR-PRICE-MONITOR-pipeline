@@ -148,7 +148,7 @@ References:
 
 Status:
 - Architecture, implementation plan, and ADR complete
-- Phases 1-3 implemented: API contracts, deterministic read endpoints, and optional Streamlit API preview adapter; Phases 4-5 pending
+- Phases 1-4 implemented: API contracts, deterministic reads, Streamlit API preview, and API boundary/security hardening; Phase 5 pending
 
 Planned capabilities:
 - Separate versioned read-only Document Intelligence API

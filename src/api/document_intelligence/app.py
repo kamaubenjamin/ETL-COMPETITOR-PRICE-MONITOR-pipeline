@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from uuid import uuid4
-
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -11,15 +9,9 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from .contracts import API_VERSION
 from .errors import DocumentIntelligenceAPIError
+from .middleware import request_context_middleware
 from .responses import error_response
 from .routers import domain_routers, root_router, versioned_router
-
-
-def _request_id(request: Request) -> str:
-    supplied = request.headers.get("x-request-id", "")
-    if supplied and len(supplied) <= 128 and supplied.isascii() and supplied.isprintable():
-        return supplied
-    return str(uuid4())
 
 
 def create_document_intelligence_app() -> FastAPI:
@@ -31,10 +23,7 @@ def create_document_intelligence_app() -> FastAPI:
 
     @application.middleware("http")
     async def request_context(request: Request, call_next):
-        request.state.request_id = _request_id(request)
-        response = await call_next(request)
-        response.headers["x-request-id"] = request.state.request_id
-        return response
+        return await request_context_middleware(request, call_next)
 
     @application.exception_handler(DocumentIntelligenceAPIError)
     async def document_intelligence_error(request: Request, exc: DocumentIntelligenceAPIError):
@@ -50,8 +39,12 @@ def create_document_intelligence_app() -> FastAPI:
 
     @application.exception_handler(StarletteHTTPException)
     async def http_error(request: Request, exc: StarletteHTTPException):
-        code = "not_found" if exc.status_code == 404 else "http_error"
-        message = "Resource not found." if exc.status_code == 404 else "Request could not be completed."
+        if exc.status_code == 404:
+            code, message = "not_found", "Resource not found."
+        elif exc.status_code == 405:
+            code, message = "method_not_allowed", "Method is not allowed."
+        else:
+            code, message = "http_error", "Request could not be completed."
         return JSONResponse(
             status_code=exc.status_code,
             content=error_response(code=code, message=message, request_id=request.state.request_id),

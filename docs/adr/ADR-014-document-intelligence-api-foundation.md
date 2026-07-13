@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted; Phases 1-3 implemented and later phases pending.
+Accepted; Phases 1-4 implemented and release closure pending.
 
 ## Context
 
@@ -56,6 +56,8 @@ Mutation APIs require a future ADR covering trusted identity, authorization poli
 ## Security Decision
 
 v0.9 is not an authenticated or publicly deployable API. CORS is denied by default, no wildcard origin is configured, and health output excludes sensitive dependency details. Authentication, authorization, TLS termination, API gateway, rate limiting, tenant isolation, and production exposure are deferred.
+
+Phase 4 standardizes bounded request IDs, no-store and browser safety headers, safe global exception handling, and explicit privacy-safe `404`/`405` envelopes. It keeps CORS disabled rather than inferring development origins. The optional Starlette TestClient transport dependency is not added implicitly; dependency alignment remains a documented follow-up.
 
 ## Consequences
 

@@ -1,7 +1,7 @@
 # Document Intelligence API Foundation v1 Plan
 
 **Milestone:** v0.9
-**Status:** Phases 1-3 implemented; Phases 4-5 pending
+**Status:** Phases 1-4 implemented; Phase 5 pending
 
 ## 1. Problem Statement
 
@@ -135,6 +135,8 @@ Existing FlowSync Competitor Price keeps its current API and product lifecycle. 
 - CORS denied by default in the new app; explicit origins are deferred until authenticated clients exist.
 - API documentation exposure, trusted hosts, request-size limits, rate limits, TLS, authentication, and authorization are deployment/security follow-up work.
 - Logs contain request IDs, route templates, status codes, and timings only; query values require allowlisting before logging.
+
+Phase 4 implements bounded request-ID sanitization/generation, propagation through headers and envelopes, privacy-safe global `500` handling, distinct safe `404`/`405` envelopes, no-store/browser security headers, and an explicit disabled-by-default CORS policy. Authentication, tenant isolation, rate limiting, trusted-host policy, and production origin configuration remain deferred.
 
 ## 14. Testing Strategy
 

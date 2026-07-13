@@ -6,6 +6,8 @@ from collections.abc import Mapping
 
 
 class DocumentIntelligenceAPIError(Exception):
+    """Bounded application error intended for safe envelope serialization."""
+
     def __init__(
         self,
         code: str,
@@ -19,4 +21,3 @@ class DocumentIntelligenceAPIError(Exception):
         self.message = message
         self.status_code = status_code
         self.details = dict(details or {})
-

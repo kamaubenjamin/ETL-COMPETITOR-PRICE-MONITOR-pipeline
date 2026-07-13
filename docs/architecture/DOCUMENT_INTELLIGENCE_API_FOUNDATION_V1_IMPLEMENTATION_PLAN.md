@@ -1,7 +1,7 @@
 # Document Intelligence API Foundation v1 Implementation Plan
 
 **Milestone:** v0.9
-**Status:** Phases 1-3 complete; Phases 4-5 pending
+**Status:** Phases 1-4 complete; Phase 5 pending
 
 ## 1. Milestone Overview
 
@@ -152,6 +152,8 @@ git status --short --branch
 Stop after the Streamlit adapter preview and verification. Do not implement authentication, live runtime providers, or FlowSync UI.
 
 ## 5. Phase 4: API Boundary And Security Hardening
+
+**Completion note:** Added API-local request context and security policy modules, bounded client request-ID sanitization with safe generated IDs, consistent response/header propagation, generic unhandled-exception envelopes, explicit safe `404`/`405` handling, GET-only contract tests, security headers, and disabled-by-default CORS. No endpoint, dependency, runtime import, auth, persistence, or mutation capability was added. TestClient transport tests remain conditional because the active Starlette build requires optional undeclared `httpx2`; direct middleware tests and live Uvicorn checks cover the hardening behavior.
 
 ### Objectives
 
