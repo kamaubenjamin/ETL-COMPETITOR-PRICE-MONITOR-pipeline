@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from .contracts import ResponseEnvelope, ResponseMetadata, SafeError
+from .contracts import PaginationMetadata, ResponseEnvelope, ResponseMetadata, SafeError
 
 
 def success_response(
@@ -37,3 +37,17 @@ def error_response(
         request_id=request_id,
     ).to_dict()
 
+
+def paginated_response(
+    records: list[dict[str, Any]],
+    *,
+    request_id: str,
+    limit: int,
+    offset: int,
+) -> dict[str, Any]:
+    total = len(records)
+    return success_response(
+        records[offset : offset + limit],
+        request_id=request_id,
+        metadata=ResponseMetadata(pagination=PaginationMetadata(limit=limit, offset=offset, total=total)),
+    )

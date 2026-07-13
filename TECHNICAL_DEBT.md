@@ -98,7 +98,7 @@ References:
 
 ### Current Status
 
-**v0.9 Phase 1 implemented; deterministic domain endpoints and Phases 2-5 remain pending.**
+**v0.9 Phases 1-2 implemented; Streamlit adapter and Phases 3-5 remain pending.**
 
 Planning resolves the API ownership direction but does not yet resolve:
 
@@ -109,6 +109,8 @@ Planning resolves the API ownership direction but does not yet resolve:
 - Retirement of four legacy `src/api/app.py` boundary exemptions
 - Production CORS, API gateway, TLS, observability, and operational support
 - Declared test-client transport dependency alignment: the active Starlette build requires optional `httpx2`, which is not currently declared or installed
+
+Phase 2 uses deterministic API-owned preview records only; replacement with a live R05-compliant query provider remains deferred.
 
 References:
 

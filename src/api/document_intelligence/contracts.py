@@ -13,6 +13,27 @@ from typing import Any
 API_VERSION = "v1"
 MAX_PAGE_SIZE = 200
 MAX_ERROR_DETAILS = 10
+DEFAULT_PAGE_SIZE = 50
+
+DOCUMENT_STATUSES = frozenset(
+    {
+        "received", "ingested", "classified", "parsed", "extracted",
+        "transformed", "validated", "matched", "review_required",
+        "approved", "export_ready", "exported", "failed",
+    }
+)
+DOCUMENT_TYPES = frozenset({"invoice", "purchase_order", "receipt"})
+REVIEW_STATUSES = frozenset(
+    {
+        "review_required", "in_review", "corrected", "approved", "rejected",
+        "skipped", "reprocess_requested", "resolved",
+    }
+)
+REVIEW_PRIORITIES = frozenset({"low", "normal", "high", "urgent"})
+WORKFLOW_STATUSES = frozenset({"queued", "running", "succeeded", "failed"})
+AUDIT_EVENT_TYPES = frozenset(
+    {"document_received", "validation_completed", "review_case_created", "review_decision_recorded", "reprocess_plan_created"}
+)
 
 
 def utc_now_iso() -> str:

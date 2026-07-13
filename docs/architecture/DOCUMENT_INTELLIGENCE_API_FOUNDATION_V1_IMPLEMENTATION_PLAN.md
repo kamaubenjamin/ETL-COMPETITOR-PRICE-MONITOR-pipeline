@@ -1,7 +1,7 @@
 # Document Intelligence API Foundation v1 Implementation Plan
 
 **Milestone:** v0.9
-**Status:** Phase 1 complete; Phases 2-5 pending
+**Status:** Phases 1-2 complete; Phases 3-5 pending
 
 ## 1. Milestone Overview
 
@@ -58,6 +58,8 @@ Stop after contracts, app skeleton, health, and verification. Do not add domain 
 
 ## 3. Phase 2: Read-Only Document, Review, And Audit Endpoints
 
+**Completion note:** Implemented the eleven requested `/api/v1` domain GET routes using an API-owned deterministic provider, defensive copies, stable ordering, bounded pagination, explicit safe filter validation, and privacy-safe document/review/correction/reprocess/workflow/audit projections. No live runtime, persistence, external service, or mutation dependency was added.
+
 ### Objectives
 
 - Add deterministic provider records and all planned GET endpoints.
@@ -69,17 +71,16 @@ Stop after contracts, app skeleton, health, and verification. Do not add domain 
 
 Create or modify:
 
-- `src/api/document_intelligence/providers.py`
-- `src/api/document_intelligence/routes/documents.py`
-- `src/api/document_intelligence/routes/reviews.py`
-- `src/api/document_intelligence/routes/workflows.py`
-- `src/api/document_intelligence/routes/audit.py`
+- `src/api/document_intelligence/providers/local_provider.py`
+- `src/api/document_intelligence/routers/documents.py`
+- `src/api/document_intelligence/routers/validation.py`
+- `src/api/document_intelligence/routers/matching.py`
+- `src/api/document_intelligence/routers/reviews.py`
+- `src/api/document_intelligence/routers/workflows.py`
+- `src/api/document_intelligence/routers/audit.py`
 - `src/api/document_intelligence/app.py`
-- `tests/api/document_intelligence/test_providers.py`
-- `tests/api/document_intelligence/test_document_endpoints.py`
-- `tests/api/document_intelligence/test_review_endpoints.py`
-- `tests/api/document_intelligence/test_workflow_audit_endpoints.py`
-- `tests/api/document_intelligence/test_privacy.py`
+- `tests/api/document_intelligence/test_local_provider.py`
+- `tests/api/document_intelligence/test_read_only_endpoints.py`
 
 ### Tests
 

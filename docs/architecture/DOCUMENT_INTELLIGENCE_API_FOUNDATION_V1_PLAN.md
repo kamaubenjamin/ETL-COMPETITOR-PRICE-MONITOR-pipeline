@@ -1,7 +1,7 @@
 # Document Intelligence API Foundation v1 Plan
 
 **Milestone:** v0.9
-**Status:** Phase 1 implemented; Phases 2-5 pending
+**Status:** Phases 1-2 implemented; Phases 3-5 pending
 
 ## 1. Problem Statement
 
@@ -67,7 +67,7 @@ The application is independently runnable and titled **Document Intelligence API
 
 ## 7. API Contract Conventions
 
-- Base path: `/api/v1/document-intelligence`.
+- Domain base path: `/api/v1` in the separate Document Intelligence application.
 - Foundation health aliases are `/health`, `/api/v1/health`, and `/api/v1/status`; domain collection routes introduced later remain under the Document Intelligence base path.
 - JSON only; UTF-8; UTC ISO-8601 timestamps.
 - Read methods only: `GET`, plus framework-required `HEAD`/`OPTIONS` behavior.
@@ -84,16 +84,16 @@ The application is independently runnable and titled **Document Intelligence API
 | Method and path | Purpose | Key filters |
 |---|---|---|
 | `GET /health` | Process health and provider readiness without secrets or dependency internals | none |
-| `GET /documents` | Inbox preview | document type, lifecycle status, workflow, limit, offset |
-| `GET /documents/{id}/processing` | Stage/status timeline preview | limit, offset |
-| `GET /documents/{id}/validation-issues` | Bounded safe validation issues | severity, limit, offset |
-| `GET /documents/{id}/matching-results` | Candidate summary without raw master records | match status, limit, offset |
-| `GET /review-cases` | Review queue projection | status, priority, assignee, limit, offset |
-| `GET /review-cases/{id}` | One safe case summary | none |
-| `GET /review-cases/{id}/corrections` | Correction history metadata without controlled values | limit, offset |
-| `GET /review-cases/{id}/reprocess-plans` | Dry-run/request plan summaries | limit, offset |
-| `GET /workflow-runs` | Workflow activity | workflow, status, limit, offset |
-| `GET /audit-events` | Bounded safe audit projection | runtime, event type, case/document reference, limit, offset |
+| `GET /api/v1/documents` | Inbox preview | document type, lifecycle status, limit, offset |
+| `GET /api/v1/documents/{id}/processing` | Stage/status timeline preview | limit, offset |
+| `GET /api/v1/documents/{id}/validation` | Bounded safe validation issues | limit, offset |
+| `GET /api/v1/documents/{id}/matching` | Candidate summary without raw master records | limit, offset |
+| `GET /api/v1/review-cases` | Review queue projection | status, priority, limit, offset |
+| `GET /api/v1/review-cases/{id}` | One safe case summary | none |
+| `GET /api/v1/review-cases/{id}/corrections` | Correction history metadata without controlled values | limit, offset |
+| `GET /api/v1/reprocess-plans` | Dry-run/request plan summaries | limit, offset |
+| `GET /api/v1/workflow-runs` | Workflow activity | status, limit, offset |
+| `GET /api/v1/audit-events` | Bounded safe audit projection | event type, limit, offset |
 
 No endpoint returns full documents, complete rows, correction values, credentials, arbitrary metadata, executable configuration, or internal exception text.
 

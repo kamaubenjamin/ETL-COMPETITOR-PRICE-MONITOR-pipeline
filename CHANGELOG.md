@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Added v0.9 Document Intelligence API Foundation architecture and Phase 1 implementation with a separate read-only FastAPI app, strict success/error/pagination contracts, deterministic health/status responses, and no competitor-price or backend-runtime coupling.
+- Added v0.9 Document Intelligence API Foundation Phases 1-2 with a separate read-only FastAPI app, strict success/error/pagination contracts, deterministic health/status and document/review/workflow/audit preview endpoints, defensive API-owned providers, and no competitor-price or backend-runtime coupling.
 
 - Closed and tagged v0.8 Document Intelligence Operator Console Streamlit v1 with deterministic local document, validation, matching, workflow, and audit fixtures; defensive provider/view-model layers; reusable display components; a read-only Review Runtime preview; grouped operational navigation; status/priority labels; filtered empty states; run-mode safety messaging; a non-persistent upload placeholder; full regression verification; and release handoff documentation.
 

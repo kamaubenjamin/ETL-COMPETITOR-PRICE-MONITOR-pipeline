@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted; Phase 1 implemented and later phases pending.
+Accepted; Phases 1-2 implemented and later phases pending.
 
 ## Context
 
@@ -12,9 +12,11 @@ Streamlit and a future FlowSync Document Intelligence application must consume b
 
 ## Decision
 
-Create a separate versioned **Document Intelligence API** application under `src/api/document_intelligence/` with base path `/api/v1/document-intelligence`.
+Create a separate versioned **Document Intelligence API** application under `src/api/document_intelligence/` with domain routes under `/api/v1`.
 
 v0.9 exposes read-only endpoints for health, document inbox, processing, validation, matching, review cases, correction history, reprocess plans, workflow runs, and audit logs. It starts with deterministic providers and strict consumer-neutral JSON contracts.
+
+Phase 2 realizes these projections through an API-owned local provider. Records are deterministic, defensively copied, bounded through pagination, and exclude raw documents and controlled correction values.
 
 The API owns transport concerns only: routing, request/query validation, versioning, response envelopes, pagination, safe errors, OpenAPI, and transport limits. Backend runtimes remain authoritative for artifacts, execution, validation, matching, review decisions, corrections, reprocess intent, and audit.
 

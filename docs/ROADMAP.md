@@ -148,7 +148,7 @@ References:
 
 Status:
 - Architecture, implementation plan, and ADR complete
-- Phase 1 API contracts and app skeleton implemented; Phases 2-5 pending
+- Phases 1-2 implemented: API contracts, app skeleton, and deterministic read-only preview endpoints; Phases 3-5 pending
 
 Planned capabilities:
 - Separate versioned read-only Document Intelligence API
