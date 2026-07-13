@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Closed v0.15 Auth, Tenant, and Permission Boundaries pending owner tag `v0.15-auth-tenant-permission-boundaries`, with provider-neutral security contracts, deterministic local identity resolution, default-deny permission guards, tenant-aware document reads and SQLite migration, guarded GET-only API reads, non-authoritative Streamlit auth preview, verified privacy/boundary compatibility, and release handoff documentation; production identity, writer enforcement, child-record tenant expansion, PostgreSQL/RLS, and public mutations remain deferred.
+
 - Added v0.15 Phase 5 Streamlit auth-mode preview with optional allowlisted local-demo identity headers for `api_preview`, unchanged default `local_preview`, fixed privacy-safe unauthorized/unavailable states, no tenant override or credential handling, and API-authoritative permission enforcement.
 
 - Added v0.15 Phase 4 opt-in authorization for Document Intelligence API GET routes with explicit disabled/local-demo/authenticated/production modes, provider-neutral identity resolution, centralized permission guards, tenant-narrowed provider reads, safe 401/403/tenant-hiding 404 responses, and unchanged unauthenticated local-preview defaults; Streamlit, writers, mutations, and external providers remain deferred.

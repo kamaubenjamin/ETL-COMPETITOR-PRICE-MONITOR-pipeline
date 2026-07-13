@@ -301,7 +301,8 @@ Status:
 - Phase 3 implemented: tenant/ownership fields on `DocumentRecord`, optional tenant-narrowed in-memory/SQLite and Query Facade document reads, additive SQLite migration `002`, and unchanged API payloads
 - Phase 4 implemented: explicit API auth modes, provider-neutral identity resolution, centralized GET-route permission guards, tenant-narrowed provider reads, safe 401/403/404 behavior, and unchanged default local preview
 - Phase 5 implemented: optional allowlisted local-demo identity headers for Streamlit `api_preview`, fixed privacy-safe auth/unavailable states, unchanged default `local_preview`, and API-authoritative permission enforcement
-- Release closure not started
+- Phase 6 completed: focused/full verification, boundary confirmation, summary, handoff, release notes, roadmap, debt, plan, ADR, and changelog closure
+- Implemented and verified; closed pending owner tag `v0.15-auth-tenant-permission-boundaries`
 
 Planned capabilities:
 - Provider-neutral `src/security/` identity and authorization boundary
@@ -315,17 +316,21 @@ Planned capabilities:
 - Future Supabase/PostgreSQL adapters without core provider coupling
 - No public mutations, UI changes, migrations, dependencies, OCR, LLM, or external-service implementation during planning
 
-Proposed phases:
+Delivered phases:
 1. Security contracts and role catalog
 2. Policy engine and permission guards
 3. Tenant-aware Document State and Query Facade contracts
-4. Read-only API/Streamlit guard integration and writer attribution boundary
-5. Security verification, documentation, and release closure
+4. Read-only API guard integration
+5. Streamlit auth-mode preview
+6. Security verification, documentation, and release closure
 
 References:
 - `docs/architecture/AUTH_TENANT_PERMISSION_MODEL_V1_PLAN.md`
 - `docs/architecture/AUTH_TENANT_PERMISSION_MODEL_V1_IMPLEMENTATION_PLAN.md`
+- `docs/architecture/AUTH_TENANT_PERMISSION_MODEL_V1_SUMMARY.md`
+- `docs/architecture/AUTH_TENANT_PERMISSION_MODEL_V1_HANDOFF.md`
 - `docs/adr/ADR-020-auth-tenant-permission-boundaries.md`
+- `docs/releases/v0.15-auth-tenant-permission-boundaries.md`
 
 ## Prior Milestone Context
 

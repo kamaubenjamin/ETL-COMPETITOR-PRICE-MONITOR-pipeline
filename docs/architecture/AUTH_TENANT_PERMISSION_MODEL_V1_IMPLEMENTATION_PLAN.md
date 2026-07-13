@@ -1,7 +1,7 @@
 # Auth, Tenant, And Permission Model v1 Implementation Plan
 
 **Milestone:** v0.15
-**Status:** Phases 1-5 implemented; release closure not started
+**Status:** Implemented and verified; closed pending owner tag
 
 ## 1. Milestone Overview
 
@@ -270,7 +270,7 @@ Stop after Streamlit auth preview and verification. Do not add writer enforcemen
 
 **Completion:** Implemented and verified. `local_preview` remains the default and has no enforcement. `api_preview` may send only `X-Local-Identity` for a fixed local-demo identity, including explicit anonymous preview; it sends no tenant override, token, or credential. Provider failures map to fixed operator-safe messages, and all permissions remain API-enforced. Platform-admin cross-tenant preview is disabled by default.
 
-## 8. Release Closure: Security Verification, Documentation, And Release Closure
+## 8. Phase 6: Security Verification, Documentation, And Release Closure
 
 ### Objectives
 
@@ -285,7 +285,7 @@ Create:
 
 - `docs/architecture/AUTH_TENANT_PERMISSION_MODEL_V1_SUMMARY.md`
 - `docs/architecture/AUTH_TENANT_PERMISSION_MODEL_V1_HANDOFF.md`
-- `docs/releases/v0.15-auth-tenant-permissions.md`
+- `docs/releases/v0.15-auth-tenant-permission-boundaries.md`
 
 Modify:
 
@@ -308,7 +308,9 @@ Modify:
 
 Stop after release documentation and verification. Do not commit, push, or tag unless explicitly instructed.
 
-## 8. Backward Compatibility Requirements
+**Completion:** Implemented and verified. Security, API, Streamlit, Document State, Query Facade, Review Runtime, full-regression, and boundary checks pass. Summary, handoff, release notes, roadmap, debt, plan, ADR, and changelog are complete. The milestone is closed pending owner commit and tag; no runtime behavior, endpoint, payload, migration, dependency, or external-provider integration was added during closure.
+
+## 9. Backward Compatibility Requirements
 
 - Keep `local_preview` available under explicit local/test configuration.
 - Keep current local `api_preview` during migration; production composition must fail closed.
@@ -317,7 +319,7 @@ Stop after release documentation and verification. Do not commit, push, or tag u
 - Do not silently assign tenant scope from arbitrary request values.
 - Do not activate auth or tenant migrations automatically.
 
-## 9. Migration And Rollout Rules
+## 10. Migration And Rollout Rules
 
 1. Add security contracts and guards without runtime activation.
 2. Add tenant-aware storage/read versions and deterministic local-data backfill.
@@ -327,7 +329,7 @@ Stop after release documentation and verification. Do not commit, push, or tag u
 6. Require real identity and mandatory tenant scope before production mode can start.
 7. Retire unscoped production paths only after data migration and parity verification.
 
-## 10. Risks And Mitigations
+## 11. Risks And Mitigations
 
 - Tenant leakage: mandatory scope and negative integration tests.
 - Route drift: centralized guard dependency plus route inventory tests.
@@ -338,7 +340,7 @@ Stop after release documentation and verification. Do not commit, push, or tag u
 - Writer spoofing: trusted gateway creates actor attribution; command payload cannot self-authorize.
 - Audit overexposure: separate `audit:read`, tenant filtering, and safe metadata.
 
-## 11. Definition Of Done
+## 12. Definition Of Done
 
 - Provider-neutral security contracts and fixed role/permission catalog exist.
 - Default-deny tenant policy and guards are deterministic and tested.
@@ -352,7 +354,7 @@ Stop after release documentation and verification. Do not commit, push, or tag u
 - Full regression and boundary verification pass.
 - Release summary, handoff, notes, roadmap, debt, changelog, and ADR are complete.
 
-## 12. Commit And Tag Strategy
+## 13. Commit And Tag Strategy
 
 Recommended owner-reviewed phase commits:
 
@@ -360,8 +362,9 @@ Recommended owner-reviewed phase commits:
 2. `feat: add tenant authorization policies and guards`
 3. `feat: add tenant-aware document state read boundaries`
 4. `feat: guard document intelligence reads and writer attribution`
-5. `chore: close v0.15 auth tenant permissions`
+5. `feat: add Streamlit API auth preview`
+6. `docs: close v0.15 auth tenant permission boundaries`
 
 Recommended tag after closure verification:
 
-`v0.15-auth-tenant-permissions`
+`v0.15-auth-tenant-permission-boundaries`

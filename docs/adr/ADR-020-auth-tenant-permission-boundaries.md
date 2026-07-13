@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.15. Phases 1-5 implement the security contracts and policy boundary, provider-neutral/local identity resolution, authorization requests and guard, tenant-aware document projections, opt-in authorization for the existing Document Intelligence API GET routes, and a non-authoritative Streamlit local-demo auth preview. Writer enforcement, child-record tenant expansion, production activation, external identity providers, and release closure remain pending.
+Accepted and implemented for v0.15; verified and closed pending owner tag. The milestone delivers the security contracts and policy boundary, provider-neutral/local identity resolution, authorization requests and guard, tenant-aware document projections, opt-in authorization for existing Document Intelligence API GET routes, and a non-authoritative Streamlit local-demo auth preview. Writer enforcement, child-record tenant expansion, production activation, and external identity providers remain deferred.
 
 ## Context
 

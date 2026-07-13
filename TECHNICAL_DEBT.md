@@ -354,13 +354,13 @@ References:
 
 ### Current Status
 
-**v0.15 Phases 1-5 are implemented; release closure has not started.**
+**v0.15 is implemented and verified; closed pending owner tag.**
 
 Current security debt:
 
 - Document Intelligence API can resolve principals and enforce tenant-scoped GET reads when auth is explicitly enabled; default local preview remains intentionally unauthenticated.
 - API providers accept guard-produced tenant scope for protected reads; production composition is not activated.
-- Streamlit workspace selection is display-only and `api_preview` is unauthenticated.
+- Streamlit workspace selection remains display-only; `api_preview` can send one explicit allowlisted local-demo identity header, while the API remains authoritative.
 - Child Document State records still lack direct tenant columns; the document projection now carries tenant, workspace, ownership, creator, and updater fields.
 - Selected records carry actor IDs without verified principal/tenant attribution.
 - Writers receive commands/repositories but no trusted authorization gateway or actor context.
@@ -376,13 +376,18 @@ Phase 4 adds explicit API auth modes, API-local identity/context composition, ce
 
 Phase 5 adds a development-only Streamlit `api_preview` identity selector. It sends only an allowlisted local-demo identity header, never sends a tenant override or credential, and maps API failures to fixed safe display states. `local_preview` remains unchanged and default; Streamlit performs no permission decision or security filtering.
 
+Phase 6 confirms 60 security tests, 59 API tests with 9 skips, 42 Streamlit tests, 330 Document State tests, 239 Query Facade/Review tests, and 1,408 full-regression tests with 9 skips. Boundary verification is compliant. Release documentation records current local compatibility and the remaining production-security work without overstating deployment readiness.
+
 Remaining implementation is phased and deferred. No writer enforcement, child-record tenant migration, external identity-provider adapter, production activation, public mutation, credential/session management, or dependency has been added.
 
 References:
 
 - `docs/architecture/AUTH_TENANT_PERMISSION_MODEL_V1_PLAN.md`
 - `docs/architecture/AUTH_TENANT_PERMISSION_MODEL_V1_IMPLEMENTATION_PLAN.md`
+- `docs/architecture/AUTH_TENANT_PERMISSION_MODEL_V1_SUMMARY.md`
+- `docs/architecture/AUTH_TENANT_PERMISSION_MODEL_V1_HANDOFF.md`
 - `docs/adr/ADR-020-auth-tenant-permission-boundaries.md`
+- `docs/releases/v0.15-auth-tenant-permission-boundaries.md`
 
 ---
 

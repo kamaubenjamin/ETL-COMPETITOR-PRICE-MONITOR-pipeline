@@ -1,7 +1,7 @@
 # Auth, Tenant, And Permission Model v1 Plan
 
 **Milestone:** v0.15
-**Status:** Phases 1-5 implemented; release closure not started
+**Status:** Implemented and verified; closed pending owner tag
 
 ## 1. Problem Statement
 
@@ -365,6 +365,8 @@ Phase 3 delivered the first tenant-aware operational projection: `DocumentRecord
 Phase 4 delivered opt-in authorization for the existing Document Intelligence API GET surface. The app factory owns explicit disabled/local-demo/authenticated/production modes, resolves identity through the provider Protocol, delegates all role decisions to `PermissionGuard`, and passes one narrowed tenant scope into provider reads. Default local preview remains unauthenticated; no Streamlit, writer, mutation, database, or external-provider integration was added.
 
 Phase 5 delivered a development-only Streamlit auth preview for `api_preview`. The GET-only API client can send one fixed local-demo identity header selected from an allowlist, while `local_preview` remains the default and sends no auth context. Streamlit does not evaluate permissions, select cross-tenant scope, store credentials, or reflect backend exception details; API authorization remains authoritative. Writer enforcement, production identity, and release closure remain deferred.
+
+Phase 6 completed focused and full regression verification, confirmed boundary compliance and API/UI compatibility, and added the v0.15 summary, handoff, release notes, roadmap, debt, ADR, plan, and changelog closure. Production composition, real identity providers, writer enforcement, and child-record tenant expansion remain deferred.
 
 ## 24. Risks And Mitigations
 
