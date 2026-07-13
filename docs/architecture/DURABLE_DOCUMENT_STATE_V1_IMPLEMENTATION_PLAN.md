@@ -1,7 +1,7 @@
 # Durable Document State v1 Implementation Plan
 
 **Milestone:** v0.12
-**Status:** Phases 1-4 complete; Phase 5 pending
+**Status:** Implemented and verified; closed pending owner commit and tag
 
 ## 1. Milestone Overview
 
@@ -230,6 +230,8 @@ Completed. Stop before release closure. Do not switch production defaults, add e
 
 ## 6. Phase 5: Documentation, Release Closure, And Handoff
 
+**Completion note:** Re-ran focused and full release gates, confirmed boundary compliance and unchanged API/UI behavior, restored four known generated legacy files, and completed summary, handoff, release notes, roadmap, debt, plan, ADR, and changelog updates. Document State: 175 passed. Query Facade: 62 passed. API/UI/Review: 245 passed, 9 skipped. Full regression: 1,159 passed, 9 skipped, 711 warnings. No runtime code, endpoint, payload, UI, dependency, commit, push, or tag was added.
+
 ### Objectives
 
 - Run focused and full regression suites.
@@ -267,7 +269,7 @@ git status --short --branch
 
 ### Stop Condition
 
-Stop after documentation and verification. Do not commit, push, or tag unless explicitly instructed.
+Completed. Owner review, commit, and tag remain external actions.
 
 ## 7. Boundary Requirements
 

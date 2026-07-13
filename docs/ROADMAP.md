@@ -211,12 +211,12 @@ References:
 ### v0.12 Durable Document State
 
 Status:
-- Architecture plan, implementation plan, and ADR proposed
+- Implemented and verified; closed pending owner commit and tag
 - Phase 1 implemented: persistence configuration, safe errors, deterministic schema metadata, and immutable migration/ledger validation contracts
 - Phase 2 implemented: file-backed SQLite repositories, explicit relational schema, transactional migrations, optimistic updates, append idempotency, and reopen durability
 - Phase 3 implemented: shared in-memory/SQLite conformance, rollback and snapshot consistency, migration replay, and deterministic basic writer concurrency verification
 - Phase 4 implemented: explicit validated in-memory/SQLite composition with separate read/write surfaces and no silent fallback or automatic consumer wiring
-- Phase 5 pending
+- Phase 5 completed: release verification, summary, handoff, release notes, roadmap, debt, plan, ADR, and changelog closure
 
 Planned capabilities:
 - SQLite-backed local/dev durable repositories behind existing Document State ports
@@ -231,7 +231,10 @@ Planned capabilities:
 References:
 - `docs/architecture/DURABLE_DOCUMENT_STATE_V1_PLAN.md`
 - `docs/architecture/DURABLE_DOCUMENT_STATE_V1_IMPLEMENTATION_PLAN.md`
+- `docs/architecture/DURABLE_DOCUMENT_STATE_V1_SUMMARY.md`
+- `docs/architecture/DURABLE_DOCUMENT_STATE_V1_HANDOFF.md`
 - `docs/adr/ADR-017-durable-document-state.md`
+- `docs/releases/v0.12-durable-document-state.md`
 
 ## Prior Milestone Context
 

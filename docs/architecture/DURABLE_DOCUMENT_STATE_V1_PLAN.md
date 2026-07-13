@@ -1,7 +1,7 @@
 # Durable Document State v1 Plan
 
 **Milestone:** v0.12
-**Status:** Phases 1-4 implemented; Phase 5 pending
+**Status:** Implemented and verified; closed pending owner commit and tag
 
 ## 1. Problem Statement
 
@@ -11,7 +11,7 @@ v0.12 adds a durable database-backed implementation behind the existing reposito
 
 ## 2. Current And Target Architecture
 
-Current verified path:
+Pre-v0.12 verified path:
 
 ```text
 Document Intelligence API
@@ -22,7 +22,7 @@ Document Intelligence API
   -> In-memory deterministic store
 ```
 
-Target selectable path:
+Delivered selectable path:
 
 ```text
 Application composition root

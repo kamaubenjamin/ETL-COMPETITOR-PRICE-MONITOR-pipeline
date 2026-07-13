@@ -208,7 +208,7 @@ References:
 
 ### Current Status
 
-**v0.12 Phases 1-4 are implemented; release closure remains pending.**
+**v0.12 is implemented and verified; closed pending owner commit and tag.**
 
 The approved phased recommendation is SQLite for local/dev durability, PostgreSQL as the production target, and Supabase/Postgres as a possible future managed deployment. The milestone must preserve v0.11 repository interfaces and keep API/UI consumers behind the Workflow Query Facade.
 
@@ -230,6 +230,8 @@ Phase 3 provides a shared in-memory/SQLite repository contract suite plus determ
 
 Phase 4 provides explicit validated `in_memory` or `sqlite` selection through a frozen composition result with separate read/write repository surfaces. SQLite requires a file path and never falls back to memory; deferred/unknown backends fail closed. Application bootstrap activation, API/UI wiring, live writers, production-scale concurrency/load testing, PostgreSQL, backups, and production operations remain deferred.
 
+Phase 5 confirms 175 Document State tests, 62 Query Facade tests, 245 API/UI/Review tests with 9 skips, and 1,159 full-regression tests with 9 skips. Boundary verification is compliant. The remaining items below are deferred product and production work rather than incomplete v0.12 scope.
+
 Still deferred beyond v0.12:
 
 - PostgreSQL repository and migration implementation, driver, pooling, provisioning, backup, and recovery
@@ -243,7 +245,10 @@ References:
 
 - `docs/architecture/DURABLE_DOCUMENT_STATE_V1_PLAN.md`
 - `docs/architecture/DURABLE_DOCUMENT_STATE_V1_IMPLEMENTATION_PLAN.md`
+- `docs/architecture/DURABLE_DOCUMENT_STATE_V1_SUMMARY.md`
+- `docs/architecture/DURABLE_DOCUMENT_STATE_V1_HANDOFF.md`
 - `docs/adr/ADR-017-durable-document-state.md`
+- `docs/releases/v0.12-durable-document-state.md`
 
 ---
 
