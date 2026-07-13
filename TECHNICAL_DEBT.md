@@ -131,7 +131,7 @@ References:
 
 ### Current Status
 
-**v0.10 is implemented and verified; closure commit and owner tag `v0.10-workflow-query-facade` remain pending.**
+**v0.10 is closed and tagged as `v0.10-workflow-query-facade`.**
 
 The planned facade resolves API dependency direction but deliberately does not yet resolve:
 
@@ -158,6 +158,36 @@ References:
 - `docs/architecture/WORKFLOW_QUERY_FACADE_V1_HANDOFF.md`
 - `docs/adr/ADR-015-workflow-query-facade.md`
 - `docs/releases/v0.10-workflow-query-facade.md`
+
+---
+
+## Persistent Document State v1
+
+### Current Status
+
+**v0.11 architecture plan, implementation plan, and ADR are proposed; implementation has not started.**
+
+The milestone plans persistence-neutral contracts and deterministic repositories but deliberately defers:
+
+- Database engine, schemas, migrations, ORM/query tooling, and connection management
+- Durable transactions, isolation, cross-repository snapshots, outbox delivery, backup, retention, and disaster recovery
+- Production composition root and live ingestion/processing/review/workflow writer adapters
+- Authentication, authorization, tenant partitioning, row-level policy, encryption, and key management
+- Caching, cursor pagination, indexing, archival, telemetry, and service-level objectives
+- Mutation endpoints, uploads, FlowSync Document Intelligence, OCR, LLM, and external services
+
+Guardrails:
+
+- API and Streamlit must continue to read through the Workflow Query Facade, never repositories.
+- Core `src/document_state/` must remain independent of API, UI, runtime implementations, storage, telemetry, database, and competitor-price modules.
+- Query-facing repositories must not store raw documents, rows, correction values, artifact payloads, stack traces, or arbitrary metadata.
+- Deterministic in-memory repository behavior must not be represented as durable production persistence.
+
+References:
+
+- `docs/architecture/PERSISTENT_DOCUMENT_STATE_V1_PLAN.md`
+- `docs/architecture/PERSISTENT_DOCUMENT_STATE_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-016-persistent-document-state.md`
 
 ---
 

@@ -169,7 +169,7 @@ References:
 
 Status:
 - Architecture, implementation plan, ADR, verification, summary, handoff, and release notes complete
-- Implemented and verified; closure commit and owner tag `v0.10-workflow-query-facade` pending
+- Closed and tagged as `v0.10-workflow-query-facade`
 
 Planned capabilities:
 - Workflow-owned public read facade under `src/workflow_runtime/query_facade/`
@@ -185,6 +185,25 @@ References:
 - `docs/architecture/WORKFLOW_QUERY_FACADE_V1_HANDOFF.md`
 - `docs/adr/ADR-015-workflow-query-facade.md`
 - `docs/releases/v0.10-workflow-query-facade.md`
+
+### v0.11 Persistent Document State / Repository Layer
+
+Status:
+- Architecture plan, implementation plan, and ADR proposed
+- Implementation not started
+
+Planned capabilities:
+- Persistence-neutral operational document state under `src/document_state/`
+- Immutable records and explicit read/write repository ports for document, lifecycle, processing, validation, matching, review, correction, reprocess, workflow, and audit state
+- Deterministic in-memory repositories with bounded pagination, stable ordering, idempotency, and optimistic version checks
+- Injected repository adapter implementing public Workflow Query Facade ports
+- Privacy-safe persistence with no raw document rows, correction values, artifact payloads, stack traces, or unrestricted metadata
+- Unchanged v0.9 API contracts and v0.10 Query Facade read models
+
+References:
+- `docs/architecture/PERSISTENT_DOCUMENT_STATE_V1_PLAN.md`
+- `docs/architecture/PERSISTENT_DOCUMENT_STATE_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-016-persistent-document-state.md`
 
 ## Prior Milestone Context
 
