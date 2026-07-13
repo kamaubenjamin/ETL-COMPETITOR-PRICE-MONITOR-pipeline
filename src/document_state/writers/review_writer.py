@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from ..errors import DocumentStateError
+from ..lifecycle import LifecycleAdvancementService
 from ..records import CorrectionSummaryRecord, ReprocessPlanRecord, ReviewReferenceRecord
 from ..repositories import DocumentStateReadRepositories, DocumentStateWriteRepositories
 from ._service_support import append_audit, append_lifecycle, invalid, repository_failure, result
@@ -21,9 +22,17 @@ _REVIEW_AUDIT_TYPES = frozenset({"review_required", "correction_submitted", "rep
 
 
 class ReviewDocumentStateWriter:
-    def __init__(self, reader: DocumentStateReadRepositories, writer: DocumentStateWriteRepositories) -> None:
+    def __init__(
+        self,
+        reader: DocumentStateReadRepositories,
+        writer: DocumentStateWriteRepositories,
+        lifecycle_service: LifecycleAdvancementService | None = None,
+    ) -> None:
+        if lifecycle_service is not None and not isinstance(lifecycle_service, LifecycleAdvancementService):
+            raise ValueError("lifecycle_service must be a LifecycleAdvancementService")
         self.__reader = reader
         self.__writer = writer
+        self.__lifecycle_service = lifecycle_service
 
     def write_review_summary(self, command: WriteReviewSummaryCommand):
         operation = "write_review_summary"
@@ -123,7 +132,13 @@ class ReviewDocumentStateWriter:
             return result("failed", operation, error_code="internal_error")
 
     def append_lifecycle_event(self, command: AppendLifecycleEventCommand):
-        return append_lifecycle(self.__writer, command, allowed_statuses=frozenset({"review_required"}))
+        return append_lifecycle(
+            self.__reader,
+            self.__writer,
+            command,
+            allowed_statuses=frozenset({"review_required", "approved"}),
+            lifecycle_service=self.__lifecycle_service,
+        )
 
     def write_audit_event(self, command: WriteAuditEventCommand):
         return append_audit(self.__writer, command, allowed_event_types=_REVIEW_AUDIT_TYPES)

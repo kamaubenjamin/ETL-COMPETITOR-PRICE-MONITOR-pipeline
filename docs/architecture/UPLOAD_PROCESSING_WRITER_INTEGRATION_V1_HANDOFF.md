@@ -7,7 +7,7 @@
 
 Document State now has runtime-neutral writer commands and internal writer services for all ten operational record families. Writers operate through explicitly injected repository ports and have verified parity across in-memory and SQLite compositions. Deterministic fixtures prove written state is visible through the Query Facade and existing API provider without changing API or Streamlit behavior.
 
-Concrete runtime producer adapters are not implemented. The mutable document projection also remains `received`; lifecycle history is append-only and does not yet advance that snapshot.
+Concrete runtime producer adapters are not implemented. v0.14 now provides optional lifecycle advancement injection for writer lifecycle commands; when injected, governed events can advance the mutable document projection. No application bootstrap activates that integration automatically.
 
 ## Important Files
 
@@ -53,7 +53,7 @@ The full suite may regenerate `price_history.csv`, `src/canonical_products.json`
 - Add stage/status mappings only through the governed catalog with deterministic tests.
 - Run writer tests against both in-memory and SQLite backends.
 - Verify read-after-write behavior through Query Facade and API provider projections after any mapping change.
-- Design lifecycle-driven document snapshot advancement as an explicit state transition policy before implementing it.
+- Inject `LifecycleAdvancementService` explicitly when lifecycle commands should update the document projection; preserve append-only behavior when it is absent.
 
 ## What Not To Change
 
@@ -89,7 +89,7 @@ Producer / internal runtime output
 
 ## Known Risks And Deviations
 
-- Document lifecycle events do not advance the mutable document projection.
+- Lifecycle advancement remains optional until an owner-approved composition/bootstrap path injects the service.
 - Concrete producer adapters and application bootstrap wiring are absent.
 - Multi-record writes are replay-safe checkpoints, not one atomic unit of work.
 - No transactional outbox or distributed delivery guarantee exists.
@@ -100,4 +100,4 @@ Producer / internal runtime output
 
 ## Next Recommended Milestone
 
-Plan a narrow runtime producer-adapter and lifecycle-projection milestone. It should define producer ownership, composition/bootstrap injection, a governed document status transition model, retry behavior when lifecycle and snapshot writes diverge, and read-after-write acceptance tests. Public mutation endpoints, upload UI, auth/tenant policy, and raw blob storage should remain separate decisions.
+Complete v0.14 read-after-advance verification before production activation. Then plan narrow runtime producer adapters and composition/bootstrap injection. Public mutation endpoints, upload UI, auth/tenant policy, and raw blob storage should remain separate decisions.

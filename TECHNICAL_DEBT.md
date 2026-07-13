@@ -306,7 +306,7 @@ References:
 
 ### Current Status
 
-**v0.14 Phases 1-2 are implemented; Phases 3-5 have not started.**
+**v0.14 Phases 1-3 are implemented; Phases 4-5 have not started.**
 
 v0.13 lifecycle events are append-only and authoritative, but the mutable `DocumentRecord` remains at `received`. v0.14 plans a dedicated Document State lifecycle service that applies one explicit transition catalog and advances the projection through existing optimistic repository ports.
 
@@ -322,6 +322,8 @@ Planned debt addressed by v0.14:
 Phase 1 provides immutable JSON-compatible transition, recovery, policy-decision, result, and error contracts; an explicit catalog over the existing `DocumentStatus` vocabulary; deterministic candidate ordering; same-state no-op behavior; terminal-state rejection; governed failed-state recovery; and recursive privacy/boundary tests. It does not call repositories, update documents, integrate writers, or implement the advancement service.
 
 Phase 2 provides `LifecycleAdvancementService` over explicit narrow document read/write ports. It validates current state and expected version, applies policy, updates status/current stage/time/version through compare-and-swap, preserves metadata, maps repository failures safely, and distinguishes ordinary conflicts from projection-pending conflicts after an event append. Both active backends are verified; writer integration and automatic event append remain deferred.
+
+Phase 3 integrates all four writer services through optional explicit lifecycle-service injection. The shared helper prevalidates policy, appends history idempotently, advances the snapshot with persisted-event context, reports projection-pending conflicts safely, and supports replay repair. Explicit processing/review/workflow status allowlists prevent inference and unsupported states. Legacy behavior remains unchanged without injection; application bootstrap and producer adapters remain deferred.
 
 Still deferred beyond v0.14:
 

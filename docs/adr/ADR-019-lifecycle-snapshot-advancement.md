@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted. Phases 1-2 contracts, pure policy, and repository-injected advancement service are implemented and verified; writer integration, read-after-advance verification, and release closure remain pending.
+Accepted. Phases 1-3 contracts, pure policy, repository-injected advancement service, and optional writer integration are implemented and verified; read-after-advance verification and release closure remain pending.
 
 ## Context
 
@@ -65,6 +65,8 @@ The integrated writer flow is audit-first:
 This preserves lifecycle history if projection update fails. Because existing repository ports do not provide a cross-record unit of work, a committed event may temporarily lead its snapshot. The writer returns `projection_pending`; replay of the same event repairs the projection or reports that it is already applied.
 
 No distributed exactly-once or atomic multi-record claim is made.
+
+Phase 3 applies this ordering in the shared lifecycle append helper: policy is prevalidated from the current document, the event is appended idempotently, and the injected service is called with persisted-event context. Projection conflicts return the new bounded writer status `projection_pending`; replay reuses the event identity and can repair the snapshot. Writers without an injected service preserve v0.13 append-only behavior.
 
 ## Version And Replay Decision
 

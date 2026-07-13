@@ -141,4 +141,4 @@ def test_batch_commands_reject_duplicate_stable_ids():
 
 def test_processing_writer_exposes_no_transport_or_backend_methods():
     names = {name for name in dir(ProcessingDocumentStateWriter) if not name.startswith("_")}
-    assert names == {"write_audit_event", "write_matching_summaries", "write_processing_snapshot", "write_validation_issues"}
+    assert names == {"append_lifecycle_event", "write_audit_event", "write_matching_summaries", "write_processing_snapshot", "write_validation_issues"}

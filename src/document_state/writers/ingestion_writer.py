@@ -6,7 +6,8 @@ from collections.abc import Callable
 from typing import Any
 
 from ..errors import DocumentStateError
-from ..records import AuditEventRecord, DocumentLifecycleEvent, DocumentRecord, ProcessingSnapshot
+from ..lifecycle import LifecycleAdvancementService
+from ..records import AuditEventRecord, DocumentRecord, ProcessingSnapshot
 from ..repositories import DocumentStateReadRepositories, DocumentStateWriteRepositories
 from .commands import (
     AppendLifecycleEventCommand,
@@ -14,6 +15,7 @@ from .commands import (
     WriteAuditEventCommand,
     WriteProcessingSnapshotCommand,
 )
+from ._service_support import append_lifecycle
 from .errors import DocumentStateWriterError
 from .idempotency import make_idempotency_key
 from .mappings import get_writer_mapping
@@ -67,9 +69,13 @@ class IngestionDocumentStateWriter:
         self,
         reader: DocumentStateReadRepositories,
         writer: DocumentStateWriteRepositories,
+        lifecycle_service: LifecycleAdvancementService | None = None,
     ) -> None:
+        if lifecycle_service is not None and not isinstance(lifecycle_service, LifecycleAdvancementService):
+            raise ValueError("lifecycle_service must be a LifecycleAdvancementService")
         self.__reader = reader
         self.__writer = writer
+        self.__lifecycle_service = lifecycle_service
 
     def create_document(self, command: CreateDocumentCommand) -> WriterResult:
         operation = "create_document"
@@ -110,35 +116,18 @@ class IngestionDocumentStateWriter:
             return _result("failed", operation, error_code="internal_error")
 
     def append_lifecycle_event(self, command: AppendLifecycleEventCommand) -> WriterResult:
-        operation = "append_lifecycle_event"
-        if not isinstance(command, AppendLifecycleEventCommand):
-            return _invalid(operation)
-        try:
-            event_name = {
-                "received": "ingestion_received",
-                "classified": "ingestion_classified",
-            }.get(command.status)
-            if event_name is None or get_writer_mapping(event_name).lifecycle_status != command.status:
-                return _invalid(operation)
-            record = DocumentLifecycleEvent(
-                event_id=command.event_id,
-                document_id=command.document_id,
-                status=command.status,
-                occurred_at=command.occurred_at,
-                source_runtime=command.source_runtime,
-                source_stage=command.source_stage,
-                reason_code=command.reason_code,
-                metadata=command.metadata,
-            )
-            key = make_idempotency_key("lifecycle", command.document_id, command.source_event_id, command.status)
-            self.__writer.append_lifecycle_event(record, idempotency_key=key)
-            return _result("success", operation, record_ids=(record.event_id,))
-        except DocumentStateError as error:
-            return _repository_failure(error, operation)
-        except (DocumentStateWriterError, TypeError, ValueError):
-            return _invalid(operation)
-        except Exception:
-            return _result("failed", operation, error_code="internal_error")
+        allowed = frozenset(
+            mapping.lifecycle_status
+            for name in ("ingestion_received", "ingestion_classified")
+            if (mapping := get_writer_mapping(name)).lifecycle_status is not None
+        )
+        return append_lifecycle(
+            self.__reader,
+            self.__writer,
+            command,
+            allowed_statuses=allowed,
+            lifecycle_service=self.__lifecycle_service,
+        )
 
     def write_processing_snapshot(self, command: WriteProcessingSnapshotCommand) -> WriterResult:
         operation = "write_processing_snapshot"

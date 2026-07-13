@@ -1,7 +1,7 @@
 # Lifecycle Snapshot Advancement v1 Plan
 
 **Milestone:** v0.14
-**Status:** Accepted; Phases 1-2 implemented, Phases 3-5 not started
+**Status:** Accepted; Phases 1-3 implemented, Phases 4-5 not started
 
 ## 1. Problem Statement
 
@@ -205,6 +205,8 @@ Phase 3 adds optional explicit lifecycle advancement injection to the v0.13 writ
 - `WorkflowDocumentStateWriter`: advances only explicit lifecycle commands, never workflow status by inference.
 
 No writer derives document state from processing metadata, review metadata, or raw runtime results.
+
+Phase 3 implements this integration through the shared append helper. With a service injected, writers pre-read and prevalidate policy, append the lifecycle event idempotently, then advance with `lifecycle_event_persisted=True`. Without injection, all legacy append behavior remains unchanged. Processing accepts explicit `parsed`, `validated`, and `matched` events; review accepts `review_required` and `approved`; workflow accepts `exported` and `failed`; ingestion retains `received` and `classified`. Reprocess planning remains a separate record and never invents a document status.
 
 ## 13. Read Projection Impact
 

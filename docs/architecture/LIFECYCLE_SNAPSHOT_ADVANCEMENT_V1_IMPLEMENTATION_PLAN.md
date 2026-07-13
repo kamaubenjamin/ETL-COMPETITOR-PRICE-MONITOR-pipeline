@@ -1,7 +1,7 @@
 # Lifecycle Snapshot Advancement v1 Implementation Plan
 
 **Milestone:** v0.14
-**Status:** Phases 1-2 complete; Phases 3-5 not started
+**Status:** Phases 1-3 complete; Phases 4-5 not started
 
 ## 1. Milestone Overview
 
@@ -146,8 +146,7 @@ Modify only as required:
 
 Create:
 
-- `tests/document_state/lifecycle/test_writer_integration.py`
-- `tests/document_state/lifecycle/test_partial_retry.py`
+- `tests/document_state/writers/test_lifecycle_advancement_integration.py`
 
 ### Tests
 
@@ -177,6 +176,8 @@ git status --short --branch
 ### Stop Condition
 
 Stop after writer integration and retry verification. Do not change API or UI.
+
+Phase 3 completed with optional explicit `LifecycleAdvancementService` injection across all four writers, shared prevalidate-append-advance behavior, a privacy-safe `projection_pending` writer result, explicit governed lifecycle status allowlists, same-event replay without version churn, persisted-event conflict reporting, replay repair, in-memory/SQLite verification, and unchanged legacy behavior when no service is injected. No command expansion, backend selection, producer inference, API, or UI change was required.
 
 ## 5. Phase 4: Read-After-Advance Integration Verification
 

@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 from ..errors import DocumentStateError
+from ..lifecycle import LifecycleAdvancementService
 from ..records import MatchingSummaryRecord, ProcessingSnapshot, ValidationIssueRecord
 from ..repositories import DocumentStateReadRepositories, DocumentStateWriteRepositories
-from ._service_support import append_audit, invalid, repository_failure, result, with_committed
+from ._service_support import append_audit, append_lifecycle, invalid, repository_failure, result, with_committed
 from .commands import (
+    AppendLifecycleEventCommand,
     WriteAuditEventCommand,
     WriteMatchingSummariesCommand,
     WriteProcessingSnapshotCommand,
@@ -21,9 +23,26 @@ _PROCESSING_AUDIT_TYPES = frozenset({"parsing_structure_completed", "validation_
 
 
 class ProcessingDocumentStateWriter:
-    def __init__(self, reader: DocumentStateReadRepositories, writer: DocumentStateWriteRepositories) -> None:
+    def __init__(
+        self,
+        reader: DocumentStateReadRepositories,
+        writer: DocumentStateWriteRepositories,
+        lifecycle_service: LifecycleAdvancementService | None = None,
+    ) -> None:
+        if lifecycle_service is not None and not isinstance(lifecycle_service, LifecycleAdvancementService):
+            raise ValueError("lifecycle_service must be a LifecycleAdvancementService")
         self.__reader = reader
         self.__writer = writer
+        self.__lifecycle_service = lifecycle_service
+
+    def append_lifecycle_event(self, command: AppendLifecycleEventCommand):
+        return append_lifecycle(
+            self.__reader,
+            self.__writer,
+            command,
+            allowed_statuses=frozenset({"parsed", "validated", "matched"}),
+            lifecycle_service=self.__lifecycle_service,
+        )
 
     def write_processing_snapshot(self, command: WriteProcessingSnapshotCommand):
         operation = "write_processing_snapshot"

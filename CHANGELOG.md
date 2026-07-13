@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.14 Phase 3 optional lifecycle advancement integration across ingestion, processing, review, and workflow writers, with policy prevalidation, idempotent audit append, governed snapshot updates, privacy-safe projection-pending results, replay repair, explicit existing-status allowlists, in-memory/SQLite parity, and unchanged append-only behavior when no service is injected.
+
 - Added v0.14 Phase 2 `LifecycleAdvancementService` with explicit document repository injection, policy-governed immutable projection replacement, same-status replay no-ops, optimistic version conflicts, persisted-event projection-pending results, safe repository error mapping, source-stage projection, in-memory/SQLite verification, and no backend selection, event append, writer, API, or UI integration.
 
 - Added v0.14 Phase 1 lifecycle transition contracts and pure policy with the existing Document State status vocabulary, immutable recovery/decision/result contracts, deterministic candidate ordering, same-state replay no-ops, terminal-state rejection, governed failed-state recovery, privacy-safe errors/metadata, and boundary tests without repository, writer, API, or UI integration.

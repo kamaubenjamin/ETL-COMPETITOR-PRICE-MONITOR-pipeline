@@ -67,4 +67,4 @@ def test_workflow_writer_accepts_sqlite_injected_ports(tmp_path):
 
 def test_workflow_writer_exposes_no_transport_or_backend_methods():
     names = {name for name in dir(WorkflowDocumentStateWriter) if not name.startswith("_")}
-    assert names == {"write_audit_event", "write_workflow_run"}
+    assert names == {"append_lifecycle_event", "write_audit_event", "write_workflow_run"}

@@ -5,8 +5,14 @@ from __future__ import annotations
 from collections.abc import Callable
 
 from ..errors import DocumentStateError
+from ..lifecycle import (
+    LifecycleAdvancementService,
+    LifecyclePolicyOutcome,
+    LifecycleTransitionRequest,
+    evaluate_transition,
+)
 from ..records import AuditEventRecord, DocumentLifecycleEvent
-from ..repositories import DocumentStateWriteRepositories
+from ..repositories import DocumentStateReadRepositories, DocumentStateWriteRepositories
 from .commands import AppendLifecycleEventCommand, WriteAuditEventCommand
 from .errors import DocumentStateWriterError
 from .idempotency import make_idempotency_key
@@ -64,15 +70,37 @@ def run_steps(operation: str, steps: tuple[Callable[[], WriterResult], ...]) -> 
 
 
 def append_lifecycle(
+    reader: DocumentStateReadRepositories,
     writer: DocumentStateWriteRepositories,
     command: AppendLifecycleEventCommand,
     *,
     allowed_statuses: frozenset[str],
+    lifecycle_service: LifecycleAdvancementService | None = None,
 ) -> WriterResult:
     operation = "append_lifecycle_event"
     if not isinstance(command, AppendLifecycleEventCommand) or command.status not in allowed_statuses:
         return invalid(operation)
     try:
+        request = None
+        if lifecycle_service is not None:
+            try:
+                current = reader.get_document(command.document_id)
+            except DocumentStateError as error:
+                return repository_failure(error, operation)
+            request = LifecycleTransitionRequest(
+                document_id=command.document_id,
+                source_status=current.status,
+                target_status=command.status,
+                lifecycle_event_id=command.event_id,
+                expected_version=current.version,
+                reason_code=command.reason_code or f"{command.status}_lifecycle",
+                actor_id=command.source_runtime,
+                occurred_at=command.occurred_at,
+                source_stage=command.source_stage,
+                metadata=command.metadata,
+            )
+            if evaluate_transition(request).outcome == LifecyclePolicyOutcome.REJECTED.value:
+                return invalid(operation)
         record = DocumentLifecycleEvent(
             command.event_id,
             command.document_id,
@@ -85,7 +113,25 @@ def append_lifecycle(
         )
         key = make_idempotency_key("lifecycle", command.document_id, command.source_event_id, command.status)
         writer.append_lifecycle_event(record, idempotency_key=key)
-        return result("success", operation, record_ids=(record.event_id,))
+        if lifecycle_service is None:
+            return result("success", operation, record_ids=(record.event_id,))
+        assert request is not None
+        advancement = lifecycle_service.advance(request, lifecycle_event_persisted=True)
+        if advancement.status in {"advanced", "no_op"}:
+            return result("success", operation, record_ids=(record.event_id,))
+        if advancement.status == "projection_pending":
+            return result(
+                "projection_pending",
+                operation,
+                record_ids=(record.event_id,),
+                error_code="version_conflict",
+            )
+        if advancement.status == "conflict":
+            return result("conflict", operation, record_ids=(record.event_id,), error_code="version_conflict")
+        if advancement.status == "rejected":
+            return result("invalid_input", operation, record_ids=(record.event_id,), error_code="invalid_command")
+        error_code = "repository_unavailable" if advancement.error_code == "repository_unavailable" else "internal_error"
+        return result("failed", operation, record_ids=(record.event_id,), error_code=error_code)
     except DocumentStateError as error:
         return repository_failure(error, operation)
     except (DocumentStateWriterError, TypeError, ValueError):
