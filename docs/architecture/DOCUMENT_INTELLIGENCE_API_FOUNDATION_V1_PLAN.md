@@ -1,7 +1,7 @@
 # Document Intelligence API Foundation v1 Plan
 
 **Milestone:** v0.9
-**Status:** Phases 1-4 implemented; Phase 5 pending
+**Status:** Implemented and verified; closure commit and owner tag pending
 
 ## 1. Problem Statement
 
@@ -20,7 +20,7 @@ ADR-014 refines ADR-007 for a separate read-only Document Intelligence surface. 
 
 ## 3. Goals
 
-1. Define explicit `/api/v1/document-intelligence` contracts and route ownership.
+1. Define explicit `/api/v1` contracts in a separate Document Intelligence application.
 2. Serve deterministic read-only document, processing, validation, matching, review, workflow, and audit projections.
 3. Support Streamlit and future FlowSync Document Intelligence through the same HTTP contract.
 4. Keep runtime services and stores authoritative.
@@ -55,12 +55,14 @@ Planned package:
 
 ```text
 src/api/document_intelligence/
-  __init__.py
   app.py
   contracts.py
   errors.py
-  providers.py
-  routes/
+  middleware.py
+  responses.py
+  security.py
+  providers/local_provider.py
+  routers/
 ```
 
 The application is independently runnable and titled **Document Intelligence API**. It does not modify or mount into legacy `src/api/app.py` during v0.9 unless a later implementation phase proves composition boundary compliance. This avoids route, CORS, dependency, and product-ownership coupling with the existing FlowSync ETL API.
@@ -75,7 +77,7 @@ The application is independently runnable and titled **Document Intelligence API
 - Bounded `limit` and non-negative `offset` in v1; default 50, maximum 200.
 - Unknown query parameters and unsupported enum values fail with structured `400` responses.
 - Missing resources return structured `404`; unavailable providers return privacy-safe `503`.
-- Response envelope includes `contract_version`, `items`, `total`, `limit`, `offset`, and `snapshot_at` for collection endpoints.
+- Every response envelope contains `success`, `data`, `error`, `metadata`, `api_version`, and `request_id`; collection pagination lives under `metadata.pagination`.
 - Error envelope includes `code`, `message`, `request_id`, and optional safe field/path details; never raw payloads or stack traces.
 - Breaking changes require a new path major version and ADR review.
 
@@ -173,3 +175,5 @@ v0.9 adds an optional API process only. Backend runtime execution must not depen
 - R05 and all runtime boundaries are compliant without new exemptions.
 - Privacy, method allowlist, pagination, errors, OpenAPI, UI parity, and full regressions pass.
 - Summary, handoff, release notes, and recommended tag are complete.
+
+Closure verification recorded 22 API passes with 9 optional-transport skips, 29 Streamlit passes, 175 Review Runtime passes, and 903 full-suite passes with 9 skips. The milestone is closed pending the owner-managed commit and tag.

@@ -148,7 +148,7 @@ References:
 
 Status:
 - Architecture, implementation plan, and ADR complete
-- Phases 1-4 implemented: API contracts, deterministic reads, Streamlit API preview, and API boundary/security hardening; Phase 5 pending
+- Closed and verified pending owner commit/tag: all five phases complete
 
 Planned capabilities:
 - Separate versioned read-only Document Intelligence API
@@ -160,7 +160,10 @@ Planned capabilities:
 References:
 - `docs/architecture/DOCUMENT_INTELLIGENCE_API_FOUNDATION_V1_PLAN.md`
 - `docs/architecture/DOCUMENT_INTELLIGENCE_API_FOUNDATION_V1_IMPLEMENTATION_PLAN.md`
+- `docs/architecture/DOCUMENT_INTELLIGENCE_API_FOUNDATION_V1_SUMMARY.md`
+- `docs/architecture/DOCUMENT_INTELLIGENCE_API_FOUNDATION_V1_HANDOFF.md`
 - `docs/adr/ADR-014-document-intelligence-api-foundation.md`
+- `docs/releases/v0.9-document-intelligence-api-foundation.md`
 
 ## Prior Milestone Context
 

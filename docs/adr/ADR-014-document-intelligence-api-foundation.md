@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted; Phases 1-4 implemented and release closure pending.
+Accepted and implemented; closure commit and owner tag pending.
 
 ## Context
 
@@ -100,4 +100,4 @@ Rejected because API Runtime must not become a second source of truth. Durable s
 
 ## Follow-Up
 
-Implement the five phases in `docs/architecture/DOCUMENT_INTELLIGENCE_API_FOUNDATION_V1_IMPLEMENTATION_PLAN.md`. Do not add live providers or mutation routes until the required Workflow query facade and security decisions are separately approved.
+The five implementation phases are complete. Future work must add live reads only through an approved Workflow-owned query facade. Do not add mutation routes until identity, authorization, tenant, persistence, idempotency, concurrency, and audit decisions are separately approved.

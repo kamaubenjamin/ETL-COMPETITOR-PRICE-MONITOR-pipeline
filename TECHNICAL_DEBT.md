@@ -98,7 +98,7 @@ References:
 
 ### Current Status
 
-**v0.9 Phases 1-4 implemented; release verification and closure remain pending.**
+**v0.9 is implemented and verified; closure commit and owner tag remain pending.**
 
 Planning resolves the API ownership direction but does not yet resolve:
 
@@ -120,7 +120,10 @@ References:
 
 - `docs/architecture/DOCUMENT_INTELLIGENCE_API_FOUNDATION_V1_PLAN.md`
 - `docs/architecture/DOCUMENT_INTELLIGENCE_API_FOUNDATION_V1_IMPLEMENTATION_PLAN.md`
+- `docs/architecture/DOCUMENT_INTELLIGENCE_API_FOUNDATION_V1_SUMMARY.md`
+- `docs/architecture/DOCUMENT_INTELLIGENCE_API_FOUNDATION_V1_HANDOFF.md`
 - `docs/adr/ADR-014-document-intelligence-api-foundation.md`
+- `docs/releases/v0.9-document-intelligence-api-foundation.md`
 
 ---
 

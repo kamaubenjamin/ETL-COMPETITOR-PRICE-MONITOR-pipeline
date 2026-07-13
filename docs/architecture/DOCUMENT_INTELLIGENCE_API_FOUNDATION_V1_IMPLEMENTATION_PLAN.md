@@ -1,7 +1,7 @@
 # Document Intelligence API Foundation v1 Implementation Plan
 
 **Milestone:** v0.9
-**Status:** Phases 1-4 complete; Phase 5 pending
+**Status:** Phases 1-5 complete; closure commit and owner tag pending
 
 ## 1. Milestone Overview
 
@@ -196,6 +196,8 @@ git status --short --branch
 Stop after API hardening and boundary verification. Do not add auth, database, mutation routes, or deployment infrastructure.
 
 ## 6. Phase 5: Verification, Documentation, And Release Closure
+
+**Completion note:** Added milestone summary, future-agent handoff, and release notes; aligned plan, ADR, roadmap, debt, and changelog; and completed focused, boundary, compile, and full regression verification. Results: API 22 passed/9 skipped, Streamlit 29 passed, Review Runtime 175 passed, full suite 903 passed/9 skipped, and boundary verification compliant with two pre-existing BOM scan warnings. Four known test-generated artifacts were restored. No code, endpoint, dependency, commit, push, or tag was added in Phase 5.
 
 ### Objectives
 
