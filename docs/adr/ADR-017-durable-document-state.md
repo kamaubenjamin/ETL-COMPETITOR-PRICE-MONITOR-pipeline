@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted; Phases 1-2 implemented and Phases 3-5 pending.
+Accepted; Phases 1-3 implemented and Phases 4-5 pending.
 
 ## Context
 
@@ -141,4 +141,4 @@ ADR-017 is additive to ADR-016. It preserves v0.11 repository interfaces, v0.10 
 
 ## Implementation Status
 
-Phase 2 implements the decision with file-backed standard-library SQLite, one short-lived connection per operation, `BEGIN IMMEDIATE` writes, transaction-consistent count/page reads, explicit relational columns, canonical safe metadata JSON, and an ordered checksum-verified migration ledger. SQLite remains local/dev infrastructure; conformance extraction, stronger multi-connection verification, composition selection, and release closure remain in Phases 3-5.
+Phase 2 implements the decision with file-backed standard-library SQLite, one short-lived connection per operation, `BEGIN IMMEDIATE` writes, transaction-consistent count/page reads, explicit relational columns, canonical safe metadata JSON, and an ordered checksum-verified migration ledger. Phase 3 verifies the same public repository contract against in-memory and SQLite implementations and proves reopen durability, migration replay, rollback, read-snapshot consistency, single-winner compare-and-swap, identical append retries, and conflicting idempotency behavior with deterministic short-lived tests. SQLite remains local/dev infrastructure; composition selection and release closure remain in Phases 4-5.

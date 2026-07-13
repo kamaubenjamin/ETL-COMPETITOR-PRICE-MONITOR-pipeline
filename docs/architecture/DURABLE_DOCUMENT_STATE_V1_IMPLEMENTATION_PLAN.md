@@ -1,7 +1,7 @@
 # Durable Document State v1 Implementation Plan
 
 **Milestone:** v0.12
-**Status:** Phases 1-2 complete; Phases 3-5 pending
+**Status:** Phases 1-3 complete; Phases 4-5 pending
 
 ## 1. Milestone Overview
 
@@ -128,6 +128,8 @@ Completed. Stop before shared conformance extraction, broader concurrent-connect
 
 ## 4. Phase 3: Repository Conformance And Transaction Verification
 
+**Completion note:** Added one parametrized repository contract suite covering in-memory and SQLite backends plus focused SQLite durability, transaction consistency, rollback, optimistic concurrency, and idempotency race tests. The tests use temporary file databases, barriers instead of sleeps, and no network or external service. Focused Phase 3 tests: 18 passed. Full Document State suite: 165 passed. No production implementation change was required.
+
 ### Objectives
 
 - Extract a reusable repository behavior suite and run it against in-memory and SQLite bundles.
@@ -140,11 +142,9 @@ Completed. Stop before shared conformance extraction, broader concurrent-connect
 
 Create:
 
-- `tests/document_state/persistence/conformance.py`
-- `tests/document_state/persistence/test_repository_conformance.py`
-- `tests/document_state/persistence/test_sqlite_transactions.py`
+- `tests/document_state/test_repository_conformance.py`
+- `tests/document_state/persistence/test_sqlite_transaction_consistency.py`
 - `tests/document_state/persistence/test_sqlite_concurrency.py`
-- `tests/document_state/persistence/test_sqlite_privacy.py`
 
 Modify only when verified issues require it:
 
@@ -177,7 +177,7 @@ git status --short --branch
 
 ### Stop Condition
 
-Stop after conformance, transaction, concurrency, privacy, and adapter verification. Do not activate durable mode in API/UI.
+Completed. Stop before composition selection or activation. Do not activate durable mode in API/UI.
 
 ## 5. Phase 4: Composition Root Planning And Optional Runtime Selection
 

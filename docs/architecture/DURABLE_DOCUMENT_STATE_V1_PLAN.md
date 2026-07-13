@@ -1,7 +1,7 @@
 # Durable Document State v1 Plan
 
 **Milestone:** v0.12
-**Status:** Phases 1-2 implemented; Phases 3-5 pending
+**Status:** Phases 1-3 implemented; Phases 4-5 pending
 
 ## 1. Problem Statement
 
@@ -139,7 +139,7 @@ Append-only tables also store an internal `idempotency_key` and canonical `conte
 
 Foreign keys should protect known parent relationships where lifecycle is clear. They must not create cross-runtime ownership or require records that may legitimately arrive out of order without an explicit ingestion rule.
 
-Phase 2 therefore leaves cross-record foreign keys unenforced: the v0.11 ports permit independent and out-of-order summary writes, and adding parent-existence requirements would change repository semantics. Stable IDs and indexed relationship columns are retained; referential enforcement remains a Phase 3 conformance/design decision.
+Phase 2 therefore leaves cross-record foreign keys unenforced: the v0.11 ports permit independent and out-of-order summary writes, and adding parent-existence requirements would change repository semantics. Phase 3 confirms behavioral parity under those existing semantics. Stable IDs and indexed relationship columns are retained; stricter referential policy remains deferred until writer ordering is explicitly contracted.
 
 ## 8. Migration Strategy
 
@@ -244,6 +244,8 @@ API / Streamlit
 ```
 
 ## 15. Testing Strategy
+
+Phase 3 implements the shared behavioral suite against both in-memory and SQLite repository bundles. It verifies all public record groups, deterministic filters/order/pagination, safe errors, privacy rejection, immutable returns, optimistic updates, append idempotency, reopen plus migration replay, rollback under an injected database failure, read-snapshot consistency, and bounded two-writer races without sleeps. No backend behavior change was required.
 
 - Run the same repository conformance suite against in-memory and SQLite implementations.
 - Use temporary file databases for durability/reopen, migration, and multi-connection tests.

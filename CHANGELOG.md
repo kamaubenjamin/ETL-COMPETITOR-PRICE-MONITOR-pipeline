@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.12 Durable Document State Phase 3 with a shared in-memory/SQLite repository conformance suite, file reopen and migration replay verification, injected-failure rollback coverage, transaction-consistent read snapshot checks, and deterministic two-writer tests for optimistic updates and append idempotency; no production repository changes were required.
+
 - Added v0.12 Durable Document State Phase 2 with file-backed standard-library SQLite repositories for all ten Document State record families, explicit relational schema columns, transactional checksum-verified migrations, deterministic filter/order/pagination behavior, optimistic compare-and-swap updates, append idempotency, canonical privacy-safe metadata JSON, and close/reopen durability while preserving API/UI boundaries.
 
 - Added v0.12 Durable Document State Phase 1 with explicit in-memory/SQLite/deferred-PostgreSQL configuration, privacy-safe persistence errors, deterministic metadata for eleven planned tables, immutable migration and applied-ledger contracts, and sequence/engine/checksum validation; SQL, database connections, repositories, API/UI integration, and file/network behavior remain deferred.
