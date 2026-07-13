@@ -12,6 +12,15 @@ from urllib.request import Request, urlopen
 
 API_VERSION = "v1"
 _ENVELOPE_FIELDS = {"success", "data", "error", "metadata", "api_version", "request_id"}
+AUTH_PREVIEW_IDENTITIES = (
+    "unspecified",
+    "anonymous",
+    "viewer",
+    "reviewer",
+    "tenant-admin",
+    "platform-admin",
+    "service-account",
+)
 
 
 class APIClientError(Exception):
@@ -40,22 +49,35 @@ def _default_transport(request: Request, timeout: float) -> tuple[int, bytes]:
 class DocumentIntelligenceAPIClient:
     """Read-only HTTP adapter that accepts only the standard v1 envelope."""
 
-    def __init__(self, base_url: str, *, timeout: float = 3.0, transport: Transport | None = None) -> None:
+    def __init__(
+        self,
+        base_url: str,
+        *,
+        timeout: float = 3.0,
+        transport: Transport | None = None,
+        auth_preview_identity: str = "unspecified",
+    ) -> None:
         parsed = urlparse(base_url.strip())
         if parsed.scheme not in {"http", "https"} or not parsed.netloc or parsed.username or parsed.password:
             raise ValueError("API base URL must be an HTTP(S) origin without credentials")
         if timeout <= 0 or timeout > 30:
             raise ValueError("timeout must be between 0 and 30 seconds")
+        if auth_preview_identity not in AUTH_PREVIEW_IDENTITIES:
+            raise ValueError("auth preview identity is invalid")
         self.base_url = base_url.rstrip("/")
         self.timeout = timeout
         self._transport = transport or _default_transport
+        self.auth_preview_identity = auth_preview_identity
 
     def get(self, path: str, *, params: dict[str, str | int | None] | None = None) -> Any:
         if not path.startswith("/") or path.startswith("//"):
             raise ValueError("API path must be absolute")
         query = urlencode({key: value for key, value in (params or {}).items() if value is not None})
         url = f"{self.base_url}{path}" + (f"?{query}" if query else "")
-        request = Request(url, method="GET", headers={"Accept": "application/json"})
+        headers = {"Accept": "application/json"}
+        if self.auth_preview_identity != "unspecified":
+            headers["X-Local-Identity"] = self.auth_preview_identity
+        request = Request(url, method="GET", headers=headers)
         status_code, body = self._transport(request, self.timeout)
         try:
             envelope = json.loads(body.decode("utf-8"))

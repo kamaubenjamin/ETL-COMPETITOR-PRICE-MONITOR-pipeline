@@ -10,6 +10,22 @@ from .api_client import APIClientError, DocumentIntelligenceAPIClient
 
 Record = dict[str, Any]
 
+_SAFE_ERROR_MESSAGES = {
+    "authentication_required": "Authentication is required for this API preview.",
+    "authorization_denied": "This identity is not permitted to view the requested data.",
+    "resource_not_found": "The requested resource is not available in this scope.",
+    "not_found": "The requested resource is not available in this scope.",
+    "api_unavailable": "Document Intelligence API is unavailable.",
+    "identity_provider_unavailable": "Identity resolution is temporarily unavailable.",
+    "invalid_response": "Document Intelligence API returned an invalid response.",
+}
+
+
+def safe_api_preview_error(code: str) -> str:
+    """Return a fixed operator-safe message without reflecting backend detail."""
+
+    return _SAFE_ERROR_MESSAGES.get(code, "Document Intelligence API request could not be completed.")
+
 
 class DocumentIntelligenceAPIProvider:
     """Maps consumer-neutral API projections to operator-console records."""
@@ -17,6 +33,7 @@ class DocumentIntelligenceAPIProvider:
     def __init__(self, client: DocumentIntelligenceAPIClient | None, *, initial_error: str | None = None) -> None:
         self.client = client
         self.last_error: str | None = initial_error
+        self.last_error_code: str | None = "invalid_configuration" if initial_error else None
 
     def _safe(self, read: Callable[[], list[Record]]) -> list[Record]:
         if self.client is None:
@@ -24,8 +41,10 @@ class DocumentIntelligenceAPIProvider:
         try:
             rows = read()
         except APIClientError as exc:
-            self.last_error = f"{exc.code}: {exc.message}"
+            self.last_error_code = exc.code
+            self.last_error = safe_api_preview_error(exc.code)
             return []
+        self.last_error_code = None
         self.last_error = None
         return deepcopy(rows)
 

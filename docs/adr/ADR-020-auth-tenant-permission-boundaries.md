@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.15. Phases 1-4 implement the security contracts and policy boundary, provider-neutral/local identity resolution, authorization requests and guard, tenant-aware document projections, and opt-in authorization for the existing Document Intelligence API GET routes. Streamlit auth, writer enforcement, child-record tenant expansion, production activation, and external identity providers remain pending.
+Accepted for v0.15. Phases 1-5 implement the security contracts and policy boundary, provider-neutral/local identity resolution, authorization requests and guard, tenant-aware document projections, opt-in authorization for the existing Document Intelligence API GET routes, and a non-authoritative Streamlit local-demo auth preview. Writer enforcement, child-record tenant expansion, production activation, external identity providers, and release closure remain pending.
 
 ## Context
 
@@ -103,6 +103,7 @@ Tokens, credentials, raw claims, authorization headers, raw policy exceptions, a
 
 - Preserve explicit `local_preview` with deterministic fake identities for development/test.
 - Preserve current local `api_preview` during migration.
+- Permit `api_preview` to send one allowlisted local-demo identity header without storing tokens, credentials, claims, or tenant overrides; the API remains authoritative.
 - Production/authenticated mode has no unauthenticated or local fallback.
 - Existing API payloads do not expose tenant fields merely because persistence gains them.
 - Existing unscoped repository/facade paths may remain behind explicit local compatibility composition until migration is complete; they are forbidden in production composition.

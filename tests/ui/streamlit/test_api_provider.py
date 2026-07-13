@@ -60,7 +60,8 @@ def test_api_unavailable_returns_safe_empty_state_without_local_fallback():
         StubClient({"/api/v1/documents": APIClientError("api_unavailable", "Document Intelligence API is unavailable.")})
     )
     assert provider.documents() == []
-    assert provider.last_error == "api_unavailable: Document Intelligence API is unavailable."
+    assert provider.last_error_code == "api_unavailable"
+    assert provider.last_error == "Document Intelligence API is unavailable."
 
 
 def test_local_preview_remains_default_and_only_approved_modes_exist():

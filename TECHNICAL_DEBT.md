@@ -354,7 +354,7 @@ References:
 
 ### Current Status
 
-**v0.15 Phases 1-4 are implemented; Phase 5 has not started.**
+**v0.15 Phases 1-5 are implemented; release closure has not started.**
 
 Current security debt:
 
@@ -374,7 +374,9 @@ Phase 3 adds explicit document tenant/ownership fields, optional tenant-narrowed
 
 Phase 4 adds explicit API auth modes, API-local identity/context composition, centralized endpoint permission declarations, safe identity-provider failure handling, and tenant-narrowed provider reads. Review and reprocess reads require `document:review`; workflow runs require `workflow:read`; audit events require `audit:read`. Authenticated cross-tenant detail denial is concealed as `404`.
 
-Remaining implementation is phased and deferred. No Streamlit auth integration, writer enforcement, child-record tenant migration, external identity-provider adapter, production activation, public mutation, or dependency has been added.
+Phase 5 adds a development-only Streamlit `api_preview` identity selector. It sends only an allowlisted local-demo identity header, never sends a tenant override or credential, and maps API failures to fixed safe display states. `local_preview` remains unchanged and default; Streamlit performs no permission decision or security filtering.
+
+Remaining implementation is phased and deferred. No writer enforcement, child-record tenant migration, external identity-provider adapter, production activation, public mutation, credential/session management, or dependency has been added.
 
 References:
 

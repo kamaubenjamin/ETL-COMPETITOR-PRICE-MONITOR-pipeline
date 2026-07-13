@@ -21,7 +21,7 @@ from src.ui.streamlit.components import (
     run_mode_banner,
     section_header,
 )
-from src.ui.streamlit.api_client import DocumentIntelligenceAPIClient
+from src.ui.streamlit.api_client import AUTH_PREVIEW_IDENTITIES, DocumentIntelligenceAPIClient
 from src.ui.streamlit.api_provider import DocumentIntelligenceAPIProvider
 from src.ui.streamlit.data_providers import (
     DEFAULT_PROVIDER_MODE,
@@ -56,11 +56,23 @@ def _sidebar_filters() -> dict[str, str | None]:
             format_func=lambda value: value.replace("_", " ").title(),
         )
         api_base_url = None
+        auth_preview_identity = "unspecified"
         if provider_mode == "api_preview":
             api_base_url = st.text_input(
                 "API base URL",
                 value=os.getenv("DOCUMENT_INTELLIGENCE_API_URL", "http://127.0.0.1:8001"),
             )
+            auth_preview_identity = st.selectbox(
+                "Local demo identity",
+                AUTH_PREVIEW_IDENTITIES,
+                format_func=lambda value: (
+                    "No identity header"
+                    if value == "unspecified"
+                    else value.replace("-", " ").title()
+                ),
+                help="Development preview only. The API remains authoritative for permissions.",
+            )
+            st.caption("Platform-admin cross-tenant access is disabled by default. No credentials are stored.")
         st.subheader("Scope")
         workspace = st.selectbox("Workspace", ["Operations", "Finance", "Procurement"])
         document_type = st.selectbox("Document Type", ["All", "Invoice", "Purchase Order", "Bank Statement", "Receipt"])
@@ -76,6 +88,7 @@ def _sidebar_filters() -> dict[str, str | None]:
         "workspace": workspace,
         "provider_mode": provider_mode,
         "api_base_url": api_base_url,
+        "auth_preview_identity": auth_preview_identity,
         "document_type": None if document_type == "All" else document_type,
         "workflow": None if workflow == "All" else workflow,
         "runtime_status": None if runtime_status == "All" else runtime_status,
@@ -137,7 +150,10 @@ def main() -> None:
     filters = _sidebar_filters()
     if filters["provider_mode"] == "api_preview":
         try:
-            client = DocumentIntelligenceAPIClient(filters["api_base_url"] or "")
+            client = DocumentIntelligenceAPIClient(
+                filters["api_base_url"] or "",
+                auth_preview_identity=filters["auth_preview_identity"] or "unspecified",
+            )
             provider = DocumentIntelligenceAPIProvider(client)
         except ValueError:
             provider = DocumentIntelligenceAPIProvider(None, initial_error="invalid_configuration: API base URL is invalid.")
@@ -150,11 +166,11 @@ def main() -> None:
         run_mode_banner()
     else:
         st.info(
-            f"Run mode: Read-only API preview | {filters['api_base_url']} | GET only | No mutation",
+            "Run mode: Read-only API preview | GET only | API-authorized | No mutation",
             icon=":material/api:",
         )
         if provider.last_error:
-            st.warning(f"API preview unavailable. {provider.last_error}", icon=":material/cloud_off:")
+            st.warning(provider.last_error, icon=":material/cloud_off:")
     tabs = st.tabs(["01 Overview", "02 Inbox", "03 Upload", "04 Processing", "05 Validation", "06 Matching", "07 Reviews", "08 Workflows", "09 Audit"])
 
     with tabs[0]:

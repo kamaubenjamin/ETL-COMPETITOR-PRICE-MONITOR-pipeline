@@ -1,7 +1,7 @@
 # Auth, Tenant, And Permission Model v1 Implementation Plan
 
 **Milestone:** v0.15
-**Status:** Phases 1-4 implemented; Phase 5 not started
+**Status:** Phases 1-5 implemented; release closure not started
 
 ## 1. Milestone Overview
 
@@ -247,7 +247,30 @@ Stop after opt-in read authorization and internal attribution verification. Do n
 
 **Completion:** Implemented and verified for API read guards only, following the separately approved Phase 4 scope. Existing GET routes declare centralized permissions, auth-enabled reads receive a guard-produced tenant scope, cross-tenant resource reads are concealed, and auth-disabled local preview remains unchanged. Streamlit authentication and writer attribution/enforcement remain deferred; no public mutation or production identity provider was added.
 
-## 7. Phase 5: Security Verification, Documentation, And Release Closure
+## 7. Phase 5: Streamlit Auth-Mode Preview
+
+### Objectives
+
+- Preserve unchanged default `local_preview` behavior.
+- Allow `api_preview` to send an optional allowlisted local-demo identity header.
+- Render fixed safe unauthenticated, unauthorized, concealed, and unavailable states.
+- Keep the API authoritative and keep Streamlit free of security-policy imports.
+
+### Required Verification
+
+- No identity header is sent by default.
+- Only fixed local-demo identity IDs can be configured.
+- No token, credential, raw claim, tenant override, or backend exception is displayed or stored.
+- Existing Streamlit, API, security, Document State, Query Facade, and Review Runtime suites remain compatible.
+- Boundary verification remains compliant.
+
+### Stop Condition
+
+Stop after Streamlit auth preview and verification. Do not add writer enforcement, external providers, public mutations, or release closure.
+
+**Completion:** Implemented and verified. `local_preview` remains the default and has no enforcement. `api_preview` may send only `X-Local-Identity` for a fixed local-demo identity, including explicit anonymous preview; it sends no tenant override, token, or credential. Provider failures map to fixed operator-safe messages, and all permissions remain API-enforced. Platform-admin cross-tenant preview is disabled by default.
+
+## 8. Release Closure: Security Verification, Documentation, And Release Closure
 
 ### Objectives
 

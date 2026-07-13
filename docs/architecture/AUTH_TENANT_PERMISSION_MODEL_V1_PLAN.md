@@ -1,7 +1,7 @@
 # Auth, Tenant, And Permission Model v1 Plan
 
 **Milestone:** v0.15
-**Status:** Phases 1-4 implemented; Phase 5 not started
+**Status:** Phases 1-5 implemented; release closure not started
 
 ## 1. Problem Statement
 
@@ -352,8 +352,9 @@ No migration file or schema change is part of this planning task.
 1. **Security contracts and role catalog:** core contracts, permissions, roles, decisions, errors, local identities, ADR alignment, and boundary tests.
 2. **Policy engine and guards:** pure policies, context construction, default-deny guards, tenant/cross-tenant/service-account tests.
 3. **Tenant-aware Document State and Query Facade contracts:** versioned tenant/ownership fields, repository/query scopes, compatibility mapping, schema/migration design and conformance tests.
-4. **Read-only API and Streamlit security integration plus writer attribution boundary:** opt-in API guards, authorized provider scope, local compatibility mode, future command-gateway contracts, and audit attribution; no public mutations.
-5. **Verification, documentation, and release closure:** boundary/privacy verification, full regression, summary, handoff, release notes, and migration/production-readiness decision.
+4. **Read-only API security integration:** opt-in API guards, authorized provider scope, local compatibility mode, and safe unauthorized responses; no public mutations.
+5. **Streamlit auth-mode preview:** optional allowlisted local-demo identity headers in `api_preview`, fixed safe unauthorized states, and unchanged default `local_preview`; the API remains authoritative.
+6. **Verification, documentation, and release closure:** boundary/privacy verification, full regression, summary, handoff, release notes, and migration/production-readiness decision.
 
 Phase 1 delivered the standard-library-only `src/security/` contracts, exact permission and role catalogs, explicit anonymous/user/service/system principals, immutable authorization context and decisions, privacy-safe errors, and a pure default-deny policy evaluator. Identity-provider adapters, reusable guards, and all API, UI, storage, Query Facade, and writer integration remain deferred to later phases.
 
@@ -362,6 +363,8 @@ Phase 2 delivered a provider-neutral identity resolution Protocol and safe resul
 Phase 3 delivered the first tenant-aware operational projection: `DocumentRecord` now carries explicit tenant, workspace, actor, owner, source-system, and access-tag fields; document repositories and the Workflow Query Facade accept optional tenant narrowing; and SQLite migration `002` persists and indexes those fields. Existing constructors use deterministic `tenant-local` compatibility, and API payloads intentionally omit internal tenant fields. Tenant columns for child records and authenticated enforcement remain later work.
 
 Phase 4 delivered opt-in authorization for the existing Document Intelligence API GET surface. The app factory owns explicit disabled/local-demo/authenticated/production modes, resolves identity through the provider Protocol, delegates all role decisions to `PermissionGuard`, and passes one narrowed tenant scope into provider reads. Default local preview remains unauthenticated; no Streamlit, writer, mutation, database, or external-provider integration was added.
+
+Phase 5 delivered a development-only Streamlit auth preview for `api_preview`. The GET-only API client can send one fixed local-demo identity header selected from an allowlist, while `local_preview` remains the default and sends no auth context. Streamlit does not evaluate permissions, select cross-tenant scope, store credentials, or reflect backend exception details; API authorization remains authoritative. Writer enforcement, production identity, and release closure remain deferred.
 
 ## 24. Risks And Mitigations
 
