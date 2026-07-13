@@ -25,14 +25,14 @@ def validate_record(record: object, expected: type[RecordT]) -> RecordT:
 
 
 def record_columns(record_type: type[PersistentRecord]) -> tuple[str, ...]:
-    return tuple("metadata_json" if item.name == "metadata" else item.name for item in fields(record_type))
+    return tuple(f"{item.name}_json" if item.name in {"metadata", "access_tags"} else item.name for item in fields(record_type))
 
 
 def record_values(record: PersistentRecord) -> tuple[Any, ...]:
     values = record.to_dict()
     return tuple(
         json.dumps(values[item.name], sort_keys=True, separators=(",", ":"), ensure_ascii=True)
-        if item.name == "metadata" else values[item.name]
+        if item.name in {"metadata", "access_tags"} else values[item.name]
         for item in fields(record)
     )
 
@@ -40,7 +40,8 @@ def record_values(record: PersistentRecord) -> tuple[Any, ...]:
 def row_to_record(row: sqlite3.Row, expected: type[RecordT]) -> RecordT:
     try:
         values = {
-            item.name: json.loads(row["metadata_json"]) if item.name == "metadata" else row[item.name]
+            item.name: json.loads(row[f"{item.name}_json"])
+            if item.name in {"metadata", "access_tags"} else row[item.name]
             for item in fields(expected)
         }
         return expected(**values)

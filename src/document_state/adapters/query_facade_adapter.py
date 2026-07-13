@@ -176,15 +176,19 @@ class DocumentStateQueryFacadeAdapter:
     def list_documents(self, query: DocumentQuery, page: PageRequest) -> PageResult[DocumentInboxItem]:
         safe_query = _validate_query(query, DocumentQuery)
         try:
-            state_query = StateDocumentQuery(status=safe_query.status, document_type=safe_query.document_type)
+            state_query = StateDocumentQuery(
+                status=safe_query.status,
+                document_type=safe_query.document_type,
+                tenant_id=safe_query.tenant_id,
+            )
         except ValueError:
             raise QueryFacadeError("invalid_query", field="query") from None
         records = self._all(lambda state_page: self.__repositories.list_documents(state_query, state_page))
         return self._page(records, page, self._document_item)
 
-    def get_document(self, document_id: str) -> DocumentDetail:
+    def get_document(self, document_id: str, *, tenant_id: str | None = None) -> DocumentDetail:
         try:
-            record = self.__repositories.get_document(document_id)
+            record = self.__repositories.get_document(document_id, tenant_id=tenant_id)
             workflow_name = record.metadata.get("workflow_name")
             return DocumentDetail(
                 record.document_id,
@@ -196,6 +200,7 @@ class DocumentStateQueryFacadeAdapter:
                 record.received_at,
                 record.updated_at,
                 workflow_name if isinstance(workflow_name, str) else None,
+                record.tenant_id,
             )
         except DocumentStateError as error:
             raise _facade_error(error) from None
@@ -212,6 +217,7 @@ class DocumentStateQueryFacadeAdapter:
             record.confidence,
             record.current_stage,
             record.received_at,
+            record.tenant_id,
         )
 
     def list_processing(self, document_id: str, page: PageRequest) -> PageResult[ProcessingStatus]:

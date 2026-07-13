@@ -7,7 +7,10 @@ from enum import Enum
 from types import MappingProxyType
 from typing import Any
 
-from .privacy import bounded_string, enum_value, optional_enum_value, optional_string
+from .privacy import bounded_string, enum_value, optional_enum_value, optional_string, stable_id
+
+
+LEGACY_TENANT_ID = "tenant-local"
 
 
 class DocumentStatus(str, Enum):
@@ -104,10 +107,13 @@ class OrderingSpec:
 class DocumentQuery:
     status: DocumentStatus | str | None = None
     document_type: DocumentType | str | None = None
+    tenant_id: str | None = None
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "status", optional_enum_value(self.status, DocumentStatus, "status"))
         object.__setattr__(self, "document_type", optional_enum_value(self.document_type, DocumentType, "document_type"))
+        if self.tenant_id is not None:
+            object.__setattr__(self, "tenant_id", stable_id(self.tenant_id, "tenant_id"))
 
 
 @dataclass(frozen=True, slots=True)
@@ -196,4 +202,7 @@ DETERMINISTIC_ORDERING = MappingProxyType(
 
 
 def query_to_dict(query: Any) -> dict[str, str | None]:
-    return {name: getattr(query, name) for name in query.__dataclass_fields__}
+    values = {name: getattr(query, name) for name in query.__dataclass_fields__}
+    if isinstance(query, DocumentQuery) and values.get("tenant_id") is None:
+        values.pop("tenant_id")
+    return values

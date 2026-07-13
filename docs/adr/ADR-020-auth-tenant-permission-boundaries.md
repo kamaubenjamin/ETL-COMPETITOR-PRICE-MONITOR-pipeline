@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.15. Phases 1-2 implement contracts, catalogs, context, decisions, privacy-safe errors, pure default-deny policy evaluation, provider-neutral identity resolution, an explicit local provider, authorization requests, and a pure permission guard. Tenant-aware storage/read contracts and runtime integration remain pending.
+Accepted for v0.15. Phases 1-3 implement the security contracts and policy boundary, provider-neutral/local identity resolution, authorization requests and guard, plus tenant-aware Document State and Query Facade document projection contracts. API/UI guard integration, writer enforcement, child-record tenant expansion, and external identity providers remain pending.
 
 ## Context
 

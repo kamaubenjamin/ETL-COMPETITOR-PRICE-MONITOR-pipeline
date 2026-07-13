@@ -202,8 +202,16 @@ class InMemoryDocumentStateReader:
     def __init__(self, state: _State) -> None:
         self.__state = state
 
-    def get_document(self, document_id: str) -> DocumentRecord:
-        return _get(self.__state, self.__state.documents, document_id, "document_id")
+    def get_document(self, document_id: str, *, tenant_id: str | None = None) -> DocumentRecord:
+        record = _get(self.__state, self.__state.documents, document_id, "document_id")
+        if tenant_id is not None:
+            try:
+                safe_tenant = stable_id(tenant_id, "tenant_id")
+            except ValueError:
+                raise DocumentStateError("invalid_query", field="tenant_id") from None
+            if record.tenant_id != safe_tenant:
+                raise DocumentStateError("not_found")
+        return record
 
     def list_documents(self, query: DocumentQuery, page: PageRequest) -> PageResult[DocumentRecord]:
         safe_query = _ensure_query(query, DocumentQuery)
@@ -214,6 +222,7 @@ class InMemoryDocumentStateReader:
             item for item in records
             if (safe_query.status is None or item.status == safe_query.status)
             and (safe_query.document_type is None or item.document_type == safe_query.document_type)
+            and (safe_query.tenant_id is None or item.tenant_id == safe_query.tenant_id)
         )
         return _page(records, page, DocumentRecord.ORDERING)
 

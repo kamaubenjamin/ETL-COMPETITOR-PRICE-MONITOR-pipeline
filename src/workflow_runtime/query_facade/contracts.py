@@ -108,13 +108,19 @@ class OrderingSpec:
 class DocumentQuery:
     status: DocumentStatus | str | None = None
     document_type: DocumentType | str | None = None
+    tenant_id: str | None = None
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "status", enum_value(self.status, DocumentStatus, "status"))
         object.__setattr__(self, "document_type", enum_value(self.document_type, DocumentType, "document_type"))
+        if self.tenant_id is not None:
+            object.__setattr__(self, "tenant_id", bounded_string(self.tenant_id, "tenant_id", maximum=128))
 
     def to_dict(self) -> dict[str, str | None]:
-        return {"status": self.status, "document_type": self.document_type}
+        values = {"status": self.status, "document_type": self.document_type}
+        if self.tenant_id is not None:
+            values["tenant_id"] = self.tenant_id
+        return values
 
 
 @dataclass(frozen=True, slots=True)

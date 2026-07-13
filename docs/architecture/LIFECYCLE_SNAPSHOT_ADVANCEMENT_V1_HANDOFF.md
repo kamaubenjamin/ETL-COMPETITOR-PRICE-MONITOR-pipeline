@@ -93,6 +93,8 @@ Writer services
 
 The API remains GET-only. Streamlit remains read-only. Neither layer owns lifecycle policy or repository writes.
 
+Document projections now default legacy/local records to `tenant-local` and preserve tenant/ownership fields during lifecycle `replace` updates. Lifecycle services remain tenant-policy-neutral; authenticated tenant enforcement belongs to the security guard/composition boundary.
+
 ## Known Risks And Deviations
 
 - Event append and projection update are separate operations; no cross-record transaction or outbox exists.

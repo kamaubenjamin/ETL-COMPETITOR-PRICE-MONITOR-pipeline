@@ -68,7 +68,18 @@ class FacadeDocumentIntelligenceProvider:
     def list_documents(self, *, status: str | None = None, document_type: str | None = None) -> list[Record]:
         query = DocumentQuery(status=status, document_type=document_type)
         models = _all_pages(lambda page: self._facade.list_documents(query, page))
-        return [model.to_dict() for model in models]
+        return [
+            {
+                "document_id": model.document_id,
+                "filename": model.filename,
+                "document_type": model.document_type,
+                "status": model.status,
+                "confidence": model.confidence,
+                "current_stage": model.current_stage,
+                "received_at": model.received_at,
+            }
+            for model in models
+        ]
 
     def get_document(self, document_id: str) -> Record | None:
         try:

@@ -18,7 +18,10 @@ def _factory(tmp_path):
 def test_migrations_create_all_tables_and_populate_ledger(tmp_path):
     factory = _factory(tmp_path)
     applied = apply_migrations(factory, applied_at="2026-07-13T12:00:00+00:00")
-    assert [item.migration_id for item in applied] == ["001_initial_document_state"]
+    assert [item.migration_id for item in applied] == [
+        "001_initial_document_state",
+        "002_add_document_tenant_scope",
+    ]
     with factory.transaction() as connection:
         tables = {
             row[0] for row in connection.execute(

@@ -354,23 +354,25 @@ References:
 
 ### Current Status
 
-**v0.15 Phases 1-2 are implemented; Phases 3-5 have not started.**
+**v0.15 Phases 1-3 are implemented; Phases 4-5 have not started.**
 
 Current security debt:
 
 - Document Intelligence API resolves request IDs but no authenticated principal.
 - API providers and Query Facade reads have no mandatory tenant scope.
 - Streamlit workspace selection is display-only and `api_preview` is unauthenticated.
-- Document State records lack explicit tenant, workspace, ownership, creator, and updater fields.
+- Child Document State records still lack direct tenant columns; the document projection now carries tenant, workspace, ownership, creator, and updater fields.
 - Selected records carry actor IDs without verified principal/tenant attribution.
 - Writers receive commands/repositories but no trusted authorization gateway or actor context.
-- SQLite has no tenant columns/backfill; PostgreSQL/Supabase and row-level security are not implemented.
+- SQLite migration `002` scopes documents and backfills legacy rows to `tenant-local`; child-table tenant columns, PostgreSQL/Supabase, and row-level security are not implemented.
 
 Phase 1 establishes the provider-neutral `src/security/` boundary with immutable contracts, exact role/permission catalogs, explicit anonymous/user/service/system principals, tenant and resource scopes, authorization contexts and decisions, privacy-safe errors, and pure default-deny policy evaluation. Security policy remains outside API routes, Streamlit, repositories, Query Facade logic, and writers.
 
 Phase 2 adds a structural identity-provider boundary, privacy-safe resolution results, deterministic local demo/test identities, bounded authorization requests, and a reusable pure permission guard. The local provider rejects production mode and performs no token verification or environment mutation.
 
-Remaining implementation is phased and deferred. No external identity-provider adapter, tenant schema, migration, endpoint integration, UI behavior, database integration, or dependency has been added.
+Phase 3 adds explicit document tenant/ownership fields, optional tenant-narrowed document get/list behavior across in-memory and SQLite repositories, tenant-aware Query Facade document contracts, and durable migration/index support. Unscoped local preview remains backward compatible, and existing API payloads exclude internal tenant fields.
+
+Remaining implementation is phased and deferred. No API/UI guard integration, writer enforcement, child-record tenant migration, external identity-provider adapter, production database integration, or dependency has been added.
 
 References:
 

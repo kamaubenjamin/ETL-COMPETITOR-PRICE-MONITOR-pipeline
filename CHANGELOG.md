@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.15 Phase 3 tenant-aware document projection contracts, optional tenant-narrowed in-memory/SQLite and Query Facade document reads, additive SQLite migration `002` with deterministic `tenant-local` legacy backfill, and explicit API compatibility projection; child-record tenant columns and authenticated consumer enforcement remain deferred.
+
 - Added v0.15 Phase 2 provider-neutral identity resolution contracts, deterministic local demo/test identities, bounded authorization requests, and a pure permission guard that reuses Phase 1 default-deny tenant policy; API, UI, repository, Query Facade, writer, migration, and external-provider integration remain deferred.
 
 - Added v0.15 Phase 1 provider-neutral security contracts with immutable principals and scopes, exact permission and role catalogs, explicit anonymous/user/service/system actors, authorization contexts and decisions, privacy-safe errors, and pure default-deny tenant policy evaluation; provider adapters, guards, and runtime integration remain deferred.

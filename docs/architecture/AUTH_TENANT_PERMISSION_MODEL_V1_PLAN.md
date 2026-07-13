@@ -1,7 +1,7 @@
 # Auth, Tenant, And Permission Model v1 Plan
 
 **Milestone:** v0.15
-**Status:** Phases 1-2 implemented; Phases 3-5 not started
+**Status:** Phases 1-3 implemented; Phases 4-5 not started
 
 ## 1. Problem Statement
 
@@ -358,6 +358,8 @@ No migration file or schema change is part of this planning task.
 Phase 1 delivered the standard-library-only `src/security/` contracts, exact permission and role catalogs, explicit anonymous/user/service/system principals, immutable authorization context and decisions, privacy-safe errors, and a pure default-deny policy evaluator. Identity-provider adapters, reusable guards, and all API, UI, storage, Query Facade, and writer integration remain deferred to later phases.
 
 Phase 2 delivered a provider-neutral identity resolution Protocol and safe result contract, an explicit local/dev/test provider with deterministic demo identities, a bounded authorization request contract, and a pure permission guard that delegates to the Phase 1 policy evaluator. API, Streamlit, Document State, Query Facade, writer, persistence, and external identity-provider integration remain deferred.
+
+Phase 3 delivered the first tenant-aware operational projection: `DocumentRecord` now carries explicit tenant, workspace, actor, owner, source-system, and access-tag fields; document repositories and the Workflow Query Facade accept optional tenant narrowing; and SQLite migration `002` persists and indexes those fields. Existing constructors use deterministic `tenant-local` compatibility, and API payloads intentionally omit internal tenant fields. Tenant columns for child records and authenticated enforcement remain later work.
 
 ## 24. Risks And Mitigations
 

@@ -50,6 +50,10 @@ def test_schema_metadata_is_immutable():
     assert TABLES_BY_NAME["schema_migrations"].append_only
 
 
+def test_document_schema_metadata_includes_tenant_filter_index():
+    assert "tenant_id" in TABLES_BY_NAME["documents"].indexed_fields
+
+
 def test_invalid_schema_metadata_is_rejected_safely():
     with pytest.raises(PersistenceError) as raised:
         TableMetadata("Bad Table", ("id",), ("created_at",), ("id",), "operational_summary", "append_only")

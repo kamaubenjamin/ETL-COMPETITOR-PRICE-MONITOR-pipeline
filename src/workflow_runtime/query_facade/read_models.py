@@ -100,6 +100,7 @@ class DocumentInboxItem(ReadModel):
     confidence: float
     current_stage: str
     received_at: str
+    tenant_id: str = "tenant-local"
 
     ORDERING = OrderingSpec(("received_at", "document_id"), (SortDirection.ASCENDING, SortDirection.ASCENDING))
 
@@ -111,6 +112,7 @@ class DocumentInboxItem(ReadModel):
         object.__setattr__(self, "confidence", _confidence(self.confidence))
         object.__setattr__(self, "current_stage", bounded_string(self.current_stage, "current_stage", maximum=128))
         object.__setattr__(self, "received_at", _timestamp(self.received_at, "received_at"))
+        object.__setattr__(self, "tenant_id", bounded_string(self.tenant_id, "tenant_id", maximum=128))
 
 
 @dataclass(frozen=True, slots=True)
@@ -124,6 +126,7 @@ class DocumentDetail(ReadModel):
     received_at: str
     updated_at: str
     workflow_name: str | None = None
+    tenant_id: str = "tenant-local"
 
     ORDERING = OrderingSpec(("document_id",), (SortDirection.ASCENDING,))
 
@@ -137,6 +140,7 @@ class DocumentDetail(ReadModel):
         object.__setattr__(self, "received_at", _timestamp(self.received_at, "received_at"))
         object.__setattr__(self, "updated_at", _timestamp(self.updated_at, "updated_at"))
         object.__setattr__(self, "workflow_name", _optional_string(self.workflow_name, "workflow_name"))
+        object.__setattr__(self, "tenant_id", bounded_string(self.tenant_id, "tenant_id", maximum=128))
 
 
 @dataclass(frozen=True, slots=True)

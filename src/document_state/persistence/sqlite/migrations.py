@@ -13,6 +13,7 @@ from .connection import SQLiteConnectionFactory
 
 
 _SCHEMA_PATH = Path(__file__).with_name("schema.sql")
+_TENANT_SCOPE_PATH = Path(__file__).with_name("002_add_document_tenant_scope.sql")
 _LEDGER_SQL = """
 CREATE TABLE IF NOT EXISTS schema_migrations (
     migration_id TEXT PRIMARY KEY,
@@ -32,8 +33,16 @@ def schema_sql() -> str:
         raise PersistenceError("invalid_migration", field="schema") from None
 
 
+def tenant_scope_sql() -> str:
+    try:
+        return _TENANT_SCOPE_PATH.read_text(encoding="utf-8")
+    except OSError:
+        raise PersistenceError("invalid_migration", field="tenant_scope_schema") from None
+
+
 def default_migrations() -> tuple[MigrationDefinition, ...]:
     sql = schema_sql()
+    tenant_sql = tenant_scope_sql()
     return (
         MigrationDefinition(
             migration_id="001_initial_document_state",
@@ -41,6 +50,13 @@ def default_migrations() -> tuple[MigrationDefinition, ...]:
             checksum=hashlib.sha256(sql.encode("utf-8")).hexdigest(),
             description="Create durable Document State tables and indexes.",
             sequence=1,
+        ),
+        MigrationDefinition(
+            migration_id="002_add_document_tenant_scope",
+            engine="sqlite",
+            checksum=hashlib.sha256(tenant_sql.encode("utf-8")).hexdigest(),
+            description="Add tenant and ownership columns to documents.",
+            sequence=2,
         ),
     )
 
@@ -74,7 +90,10 @@ def apply_migrations(
     with factory.transaction(write=True) as connection:
         connection.execute(_LEDGER_SQL)
         pending = validate_applied_migrations(planned, _applied(connection), engine="sqlite")
-        sql_by_id = {"001_initial_document_state": schema_sql()}
+        sql_by_id = {
+            "001_initial_document_state": schema_sql(),
+            "002_add_document_tenant_scope": tenant_scope_sql(),
+        }
         for migration in pending:
             sql = sql_by_id.get(migration.migration_id)
             if sql is None or hashlib.sha256(sql.encode("utf-8")).hexdigest() != migration.checksum:

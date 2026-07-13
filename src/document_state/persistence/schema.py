@@ -87,7 +87,7 @@ class TableMetadata:
 
 
 SCHEMA_TABLES = (
-    TableMetadata("documents", ("document_id",), ("received_at", "document_id"), ("document_id", "status", "document_type", "received_at"), "operational_summary", "mutable_snapshot"),
+    TableMetadata("documents", ("document_id",), ("received_at", "document_id"), ("document_id", "tenant_id", "status", "document_type", "received_at"), "operational_summary", "mutable_snapshot"),
     TableMetadata("document_lifecycle_events", ("event_id",), ("occurred_at", "event_id"), ("event_id", "document_id", "status", "occurred_at"), "lineage_summary", "append_only"),
     TableMetadata("processing_snapshots", ("snapshot_id",), ("updated_at", "stage", "snapshot_id"), ("snapshot_id", "document_id", "workflow_run_id", "status", "updated_at", "stage"), "operational_summary", "mutable_snapshot"),
     TableMetadata("validation_issues", ("issue_id",), ("severity", "field", "rule_id", "issue_id"), ("issue_id", "document_id", "severity", "field", "rule_id"), "operational_summary", "append_only"),

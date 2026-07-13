@@ -1,7 +1,7 @@
 # Auth, Tenant, And Permission Model v1 Implementation Plan
 
 **Milestone:** v0.15
-**Status:** Phases 1-2 implemented; Phases 3-5 not started
+**Status:** Phases 1-3 implemented; Phases 4-5 not started
 
 ## 1. Milestone Overview
 
@@ -187,6 +187,8 @@ git status --short --branch
 ### Stop Condition
 
 Stop after tenant-aware storage/read contracts and conformance. Do not wire API guards, Streamlit auth, public mutations, or external identity providers.
+
+**Completion:** Implemented and verified for the document projection boundary. `DocumentRecord`, in-memory/SQLite document reads, and Query Facade document reads support optional tenant narrowing; migration `002` preserves legacy rows as `tenant-local`; API document payloads remain unchanged. Child-record tenant columns, cross-record tenant validation, and authenticated enforcement are deferred to Phase 4 or a separately approved expansion.
 
 ## 6. Phase 4: Read-Only Consumer Guards And Writer Attribution Boundary
 

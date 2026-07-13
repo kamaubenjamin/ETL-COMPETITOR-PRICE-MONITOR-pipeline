@@ -17,6 +17,7 @@ from .contracts import (
     ReviewStatus,
     ValidationSeverity,
     WorkflowRunStatus,
+    LEGACY_TENANT_ID,
 )
 from .privacy import (
     JsonScalar,
@@ -44,6 +45,22 @@ def _set_metadata(record: Any) -> None:
     object.__setattr__(record, "metadata", validate_safe_metadata(record.metadata))
 
 
+def _optional_id(value: Any, field_name: str) -> str | None:
+    return None if value is None else stable_id(value, field_name)
+
+
+def _access_tags(values: Any) -> tuple[str, ...]:
+    if isinstance(values, str):
+        raise ValueError("access_tags must be a collection")
+    try:
+        tags = tuple(values)
+    except TypeError:
+        raise ValueError("access_tags must be a collection") from None
+    if len(tags) > 32:
+        raise ValueError("access_tags is too large")
+    return tuple(sorted({stable_id(tag, "access_tag") for tag in tags}))
+
+
 @dataclass(frozen=True, slots=True)
 class DocumentRecord(PersistentRecord):
     document_id: str
@@ -57,6 +74,13 @@ class DocumentRecord(PersistentRecord):
     updated_at: str
     version: int = 1
     metadata: Mapping[str, JsonScalar] = field(default_factory=dict, repr=False)
+    tenant_id: str = LEGACY_TENANT_ID
+    workspace_id: str | None = None
+    created_by: str | None = None
+    updated_by: str | None = None
+    owner_principal_id: str | None = None
+    source_system: str | None = None
+    access_tags: tuple[str, ...] = ()
 
     ORDERING = DETERMINISTIC_ORDERING["document"]
 
@@ -71,6 +95,11 @@ class DocumentRecord(PersistentRecord):
             object.__setattr__(self, name, utc_timestamp(getattr(self, name), name))
         object.__setattr__(self, "version", positive_version(self.version))
         _set_metadata(self)
+        object.__setattr__(self, "tenant_id", stable_id(self.tenant_id, "tenant_id"))
+        for name in ("workspace_id", "created_by", "updated_by", "owner_principal_id"):
+            object.__setattr__(self, name, _optional_id(getattr(self, name), name))
+        object.__setattr__(self, "source_system", optional_string(self.source_system, "source_system", maximum=128))
+        object.__setattr__(self, "access_tags", _access_tags(self.access_tags))
 
 
 @dataclass(frozen=True, slots=True)

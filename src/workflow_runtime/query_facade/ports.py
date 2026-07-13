@@ -24,7 +24,7 @@ from .read_models import (
 class DocumentReadPort(Protocol):
     def list_documents(self, query: DocumentQuery, page: PageRequest) -> PageResult[DocumentInboxItem]: ...
 
-    def get_document(self, document_id: str) -> DocumentDetail: ...
+    def get_document(self, document_id: str, *, tenant_id: str | None = None) -> DocumentDetail: ...
 
 
 @runtime_checkable
@@ -75,4 +75,3 @@ class WorkflowQueryFacadePort(
     Protocol,
 ):
     """Complete public read surface; intentionally contains no commands."""
-

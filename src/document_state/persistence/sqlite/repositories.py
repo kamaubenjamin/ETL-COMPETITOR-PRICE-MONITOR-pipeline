@@ -96,12 +96,15 @@ class SQLiteDocumentStateReader:
     def __init__(self, factory: SQLiteConnectionFactory) -> None:
         self.__factory = factory
 
-    def _get(self, table: _Table, value: Any) -> Any:
+    def _get(self, table: _Table, value: Any, *, tenant_id: str | None = None) -> Any:
         safe_id = _read_id(value, table.id_field)
+        safe_tenant = None if tenant_id is None else _read_id(tenant_id, "tenant_id")
+        tenant_clause = "" if safe_tenant is None else " AND tenant_id = ?"
+        parameters = (safe_id,) if safe_tenant is None else (safe_id, safe_tenant)
         try:
             with self.__factory.transaction() as connection:
                 row = connection.execute(
-                    f"SELECT * FROM {table.name} WHERE {table.id_field} = ?", (safe_id,)
+                    f"SELECT * FROM {table.name} WHERE {table.id_field} = ?{tenant_clause}", parameters
                 ).fetchone()
         except PersistenceError:
             raise DocumentStateError("source_unavailable") from None
@@ -136,8 +139,8 @@ class SQLiteDocumentStateReader:
             offset=safe_page.offset,
         )
 
-    def get_document(self, document_id: str) -> DocumentRecord:
-        return self._get(DOCUMENTS, document_id)
+    def get_document(self, document_id: str, *, tenant_id: str | None = None) -> DocumentRecord:
+        return self._get(DOCUMENTS, document_id, tenant_id=tenant_id)
 
     def list_documents(self, query: DocumentQuery, page: PageRequest) -> PageResult[DocumentRecord]:
         return self._list(DOCUMENTS, page, query_to_dict(_query(query, DocumentQuery)))
