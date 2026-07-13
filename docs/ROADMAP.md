@@ -243,7 +243,8 @@ Status:
 - Phase 1 implemented: immutable writer commands, safe errors/results, deterministic idempotency helpers, fixed mapping catalog, and structural internal writer ports
 - Phase 2 implemented: injected ingestion writer with idempotent document/lifecycle/audit behavior, optimistic classification snapshots, partial retry continuation, and in-memory/SQLite parity
 - Phase 3 implemented: processing, validation, matching, review, correction, reprocess, workflow, lifecycle, and audit writers with optimistic versions, append idempotency, and backend parity
-- Phases 4-5 not started
+- Phase 4 implemented: full writer-to-Query-Facade/API-provider read-after-write verification, backend equivalence, SQLite reconstruction, replay, filters, pagination, privacy, and GET-only compatibility
+- Phase 5 not started
 
 Planned capabilities:
 - Runtime-neutral internal Document State writer commands and services

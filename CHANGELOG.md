@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.13 Phase 4 end-to-end read-after-write verification across writer services, in-memory and reconstructed SQLite repositories, Document State Query Facade adaptation, and the existing API provider, covering backend equivalence, replay, partial resume, filters, pagination, privacy projection, v0.9 payload compatibility, and GET-only routes without production changes.
+
 - Added v0.13 Phase 3 internal processing, validation, matching, review, correction, reprocess, workflow-run, lifecycle, and audit writers with explicit repository injection, deterministic append idempotency, optimistic mutable-record updates, bounded partial retry behavior, privacy-safe results, and in-memory/SQLite verification.
 
 - Added v0.13 Phase 2 ingestion-to-Document-State writing with explicit repository injection, replay-safe document creation, deterministic received/classified lifecycle and audit idempotency, optimistic classification snapshot updates, bounded partial-retry results, in-memory/SQLite verification, and no backend selection or API/UI/runtime coupling.

@@ -1,7 +1,7 @@
 # Upload-to-Processing Writer Integration v1 Implementation Plan
 
 **Milestone:** v0.13
-**Status:** Phases 1-3 complete; Phases 4-5 not started
+**Status:** Phases 1-4 complete; Phase 5 not started
 
 ## 1. Milestone Overview
 
@@ -236,6 +236,8 @@ git status --short --branch
 ### Stop Condition
 
 Stop after read-after-write, privacy, compatibility, and boundary verification. Do not activate production mode or add mutation APIs/UI.
+
+Phase 4 completed with full-lifecycle writer fixtures, in-memory/SQLite projection equivalence, SQLite reconstruction, unchanged replay and partial-resume checks, facade filters/pagination, end-to-end privacy assertions, v0.9 API-provider shape checks, and GET-only route verification. No production writer, adapter, API, or UI change was required.
 
 ## 6. Phase 5: Documentation, Release Closure, And Handoff
 

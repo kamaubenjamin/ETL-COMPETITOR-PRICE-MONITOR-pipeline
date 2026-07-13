@@ -1,7 +1,7 @@
 # Upload-to-Processing Writer Integration v1 Plan
 
 **Milestone:** v0.13
-**Status:** Accepted; Phases 1-3 implemented
+**Status:** Accepted; Phases 1-4 implemented
 
 ## 1. Problem Statement
 
@@ -110,6 +110,8 @@ Phase 1 implements these contracts under `src/document_state/writers/` as immuta
 Phase 2 implements `IngestionDocumentStateWriter` with explicitly injected Document State read/write repository ports. It supports replay-safe document creation, received/classified lifecycle appends, classification processing snapshot create/update, and optional safe ingestion audit events against either active repository backend. It does not select a backend or import producer, API, UI, Query Facade, or persistence-engine implementations.
 
 Phase 3 implements processing, validation, matching, review, correction, reprocess, workflow-run, lifecycle, and audit writer services over the same injected repository boundary. Append-only records use deterministic keys, mutable records use read-compare-create and explicit expected versions, and bounded partial failures can be retried without duplicate persisted records.
+
+Phase 4 verifies the complete writer-to-read path with deterministic fixtures against both active backends. In-memory and reconstructed SQLite state produce equivalent Workflow Query Facade and API-provider projections; replay, filters, pagination, privacy projection, v0.9 payload shapes, and GET-only API behavior remain intact without production-module changes.
 
 ## 7. Runtime Output Mapping
 

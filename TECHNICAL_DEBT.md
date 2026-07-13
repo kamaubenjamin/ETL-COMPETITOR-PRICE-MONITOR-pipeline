@@ -256,7 +256,7 @@ References:
 
 ### Current Status
 
-**v0.13 Phases 1-3 are complete; producer integration and read-after-write verification remain pending.**
+**v0.13 Phases 1-4 are complete; release closure remains pending.**
 
 Document State has durable local/dev repositories and explicit composition, but upload, ingestion, workflow, validation, matching, and review outcomes do not yet populate it. API and Streamlit remain read-only and must not receive repository write ports.
 
@@ -275,6 +275,8 @@ Phase 1 provides immutable JSON-compatible commands for all planned writer domai
 Phase 2 provides an internal ingestion writer over explicitly injected read/write repository ports. Document create retries use safe read-compare-create, lifecycle/audit appends reuse deterministic repository idempotency, classification snapshots enforce expected versions, and operation-level partial retries resume without backend selection or API/UI coupling. Opaque artifact references are validated at the command boundary but remain outside current query-facing records because no artifact reference field has yet been approved for persistence.
 
 Phase 3 provides internal processing, validation, matching, review, correction, reprocess, workflow-run, lifecycle, and audit writer services. Mutable snapshots use explicit versions and retry comparison; append-only records use domain-separated keys; batch failures return only bounded committed IDs and resume safely. The services remain backend-neutral and are not yet called by runtime producers.
+
+Phase 4 verifies deterministic writer output through Document State repositories, `DocumentStateQueryFacadeAdapter`, the Workflow Query Facade port, and `FacadeDocumentIntelligenceProvider`. Both active backends produce equivalent projections, SQLite survives reconstruction, replay remains duplicate-free, filters/pagination remain correct, and v0.9 API shapes and GET-only routes remain unchanged. Direct runtime producer adapters are still deferred.
 
 Still deferred beyond v0.13:
 

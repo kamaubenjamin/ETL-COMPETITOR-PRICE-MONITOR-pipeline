@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted. Phase 1 contracts and Phase 2-3 internal writer decisions are implemented; producer runtime integration and read-after-write verification remain pending.
+Accepted. Phases 1-4 are implemented and verified; release closure remains pending. Runtime producer adapters remain deferred from the current internal writer foundation.
 
 ## Context
 
