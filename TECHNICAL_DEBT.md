@@ -306,7 +306,7 @@ References:
 
 ### Current Status
 
-**v0.14 is implemented and verified; closed pending owner tag.**
+**v0.14 is closed and tagged as `v0.14-lifecycle-snapshot-advancement`.**
 
 v0.13 lifecycle events are append-only and authoritative, but the mutable `DocumentRecord` remains at `received`. v0.14 plans a dedicated Document State lifecycle service that applies one explicit transition catalog and advances the projection through existing optimistic repository ports.
 
@@ -347,6 +347,34 @@ References:
 - `docs/architecture/LIFECYCLE_SNAPSHOT_ADVANCEMENT_V1_HANDOFF.md`
 - `docs/adr/ADR-019-lifecycle-snapshot-advancement.md`
 - `docs/releases/v0.14-lifecycle-snapshot-advancement.md`
+
+---
+
+## Auth, Tenant, And Permission Model v1
+
+### Current Status
+
+**v0.15 planning is complete; implementation has not started.**
+
+Current security debt:
+
+- Document Intelligence API resolves request IDs but no authenticated principal.
+- API providers and Query Facade reads have no mandatory tenant scope.
+- Streamlit workspace selection is display-only and `api_preview` is unauthenticated.
+- Document State records lack explicit tenant, workspace, ownership, creator, and updater fields.
+- Selected records carry actor IDs without verified principal/tenant attribution.
+- Writers receive commands/repositories but no trusted authorization gateway or actor context.
+- SQLite has no tenant columns/backfill; PostgreSQL/Supabase and row-level security are not implemented.
+
+v0.15 planning addresses this debt with a provider-neutral `src/security/` boundary, fixed role/permission catalogs, default-deny policies, reusable guards, explicit tenant scopes, deterministic local identities, future tenant-aware storage/read contracts, and trusted writer/audit attribution. Security policy remains outside API routes, Streamlit, repositories, Query Facade logic, and writers.
+
+Implementation remains phased and deferred. No auth code, tenant schema, migration, endpoint, UI behavior, external identity provider, database integration, or dependency is added by planning.
+
+References:
+
+- `docs/architecture/AUTH_TENANT_PERMISSION_MODEL_V1_PLAN.md`
+- `docs/architecture/AUTH_TENANT_PERMISSION_MODEL_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-020-auth-tenant-permission-boundaries.md`
 
 ---
 

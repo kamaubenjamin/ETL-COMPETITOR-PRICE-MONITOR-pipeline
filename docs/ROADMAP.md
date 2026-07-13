@@ -273,7 +273,7 @@ Status:
 - Phase 3 implemented: optional writer integration with policy prevalidation, idempotent append, projection advancement, replay repair, explicit status allowlists, and legacy compatibility
 - Phase 4 implemented: in-memory/SQLite read-after-advance verification through the Query Facade and API provider, including SQLite reconstruction, replay repair, filters, pagination, privacy, and GET-only compatibility
 - Phase 5 completed: focused/full verification, summary, handoff, release notes, roadmap, debt, plan, ADR, and changelog closure
-- Closed pending owner tag as `v0.14-lifecycle-snapshot-advancement`
+- Closed and tagged as `v0.14-lifecycle-snapshot-advancement`
 
 Planned capabilities:
 - Dedicated Document State lifecycle policy and advancement service
@@ -291,6 +291,36 @@ References:
 - `docs/architecture/LIFECYCLE_SNAPSHOT_ADVANCEMENT_V1_HANDOFF.md`
 - `docs/adr/ADR-019-lifecycle-snapshot-advancement.md`
 - `docs/releases/v0.14-lifecycle-snapshot-advancement.md`
+
+### v0.15 Auth / Tenants / Permissions
+
+Status:
+- Architecture plan, implementation plan, and ADR-020 created
+- Planning complete; implementation not started
+
+Planned capabilities:
+- Provider-neutral `src/security/` identity and authorization boundary
+- Immutable principal, tenant, role, permission, resource-scope, context, decision, and actor-attribution contracts
+- Default-deny tenant isolation with explicit platform-admin cross-tenant intent
+- Scoped service-account and explicit system-actor identities
+- Reusable API guards without inline route permission logic
+- Tenant-aware Document State and Workflow Query Facade migration strategy
+- Security-aware writer command gateway and audit attribution planning
+- Deterministic local/test identities with production fail-closed behavior
+- Future Supabase/PostgreSQL adapters without core provider coupling
+- No public mutations, UI changes, migrations, dependencies, OCR, LLM, or external-service implementation during planning
+
+Proposed phases:
+1. Security contracts and role catalog
+2. Policy engine and permission guards
+3. Tenant-aware Document State and Query Facade contracts
+4. Read-only API/Streamlit guard integration and writer attribution boundary
+5. Security verification, documentation, and release closure
+
+References:
+- `docs/architecture/AUTH_TENANT_PERMISSION_MODEL_V1_PLAN.md`
+- `docs/architecture/AUTH_TENANT_PERMISSION_MODEL_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-020-auth-tenant-permission-boundaries.md`
 
 ## Prior Milestone Context
 

@@ -2,7 +2,9 @@
 
 ## Unreleased
 
-- Closed v0.14 Lifecycle Snapshot Advancement pending owner tag, with immutable lifecycle/recovery contracts, an explicit transition policy, repository-injected projection advancement, optional writer integration, audit-first `projection_pending` and replay repair behavior, in-memory/SQLite equivalence, Query Facade/API-provider read-after-advance verification, unchanged GET-only API and Streamlit contracts, and release handoff documentation.
+- Added v0.15 Auth / Tenants / Permissions planning and ADR-020, defining a provider-neutral default-deny security boundary, immutable principal/tenant/role/permission/context/decision contracts, explicit tenant isolation, reusable API guards, tenant-aware storage and Query Facade migration, trusted writer/audit attribution, deterministic local identities, and future Supabase/PostgreSQL adapters while preserving current read-only local preview and deferring implementation, migrations, dependencies, public mutations, UI changes, OCR, LLM, and external services.
+
+- Closed and tagged v0.14 Lifecycle Snapshot Advancement as `v0.14-lifecycle-snapshot-advancement`, with immutable lifecycle/recovery contracts, an explicit transition policy, repository-injected projection advancement, optional writer integration, audit-first `projection_pending` and replay repair behavior, in-memory/SQLite equivalence, Query Facade/API-provider read-after-advance verification, unchanged GET-only API and Streamlit contracts, and release handoff documentation.
 
 - Added v0.14 Phase 4 read-after-advance integration verification across explicit in-memory and reconstructed SQLite compositions, proving governed status/current-stage/version updates through the Document State Query Facade adapter and existing API provider shapes, with backend equivalence, replay no-op, projection repair, filters, pagination, privacy projection, and GET-only compatibility without production changes.
 
