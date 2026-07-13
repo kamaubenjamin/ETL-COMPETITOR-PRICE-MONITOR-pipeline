@@ -11,6 +11,7 @@ def test_all_result_statuses_serialize_safely():
     results = (
         WriterResult("success", "create_document", ("doc-001",), 1),
         WriterResult("skipped_idempotent", "append_audit", ("audit-001",), 1),
+        WriterResult("projection_pending", "append_event", ("event-001",), 1, error_code="version_conflict", message="Version conflict."),
         WriterResult("conflict", "update_snapshot", error_code="version_conflict", message="Version conflict."),
         WriterResult("invalid_input", "map_result", error_code="invalid_command", message="Command is invalid."),
         WriterResult("failed", "append_event", error_code="repository_unavailable", message="Repository is unavailable."),

@@ -13,6 +13,7 @@ from .errors import WriterErrorCode
 class WriterResultStatus(str, Enum):
     SUCCESS = "success"
     SKIPPED_IDEMPOTENT = "skipped_idempotent"
+    PROJECTION_PENDING = "projection_pending"
     CONFLICT = "conflict"
     INVALID_INPUT = "invalid_input"
     FAILED = "failed"
