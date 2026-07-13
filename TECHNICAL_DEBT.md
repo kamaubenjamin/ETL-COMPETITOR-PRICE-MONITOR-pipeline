@@ -354,7 +354,7 @@ References:
 
 ### Current Status
 
-**v0.15 planning is complete; implementation has not started.**
+**v0.15 Phase 1 is implemented; Phases 2-5 have not started.**
 
 Current security debt:
 
@@ -366,9 +366,9 @@ Current security debt:
 - Writers receive commands/repositories but no trusted authorization gateway or actor context.
 - SQLite has no tenant columns/backfill; PostgreSQL/Supabase and row-level security are not implemented.
 
-v0.15 planning addresses this debt with a provider-neutral `src/security/` boundary, fixed role/permission catalogs, default-deny policies, reusable guards, explicit tenant scopes, deterministic local identities, future tenant-aware storage/read contracts, and trusted writer/audit attribution. Security policy remains outside API routes, Streamlit, repositories, Query Facade logic, and writers.
+Phase 1 establishes the provider-neutral `src/security/` boundary with immutable contracts, exact role/permission catalogs, explicit anonymous/user/service/system principals, tenant and resource scopes, authorization contexts and decisions, privacy-safe errors, and pure default-deny policy evaluation. Security policy remains outside API routes, Streamlit, repositories, Query Facade logic, and writers.
 
-Implementation remains phased and deferred. No auth code, tenant schema, migration, endpoint, UI behavior, external identity provider, database integration, or dependency is added by planning.
+Remaining implementation is phased and deferred. No identity-provider adapter, enforcement guard, tenant schema, migration, endpoint, UI behavior, database integration, or dependency was added in Phase 1.
 
 References:
 

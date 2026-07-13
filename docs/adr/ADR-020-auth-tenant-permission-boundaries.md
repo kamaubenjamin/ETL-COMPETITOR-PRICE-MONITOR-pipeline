@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed for v0.15. Planning is complete; implementation has not started.
+Accepted for v0.15. Phase 1 contracts, catalogs, context, decisions, privacy-safe errors, and pure default-deny policy evaluation are implemented; provider adapters, guards, and runtime integration remain pending.
 
 ## Context
 
@@ -163,4 +163,3 @@ Mitigations are default deny, explicit modes, guard-produced scope, mandatory ne
 ## Compatibility
 
 ADR-020 is additive to ADR-014 through ADR-019. It preserves current read-only API/UI behavior during migration and does not modify legacy `src/api/app.py`, root `dashboard.py`, or competitor-price modules.
-

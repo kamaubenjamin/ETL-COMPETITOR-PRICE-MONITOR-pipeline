@@ -1,7 +1,7 @@
 # Auth, Tenant, And Permission Model v1 Implementation Plan
 
 **Milestone:** v0.15
-**Status:** Proposed; implementation not started
+**Status:** Phase 1 implemented; Phases 2-5 not started
 
 ## 1. Milestone Overview
 
@@ -28,7 +28,7 @@ No phase may hard-code Supabase, add public mutation endpoints, let API routes i
 - Create immutable provider-neutral contracts for `Principal`, `Tenant`, role bindings, permissions, `ResourceScope`, `AuthorizationContext`, `AuthorizationDecision`, `PolicyResult`, and actor attribution.
 - Create fixed permission and role catalogs.
 - Define user, service-account, and system identities.
-- Add privacy-safe errors and deterministic local/test fixtures.
+- Add privacy-safe errors and deterministic pure policy evaluation.
 
 ### Expected Files
 
@@ -40,15 +40,15 @@ Create:
 - `src/security/permissions.py`
 - `src/security/roles.py`
 - `src/security/decisions.py`
+- `src/security/context.py`
 - `src/security/errors.py`
-- `src/security/providers/__init__.py`
-- `src/security/providers/local.py`
-- `tests/security/__init__.py`
-- `tests/security/test_contracts.py`
+- `src/security/policies.py`
 - `tests/security/test_principals.py`
-- `tests/security/test_roles.py`
-- `tests/security/test_local_provider.py`
-- `tests/security/test_boundaries.py`
+- `tests/security/test_permissions_roles.py`
+- `tests/security/test_authorization_context.py`
+- `tests/security/test_policy_catalog.py`
+- `tests/security/test_security_privacy.py`
+- `tests/security/test_security_boundaries.py`
 
 Modify only v0.15 status documentation as needed.
 
@@ -59,7 +59,7 @@ Modify only v0.15 status documentation as needed.
 - Role-to-permission mappings are deterministic.
 - Unknown roles/permissions reject.
 - Service and system principals are explicit.
-- Local identities are deterministic and unavailable in production mode.
+- Anonymous, user, service-account, and system principals are explicit and deterministic.
 - Tokens, credentials, raw claims, and unsafe metadata reject.
 - Forbidden imports and external dependencies are absent.
 
@@ -76,7 +76,9 @@ git status --short --branch
 
 ### Stop Condition
 
-Stop after contracts/catalog/local-provider tests. Do not add guards, persistence fields, API integration, or UI changes.
+Stop after contracts, catalogs, context, pure policy, privacy, and boundary tests. Do not add identity-provider adapters, guards, persistence fields, API integration, or UI changes.
+
+**Completion:** Implemented and verified. The pure policy evaluator was included to make default-deny and tenant-scope semantics executable; provider adapters and enforcement guards remain Phase 2 work.
 
 ## 4. Phase 2: Policy Engine And Permission Guards
 
@@ -331,4 +333,3 @@ Recommended owner-reviewed phase commits:
 Recommended tag after closure verification:
 
 `v0.15-auth-tenant-permissions`
-

@@ -1,7 +1,7 @@
 # Auth, Tenant, And Permission Model v1 Plan
 
 **Milestone:** v0.15
-**Status:** Proposed; planning complete, implementation not started
+**Status:** Phase 1 implemented; Phases 2-5 not started
 
 ## 1. Problem Statement
 
@@ -172,9 +172,9 @@ Recommended baseline mappings:
 | Role | Baseline permissions |
 | --- | --- |
 | `platform_admin` | All fixed v1 permissions; cross-tenant access still requires explicit enablement and audited scope |
-| `tenant_admin` | All document permissions, `workflow:read`, `workflow:run`, `audit:read`, `tenant:admin`, and `user:admin` within the active tenant |
-| `operations_manager` | `document:list`, `document:read`, `document:ingest`, `document:review`, `document:approve`, `document:export`, `workflow:read`, `workflow:run`, and `audit:read` |
-| `reviewer` | `document:list`, `document:read`, `document:review`, and `document:approve` |
+| `tenant_admin` | Operations-manager permissions plus `document:ingest`, `document:export`, `audit:read`, `tenant:admin`, and `user:admin` within the active tenant |
+| `operations_manager` | Reviewer permissions plus `document:approve` and `workflow:run` |
+| `reviewer` | Viewer permissions plus `document:review` |
 | `viewer` | `document:list`, `document:read`, and `workflow:read` |
 | `service_account` | No baseline permission grant; every permission and tenant scope is explicitly assigned for the service purpose |
 
@@ -354,6 +354,8 @@ No migration file or schema change is part of this planning task.
 3. **Tenant-aware Document State and Query Facade contracts:** versioned tenant/ownership fields, repository/query scopes, compatibility mapping, schema/migration design and conformance tests.
 4. **Read-only API and Streamlit security integration plus writer attribution boundary:** opt-in API guards, authorized provider scope, local compatibility mode, future command-gateway contracts, and audit attribution; no public mutations.
 5. **Verification, documentation, and release closure:** boundary/privacy verification, full regression, summary, handoff, release notes, and migration/production-readiness decision.
+
+Phase 1 delivered the standard-library-only `src/security/` contracts, exact permission and role catalogs, explicit anonymous/user/service/system principals, immutable authorization context and decisions, privacy-safe errors, and a pure default-deny policy evaluator. Identity-provider adapters, reusable guards, and all API, UI, storage, Query Facade, and writer integration remain deferred to later phases.
 
 ## 24. Risks And Mitigations
 

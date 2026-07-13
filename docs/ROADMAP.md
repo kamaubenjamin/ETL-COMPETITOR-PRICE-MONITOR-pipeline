@@ -296,7 +296,8 @@ References:
 
 Status:
 - Architecture plan, implementation plan, and ADR-020 created
-- Planning complete; implementation not started
+- Phase 1 implemented: provider-neutral security contracts, exact permission/role catalogs, explicit principal types, authorization context/decisions, privacy-safe errors, and pure default-deny tenant policy
+- Phases 2-5 not started
 
 Planned capabilities:
 - Provider-neutral `src/security/` identity and authorization boundary
