@@ -1,7 +1,7 @@
 # Persistent Document State v1 Implementation Plan
 
 **Milestone:** v0.11
-**Status:** Phases 1-3 complete; Phases 4-5 pending
+**Status:** Phases 1-4 complete; Phase 5 pending
 
 ## 1. Milestone Overview
 
@@ -162,6 +162,8 @@ Stop after adapter and parity verification. Do not wire production composition, 
 
 ## 5. Phase 4: Boundary, Privacy, And Repository Verification
 
+**Completion note:** Added recursive package and reverse-dependency checks, adapter allowlist verification, repository-to-facade privacy integration tests, immutable-return and tamper-resistance checks, privacy-safe repository/facade error assertions, optimistic version and idempotency conflict verification, read-only surface checks, and no database/file/network dependency checks. The Document State suite passes 97 tests. Query Facade, API, Streamlit, and Review Runtime regressions remain green; boundary verification is compliant. No production code, exemption, database, API, or UI change was needed.
+
 ### Objectives
 
 - Recursively verify core, repository, and adapter import rules.
@@ -175,9 +177,8 @@ Stop after adapter and parity verification. Do not wire production composition, 
 Create or modify only as evidence requires:
 
 - `tests/document_state/test_boundary_rules.py`
-- `tests/document_state/test_privacy_security.py`
-- `tests/document_state/test_repository_contract_conformance.py`
-- `tests/api/document_intelligence/test_document_state_boundary_integration.py`
+- `tests/document_state/test_repository_privacy_integration.py`
+- `tests/document_state/test_query_facade_adapter_boundaries.py`
 - `tests/boundaries/` or `scripts/verify_boundaries.py` only if the new package is not covered
 
 ### Tests

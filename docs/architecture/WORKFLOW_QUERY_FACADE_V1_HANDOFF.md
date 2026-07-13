@@ -67,7 +67,8 @@ The Document Intelligence API owns HTTP behavior. Streamlit and future FlowSync 
 - Nine API transport tests skip because the optional TestClient/httpx dependency is unresolved.
 - Runtime boundary verification reports two pre-existing BOM-affected files.
 - Production identity, tenant policy, persistence, availability objectives, and telemetry are absent.
+- v0.11 Phase 4 verifies that API and Streamlit do not import Document State directly and that the repository adapter preserves the facade's privacy-safe read boundary.
 
 ## Next Recommended Milestone
 
-Complete v0.11 boundary/privacy hardening and release closure. A later milestone must define database-backed repositories and an explicit composition root before selecting the Document State adapter for production reads. Mutation endpoints remain a separate architecture decision.
+Complete v0.11 release documentation and handoff. A later milestone must define database-backed repositories and an explicit composition root before selecting the Document State adapter for production reads. Mutation endpoints remain a separate architecture decision.

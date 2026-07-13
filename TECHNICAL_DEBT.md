@@ -165,7 +165,7 @@ References:
 
 ### Current Status
 
-**v0.11 Phases 1-3 are implemented; hardening and closure remain pending.**
+**v0.11 Phases 1-4 are implemented; release closure remains pending.**
 
 The milestone plans persistence-neutral contracts and deterministic repositories but deliberately defers:
 
@@ -188,6 +188,8 @@ Phase 1 provides persistence-neutral contracts only: ten immutable record types,
 Phase 2 provides deterministic process-local repositories only. Separate reader/writer views share lock-protected memory, writes revalidate immutable records, mutable snapshots enforce expected versions, and append-only records enforce stable-key idempotency. State is neither durable nor cross-process; database transactions, persistence, production composition, and live writers remain deferred.
 
 Phase 3 provides a read-only adapter from injected Document State read repositories to public Workflow Query Facade models. It preserves facade filters, ordering, bounded pagination, safe errors, and privacy projections, but no production composition root selects it and no API or UI reads repositories directly.
+
+Phase 4 verifies recursive import boundaries, API/UI isolation, privacy projection, immutable repository returns, safe error translation, optimistic conflicts, append idempotency conflicts, and absence of database/file/network access. This verification does not make the process-local repositories durable or production-ready.
 
 References:
 

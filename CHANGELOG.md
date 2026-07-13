@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Added v0.11 Persistent Document State Phases 1-3 with ten immutable privacy-safe records, bounded repository contracts, deterministic lock-protected in-memory repositories, and a read-only adapter that projects repository records through the existing Workflow Query Facade port; database, migrations, production composition, live writers, and direct API/UI integration remain deferred.
+- Added v0.11 Persistent Document State Phases 1-4 with ten immutable privacy-safe records, bounded repository contracts, deterministic lock-protected in-memory repositories, a read-only Workflow Query Facade adapter, and recursive boundary/privacy/repository hardening; database, migrations, production composition, live writers, and direct API/UI integration remain deferred.
 
 - Closed and tagged v0.10 Workflow Query Facade with frozen privacy-safe read models, bounded pagination, structural read ports, a deterministic immutable in-memory facade, a preferred API-side facade adapter, recursive import/privacy verification, bounded facade-error mapping, full regression verification, and release handoff documentation while preserving v0.9 routes, envelopes, payload meanings, filters, pagination, security headers, request IDs, and GET-only behavior.
 

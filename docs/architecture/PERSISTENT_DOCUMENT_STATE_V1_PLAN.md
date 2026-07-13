@@ -1,7 +1,7 @@
 # Persistent Document State v1 Plan
 
 **Milestone:** v0.11
-**Status:** Phases 1-3 implemented; Phases 4-5 pending
+**Status:** Phases 1-4 implemented; Phase 5 pending
 
 ## 1. Problem Statement
 
@@ -169,6 +169,8 @@ The Query Facade package does not import Document State. API and UI packages do 
 - Cross-repository snapshot consistency, transactions, isolation levels, and distributed locking are deferred to the database architecture.
 
 ## 14. Testing Strategy
+
+**Phase 4 verification note:** Recursive boundary checks now prove that core Document State imports only standard-library or package-local modules, the explicit adapter imports only public Document State and Workflow Query Facade surfaces, and API/Streamlit contain no direct Document State imports. Repository-to-adapter privacy projections, immutable returns, safe repository/facade errors, optimistic conflicts, append idempotency conflicts, and absence of database/file/network dependencies are covered. No production defect or boundary exemption was required.
 
 - Contract immutability, validation, JSON serialization, and unsafe-field rejection.
 - Repository protocol structure and absence of generic/mutation leakage into read ports.
