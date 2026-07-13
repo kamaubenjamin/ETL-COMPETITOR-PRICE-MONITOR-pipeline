@@ -1,7 +1,7 @@
 # Durable Document State v1 Plan
 
 **Milestone:** v0.12
-**Status:** Phase 1 implemented; Phases 2-5 pending
+**Status:** Phases 1-2 implemented; Phases 3-5 pending
 
 ## 1. Problem Statement
 
@@ -98,10 +98,11 @@ src/document_state/persistence/
   schema.py
   sqlite/
     __init__.py
-    # connection, mappings, and repositories begin in Phase 2
-  sql/                    # begins with real migration SQL in Phase 2
-    sqlite/
-      0001_initial.sql
+    connection.py
+    migrations.py
+    mappers.py
+    repositories.py
+    schema.sql
 tests/document_state/persistence/
   test_migrations.py
   test_sqlite_repositories.py
@@ -120,16 +121,16 @@ Create one table per record family plus migration metadata:
 
 | Table | Semantics | Primary Key / Scope |
 |---|---|---|
-| `document_records` | Mutable current document snapshot | `document_id`, integer `version` |
+| `documents` | Mutable current document snapshot | `document_id`, integer `version` |
 | `document_lifecycle_events` | Append-only lifecycle history | `event_id`, `document_id` |
 | `processing_snapshots` | Mutable stage/run snapshot | `snapshot_id`, integer `version` |
-| `validation_issue_records` | Append-only validation summaries | `issue_id`, `document_id` |
-| `matching_summary_records` | Append-only matching summaries | `match_id`, `document_id` |
-| `review_reference_records` | Mutable review summary | `review_case_id`, integer `version` |
-| `correction_summary_records` | Append-only correction lineage | `correction_id`, `review_case_id` |
-| `reprocess_plan_records` | Append-only dry-run plan summary | `plan_id`, `review_case_id` |
-| `workflow_run_records` | Mutable workflow snapshot | `run_id`, integer `version` |
-| `audit_event_records` | Append-only safe audit history | `event_id`, scoped references |
+| `validation_issues` | Append-only validation summaries | `issue_id`, `document_id` |
+| `matching_summaries` | Append-only matching summaries | `match_id`, `document_id` |
+| `review_summaries` | Mutable review summary | `review_case_id`, integer `version` |
+| `correction_summaries` | Append-only correction lineage | `correction_id`, `review_case_id` |
+| `reprocess_plans` | Append-only dry-run plan summary | `plan_id`, `review_case_id` |
+| `workflow_runs` | Mutable workflow snapshot | `run_id`, integer `version` |
+| `audit_events` | Append-only safe audit history | `event_id`, scoped references |
 | `schema_migrations` | Applied migration ledger | version, name, checksum, applied timestamp |
 
 Columns should be explicit and typed rather than storing whole records as opaque JSON. Safe metadata is stored as canonical JSON text after existing allowlist validation. Database rows are mapped back through immutable record constructors before leaving the repository.
@@ -138,9 +139,11 @@ Append-only tables also store an internal `idempotency_key` and canonical `conte
 
 Foreign keys should protect known parent relationships where lifecycle is clear. They must not create cross-runtime ownership or require records that may legitimately arrive out of order without an explicit ingestion rule.
 
+Phase 2 therefore leaves cross-record foreign keys unenforced: the v0.11 ports permit independent and out-of-order summary writes, and adding parent-existence requirements would change repository semantics. Stable IDs and indexed relationship columns are retained; referential enforcement remains a Phase 3 conformance/design decision.
+
 ## 8. Migration Strategy
 
-- Use ordered immutable migrations named `NNNN_description.sql` per engine.
+- Use ordered immutable migration identities per engine. Phase 2 packages the initial SQLite DDL as `sqlite/schema.sql` under identity `001_initial_document_state`; future schema changes must receive new ordered identities and immutable checksums rather than editing an applied definition.
 - Record migration version, filename, SHA-256 checksum, and applied UTC timestamp in `schema_migrations`.
 - Apply each migration transactionally and acquire an engine-appropriate migration lock.
 - Refuse startup on checksum drift, duplicate versions, gaps, or a database schema newer than supported code.
@@ -148,7 +151,7 @@ Foreign keys should protect known parent relationships where lifecycle is clear.
 - Keep destructive or lossy migrations out of automatic startup paths until backup and rollback procedures are approved.
 - Provide explicit migration inspection/apply functions; production startup auto-migration remains a deployment policy decision.
 
-Phase 1 defines immutable migration identities, ledger records, checksum/engine/sequence validation, and deterministic schema metadata. It intentionally creates no SQL or migration execution. Phase 2 begins the initial SQLite SQL migration together with connection and repository behavior.
+Phase 1 defined immutable migration identities, ledger records, checksum/engine/sequence validation, and deterministic schema metadata. Phase 2 added the initial explicit-column SQLite schema, transactional checksum-verified migration application, and durable repositories. Migration SQL is packaged with the SQLite implementation; applied checksums are immutable and reapplication is idempotent.
 
 ## 9. Transaction And Consistency Rules
 

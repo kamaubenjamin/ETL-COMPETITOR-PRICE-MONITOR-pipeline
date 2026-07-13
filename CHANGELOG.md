@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.12 Durable Document State Phase 2 with file-backed standard-library SQLite repositories for all ten Document State record families, explicit relational schema columns, transactional checksum-verified migrations, deterministic filter/order/pagination behavior, optimistic compare-and-swap updates, append idempotency, canonical privacy-safe metadata JSON, and close/reopen durability while preserving API/UI boundaries.
+
 - Added v0.12 Durable Document State Phase 1 with explicit in-memory/SQLite/deferred-PostgreSQL configuration, privacy-safe persistence errors, deterministic metadata for eleven planned tables, immutable migration and applied-ledger contracts, and sequence/engine/checksum validation; SQL, database connections, repositories, API/UI integration, and file/network behavior remain deferred.
 
 - Closed and tagged v0.11 Persistent Document State with ten immutable privacy-safe record families, bounded repository contracts, deterministic lock-protected in-memory repositories, optimistic versions, append idempotency, a read-only Workflow Query Facade adapter, recursive boundary/privacy verification, full regression verification, and release handoff documentation.

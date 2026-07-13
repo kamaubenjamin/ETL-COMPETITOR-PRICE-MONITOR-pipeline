@@ -23,16 +23,19 @@ def _imports(path):
 
 
 def test_persistence_modules_have_only_standard_or_package_local_imports():
-    standard = {"__future__", "dataclasses", "enum", "types", "typing"}
+    standard = {
+        "__future__", "contextlib", "dataclasses", "datetime", "enum", "hashlib",
+        "json", "pathlib", "sqlite3", "types", "typing",
+    }
     for path in ROOT.rglob("*.py"):
         modules, _ = _imports(path)
         for module in modules:
             assert module.startswith(".") or module.split(".")[0] in standard
 
 
-def test_phase_one_has_no_database_file_or_network_access():
-    forbidden_imports = {"sqlite3", "sqlalchemy", "requests", "httpx", "socket", "urllib"}
-    forbidden_calls = {"connect", "open", "urlopen"}
+def test_persistence_has_no_network_or_external_database_access():
+    forbidden_imports = {"sqlalchemy", "requests", "httpx", "socket", "urllib"}
+    forbidden_calls = {"urlopen"}
     for path in ROOT.rglob("*.py"):
         modules, tree = _imports(path)
         assert not {module.lstrip(".").split(".")[0] for module in modules} & forbidden_imports
@@ -42,6 +45,8 @@ def test_phase_one_has_no_database_file_or_network_access():
             if isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
         }
         assert not calls & forbidden_calls
+        if "sqlite" not in path.relative_to(ROOT).parts:
+            assert "sqlite3" not in {module.lstrip(".").split(".")[0] for module in modules}
     assert not hasattr(persistence, "create_repository")
 
 

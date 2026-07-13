@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted; Phase 1 implemented and Phases 2-5 pending.
+Accepted; Phases 1-2 implemented and Phases 3-5 pending.
 
 ## Context
 
@@ -53,9 +53,10 @@ src/document_state/persistence/
   schema.py
   sqlite/
     connection.py
-    mappings.py
+    migrations.py
+    mappers.py
     repositories.py
-  sql/sqlite/
+    schema.sql
 ```
 
 This keeps database concerns out of core contracts, gives migrations and mappings explicit ownership, and permits a future `postgres/` sibling with separate engine policy.
@@ -137,3 +138,7 @@ Existing v0.11 privacy validators apply before durable writes and after reads. D
 ## Compatibility
 
 ADR-017 is additive to ADR-016. It preserves v0.11 repository interfaces, v0.10 Query Facade read models, and v0.9 API paths, GET-only methods, payload meanings, envelopes, request IDs, pagination, and security headers. It does not modify Streamlit, legacy API/dashboard, or competitor-price modules.
+
+## Implementation Status
+
+Phase 2 implements the decision with file-backed standard-library SQLite, one short-lived connection per operation, `BEGIN IMMEDIATE` writes, transaction-consistent count/page reads, explicit relational columns, canonical safe metadata JSON, and an ordered checksum-verified migration ledger. SQLite remains local/dev infrastructure; conformance extraction, stronger multi-connection verification, composition selection, and release closure remain in Phases 3-5.

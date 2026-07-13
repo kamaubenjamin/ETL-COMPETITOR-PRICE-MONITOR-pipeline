@@ -1,7 +1,7 @@
 # Durable Document State v1 Implementation Plan
 
 **Milestone:** v0.12
-**Status:** Phase 1 complete; Phases 2-5 pending
+**Status:** Phases 1-2 complete; Phases 3-5 pending
 
 ## 1. Milestone Overview
 
@@ -71,6 +71,8 @@ Stop after persistence contracts, schema metadata, migration validation, and bou
 
 ## 3. Phase 2: SQLite Durable Repository Implementation
 
+**Completion note:** Added an explicit file-backed SQLite connection factory, transactional migration runner and ledger, canonical metadata mappers, relational schema for all ten record families, and separate read/write durable repository views. The implementation preserves v0.11 filters, ordering, pagination, optimistic versions, append idempotency, privacy validation, and immutable reconstruction. Focused Phase 2 tests: 20 passed. Full Document State suite: 147 passed.
+
 ### Objectives
 
 - Implement all v0.11 read and write repository protocols with standard-library SQLite.
@@ -85,11 +87,13 @@ Stop after persistence contracts, schema metadata, migration validation, and bou
 Create:
 
 - `src/document_state/persistence/sqlite/connection.py`
-- `src/document_state/persistence/sqlite/mappings.py`
+- `src/document_state/persistence/sqlite/migrations.py`
+- `src/document_state/persistence/sqlite/mappers.py`
 - `src/document_state/persistence/sqlite/repositories.py`
-- `src/document_state/persistence/sql/sqlite/0001_initial.sql`
+- `src/document_state/persistence/sqlite/schema.sql`
+- `tests/document_state/persistence/test_sqlite_connection.py`
+- `tests/document_state/persistence/test_sqlite_migrations.py`
 - `tests/document_state/persistence/test_sqlite_repositories.py`
-- `tests/document_state/persistence/test_sqlite_durability.py`
 
 Modify:
 
@@ -120,7 +124,7 @@ git status --short --branch
 
 ### Stop Condition
 
-Stop after SQLite repositories and durability verification. Do not add composition, API wiring, live writers, or PostgreSQL.
+Completed. Stop before shared conformance extraction, broader concurrent-connection hardening, composition, API wiring, live writers, or PostgreSQL.
 
 ## 4. Phase 3: Repository Conformance And Transaction Verification
 
