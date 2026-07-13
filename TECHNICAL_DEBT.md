@@ -208,7 +208,7 @@ References:
 
 ### Current Status
 
-**v0.12 Phases 1-3 are implemented; composition and closure remain pending.**
+**v0.12 Phases 1-4 are implemented; release closure remains pending.**
 
 The approved phased recommendation is SQLite for local/dev durability, PostgreSQL as the production target, and Supabase/Postgres as a possible future managed deployment. The milestone must preserve v0.11 repository interfaces and keep API/UI consumers behind the Workflow Query Facade.
 
@@ -227,6 +227,8 @@ Phase 1 provides standard-library-only configuration contracts for `in_memory`, 
 Phase 2 provides file-backed standard-library SQLite repositories for all ten record families, explicit-column schema storage, canonical validated metadata JSON, transactional checksum-ledger migrations, transaction-consistent count/page reads, compare-and-swap updates, append idempotency, deterministic ordering/filtering, and close/reopen durability.
 
 Phase 3 provides a shared in-memory/SQLite repository contract suite plus deterministic SQLite rollback, read-snapshot, migration replay, durability, same-version writer, identical retry, and conflicting idempotency verification. No backend divergence or production-code defect was found. Composition selection, production-scale concurrency/load testing, PostgreSQL, backups, and production operations remain deferred.
+
+Phase 4 provides explicit validated `in_memory` or `sqlite` selection through a frozen composition result with separate read/write repository surfaces. SQLite requires a file path and never falls back to memory; deferred/unknown backends fail closed. Application bootstrap activation, API/UI wiring, live writers, production-scale concurrency/load testing, PostgreSQL, backups, and production operations remain deferred.
 
 Still deferred beyond v0.12:
 

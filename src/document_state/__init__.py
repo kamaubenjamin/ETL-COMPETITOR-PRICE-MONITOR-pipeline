@@ -1,5 +1,6 @@
 """Public persistence-neutral contracts for Document State."""
 
+from .composition import DocumentStateComposition, compose_document_state
 from .contracts import (
     AuditQuery,
     DETERMINISTIC_ORDERING,
@@ -45,6 +46,7 @@ from .repositories_in_memory import (
 __all__ = [
     "AuditEventRecord", "AuditQuery", "CorrectionSummaryRecord", "DEFAULT_PAGE_LIMIT",
     "DETERMINISTIC_ORDERING", "DocumentLifecycleEvent", "DocumentQuery", "DocumentRecord",
+    "DocumentStateComposition",
     "DocumentStateError", "DocumentStateErrorCode", "DocumentStateReadRepositories",
     "DocumentStateWriteRepositories", "DocumentStatus", "DocumentType",
     "InMemoryDocumentStateReader", "InMemoryDocumentStateRepositories",
@@ -54,4 +56,5 @@ __all__ = [
     "ProcessingState", "ReprocessPlanRecord", "ReviewQuery", "ReviewReferenceRecord",
     "ReviewStatus", "SortDirection", "ValidationIssueRecord", "ValidationQuery",
     "ValidationSeverity", "WorkflowRunQuery", "WorkflowRunRecord", "WorkflowRunStatus",
+    "compose_document_state",
 ]

@@ -1,7 +1,7 @@
 # Durable Document State v1 Implementation Plan
 
 **Milestone:** v0.12
-**Status:** Phases 1-3 complete; Phases 4-5 pending
+**Status:** Phases 1-4 complete; Phase 5 pending
 
 ## 1. Milestone Overview
 
@@ -181,6 +181,8 @@ Completed. Stop before composition selection or activation. Do not activate dura
 
 ## 5. Phase 4: Composition Root Planning And Optional Runtime Selection
 
+**Completion note:** Added a frozen `DocumentStateComposition` result and explicit `compose_document_state()` factory for validated `in_memory` or file-backed `sqlite` selection. SQLite is imported and initialized only in its selected branch; invalid, incomplete, unavailable, and deferred backends fail without fallback. Focused Phase 4 tests: 10 passed. Full Document State suite: 175 passed. API/UI defaults and provider wiring remain unchanged.
+
 ### Objectives
 
 - Add typed, explicit selection between `in_memory` and `sqlite` repository bundles.
@@ -193,13 +195,8 @@ Completed. Stop before composition selection or activation. Do not activate dura
 
 Create:
 
-- `src/document_state/persistence/factory.py`
-- `tests/document_state/persistence/test_factory.py`
-- `tests/document_state/persistence/test_composition_boundary.py`
-
-Potentially create after boundary review:
-
-- a top-level Document Intelligence bootstrap module outside API/UI packages
+- `src/document_state/composition.py`
+- `tests/document_state/test_composition.py`
 
 Modify only if injection requires a contract-preserving seam:
 
@@ -229,7 +226,7 @@ git status --short --branch
 
 ### Stop Condition
 
-Stop after explicit selection and composition-boundary verification. Do not switch production defaults, add endpoints, or add live writers automatically.
+Completed. Stop before release closure. Do not switch production defaults, add endpoints, or add live writers automatically.
 
 ## 6. Phase 5: Documentation, Release Closure, And Handoff
 

@@ -1,7 +1,7 @@
 # Durable Document State v1 Plan
 
 **Milestone:** v0.12
-**Status:** Phases 1-3 implemented; Phases 4-5 pending
+**Status:** Phases 1-4 implemented; Phase 5 pending
 
 ## 1. Problem Statement
 
@@ -227,6 +227,8 @@ Repository selection is explicit and validated:
 `src/document_state/persistence/factory.py` may construct a repository bundle from a typed configuration object. It must not read API requests or own deployment secrets. A top-level application bootstrap, outside API/UI packages, later injects the selected read port into `DocumentStateQueryFacadeAdapter` and supplies write ports to approved producers.
 
 Phase 4 may prove selection and injection in tests. Switching the default API source or adding live writers requires separate owner approval and must preserve the rule that API and Streamlit do not import Document State.
+
+Phase 4 adds `compose_document_state(PersistenceConfig)` as the explicit package composition boundary. It returns a frozen result containing the active backend plus separate protocol-typed reader and writer surfaces. `in_memory` has no database side effect; `sqlite` requires an explicit file path and applies the existing migrations during construction. Deferred or invalid backends fail closed, and no consumer is wired automatically.
 
 ## 14. Workflow Query Facade Integration
 

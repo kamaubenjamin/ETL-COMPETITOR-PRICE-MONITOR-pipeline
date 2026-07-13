@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.12 Durable Document State Phase 4 with explicit validated `in_memory` or file-backed `sqlite` composition, a frozen result exposing the active backend and separate read/write protocol surfaces, lazy SQLite initialization, fail-closed deferred/invalid backend handling, no silent fallback, and no automatic API/UI wiring.
+
 - Added v0.12 Durable Document State Phase 3 with a shared in-memory/SQLite repository conformance suite, file reopen and migration replay verification, injected-failure rollback coverage, transaction-consistent read snapshot checks, and deterministic two-writer tests for optimistic updates and append idempotency; no production repository changes were required.
 
 - Added v0.12 Durable Document State Phase 2 with file-backed standard-library SQLite repositories for all ten Document State record families, explicit relational schema columns, transactional checksum-verified migrations, deterministic filter/order/pagination behavior, optimistic compare-and-swap updates, append idempotency, canonical privacy-safe metadata JSON, and close/reopen durability while preserving API/UI boundaries.

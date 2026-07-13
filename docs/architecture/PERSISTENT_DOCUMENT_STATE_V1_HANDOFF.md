@@ -5,7 +5,7 @@
 
 ## Current State
 
-Document State now provides immutable persistence-neutral records, separate read/write ports, deterministic in-memory repositories, and a read-only adapter into the Workflow Query Facade. The repository-backed path is tested but is not selected by a production composition root. No database, migration, live writer, API mutation, or UI change exists.
+Document State provides immutable persistence-neutral records, separate read/write ports, deterministic in-memory repositories, file-backed SQLite repositories, and a read-only adapter into the Workflow Query Facade. `compose_document_state()` now explicitly selects `in_memory` or `sqlite` and exposes separate reader/writer surfaces. No API/UI provider is wired to this selection automatically, and no live writer, API mutation, PostgreSQL, or production deployment is included.
 
 ## Important Files
 
@@ -17,6 +17,8 @@ Document State now provides immutable persistence-neutral records, separate read
 - `errors.py`: stable repository-safe errors.
 - `repositories.py`: separated structural read/write ports.
 - `repositories_in_memory.py`: deterministic process-local repository implementation.
+- `composition.py`: explicit validated in-memory/SQLite selection with no fallback.
+- `persistence/sqlite/`: local/dev durable connection, migrations, mappers, schema, and repositories.
 - `adapters/query_facade_adapter.py`: read-only mapping into public v0.10 read models.
 - `tests/document_state/`: contracts, repositories, adapter, privacy, and boundary coverage.
 - `docs/adr/ADR-016-persistent-document-state.md`: package ownership and persistence decisions.
@@ -45,6 +47,7 @@ The full suite can regenerate `price_history.csv`, `src/canonical_products.json`
 - Preserve immutable records, bounded pagination, deterministic ordering, optimistic versions, append idempotency, and safe coded errors.
 - Add concurrency, privacy, unavailable-source, migration, and full-regression tests for every durable implementation.
 - Introduce production source selection only in an explicit composition root.
+- Use `compose_document_state(PersistenceConfig(...))` for explicit repository construction; never infer a backend from consumer imports.
 
 ## What Not To Change
 
@@ -82,10 +85,10 @@ The API retains HTTP ownership. Streamlit and future FlowSync Document Intellige
 
 ## Known Risks And Deviations
 
-- State is process-local, volatile, and not shared across workers.
-- Atomicity is guaranteed only within one in-memory repository operation.
+- In-memory state remains process-local and volatile; SQLite is durable local/dev state but is not the production concurrency target.
+- Atomicity is one repository operation; cross-record units of work remain undefined.
 - Cross-record transactions, isolation, outbox delivery, backup, and recovery are undefined.
-- No production composition root selects the repository-backed facade source.
+- Package-level composition exists, but no application bootstrap selects it for API/UI or live workflow writers.
 - Identity, authorization, tenant partitioning, retention, and operational telemetry are absent.
 - Limit/offset pagination may not suit large mutable production datasets.
 - Nine optional API transport tests remain skipped.
@@ -93,4 +96,4 @@ The API retains HTTP ownership. Streamlit and future FlowSync Document Intellige
 
 ## Next Recommended Milestone
 
-Plan the durable Document State implementation and composition root before writing code. The plan should select a database approach, define schemas and migrations, tenant and authorization boundaries, transaction/isolation behavior, retention and encrypted blob separation, operational telemetry, and how live upload/processing writers use the existing write ports. API mutation endpoints remain a separate later decision.
+Close v0.12 with final verification, summary, release notes, and durable-state handoff. PostgreSQL, production bootstrap activation, tenant/auth policy, retention execution, encrypted blob storage, telemetry, live upload/processing writers, and API mutation endpoints remain separate future decisions.

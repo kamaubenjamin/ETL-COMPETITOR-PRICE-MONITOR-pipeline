@@ -215,7 +215,8 @@ Status:
 - Phase 1 implemented: persistence configuration, safe errors, deterministic schema metadata, and immutable migration/ledger validation contracts
 - Phase 2 implemented: file-backed SQLite repositories, explicit relational schema, transactional migrations, optimistic updates, append idempotency, and reopen durability
 - Phase 3 implemented: shared in-memory/SQLite conformance, rollback and snapshot consistency, migration replay, and deterministic basic writer concurrency verification
-- Phases 4-5 pending
+- Phase 4 implemented: explicit validated in-memory/SQLite composition with separate read/write surfaces and no silent fallback or automatic consumer wiring
+- Phase 5 pending
 
 Planned capabilities:
 - SQLite-backed local/dev durable repositories behind existing Document State ports
