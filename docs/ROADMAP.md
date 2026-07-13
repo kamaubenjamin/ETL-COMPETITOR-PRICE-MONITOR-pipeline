@@ -126,8 +126,8 @@ References:
 ### v0.8 Document Intelligence Operator Console
 
 Status:
-- Phases 1-5 implemented and verified
-- Release commit and tag pending; backend integration remains deferred
+- Closed and tagged as `v0.8-document-intelligence-operator-console`
+- Live backend integration remains deferred to v0.9 and later milestones
 
 Delivered capabilities:
 - Separate Document Intelligence console beside the legacy competitor-price dashboard
@@ -143,6 +143,24 @@ References:
 - `docs/architecture/DOCUMENT_INTELLIGENCE_OPERATOR_CONSOLE_V1_SUMMARY.md`
 - `docs/architecture/DOCUMENT_INTELLIGENCE_OPERATOR_CONSOLE_V1_HANDOFF.md`
 - `docs/releases/v0.8-document-intelligence-operator-console.md`
+
+### v0.9 Document Intelligence API Foundation
+
+Status:
+- Architecture, implementation plan, and ADR complete
+- Implementation not started
+
+Planned capabilities:
+- Separate versioned read-only Document Intelligence API
+- Health, document, processing, validation, matching, review, correction-history, reprocess-plan, workflow, and audit endpoints
+- Deterministic providers and strict privacy-safe response contracts
+- Streamlit API-provider preview and future FlowSync Document Intelligence consumer boundary
+- R05-compliant integration through a future Workflow Runtime query facade
+
+References:
+- `docs/architecture/DOCUMENT_INTELLIGENCE_API_FOUNDATION_V1_PLAN.md`
+- `docs/architecture/DOCUMENT_INTELLIGENCE_API_FOUNDATION_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-014-document-intelligence-api-foundation.md`
 
 ## Prior Milestone Context
 

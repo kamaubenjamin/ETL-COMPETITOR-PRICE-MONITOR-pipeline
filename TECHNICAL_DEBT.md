@@ -71,7 +71,7 @@ Closure is documented in:
 
 ### Current Status
 
-**v0.8 Phases 1-5 implemented and verified; release commit/tag pending and live backend integration deferred.**
+**Closed and tagged as `v0.8-document-intelligence-operator-console`; live backend integration remains deferred.**
 
 Remaining debt:
 
@@ -91,6 +91,29 @@ References:
 - `docs/architecture/DOCUMENT_INTELLIGENCE_OPERATOR_CONSOLE_V1_SUMMARY.md`
 - `docs/architecture/DOCUMENT_INTELLIGENCE_OPERATOR_CONSOLE_V1_HANDOFF.md`
 - `docs/releases/v0.8-document-intelligence-operator-console.md`
+
+---
+
+## Document Intelligence API Foundation v1
+
+### Current Status
+
+**v0.9 architecture and phased implementation planning complete; implementation not started.**
+
+Planning resolves the API ownership direction but does not yet resolve:
+
+- R05-compliant live query aggregation through a public Workflow Runtime facade
+- Authentication, authorization, tenant isolation, rate limiting, and public deployment
+- Durable runtime providers, caching, cursor pagination, or service-level objectives
+- Mutation contracts for upload, corrections, decisions, reprocessing, and workflow execution
+- Retirement of four legacy `src/api/app.py` boundary exemptions
+- Production CORS, API gateway, TLS, observability, and operational support
+
+References:
+
+- `docs/architecture/DOCUMENT_INTELLIGENCE_API_FOUNDATION_V1_PLAN.md`
+- `docs/architecture/DOCUMENT_INTELLIGENCE_API_FOUNDATION_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-014-document-intelligence-api-foundation.md`
 
 ---
 
