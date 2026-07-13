@@ -2,7 +2,9 @@
 
 ## Unreleased
 
-- Closed v0.11 Persistent Document State with ten immutable privacy-safe record families, bounded repository contracts, deterministic lock-protected in-memory repositories, optimistic versions, append idempotency, a read-only Workflow Query Facade adapter, recursive boundary/privacy verification, full regression verification, and release handoff documentation; owner tag remains pending while durable database persistence, migrations, production composition, and live writers remain deferred.
+- Planned v0.12 Durable Document State with SQLite as the local/dev durable implementation, PostgreSQL as the production target, Supabase/Postgres as a future managed option, a dedicated persistence package, explicit relational schema and migrations, transactional optimistic versioning, database-enforced append idempotency, repository conformance tests, and explicit backend selection while preserving API/UI boundaries.
+
+- Closed and tagged v0.11 Persistent Document State with ten immutable privacy-safe record families, bounded repository contracts, deterministic lock-protected in-memory repositories, optimistic versions, append idempotency, a read-only Workflow Query Facade adapter, recursive boundary/privacy verification, full regression verification, and release handoff documentation.
 
 - Closed and tagged v0.10 Workflow Query Facade with frozen privacy-safe read models, bounded pagination, structural read ports, a deterministic immutable in-memory facade, a preferred API-side facade adapter, recursive import/privacy verification, bounded facade-error mapping, full regression verification, and release handoff documentation while preserving v0.9 routes, envelopes, payload meanings, filters, pagination, security headers, request IDs, and GET-only behavior.
 

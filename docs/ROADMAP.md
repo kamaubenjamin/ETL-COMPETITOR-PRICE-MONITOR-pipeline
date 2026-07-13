@@ -189,7 +189,7 @@ References:
 ### v0.11 Persistent Document State / Repository Layer
 
 Status:
-- Implemented and verified; closed pending owner commit and tag
+- Closed and tagged: `v0.11-persistent-document-state`
 - All five phases complete: immutable contracts, deterministic in-memory repositories, a read-only Workflow Query Facade repository adapter, boundary/privacy/repository hardening, and release handoff
 
 Planned capabilities:
@@ -207,6 +207,27 @@ References:
 - `docs/architecture/PERSISTENT_DOCUMENT_STATE_V1_HANDOFF.md`
 - `docs/adr/ADR-016-persistent-document-state.md`
 - `docs/releases/v0.11-persistent-document-state.md`
+
+### v0.12 Durable Document State
+
+Status:
+- Architecture plan, implementation plan, and ADR proposed
+- Implementation not started
+
+Planned capabilities:
+- SQLite-backed local/dev durable repositories behind existing Document State ports
+- Explicit relational schema and checksum-verified migration layout for all ten record families
+- Transactional optimistic versioning and append idempotency
+- Deterministic indexed filtering, ordering, and bounded pagination
+- Shared in-memory/SQLite repository conformance tests
+- Explicit in-memory versus SQLite repository selection with no silent fallback
+- PostgreSQL production target and Supabase managed option deferred to later implementation
+- Unchanged API, Query Facade, and Streamlit contracts and boundaries
+
+References:
+- `docs/architecture/DURABLE_DOCUMENT_STATE_V1_PLAN.md`
+- `docs/architecture/DURABLE_DOCUMENT_STATE_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-017-durable-document-state.md`
 
 ## Prior Milestone Context
 

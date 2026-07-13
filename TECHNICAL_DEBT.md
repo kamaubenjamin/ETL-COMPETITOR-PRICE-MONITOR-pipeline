@@ -165,7 +165,7 @@ References:
 
 ### Current Status
 
-**v0.11 is implemented and verified; closure is documented, with owner commit and tag pending.**
+**v0.11 is closed and tagged as `v0.11-persistent-document-state`.**
 
 The milestone plans persistence-neutral contracts and deterministic repositories but deliberately defers:
 
@@ -201,6 +201,41 @@ References:
 - `docs/architecture/PERSISTENT_DOCUMENT_STATE_V1_HANDOFF.md`
 - `docs/adr/ADR-016-persistent-document-state.md`
 - `docs/releases/v0.11-persistent-document-state.md`
+
+---
+
+## Durable Document State v1
+
+### Current Status
+
+**v0.12 is planned; implementation has not started.**
+
+The approved phased recommendation is SQLite for local/dev durability, PostgreSQL as the production target, and Supabase/Postgres as a possible future managed deployment. The milestone must preserve v0.11 repository interfaces and keep API/UI consumers behind the Workflow Query Facade.
+
+Planned debt addressed by v0.12:
+
+- Durable SQLite schema and ordered checksum-verified migrations
+- File reopen/recovery verification without production infrastructure
+- Transactional compare-and-swap version updates
+- Database-enforced append idempotency and conflict behavior
+- Indexed deterministic filters/orderings and bounded pagination
+- Shared repository conformance across in-memory and SQLite implementations
+- Explicit repository selection with no silent fallback
+
+Still deferred beyond v0.12:
+
+- PostgreSQL repository and migration implementation, driver, pooling, provisioning, backup, and recovery
+- Supabase integration, row-level security, and managed deployment policy
+- Production composition default and live upload/processing writers
+- Cross-record units of work, outbox delivery, and global snapshot consistency
+- Authentication, authorization, tenant isolation, retention periods, archive execution, and encrypted raw blob storage
+- Mutation endpoints, production telemetry, FlowSync Document Intelligence, OCR, LLM, and external services
+
+References:
+
+- `docs/architecture/DURABLE_DOCUMENT_STATE_V1_PLAN.md`
+- `docs/architecture/DURABLE_DOCUMENT_STATE_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-017-durable-document-state.md`
 
 ---
 
