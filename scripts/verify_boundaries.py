@@ -12,7 +12,7 @@ Rules verified (from RUNTIME_BOUNDARY_MAP.md):
   R02 — Entity Runtime must not import Matching or Review runtimes
   R03 — Matching Runtime must not import Document Runtime
   R04 — Review Runtime must not import Document or Entity runtimes
-  R05 — API Runtime must only import Workflow Runtime and shared utilities
+  R05 — API Runtime may import Workflow Runtime/shared utilities; Document Intelligence API may import Security
   R12 — Shared utilities must not import runtime-specific modules
 """
 
@@ -70,7 +70,7 @@ FORBIDDEN_IMPORT_RULES: List[Tuple[str, List[str], str]] = [
     ("review_runtime",
      ["src.document_engine", "src.extract", "src.entity_runtime"],
      "R04"),
-    # R05: API Runtime must only import Workflow Runtime and shared utilities
+    # R05: API Runtime has a narrow approved Document Intelligence -> Security edge
     ("api_runtime",
      None,  # special: forbid all runtime imports except workflow_runtime
      "R05"),
@@ -280,8 +280,15 @@ def _check_consumer_rule(
             continue
 
         if rule_key == "api_runtime":
-            # R05 special: API may only import workflow_runtime
+            # R05 special: API may import workflow_runtime. ADR-020 additionally
+            # approves Document Intelligence API -> provider-neutral Security.
             if matches_any_prefix(module, ["src.workflow_runtime"]):
+                continue
+            normalized_path = rel_path.replace("\\", "/")
+            if (
+                normalized_path.startswith("src/api/document_intelligence/")
+                and matches_any_prefix(module, ["src.security"])
+            ):
                 continue
             # Also allow standard library and third-party packages
             if not module.startswith("src."):
@@ -290,7 +297,7 @@ def _check_consumer_rule(
             if matches_any_prefix(module, SHARED_UTILITY_PACKAGES):
                 continue
             # Anything else starting with src. is forbidden
-            desc = f"API Runtime must only import Workflow Runtime and shared utilities"
+            desc = "API Runtime import is outside approved Workflow/shared/Security boundaries"
             fp = _make_fingerprint(rule_id, rel_path, module)
             if fp not in exemptions:
                 violations.append(Violation(

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.15 Phase 4 opt-in authorization for Document Intelligence API GET routes with explicit disabled/local-demo/authenticated/production modes, provider-neutral identity resolution, centralized permission guards, tenant-narrowed provider reads, safe 401/403/tenant-hiding 404 responses, and unchanged unauthenticated local-preview defaults; Streamlit, writers, mutations, and external providers remain deferred.
+
 - Added v0.15 Phase 3 tenant-aware document projection contracts, optional tenant-narrowed in-memory/SQLite and Query Facade document reads, additive SQLite migration `002` with deterministic `tenant-local` legacy backfill, and explicit API compatibility projection; child-record tenant columns and authenticated consumer enforcement remain deferred.
 
 - Added v0.15 Phase 2 provider-neutral identity resolution contracts, deterministic local demo/test identities, bounded authorization requests, and a pure permission guard that reuses Phase 1 default-deny tenant policy; API, UI, repository, Query Facade, writer, migration, and external-provider integration remain deferred.

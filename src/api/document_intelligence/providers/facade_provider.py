@@ -65,8 +65,8 @@ class FacadeDocumentIntelligenceProvider:
             raise ValueError("facade must implement WorkflowQueryFacadePort")
         self._facade = facade
 
-    def list_documents(self, *, status: str | None = None, document_type: str | None = None) -> list[Record]:
-        query = DocumentQuery(status=status, document_type=document_type)
+    def list_documents(self, *, status: str | None = None, document_type: str | None = None, tenant_id: str | None = None) -> list[Record]:
+        query = DocumentQuery(status=status, document_type=document_type, tenant_id=tenant_id)
         models = _all_pages(lambda page: self._facade.list_documents(query, page))
         return [
             {
@@ -81,9 +81,13 @@ class FacadeDocumentIntelligenceProvider:
             for model in models
         ]
 
-    def get_document(self, document_id: str) -> Record | None:
+    def get_document(self, document_id: str, *, tenant_id: str | None = None) -> Record | None:
         try:
-            model = self._facade.get_document(document_id)
+            model = (
+                self._facade.get_document(document_id)
+                if tenant_id is None
+                else self._facade.get_document(document_id, tenant_id=tenant_id)
+            )
         except QueryFacadeError as exc:
             if exc.code == "not_found":
                 return None
@@ -98,11 +102,15 @@ class FacadeDocumentIntelligenceProvider:
             "received_at": model.received_at,
         }
 
-    def list_processing(self, document_id: str) -> list[Record]:
+    def list_processing(self, document_id: str, *, tenant_id: str | None = None) -> list[Record]:
+        if self.get_document(document_id, tenant_id=tenant_id) is None:
+            return []
         models = _all_pages(lambda page: self._facade.list_processing(document_id, page))
         return [{"stage": model.stage, "status": model.status, "occurred_at": model.occurred_at} for model in models]
 
-    def list_validation(self, document_id: str) -> list[Record]:
+    def list_validation(self, document_id: str, *, tenant_id: str | None = None) -> list[Record]:
+        if self.get_document(document_id, tenant_id=tenant_id) is None:
+            return []
         models = _all_pages(lambda page: self._facade.list_validation_issues(document_id, page))
         return [
             {
@@ -116,7 +124,9 @@ class FacadeDocumentIntelligenceProvider:
             for model in models
         ]
 
-    def list_matching(self, document_id: str) -> list[Record]:
+    def list_matching(self, document_id: str, *, tenant_id: str | None = None) -> list[Record]:
+        if self.get_document(document_id, tenant_id=tenant_id) is None:
+            return []
         models = _all_pages(lambda page: self._facade.list_matching_results(document_id, page))
         return [
             {
@@ -129,19 +139,26 @@ class FacadeDocumentIntelligenceProvider:
             for model in models
         ]
 
-    def list_review_cases(self, *, status: str | None = None, priority: str | None = None) -> list[Record]:
+    def list_review_cases(self, *, status: str | None = None, priority: str | None = None, tenant_id: str | None = None) -> list[Record]:
         query = ReviewCaseQuery(status=status, priority=priority)
         models = _all_pages(lambda page: self._facade.list_review_cases(query, page))
-        return [self._review_case(model) for model in models]
+        return [self._review_case(model) for model in models if self._document_visible(model.document_id, tenant_id)]
 
-    def get_review_case(self, review_case_id: str) -> Record | None:
+    def get_review_case(self, review_case_id: str, *, tenant_id: str | None = None) -> Record | None:
         try:
             model = self._facade.get_review_case(review_case_id)
         except QueryFacadeError as exc:
             if exc.code == "not_found":
                 return None
             raise _api_error(exc) from None
-        return self._review_case(model)
+        return self._review_case(model) if self._document_visible(model.document_id, tenant_id) else None
+
+    def _document_visible(self, document_id: str | None, tenant_id: str | None) -> bool:
+        if tenant_id is None:
+            return True
+        if document_id is None:
+            return False
+        return self.get_document(document_id, tenant_id=tenant_id) is not None
 
     @staticmethod
     def _review_case(model: Any) -> Record:
@@ -158,16 +175,22 @@ class FacadeDocumentIntelligenceProvider:
             "created_at": model.created_at,
         }
 
-    def list_corrections(self, review_case_id: str) -> list[Record]:
+    def list_corrections(self, review_case_id: str, *, tenant_id: str | None = None) -> list[Record]:
+        if self.get_review_case(review_case_id, tenant_id=tenant_id) is None:
+            return []
         models = _all_pages(lambda page: self._facade.list_correction_history(review_case_id, page))
         return [model.to_dict() for model in models]
 
-    def list_reprocess_plans(self) -> list[Record]:
+    def list_reprocess_plans(self, *, tenant_id: str | None = None) -> list[Record]:
         models = _all_pages(lambda page: self._facade.list_reprocess_plans(None, page))
-        return [model.to_dict() for model in models]
+        return [
+            model.to_dict()
+            for model in models
+            if self.get_review_case(model.review_case_id, tenant_id=tenant_id) is not None
+        ]
 
-    def list_workflow_runs(self, *, status: str | None = None) -> list[Record]:
-        query = WorkflowRunQuery(status=status)
+    def list_workflow_runs(self, *, status: str | None = None, tenant_id: str | None = None) -> list[Record]:
+        query = WorkflowRunQuery(status=status, tenant_id=tenant_id)
         models = _all_pages(lambda page: self._facade.list_workflow_runs(query, page))
         return [
             {
@@ -180,7 +203,7 @@ class FacadeDocumentIntelligenceProvider:
             for model in models
         ]
 
-    def list_audit_events(self, *, event_type: str | None = None) -> list[Record]:
+    def list_audit_events(self, *, event_type: str | None = None, tenant_id: str | None = None) -> list[Record]:
         query = AuditEventQuery(event_type=event_type)
         models = _all_pages(lambda page: self._facade.list_audit_events(query, page))
         return [
@@ -194,6 +217,7 @@ class FacadeDocumentIntelligenceProvider:
                 "metadata": dict(model.metadata),
             }
             for model in models
+            if self._document_visible(model.document_id, tenant_id)
         ]
 
 

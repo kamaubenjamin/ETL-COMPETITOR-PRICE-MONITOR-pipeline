@@ -299,7 +299,8 @@ Status:
 - Phase 1 implemented: provider-neutral security contracts, exact permission/role catalogs, explicit principal types, authorization context/decisions, privacy-safe errors, and pure default-deny tenant policy
 - Phase 2 implemented: identity-provider Protocol/results, explicit local demo/test provider, bounded authorization requests, and a pure policy-backed permission guard
 - Phase 3 implemented: tenant/ownership fields on `DocumentRecord`, optional tenant-narrowed in-memory/SQLite and Query Facade document reads, additive SQLite migration `002`, and unchanged API payloads
-- Phases 4-5 not started
+- Phase 4 implemented: explicit API auth modes, provider-neutral identity resolution, centralized GET-route permission guards, tenant-narrowed provider reads, safe 401/403/404 behavior, and unchanged default local preview
+- Phase 5 not started
 
 Planned capabilities:
 - Provider-neutral `src/security/` identity and authorization boundary

@@ -1,7 +1,7 @@
 # Auth, Tenant, And Permission Model v1 Implementation Plan
 
 **Milestone:** v0.15
-**Status:** Phases 1-3 implemented; Phases 4-5 not started
+**Status:** Phases 1-4 implemented; Phase 5 not started
 
 ## 1. Milestone Overview
 
@@ -244,6 +244,8 @@ git status --short --branch
 ### Stop Condition
 
 Stop after opt-in read authorization and internal attribution verification. Do not add external providers, public mutations, or production activation.
+
+**Completion:** Implemented and verified for API read guards only, following the separately approved Phase 4 scope. Existing GET routes declare centralized permissions, auth-enabled reads receive a guard-produced tenant scope, cross-tenant resource reads are concealed, and auth-disabled local preview remains unchanged. Streamlit authentication and writer attribution/enforcement remain deferred; no public mutation or production identity provider was added.
 
 ## 7. Phase 5: Security Verification, Documentation, And Release Closure
 

@@ -354,12 +354,12 @@ References:
 
 ### Current Status
 
-**v0.15 Phases 1-3 are implemented; Phases 4-5 have not started.**
+**v0.15 Phases 1-4 are implemented; Phase 5 has not started.**
 
 Current security debt:
 
-- Document Intelligence API resolves request IDs but no authenticated principal.
-- API providers and Query Facade reads have no mandatory tenant scope.
+- Document Intelligence API can resolve principals and enforce tenant-scoped GET reads when auth is explicitly enabled; default local preview remains intentionally unauthenticated.
+- API providers accept guard-produced tenant scope for protected reads; production composition is not activated.
 - Streamlit workspace selection is display-only and `api_preview` is unauthenticated.
 - Child Document State records still lack direct tenant columns; the document projection now carries tenant, workspace, ownership, creator, and updater fields.
 - Selected records carry actor IDs without verified principal/tenant attribution.
@@ -372,7 +372,9 @@ Phase 2 adds a structural identity-provider boundary, privacy-safe resolution re
 
 Phase 3 adds explicit document tenant/ownership fields, optional tenant-narrowed document get/list behavior across in-memory and SQLite repositories, tenant-aware Query Facade document contracts, and durable migration/index support. Unscoped local preview remains backward compatible, and existing API payloads exclude internal tenant fields.
 
-Remaining implementation is phased and deferred. No API/UI guard integration, writer enforcement, child-record tenant migration, external identity-provider adapter, production database integration, or dependency has been added.
+Phase 4 adds explicit API auth modes, API-local identity/context composition, centralized endpoint permission declarations, safe identity-provider failure handling, and tenant-narrowed provider reads. Review and reprocess reads require `document:review`; workflow runs require `workflow:read`; audit events require `audit:read`. Authenticated cross-tenant detail denial is concealed as `404`.
+
+Remaining implementation is phased and deferred. No Streamlit auth integration, writer enforcement, child-record tenant migration, external identity-provider adapter, production activation, public mutation, or dependency has been added.
 
 References:
 

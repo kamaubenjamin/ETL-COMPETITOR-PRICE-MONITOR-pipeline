@@ -43,9 +43,11 @@ def test_security_package_has_no_forbidden_imports():
             assert not parts & FORBIDDEN_PARTS, f"{path} imports forbidden module {module}"
 
 
-def test_existing_production_modules_do_not_import_security_yet():
+def test_only_document_intelligence_api_may_import_security():
     for path in Path("src").rglob("*.py"):
         if SECURITY_ROOT in path.parents:
+            continue
+        if Path("src/api/document_intelligence") in path.parents:
             continue
         assert all(not module.startswith("src.security") for module in _imports(path)), path
 

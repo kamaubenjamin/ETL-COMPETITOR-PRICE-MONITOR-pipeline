@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.15. Phases 1-3 implement the security contracts and policy boundary, provider-neutral/local identity resolution, authorization requests and guard, plus tenant-aware Document State and Query Facade document projection contracts. API/UI guard integration, writer enforcement, child-record tenant expansion, and external identity providers remain pending.
+Accepted for v0.15. Phases 1-4 implement the security contracts and policy boundary, provider-neutral/local identity resolution, authorization requests and guard, tenant-aware document projections, and opt-in authorization for the existing Document Intelligence API GET routes. Streamlit auth, writer enforcement, child-record tenant expansion, production activation, and external identity providers remain pending.
 
 ## Context
 

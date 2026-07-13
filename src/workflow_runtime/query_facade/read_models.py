@@ -283,6 +283,7 @@ class WorkflowRunSummary(ReadModel):
     stage_count: int = 0
     completed_stage_count: int = 0
     failed_stage_count: int = 0
+    tenant_id: str = "tenant-local"
 
     ORDERING = OrderingSpec(("started_at", "run_id"), (SortDirection.DESCENDING, SortDirection.ASCENDING))
 
@@ -298,6 +299,7 @@ class WorkflowRunSummary(ReadModel):
             object.__setattr__(self, name, _count(getattr(self, name), name))
         if self.completed_stage_count + self.failed_stage_count > self.stage_count:
             raise ValueError("stage counts are inconsistent")
+        object.__setattr__(self, "tenant_id", bounded_string(self.tenant_id, "tenant_id", maximum=128))
 
 
 @dataclass(frozen=True, slots=True)

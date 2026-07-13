@@ -140,14 +140,20 @@ class ReviewCaseQuery:
 class WorkflowRunQuery:
     status: WorkflowStatus | str | None = None
     workflow_name: str | None = None
+    tenant_id: str | None = None
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "status", enum_value(self.status, WorkflowStatus, "status"))
         if self.workflow_name is not None:
             object.__setattr__(self, "workflow_name", bounded_string(self.workflow_name, "workflow_name"))
+        if self.tenant_id is not None:
+            object.__setattr__(self, "tenant_id", bounded_string(self.tenant_id, "tenant_id", maximum=128))
 
     def to_dict(self) -> dict[str, str | None]:
-        return {"status": self.status, "workflow_name": self.workflow_name}
+        values = {"status": self.status, "workflow_name": self.workflow_name}
+        if self.tenant_id is not None:
+            values["tenant_id"] = self.tenant_id
+        return values
 
 
 @dataclass(frozen=True, slots=True)

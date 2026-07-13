@@ -73,9 +73,9 @@ _REPROCESS_PLANS = (
 )
 
 _WORKFLOW_RUNS = (
-    WorkflowRunSummary("run-001", "invoice_processing", "succeeded", "2026-07-01T08:00:00+00:00", "2026-07-01T08:00:04+00:00", 4000, 3, 3, 0),
-    WorkflowRunSummary("run-002", "purchase_order_processing", "running", "2026-07-01T08:05:00+00:00", None, None, 3, 1, 0),
-    WorkflowRunSummary("run-003", "receipt_processing", "failed", "2026-07-01T08:10:00+00:00", "2026-07-01T08:10:06+00:00", 6000, 3, 1, 1),
+    WorkflowRunSummary("run-001", "invoice_processing", "succeeded", "2026-07-01T08:00:00+00:00", "2026-07-01T08:00:04+00:00", 4000, 3, 3, 0, "tenant-demo"),
+    WorkflowRunSummary("run-002", "purchase_order_processing", "running", "2026-07-01T08:05:00+00:00", None, None, 3, 1, 0, "tenant-demo"),
+    WorkflowRunSummary("run-003", "receipt_processing", "failed", "2026-07-01T08:10:00+00:00", "2026-07-01T08:10:06+00:00", 6000, 3, 1, 1, "tenant-alt"),
 )
 
 _AUDIT_EVENTS = (
@@ -187,7 +187,7 @@ class InMemoryWorkflowQueryFacade:
         self._available()
         if not isinstance(query, WorkflowRunQuery):
             raise QueryFacadeError(QueryErrorCode.INVALID_QUERY, field="query")
-        filtered = tuple(item for item in _WORKFLOW_RUNS if (query.status is None or item.status == query.status) and (query.workflow_name is None or item.workflow_name == query.workflow_name))
+        filtered = tuple(item for item in _WORKFLOW_RUNS if (query.status is None or item.status == query.status) and (query.workflow_name is None or item.workflow_name == query.workflow_name) and (query.tenant_id is None or item.tenant_id == query.tenant_id))
         records = tuple(sorted(sorted(filtered, key=lambda item: item.run_id), key=lambda item: item.started_at, reverse=True))
         return _page(records, page)
 
