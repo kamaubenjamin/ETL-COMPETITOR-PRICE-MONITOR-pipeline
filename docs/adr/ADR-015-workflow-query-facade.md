@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted; Phases 1-4 implemented and Phase 5 pending.
+Accepted and implemented; closure commit and owner tag pending.
 
 ## Context
 

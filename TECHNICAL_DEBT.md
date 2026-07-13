@@ -131,7 +131,7 @@ References:
 
 ### Current Status
 
-**v0.10 Phases 1-4 implemented; release closure remains pending.**
+**v0.10 is implemented and verified; closure commit and owner tag `v0.10-workflow-query-facade` remain pending.**
 
 The planned facade resolves API dependency direction but deliberately does not yet resolve:
 
@@ -154,7 +154,10 @@ References:
 
 - `docs/architecture/WORKFLOW_QUERY_FACADE_V1_PLAN.md`
 - `docs/architecture/WORKFLOW_QUERY_FACADE_V1_IMPLEMENTATION_PLAN.md`
+- `docs/architecture/WORKFLOW_QUERY_FACADE_V1_SUMMARY.md`
+- `docs/architecture/WORKFLOW_QUERY_FACADE_V1_HANDOFF.md`
 - `docs/adr/ADR-015-workflow-query-facade.md`
+- `docs/releases/v0.10-workflow-query-facade.md`
 
 ---
 

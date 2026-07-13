@@ -1,7 +1,7 @@
 # Workflow Query Facade v1 Implementation Plan
 
 **Milestone:** v0.10
-**Status:** Phases 1-4 complete; Phase 5 pending
+**Status:** All phases complete; closure commit and owner tag pending
 
 ## 1. Milestone Overview
 
@@ -188,6 +188,8 @@ git status --short --branch
 Stop after verification hardening. Do not implement live adapters, persistence, commands, auth, or deployment configuration.
 
 ## 6. Phase 5: Documentation, Release Closure, And Handoff
+
+**Completion note:** Completed the milestone summary, future-agent handoff, release notes, roadmap, technical debt, changelog, plan, and ADR closure updates. Focused verification passed with 62 Query Facade tests, 41 API tests plus 9 conditional skips, 29 Streamlit tests, and 175 Review Runtime tests. Full regression passed with 984 tests, 9 skips, and 711 warnings; boundary verification remained compliant with two pre-existing BOM scan warnings. Four known generated legacy artifacts were restored. No runtime feature, endpoint, payload, dependency, or integration behavior changed.
 
 ### Objectives
 

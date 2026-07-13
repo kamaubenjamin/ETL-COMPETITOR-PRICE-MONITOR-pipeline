@@ -168,8 +168,8 @@ References:
 ### v0.10 Workflow Query Facade
 
 Status:
-- Architecture, implementation plan, and ADR proposed
-- Phases 1-4 implemented: contracts/read models, deterministic in-memory facade, API facade-provider adapter, and boundary/security verification; Phase 5 pending
+- Architecture, implementation plan, ADR, verification, summary, handoff, and release notes complete
+- Implemented and verified; closure commit and owner tag `v0.10-workflow-query-facade` pending
 
 Planned capabilities:
 - Workflow-owned public read facade under `src/workflow_runtime/query_facade/`
@@ -181,7 +181,10 @@ Planned capabilities:
 References:
 - `docs/architecture/WORKFLOW_QUERY_FACADE_V1_PLAN.md`
 - `docs/architecture/WORKFLOW_QUERY_FACADE_V1_IMPLEMENTATION_PLAN.md`
+- `docs/architecture/WORKFLOW_QUERY_FACADE_V1_SUMMARY.md`
+- `docs/architecture/WORKFLOW_QUERY_FACADE_V1_HANDOFF.md`
 - `docs/adr/ADR-015-workflow-query-facade.md`
+- `docs/releases/v0.10-workflow-query-facade.md`
 
 ## Prior Milestone Context
 
