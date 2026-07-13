@@ -1,7 +1,7 @@
 # Persistent Document State v1 Implementation Plan
 
 **Milestone:** v0.11
-**Status:** Phases 1-4 complete; Phase 5 pending
+**Status:** All phases complete; closed pending owner commit and tag
 
 ## 1. Milestone Overview
 
@@ -205,6 +205,8 @@ git status --short --branch
 Stop after hardening and verification. Do not implement database, live writer, production composition, auth, or endpoints.
 
 ## 6. Phase 5: Documentation, Release Closure, And Handoff
+
+**Completion note:** Added the milestone summary, future-agent handoff, and v0.11 release notes; aligned the plan, ADR, roadmap, technical debt, and changelog; and re-ran focused, boundary, compilation, and full-regression verification. Document State passes 97 tests, Query Facade passes 62 tests, API/Streamlit/Review regressions pass 245 tests with 9 optional skips, and the full suite passes 1,081 tests with 9 skips. No runtime code, endpoint, dependency, database, migration, API payload, or UI behavior changed.
 
 ### Objectives
 

@@ -165,7 +165,7 @@ References:
 
 ### Current Status
 
-**v0.11 Phases 1-4 are implemented; release closure remains pending.**
+**v0.11 is implemented and verified; closure is documented, with owner commit and tag pending.**
 
 The milestone plans persistence-neutral contracts and deterministic repositories but deliberately defers:
 
@@ -191,11 +191,16 @@ Phase 3 provides a read-only adapter from injected Document State read repositor
 
 Phase 4 verifies recursive import boundaries, API/UI isolation, privacy projection, immutable repository returns, safe error translation, optimistic conflicts, append idempotency conflicts, and absence of database/file/network access. This verification does not make the process-local repositories durable or production-ready.
 
+Phase 5 closes the deterministic foundation with verified release documentation and handoff. Durable repositories, migrations, production composition, live writers, tenant/security policy, retention, encrypted blob storage, and mutation APIs remain explicit future debt.
+
 References:
 
 - `docs/architecture/PERSISTENT_DOCUMENT_STATE_V1_PLAN.md`
 - `docs/architecture/PERSISTENT_DOCUMENT_STATE_V1_IMPLEMENTATION_PLAN.md`
+- `docs/architecture/PERSISTENT_DOCUMENT_STATE_V1_SUMMARY.md`
+- `docs/architecture/PERSISTENT_DOCUMENT_STATE_V1_HANDOFF.md`
 - `docs/adr/ADR-016-persistent-document-state.md`
+- `docs/releases/v0.11-persistent-document-state.md`
 
 ---
 

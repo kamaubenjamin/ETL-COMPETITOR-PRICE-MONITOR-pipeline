@@ -189,9 +189,8 @@ References:
 ### v0.11 Persistent Document State / Repository Layer
 
 Status:
-- Architecture plan, implementation plan, and ADR proposed
-- Phases 1-4 implemented: immutable contracts, deterministic in-memory repositories, a read-only Workflow Query Facade repository adapter, and boundary/privacy/repository hardening
-- Phase 5 release closure pending
+- Implemented and verified; closed pending owner commit and tag
+- All five phases complete: immutable contracts, deterministic in-memory repositories, a read-only Workflow Query Facade repository adapter, boundary/privacy/repository hardening, and release handoff
 
 Planned capabilities:
 - Persistence-neutral operational document state under `src/document_state/`
@@ -204,7 +203,10 @@ Planned capabilities:
 References:
 - `docs/architecture/PERSISTENT_DOCUMENT_STATE_V1_PLAN.md`
 - `docs/architecture/PERSISTENT_DOCUMENT_STATE_V1_IMPLEMENTATION_PLAN.md`
+- `docs/architecture/PERSISTENT_DOCUMENT_STATE_V1_SUMMARY.md`
+- `docs/architecture/PERSISTENT_DOCUMENT_STATE_V1_HANDOFF.md`
 - `docs/adr/ADR-016-persistent-document-state.md`
+- `docs/releases/v0.11-persistent-document-state.md`
 
 ## Prior Milestone Context
 

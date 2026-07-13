@@ -1,7 +1,7 @@
 # Persistent Document State v1 Plan
 
 **Milestone:** v0.11
-**Status:** Phases 1-4 implemented; Phase 5 pending
+**Status:** Implemented and verified; closed pending owner commit and tag
 
 ## 1. Problem Statement
 
@@ -75,7 +75,7 @@ Future ingestion / processing / review / workflow writers
 
 The API and Streamlit never receive repository objects. v0.11 proves adapter compatibility through explicit test composition; production source selection remains deferred until identity, tenant, persistence, and deployment decisions exist.
 
-Phases 1-2 now provide the dependency-free contract surface and deterministic in-memory repositories. The implementation exposes separate read-only and write-only views over shared lock-protected state, reconstructs records through their validated JSON contracts before storage, and makes no durability claim. Query Facade integration remains pending.
+Phases 1-5 provide the dependency-free contract surface, deterministic in-memory repositories, the read-only Query Facade adapter, boundary/privacy verification, and release documentation. The implementation exposes separate read-only and write-only views over shared lock-protected state, reconstructs records through validated JSON contracts before storage, and makes no durability claim. Production composition remains deferred.
 
 ## 6. State Contracts
 
