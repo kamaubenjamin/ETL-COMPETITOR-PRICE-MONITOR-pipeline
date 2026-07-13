@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted. Phases 1-4 contracts, pure policy, repository-injected advancement service, optional writer integration, and read-after-advance verification are implemented; release closure remains pending.
+Accepted and implemented. All five v0.14 phases are verified and the milestone is closed pending owner tag.
 
 ## Context
 

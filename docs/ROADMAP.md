@@ -272,7 +272,8 @@ Status:
 - Phase 2 implemented: repository-injected lifecycle advancement service with replay no-op, optimistic document updates, safe conflict/projection-pending/error mapping, and in-memory/SQLite verification
 - Phase 3 implemented: optional writer integration with policy prevalidation, idempotent append, projection advancement, replay repair, explicit status allowlists, and legacy compatibility
 - Phase 4 implemented: in-memory/SQLite read-after-advance verification through the Query Facade and API provider, including SQLite reconstruction, replay repair, filters, pagination, privacy, and GET-only compatibility
-- Phase 5 not started
+- Phase 5 completed: focused/full verification, summary, handoff, release notes, roadmap, debt, plan, ADR, and changelog closure
+- Closed pending owner tag as `v0.14-lifecycle-snapshot-advancement`
 
 Planned capabilities:
 - Dedicated Document State lifecycle policy and advancement service
@@ -286,7 +287,10 @@ Planned capabilities:
 References:
 - `docs/architecture/LIFECYCLE_SNAPSHOT_ADVANCEMENT_V1_PLAN.md`
 - `docs/architecture/LIFECYCLE_SNAPSHOT_ADVANCEMENT_V1_IMPLEMENTATION_PLAN.md`
+- `docs/architecture/LIFECYCLE_SNAPSHOT_ADVANCEMENT_V1_SUMMARY.md`
+- `docs/architecture/LIFECYCLE_SNAPSHOT_ADVANCEMENT_V1_HANDOFF.md`
 - `docs/adr/ADR-019-lifecycle-snapshot-advancement.md`
+- `docs/releases/v0.14-lifecycle-snapshot-advancement.md`
 
 ## Prior Milestone Context
 

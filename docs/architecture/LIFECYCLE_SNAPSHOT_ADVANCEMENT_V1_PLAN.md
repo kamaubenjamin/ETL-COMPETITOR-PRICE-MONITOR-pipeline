@@ -1,7 +1,7 @@
 # Lifecycle Snapshot Advancement v1 Plan
 
 **Milestone:** v0.14
-**Status:** Accepted; Phases 1-4 implemented, Phase 5 not started
+**Status:** Implemented and verified; closed pending owner tag
 
 ## 1. Problem Statement
 
@@ -50,6 +50,8 @@ The event is authoritative. Snapshot advancement is a replayable projection oper
 8. Keep errors and projection metadata privacy-safe.
 
 Phase 4 verifies the complete approved read path without production changes: writer-driven advancement is visible through `DocumentStateQueryFacadeAdapter`, the Workflow Query Facade port, and `FacadeDocumentIntelligenceProvider` for both in-memory and reconstructed SQLite compositions. Filters, pagination, replay repair, v0.9 provider shapes, GET-only routes, and privacy projections remain compatible.
+
+Phase 5 closes the milestone with focused and full regression verification, release notes, architecture summary, future-agent handoff, and aligned roadmap, debt, ADR, and changelog status. No runtime, API, or UI change was required for closure.
 
 ## 4. Non-Goals
 

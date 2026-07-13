@@ -306,7 +306,7 @@ References:
 
 ### Current Status
 
-**v0.14 Phases 1-4 are implemented; Phase 5 has not started.**
+**v0.14 is implemented and verified; closed pending owner tag.**
 
 v0.13 lifecycle events are append-only and authoritative, but the mutable `DocumentRecord` remains at `received`. v0.14 plans a dedicated Document State lifecycle service that applies one explicit transition catalog and advances the projection through existing optimistic repository ports.
 
@@ -327,6 +327,8 @@ Phase 3 integrates all four writer services through optional explicit lifecycle-
 
 Phase 4 verifies read-after-advance through explicit in-memory and SQLite compositions, `DocumentStateQueryFacadeAdapter`, the structural Workflow Query Facade port, and `FacadeDocumentIntelligenceProvider`. SQLite state survives composition reconstruction; advanced-status filters, bounded pagination, replay no-op, projection repair, privacy projections, v0.9 provider shapes, and GET-only routes remain compatible. No production modules required modification.
 
+Phase 5 confirms 63 lifecycle tests, 80 writer tests, 318 Document State tests, 48 API tests with 9 skips, 266 Query Facade/UI/Review tests, and 1,309 full-regression tests with 9 skips. Boundary verification is compliant. Remaining items below are deferred production and product work rather than incomplete v0.14 scope.
+
 Still deferred beyond v0.14:
 
 - Runtime producer adapters and production bootstrap activation
@@ -341,7 +343,10 @@ References:
 
 - `docs/architecture/LIFECYCLE_SNAPSHOT_ADVANCEMENT_V1_PLAN.md`
 - `docs/architecture/LIFECYCLE_SNAPSHOT_ADVANCEMENT_V1_IMPLEMENTATION_PLAN.md`
+- `docs/architecture/LIFECYCLE_SNAPSHOT_ADVANCEMENT_V1_SUMMARY.md`
+- `docs/architecture/LIFECYCLE_SNAPSHOT_ADVANCEMENT_V1_HANDOFF.md`
 - `docs/adr/ADR-019-lifecycle-snapshot-advancement.md`
+- `docs/releases/v0.14-lifecycle-snapshot-advancement.md`
 
 ---
 
