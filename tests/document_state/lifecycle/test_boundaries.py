@@ -34,15 +34,13 @@ def test_lifecycle_package_has_no_forbidden_imports():
     assert not {name for name in imported if name in FORBIDDEN_NAMES or name.startswith(FORBIDDEN_PREFIXES)}
 
 
-def test_phase_one_has_no_repository_or_service_calls():
+def test_lifecycle_package_has_no_backend_selection_or_writer_integration():
     source = "\n".join(path.read_text(encoding="utf-8") for path in LIFECYCLE_ROOT.rglob("*.py"))
     forbidden = (
-        "DocumentStateReadRepositories",
-        "DocumentStateWriteRepositories",
-        "update_document(",
         "append_lifecycle_event(",
-        "LifecycleAdvancementService",
         "repositories_in_memory",
         "persistence.sqlite",
+        "compose_document_state",
+        "document_state.writers",
     )
     assert not any(item in source for item in forbidden)

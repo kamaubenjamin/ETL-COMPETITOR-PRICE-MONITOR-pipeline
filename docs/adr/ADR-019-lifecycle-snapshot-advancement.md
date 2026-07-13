@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted. Phase 1 contracts and pure policy are implemented and verified; lifecycle service, writer integration, read-after-advance verification, and release closure remain pending.
+Accepted. Phases 1-2 contracts, pure policy, and repository-injected advancement service are implemented and verified; writer integration, read-after-advance verification, and release closure remain pending.
 
 ## Context
 
@@ -51,6 +51,8 @@ Use a dedicated service rather than implementing updates independently in writer
 - The service reads and updates `DocumentRecord` through injected repository ports.
 - The service updates status, current stage, event time, and version only.
 - The service does not append history, choose a backend, call runtime implementations, or expose public mutation behavior.
+
+Phase 2 implements the service directly against narrow public `DocumentReadRepository` and `DocumentWriteRepository` ports. An explicit `lifecycle_event_persisted` invocation flag distinguishes an ordinary optimistic conflict from a committed-audit/pending-projection conflict without requiring the service to query or mutate lifecycle history.
 
 ## Ordering And Consistency Decision
 

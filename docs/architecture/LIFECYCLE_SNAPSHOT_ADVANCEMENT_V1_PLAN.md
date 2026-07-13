@@ -1,7 +1,7 @@
 # Lifecycle Snapshot Advancement v1 Plan
 
 **Milestone:** v0.14
-**Status:** Accepted; Phase 1 implemented, Phases 2-5 not started
+**Status:** Accepted; Phases 1-2 implemented, Phases 3-5 not started
 
 ## 1. Problem Statement
 
@@ -163,6 +163,8 @@ Phase 1 defines immutable, JSON-compatible contracts:
 The request references a validated `DocumentLifecycleEvent`; it does not contain document data, rows, artifacts, or arbitrary runtime results.
 
 Phase 1 implements these contracts as immutable JSON-compatible values under `src/document_state/lifecycle/`, together with stable result/error contracts, the existing-status state catalog, deterministic candidate ordering, explicit recovery policy, and pure evaluation functions. It performs no repository calls, document updates, writer integration, API/UI changes, or service implementation.
+
+Phase 2 implements `LifecycleAdvancementService` over explicitly injected narrow document read/write repository ports. It performs policy validation, same-state replay detection, optimistic `DocumentRecord` replacement, safe repository-error mapping, and explicit conflict versus projection-pending outcomes. A backward-compatible optional `source_stage` request field supplies the projected current stage. The service works with in-memory and SQLite compositions without selecting or importing either backend and does not append lifecycle events or integrate writers.
 
 ## 9. Idempotency And Ordering
 

@@ -9,6 +9,7 @@ from .contracts import (
 from .errors import LifecycleErrorCode, LifecyclePolicyError
 from .policy import evaluate_transition, order_transition_candidates, transition_order_key
 from .results import LifecycleResultStatus, LifecycleTransitionResult
+from .service import LifecycleAdvancementService
 from .states import (
     ALLOWED_TRANSITIONS,
     LIFECYCLE_STATES,
@@ -24,6 +25,7 @@ __all__ = [
     "ALLOWED_TRANSITIONS",
     "LIFECYCLE_STATES",
     "LifecycleErrorCode",
+    "LifecycleAdvancementService",
     "LifecyclePolicyDecision",
     "LifecyclePolicyError",
     "LifecyclePolicyOutcome",

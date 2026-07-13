@@ -1,7 +1,7 @@
 # Lifecycle Snapshot Advancement v1 Implementation Plan
 
 **Milestone:** v0.14
-**Status:** Phase 1 complete; Phases 2-5 not started
+**Status:** Phases 1-2 complete; Phases 3-5 not started
 
 ## 1. Milestone Overview
 
@@ -82,11 +82,8 @@ Phase 1 completed with immutable transition/recovery/decision contracts, stable 
 
 Create:
 
-- `src/document_state/lifecycle/ports.py`
 - `src/document_state/lifecycle/service.py`
 - `tests/document_state/lifecycle/test_service.py`
-- `tests/document_state/lifecycle/test_backend_parity.py`
-- `tests/document_state/lifecycle/test_concurrency.py`
 
 Modify:
 
@@ -121,6 +118,8 @@ git status --short --branch
 ### Stop Condition
 
 Stop after service and backend verification. Do not integrate writers.
+
+Phase 2 completed with a narrow repository-injected advancement service, optional bounded source-stage projection, policy evaluation, same-state replay no-op, compare-and-swap updates, in-memory/SQLite verification, two-writer conflict protection, safe missing/conflict/unavailable/internal mappings, explicit projection-pending behavior for already-persisted lifecycle events, and append-only event immutability checks. No separate port module was needed before writer integration because the service itself remains the internal Phase 2 boundary.
 
 ## 4. Phase 3: Writer Integration With Advancement Service
 

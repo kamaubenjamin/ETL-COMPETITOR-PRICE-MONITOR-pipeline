@@ -68,6 +68,7 @@ class LifecycleTransitionRequest(LifecycleContract):
     reason_code: str
     actor_id: str
     occurred_at: str
+    source_stage: str | None = None
     metadata: Mapping[str, JsonScalar] = field(default_factory=dict, repr=False)
     recovery_policy: LifecycleRecoveryPolicy | None = None
 
@@ -79,6 +80,7 @@ class LifecycleTransitionRequest(LifecycleContract):
         object.__setattr__(self, "expected_version", positive_version(self.expected_version))
         object.__setattr__(self, "reason_code", bounded_string(self.reason_code, "reason_code", maximum=128))
         object.__setattr__(self, "occurred_at", utc_timestamp(self.occurred_at, "occurred_at"))
+        object.__setattr__(self, "source_stage", optional_string(self.source_stage, "source_stage", maximum=128))
         object.__setattr__(self, "metadata", validate_safe_metadata(self.metadata))
         if self.recovery_policy is not None:
             if not isinstance(self.recovery_policy, LifecycleRecoveryPolicy):

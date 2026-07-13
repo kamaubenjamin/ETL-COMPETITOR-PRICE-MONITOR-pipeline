@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.14 Phase 2 `LifecycleAdvancementService` with explicit document repository injection, policy-governed immutable projection replacement, same-status replay no-ops, optimistic version conflicts, persisted-event projection-pending results, safe repository error mapping, source-stage projection, in-memory/SQLite verification, and no backend selection, event append, writer, API, or UI integration.
+
 - Added v0.14 Phase 1 lifecycle transition contracts and pure policy with the existing Document State status vocabulary, immutable recovery/decision/result contracts, deterministic candidate ordering, same-state replay no-ops, terminal-state rejection, governed failed-state recovery, privacy-safe errors/metadata, and boundary tests without repository, writer, API, or UI integration.
 
 - Added v0.14 Lifecycle Snapshot Advancement planning and ADR-019, selecting a dedicated Document State lifecycle service with an explicit transition graph, optimistic projection updates, replay-safe audit-first writer integration, linked reprocess recovery, unchanged read-only API/UI contracts, and in-memory/SQLite read-after-advance verification while deferring public mutations, producer adapters, OCR, LLM, and external services.

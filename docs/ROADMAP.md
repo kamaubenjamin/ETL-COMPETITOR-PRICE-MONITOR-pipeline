@@ -269,7 +269,8 @@ References:
 Status:
 - Architecture plan, implementation plan, and ADR-019 created
 - Phase 1 implemented: immutable lifecycle transition/recovery contracts, stable results/errors, existing-status policy catalog, deterministic candidate ordering, privacy validation, and boundary tests
-- Phases 2-5 not started
+- Phase 2 implemented: repository-injected lifecycle advancement service with replay no-op, optimistic document updates, safe conflict/projection-pending/error mapping, and in-memory/SQLite verification
+- Phases 3-5 not started
 
 Planned capabilities:
 - Dedicated Document State lifecycle policy and advancement service
