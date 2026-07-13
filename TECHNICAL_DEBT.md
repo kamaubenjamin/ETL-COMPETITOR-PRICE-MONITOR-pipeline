@@ -131,7 +131,7 @@ References:
 
 ### Current Status
 
-**v0.10 Phases 1-3 implemented; boundary hardening and closure remain pending.**
+**v0.10 Phases 1-4 implemented; release closure remains pending.**
 
 The planned facade resolves API dependency direction but deliberately does not yet resolve:
 
@@ -147,6 +147,8 @@ The planned facade resolves API dependency direction but deliberately does not y
 Guardrail: `src/workflow_runtime/query_facade/` must use narrow injected ports and must not become a location for direct imports of runtime repositories, stores, services, or models.
 
 Phase 3 makes the deterministic facade-backed API provider preferred and retains the API-local provider for compatibility. This does not provide live operational reads; approved source adapters and a composition boundary remain deferred.
+
+Phase 4 verifies the facade/API import boundary, payload compatibility, privacy projections, GET-only surface, request IDs, and security headers. Facade errors now map to bounded API `400`, `404`, `503`, and `500` outcomes without leaking source internals. Production identity, tenant policy, persistence, and live source availability semantics remain deferred.
 
 References:
 

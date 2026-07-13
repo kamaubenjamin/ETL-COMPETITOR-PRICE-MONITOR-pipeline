@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Added v0.10 Workflow Query Facade Phases 1-3 with frozen privacy-safe read models, bounded pagination, structural read ports, a deterministic immutable in-memory facade, and a preferred API-side facade adapter that preserves v0.9 routes, envelopes, payload meanings, filters, pagination, and GET-only behavior.
+- Added v0.10 Workflow Query Facade Phases 1-4 with frozen privacy-safe read models, bounded pagination, structural read ports, a deterministic immutable in-memory facade, a preferred API-side facade adapter, recursive import/privacy verification, and bounded facade-error mapping while preserving v0.9 routes, envelopes, payload meanings, filters, pagination, security headers, request IDs, and GET-only behavior.
 
 - Closed and tagged v0.9 Document Intelligence API Foundation with a separate read-only FastAPI app, deterministic preview endpoints, strict envelopes and pagination, optional GET-only Streamlit adapter, bounded request IDs, safe global errors, conservative security headers, disabled-by-default CORS, boundary compliance, full regression verification, and release handoff documentation.
 

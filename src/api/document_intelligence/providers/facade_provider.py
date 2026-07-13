@@ -18,22 +18,43 @@ from src.workflow_runtime.query_facade import (
     WorkflowRunQuery,
 )
 
+from ..errors import DocumentIntelligenceAPIError
+
 
 Record = dict[str, Any]
 T = TypeVar("T")
 
 
+def _api_error(error: QueryFacadeError) -> DocumentIntelligenceAPIError:
+    status_codes = {
+        "invalid_query": 400,
+        "not_found": 404,
+        "source_unavailable": 503,
+        "internal_error": 500,
+    }
+    details = {"field": error.field} if error.field is not None else None
+    return DocumentIntelligenceAPIError(
+        error.code,
+        error.message,
+        status_code=status_codes[error.code],
+        details=details,
+    )
+
+
 def _all_pages(read: Callable[[PageRequest], PageResult[T]]) -> tuple[T, ...]:
-    items: list[T] = []
-    offset = 0
-    while True:
-        page = read(PageRequest(limit=MAX_PAGE_LIMIT, offset=offset))
-        items.extend(page.items)
-        if len(items) >= page.total:
-            return tuple(items)
-        if not page.items:
-            raise QueryFacadeError("internal_error")
-        offset += len(page.items)
+    try:
+        items: list[T] = []
+        offset = 0
+        while True:
+            page = read(PageRequest(limit=MAX_PAGE_LIMIT, offset=offset))
+            items.extend(page.items)
+            if len(items) >= page.total:
+                return tuple(items)
+            if not page.items:
+                raise QueryFacadeError("internal_error")
+            offset += len(page.items)
+    except QueryFacadeError as error:
+        raise _api_error(error) from None
 
 
 class FacadeDocumentIntelligenceProvider:
@@ -55,7 +76,7 @@ class FacadeDocumentIntelligenceProvider:
         except QueryFacadeError as exc:
             if exc.code == "not_found":
                 return None
-            raise
+            raise _api_error(exc) from None
         return {
             "document_id": model.document_id,
             "filename": model.filename,
@@ -108,7 +129,7 @@ class FacadeDocumentIntelligenceProvider:
         except QueryFacadeError as exc:
             if exc.code == "not_found":
                 return None
-            raise
+            raise _api_error(exc) from None
         return self._review_case(model)
 
     @staticmethod

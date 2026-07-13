@@ -169,7 +169,7 @@ References:
 
 Status:
 - Architecture, implementation plan, and ADR proposed
-- Phases 1-3 implemented: contracts/read models, deterministic in-memory facade, and API facade-provider adapter; Phases 4-5 pending
+- Phases 1-4 implemented: contracts/read models, deterministic in-memory facade, API facade-provider adapter, and boundary/security verification; Phase 5 pending
 
 Planned capabilities:
 - Workflow-owned public read facade under `src/workflow_runtime/query_facade/`

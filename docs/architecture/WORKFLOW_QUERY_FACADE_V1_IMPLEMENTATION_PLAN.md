@@ -1,7 +1,7 @@
 # Workflow Query Facade v1 Implementation Plan
 
 **Milestone:** v0.10
-**Status:** Phases 1-3 complete; Phases 4-5 pending
+**Status:** Phases 1-4 complete; Phase 5 pending
 
 ## 1. Milestone Overview
 
@@ -144,6 +144,8 @@ git status --short --branch
 Stop after deterministic facade-backed API integration. Do not add live sources, database, auth, UI changes, or endpoints.
 
 ## 5. Phase 4: Boundary And Security Verification
+
+**Completion note:** Added recursive forbidden-import verification for the Workflow Query Facade package and strict adapter import checks. Added facade/API parity coverage for structural port conformance, all public projections, v0.9 paths and GET-only methods, standard envelopes, pagination, privacy-sensitive keys, request IDs, and security headers. Hardened adapter error translation so `invalid_query`, `not_found`, `source_unavailable`, and `internal_error` retain bounded semantics as safe API `400`, `404`, `503`, and `500` outcomes. Focused verification: 62 Query Facade tests and 41 API tests passed; 9 conditional transport tests skipped. No endpoint, payload meaning, live source, mutation, auth, database, or UI behavior was added.
 
 ### Objectives
 
