@@ -148,7 +148,7 @@ References:
 
 Status:
 - Architecture, implementation plan, and ADR complete
-- Closed and verified pending owner commit/tag: all five phases complete
+- Closed and tagged as `v0.9-document-intelligence-api-foundation`
 
 Planned capabilities:
 - Separate versioned read-only Document Intelligence API
@@ -164,6 +164,24 @@ References:
 - `docs/architecture/DOCUMENT_INTELLIGENCE_API_FOUNDATION_V1_HANDOFF.md`
 - `docs/adr/ADR-014-document-intelligence-api-foundation.md`
 - `docs/releases/v0.9-document-intelligence-api-foundation.md`
+
+### v0.10 Workflow Query Facade
+
+Status:
+- Architecture, implementation plan, and ADR proposed
+- Implementation not started
+
+Planned capabilities:
+- Workflow-owned public read facade under `src/workflow_runtime/query_facade/`
+- Stable bounded read models for documents, processing, validation, matching, reviews, corrections, reprocess plans, workflow runs, and audit
+- Deterministic in-memory facade and explicit API provider adapter
+- Unchanged v0.9 API routes, envelopes, privacy behavior, pagination, and GET-only surface
+- Narrow injected source ports with no direct cross-runtime implementation imports
+
+References:
+- `docs/architecture/WORKFLOW_QUERY_FACADE_V1_PLAN.md`
+- `docs/architecture/WORKFLOW_QUERY_FACADE_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-015-workflow-query-facade.md`
 
 ## Prior Milestone Context
 

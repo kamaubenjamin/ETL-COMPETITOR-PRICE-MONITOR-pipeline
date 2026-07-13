@@ -98,7 +98,7 @@ References:
 
 ### Current Status
 
-**v0.9 is implemented and verified; closure commit and owner tag remain pending.**
+**v0.9 is closed and tagged as `v0.9-document-intelligence-api-foundation`.**
 
 Planning resolves the API ownership direction but does not yet resolve:
 
@@ -124,6 +124,33 @@ References:
 - `docs/architecture/DOCUMENT_INTELLIGENCE_API_FOUNDATION_V1_HANDOFF.md`
 - `docs/adr/ADR-014-document-intelligence-api-foundation.md`
 - `docs/releases/v0.9-document-intelligence-api-foundation.md`
+
+---
+
+## Workflow Query Facade v1
+
+### Current Status
+
+**v0.10 planning proposed; implementation not started.**
+
+The planned facade resolves API dependency direction but deliberately does not yet resolve:
+
+- Live runtime read adapters and the approved composition root that injects them
+- Cross-source transactional snapshot consistency
+- Durable/materialized read storage, migrations, retention, caching, or cursor pagination
+- Authentication, authorization, tenant isolation, and policy-filtered live reads
+- Rate limiting, production gateway/CORS/TLS, telemetry, and service-level objectives
+- Mutation commands, workflow execution, idempotency, concurrency, and command audit
+- FlowSync Document Intelligence production UI
+- OCR, LLM processing, and external services
+
+Guardrail: `src/workflow_runtime/query_facade/` must use narrow injected ports and must not become a location for direct imports of runtime repositories, stores, services, or models.
+
+References:
+
+- `docs/architecture/WORKFLOW_QUERY_FACADE_V1_PLAN.md`
+- `docs/architecture/WORKFLOW_QUERY_FACADE_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-015-workflow-query-facade.md`
 
 ---
 
