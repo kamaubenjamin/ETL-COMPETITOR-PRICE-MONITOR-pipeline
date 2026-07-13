@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.14 Phase 1 lifecycle transition contracts and pure policy with the existing Document State status vocabulary, immutable recovery/decision/result contracts, deterministic candidate ordering, same-state replay no-ops, terminal-state rejection, governed failed-state recovery, privacy-safe errors/metadata, and boundary tests without repository, writer, API, or UI integration.
+
 - Added v0.14 Lifecycle Snapshot Advancement planning and ADR-019, selecting a dedicated Document State lifecycle service with an explicit transition graph, optimistic projection updates, replay-safe audit-first writer integration, linked reprocess recovery, unchanged read-only API/UI contracts, and in-memory/SQLite read-after-advance verification while deferring public mutations, producer adapters, OCR, LLM, and external services.
 
 - Closed and tagged v0.13 Upload-to-Processing Writer Integration as `v0.13-upload-processing-writer-integration`, with immutable runtime-neutral writer commands, deterministic idempotency and governed mappings, ingestion/processing/review/workflow writer services, in-memory/SQLite parity, end-to-end read-after-write and API-provider compatibility verification, unchanged read-only API/UI behavior, and release handoff documentation.

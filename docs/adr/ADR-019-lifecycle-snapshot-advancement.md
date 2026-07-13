@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed. Planning is complete; implementation has not started.
+Accepted. Phase 1 contracts and pure policy are implemented and verified; lifecycle service, writer integration, read-after-advance verification, and release closure remain pending.
 
 ## Context
 
@@ -36,9 +36,11 @@ v1 preserves the existing `DocumentStatus` values. It does not add transient or 
 - Reprocess planning remains a reprocess-plan record and does not advance status by itself.
 - Processing/review skip remains in its owning record and does not silently become document completion.
 
-Normal document progress follows an explicit directed graph from `received` through ingestion, classification, parsing, extraction, transformation, validation, matching/review, approval, export readiness, and `exported`. Any non-terminal state may explicitly fail. `exported` is terminal. `failed` permits recovery only with a linked same-document reprocess plan and an approved target mapping.
+Normal document progress follows an explicit directed graph from `received` through ingestion, classification, parsing, extraction, transformation, validation, matching/review, approval, export readiness, and `exported`. Any non-terminal state may explicitly fail. `exported` is terminal. `failed` permits recovery only with an explicit recovery contract linked to a reprocess plan or governed reason and an approved target mapping.
 
 The policy never infers transitions from enum order, timestamps alone, arbitrary stage names, or metadata.
+
+Phase 1 realizes this decision through dependency-light immutable contracts, stable results/errors, state constants, and pure policy functions. It deliberately contains no repository calls, `DocumentRecord` updates, writer integration, or lifecycle service.
 
 ## Advancement Service Decision
 

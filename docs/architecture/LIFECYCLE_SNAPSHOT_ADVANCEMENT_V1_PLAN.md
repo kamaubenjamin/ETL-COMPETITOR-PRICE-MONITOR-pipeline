@@ -1,7 +1,7 @@
 # Lifecycle Snapshot Advancement v1 Plan
 
 **Milestone:** v0.14
-**Status:** Proposed; planning complete, implementation not started
+**Status:** Accepted; Phase 1 implemented, Phases 2-5 not started
 
 ## 1. Problem Statement
 
@@ -144,7 +144,7 @@ Any non-terminal status may transition to `failed` through an explicit safe fail
 - `exported` is terminal and rejects all later document-status transitions.
 - `failed` is terminal for ordinary progress. Recovery requires a valid linked `ReprocessPlanRecord` for the same document and an explicitly approved recovery edge.
 - Reprocess planning alone leaves the current document status unchanged. When future execution begins, the first resumed lifecycle event carries the plan ID and may move `failed` or `review_required` to the catalogued target stage status.
-- In v1, allowed recovery targets are `classified`, `parsed`, `extracted`, `transformed`, or `validated`; the plan's requested target stage must map to the same status.
+- In v1, allowed recovery targets are `classified`, `parsed`, `extracted`, `transformed`, `validated`, `matched`, or `approved`; a later service must verify that linked recovery context governs the same target.
 - A skipped processing stage leaves the document at its last approved lifecycle status. A skipped or rejected review requires an explicit policy-owned outcome event; it is never inferred from review metadata.
 - Same-status events are idempotent projection no-ops. Their append-only history remains available, but they do not increment the document version.
 - Backward transitions without valid recovery context are rejected as `invalid_transition`.
@@ -161,6 +161,8 @@ Phase 1 defines immutable, JSON-compatible contracts:
 - `LifecycleAdvancementPort`: read-only method surface from writer perspective.
 
 The request references a validated `DocumentLifecycleEvent`; it does not contain document data, rows, artifacts, or arbitrary runtime results.
+
+Phase 1 implements these contracts as immutable JSON-compatible values under `src/document_state/lifecycle/`, together with stable result/error contracts, the existing-status state catalog, deterministic candidate ordering, explicit recovery policy, and pure evaluation functions. It performs no repository calls, document updates, writer integration, API/UI changes, or service implementation.
 
 ## 9. Idempotency And Ordering
 

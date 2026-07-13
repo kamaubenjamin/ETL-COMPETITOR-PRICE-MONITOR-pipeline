@@ -306,7 +306,7 @@ References:
 
 ### Current Status
 
-**v0.14 planning is complete; implementation has not started.**
+**v0.14 Phase 1 is implemented; Phases 2-5 have not started.**
 
 v0.13 lifecycle events are append-only and authoritative, but the mutable `DocumentRecord` remains at `received`. v0.14 plans a dedicated Document State lifecycle service that applies one explicit transition catalog and advances the projection through existing optimistic repository ports.
 
@@ -318,6 +318,8 @@ Planned debt addressed by v0.14:
 - Safe stale-version, invalid-transition, missing-document, and source-unavailable behavior
 - Linked reprocess recovery without treating a dry-run plan as execution
 - In-memory/SQLite parity and Query Facade/API/Streamlit read-after-advance verification
+
+Phase 1 provides immutable JSON-compatible transition, recovery, policy-decision, result, and error contracts; an explicit catalog over the existing `DocumentStatus` vocabulary; deterministic candidate ordering; same-state no-op behavior; terminal-state rejection; governed failed-state recovery; and recursive privacy/boundary tests. It does not call repositories, update documents, integrate writers, or implement the advancement service.
 
 Still deferred beyond v0.14:
 

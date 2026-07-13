@@ -1,7 +1,7 @@
 # Lifecycle Snapshot Advancement v1 Implementation Plan
 
 **Milestone:** v0.14
-**Status:** Proposed; implementation not started
+**Status:** Phase 1 complete; Phases 2-5 not started
 
 ## 1. Milestone Overview
 
@@ -26,10 +26,13 @@ Create:
 - `src/document_state/lifecycle/contracts.py`
 - `src/document_state/lifecycle/errors.py`
 - `src/document_state/lifecycle/policy.py`
+- `src/document_state/lifecycle/results.py`
+- `src/document_state/lifecycle/states.py`
 - `tests/document_state/lifecycle/__init__.py`
 - `tests/document_state/lifecycle/test_contracts.py`
 - `tests/document_state/lifecycle/test_policy.py`
-- `tests/document_state/lifecycle/test_boundary_rules.py`
+- `tests/document_state/lifecycle/test_results.py`
+- `tests/document_state/lifecycle/test_boundaries.py`
 
 Modify:
 
@@ -63,6 +66,8 @@ git status --short --branch
 ### Stop Condition
 
 Stop after contracts, catalog, and tests. Do not implement repository updates or writer integration.
+
+Phase 1 completed with immutable transition/recovery/decision contracts, stable result and error codes, an explicit existing-status transition catalog, deterministic candidate ordering, same-state no-op behavior, terminal-state rejection, governed failed-state recovery, privacy-safe metadata validation, and recursive import/service absence checks. No repository, service, writer, API, or UI implementation was added.
 
 ## 3. Phase 2: Lifecycle Advancement Service
 
