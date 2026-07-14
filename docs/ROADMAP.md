@@ -444,6 +444,36 @@ References:
 - `docs/adr/ADR-023-export-runtime-erp-integration-boundary.md`
 - `docs/releases/v0.18-export-runtime-erp-integration-boundary.md`
 
+### v0.19 Upload + Processing Activation
+
+Status:
+- Architecture plan, implementation plan, and ADR-024 created
+- Planning complete; implementation not started
+- No upload package, endpoint, UI behavior, migration, dependency, storage adapter, OCR/LLM, export activation, or ERP connection added
+
+Planned capabilities:
+- Standard-library-first upload contracts, validation, commands, safe results/errors, and narrow ports
+- API-authoritative multipart mutation gated by authenticated tenant scope and `document:ingest`
+- Allowlisted PDF, CSV, XLSX, TXT, and EML evaluation with bounded filename/type/size/content checks
+- Private opaque artifact staging into the existing deterministic ingestion pipeline
+- Existing Document State ingestion/processing writers and lifecycle advancement integration
+- Tenant-scoped upload history and processing progress projections
+- FlowSync guarded upload surface and API-backed processing timeline preserving v0.17 identity
+- Explicit no-export, no-ERP, no-OCR/LLM behavior
+
+Proposed phases:
+1. Upload contracts, validation, and command model
+2. Guarded API upload boundary
+3. Ingestion and Document State writer integration
+4. Processing status/progress read models
+5. FlowSync upload UI and processing timeline
+6. Verification, closure, handoff, and tag recommendation
+
+References:
+- `docs/architecture/UPLOAD_PROCESSING_ACTIVATION_V1_PLAN.md`
+- `docs/architecture/UPLOAD_PROCESSING_ACTIVATION_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-024-upload-processing-activation-boundary.md`
+
 ## Prior Milestone Context
 
 ### v0.5 Runtime Hardening

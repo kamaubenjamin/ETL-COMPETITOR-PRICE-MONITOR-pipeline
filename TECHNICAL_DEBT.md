@@ -1,5 +1,28 @@
 Technical debt and missing test fixtures
 
+## v0.19 Upload + Processing Activation Planning
+
+### Current Status
+
+**Planning complete; implementation not started.**
+
+ADR-024 and the v0.19 plans select a separate transport-neutral upload policy boundary around existing deterministic ingestion and Document State writers. The API will own multipart transport, authentication, tenant/permission gates, IDs, and safe envelopes. Raw content will reach the path-based ingestion pipeline only through a private opaque staging port; FlowSync remains non-authoritative.
+
+Debt intentionally retained:
+
+- Production encrypted file/object storage, quarantine, retention, deletion, backup, recovery, and legal hold
+- Malware scanning and content-disarm policy
+- Async queue/outbox, workers, timeout ownership, retry, reconciliation, and partial-progress operations
+- MIME/signature depth and decompression/resource-bomb protection
+- EML attachment/header policy and legacy XLS activation
+- Separate `document:upload` permission decision versus existing `document:ingest`
+- Upload idempotency semantics for intentional identical re-uploads
+- Production rate limiting, gateway/TLS/CORS, telemetry, alerts, and runbooks
+- OCR/LLM, image/archive/batch/resumable upload, raw download, and protected preview
+- Enabled export, upload-to-export automation, and ERP integration
+
+These are deferred prerequisites or later product decisions, not planning omissions. No production upload should activate until the applicable security, storage, and operational items are resolved.
+
 ## v0.18 Export Activation Deferred
 
 Phase 5 deliberately exposes no executable export mutation. The POST contracts return `mutation_not_enabled`, the read provider is ephemeral and summary-only, and FlowSync is GET-only. Before activation, add authenticated production identity, exact tenant/resource authorization, durable attempt/result persistence, audit and lifecycle writers, target catalog ownership, approved adapter composition, reconciliation, rate limits, and operational controls.

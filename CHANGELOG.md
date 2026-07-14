@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.19 Upload + Processing Activation planning and ADR-024, selecting a transport-neutral upload policy boundary, API-authoritative authenticated tenant-scoped multipart mutation, deterministic file safety validation, opaque private staging into the existing ingestion pipeline, governed Document State writer/lifecycle integration, safe progress projections, and a phased FlowSync upload/timeline plan; no upload package, endpoint, UI behavior, migration, dependency, Streamlit, dashboard, competitor-price, OCR/LLM, export mutation, ERP connection, or production storage was added.
+
 - Closed v0.18 Export Runtime / ERP Integration Boundary as implemented and verified pending owner tag, with final architecture summary, handoff, release notes, focused/full regression evidence, boundary confirmation, explicit disabled API/FlowSync state, deferred production activation risks, and v0.19 Upload + Processing Activation recommendation; no runtime, API, UI, Streamlit, dashboard, competitor-price, dependency, migration, or ERP behavior was added during closure.
 
 - Added v0.18 Phase 5 guarded export API contracts with tenant-filtered safe GET summaries, always-disabled prepare/export POST envelopes, and a FlowSync read-only export-readiness/history placeholder with no client mutation call, payload construction, runtime execution, real adapter, dependency, migration, Streamlit, dashboard, or external connection.
