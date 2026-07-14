@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.19. Phases 1-2 implement and verify the isolated standard-library upload contract foundation and a guarded API metadata boundary with safe tenant-filtered reads. The POST contract cannot accept bytes or stage content and always returns staging unavailable after any authorized validation. No UI action, storage adapter, migration, dependency, ingestion call, writer integration, or processing activation is implemented yet.
+Accepted for v0.19. Phases 1-3 implement and verify the isolated contract foundation, guarded metadata API, and deterministic activation/integration-port boundary. Activation requires successful validation and a matching opaque artifact, produces safe ingestion and received-document intents, and calls only injected ports. The API cannot supply an artifact and remains staging-disabled. No concrete storage, ingestion pipeline, Document State writer/lifecycle adapter, UI action, migration, dependency, or real processing execution is implemented yet.
 
 ## Context
 

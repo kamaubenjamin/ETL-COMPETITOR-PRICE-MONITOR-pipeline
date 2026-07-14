@@ -1,7 +1,7 @@
 # Upload + Processing Activation v1 Implementation Plan
 
 **Milestone:** v0.19
-**Status:** Phases 1-2 implemented and verified; Phase 3 not started
+**Status:** Phases 1-3 implemented and verified; Phase 4 not started
 
 ## 1. Delivery Rules
 
@@ -60,6 +60,8 @@ Disabled default, unauthenticated, permission/tenant/service-account denial, mal
 No ingestion or Document State mutation unless separately approved for Phase 3.
 
 ## 4. Phase 3: Ingestion And Document State Writer Integration
+
+**Status:** Complete at the safe intent/adapter-port boundary. Deterministic activation, opaque staged-artifact binding, safe ingestion and received-document intents, fixed receipts/results, and test-fake orchestration are implemented. Concrete staging, path resolution, ingestion execution, and existing writer/lifecycle adapters remain deferred because no trusted artifact source exists.
 
 ### Deliverables
 

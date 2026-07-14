@@ -1,7 +1,7 @@
 # Upload + Processing Activation v1 Plan
 
 **Milestone:** v0.19
-**Status:** Phases 1-2 implemented and verified; Phases 3-6 pending
+**Status:** Phases 1-3 implemented and verified; Phases 4-6 pending
 **Recommended package:** `src/upload_runtime/`
 
 ## 1. Goal
@@ -209,3 +209,7 @@ Phase 1 adds the isolated standard-library-only `src/upload_runtime/` contract f
 ## 23. Phase 2 Implementation Record
 
 Phase 2 adds guarded API contracts for `POST /api/v1/documents/upload`, `GET /api/v1/uploads`, and `GET /api/v1/uploads/{upload_id}`. Because no staging implementation exists and multipart support would add transport/dependency complexity, POST accepts strict JSON metadata only. Disabled auth returns `upload_staging_not_enabled`; authenticated local/demo requests require API-owned tenant scope and `document:ingest`, run Phase 1 validation, return safe fixed validation issues when invalid, and still return HTTP 503 staging unavailable when valid. GET routes use an app-scoped bounded tenant-filtered placeholder provider. No bytes are accepted or persisted, and no staging, ingestion, Document State, export, ERP, OCR/LLM, filesystem, database, network, or UI behavior is added. The API suite passes 103 tests with 9 optional transport skips.
+
+## 24. Phase 3 Implementation Record
+
+Phase 3 adds deterministic activation over a validated command and matching opaque `UploadArtifactReference`. It defines safe ingestion and received-document writer intents, fixed processing outcomes, opaque command/reference binding, safe receipts, and structural ingestion/Document State adapter ports. The service derives stable upload/document/source-event identities, calls the writer port before the ingestion-request port, preserves tenant/actor attribution, reports received lifecycle state only after a positive writer receipt, and safely maps rejection or exceptions. Missing staging returns `deferred_staging_required`; invalid validation or mismatched artifacts call no ports. Only test-local fakes invoke the ports. No concrete staging, ingestion pipeline, Document State writer/lifecycle adapter, API activation, path resolution, persistence, or processing execution is added because Phase 2 supplies no trusted artifact reference. Upload Runtime passes 62 tests and API passes 105 tests with 9 skips.
