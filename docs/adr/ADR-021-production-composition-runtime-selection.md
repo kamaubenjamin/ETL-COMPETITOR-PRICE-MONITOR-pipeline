@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.16. Phases 1-2 implement dependency-light runtime/config contracts, the pure fail-closed validation matrix, and internal Document State/lifecycle/writer/Query Facade composition. API/provider injection, Streamlit integration, production adapters, hardening, and release closure remain pending.
+Accepted for v0.16. Phases 1-3 implement dependency-light runtime/config contracts, the pure fail-closed validation matrix, internal Document State/lifecycle/writer/Query Facade composition, and API-owned app/provider/auth activation. Streamlit integration, production adapters, hardening, and release closure remain pending.
 
 ## Context
 
@@ -77,7 +77,7 @@ Writers do not construct repositories. Lifecycle service does not select a backe
 
 ## API Decision
 
-The API app factory will receive a composed `FacadeDocumentIntelligenceProvider`, auth config, and identity provider. Routes will resolve the app-scoped provider through a narrow dependency rather than import a module-level singleton. Existing routes, methods, payloads, envelopes, request IDs, and headers remain unchanged.
+The API app factory accepts a validated `RuntimeConfig` or existing `RuntimeComposition`, constructs `FacadeDocumentIntelligenceProvider` from the composed facade, and maps disabled/local-demo auth into existing API auth contracts. Routes resolve the app-scoped provider through a narrow dependency rather than use the module-level singleton. Authenticated and production placeholders reject before runtime resource construction. Existing routes, methods, payloads, envelopes, request IDs, and headers remain unchanged.
 
 The current module-level deterministic API app/provider remains an explicitly local compatibility entrypoint only and cannot be used by pilot or production composition.
 

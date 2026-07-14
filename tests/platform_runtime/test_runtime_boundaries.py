@@ -26,14 +26,20 @@ def test_platform_runtime_core_imports_only_standard_or_package_local_modules():
             assert module.split(".")[0] in STANDARD_ROOTS, f"{path} imports {module}"
 
 
-def test_existing_production_modules_do_not_import_platform_runtime_yet():
+def test_only_approved_api_composition_module_imports_platform_runtime():
+    approved = {
+        Path("src/api/document_intelligence/app.py"),
+        Path("src/api/document_intelligence/auth.py"),
+        Path("src/api/document_intelligence/config.py"),
+    }
     for path in Path("src").rglob("*.py"):
         if ROOT in path.parents:
             continue
-        assert not any(
+        imports_runtime = any(
             module == "src.platform_runtime" or module.startswith("src.platform_runtime.")
             for module in _imports(path)
-        ), path
+        )
+        assert not imports_runtime or path in approved, path
 
 
 def test_platform_runtime_integration_imports_only_approved_public_boundaries():

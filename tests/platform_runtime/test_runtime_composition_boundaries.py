@@ -25,7 +25,7 @@ def test_composition_modules_import_only_approved_public_boundaries():
 
 
 def test_core_packages_do_not_import_platform_runtime():
-    for package in ("document_state", "workflow_runtime", "security", "api", "ui"):
+    for package in ("document_state", "workflow_runtime", "security", "ui"):
         for path in (Path("src") / package).rglob("*.py"):
             assert not any(
                 module == "src.platform_runtime" or module.startswith("src.platform_runtime.")

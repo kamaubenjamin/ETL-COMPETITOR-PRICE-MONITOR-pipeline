@@ -14,9 +14,15 @@ from src.security import (
     Permission,
     PermissionGuard,
 )
-from src.security.providers import IdentityProvider, IdentityProviderResult, LocalIdentityProvider
+from src.security.providers import (
+    IdentityProvider,
+    IdentityProviderResult,
+    LocalIdentityProvider,
+    create_local_demo_provider,
+)
+from src.platform_runtime import AuthConfig as RuntimeAuthConfig
 
-from .config import APIAuthConfig, APIAuthMode
+from .config import APIAuthConfig, APIAuthMode, api_auth_config_from_runtime
 from .errors import DocumentIntelligenceAPIError
 
 
@@ -56,6 +62,14 @@ def create_auth_composition(
     identity_provider: IdentityProvider | None = None,
 ) -> APIAuthComposition:
     return APIAuthComposition(config or APIAuthConfig(), identity_provider, PermissionGuard())
+
+
+def create_runtime_auth_composition(config: RuntimeAuthConfig) -> APIAuthComposition:
+    """Create API auth from validated platform config without environment inference."""
+
+    api_config = api_auth_config_from_runtime(config)
+    provider = create_local_demo_provider("tenant-demo") if api_config.mode == APIAuthMode.LOCAL_DEMO else None
+    return create_auth_composition(api_config, provider)
 
 
 def _composition(request: Request) -> APIAuthComposition:

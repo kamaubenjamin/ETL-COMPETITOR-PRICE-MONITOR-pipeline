@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.16 Phase 3 API runtime activation with `RuntimeConfig` or precomposed runtime app-factory entrypoints, app-scoped facade provider and auth composition, disabled/local-demo auth mapping, tenant-narrowed composed reads, safe runtime diagnostics and shutdown ownership, preserved default singleton compatibility, and fail-closed authenticated/production placeholders; no endpoints, methods, payload meanings, Streamlit behavior, migrations, dependencies, or external providers changed.
+
 - Added v0.16 Phase 2 internal runtime composition with validation-before-construction, explicit in-memory or file-backed SQLite Document State selection, one shared lifecycle advancement service injected into all four writers, Document State-backed Workflow Query Facade wiring, deterministic snapshot ownership, tenant-scoped reads, redacted diagnostics, SQLite reconstruction verification, and fail-closed deferred/production modes; API and Streamlit activation remain unchanged and deferred.
 
 - Added v0.16 Phase 1 standard-library platform runtime contracts with fixed runtime/backend/auth/identity/API/Streamlit mode catalogs, immutable redacted configuration, stable safe validation errors/results, deterministic compatibility helpers and matrix enforcement, explicit pilot placeholder requirements, and always fail-closed production while PostgreSQL and production identity adapters remain deferred; no environment reads, service wiring, API/UI changes, dependencies, migrations, or external integrations were added.

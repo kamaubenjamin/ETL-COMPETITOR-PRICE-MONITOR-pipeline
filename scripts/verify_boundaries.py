@@ -70,7 +70,7 @@ FORBIDDEN_IMPORT_RULES: List[Tuple[str, List[str], str]] = [
     ("review_runtime",
      ["src.document_engine", "src.extract", "src.entity_runtime"],
      "R04"),
-    # R05: API Runtime has a narrow approved Document Intelligence -> Security edge
+    # R05: API Runtime has narrow approved Document Intelligence -> Security/composition edges
     ("api_runtime",
      None,  # special: forbid all runtime imports except workflow_runtime
      "R05"),
@@ -281,13 +281,23 @@ def _check_consumer_rule(
 
         if rule_key == "api_runtime":
             # R05 special: API may import workflow_runtime. ADR-020 additionally
-            # approves Document Intelligence API -> provider-neutral Security.
+            # approves Document Intelligence API -> provider-neutral Security;
+            # ADR-021 permits API-owned activation of platform runtime composition.
             if matches_any_prefix(module, ["src.workflow_runtime"]):
                 continue
             normalized_path = rel_path.replace("\\", "/")
             if (
                 normalized_path.startswith("src/api/document_intelligence/")
                 and matches_any_prefix(module, ["src.security"])
+            ):
+                continue
+            if (
+                normalized_path in {
+                    "src/api/document_intelligence/app.py",
+                    "src/api/document_intelligence/auth.py",
+                    "src/api/document_intelligence/config.py",
+                }
+                and matches_any_prefix(module, ["src.platform_runtime"])
             ):
                 continue
             # Also allow standard library and third-party packages
@@ -297,7 +307,7 @@ def _check_consumer_rule(
             if matches_any_prefix(module, SHARED_UTILITY_PACKAGES):
                 continue
             # Anything else starting with src. is forbidden
-            desc = "API Runtime import is outside approved Workflow/shared/Security boundaries"
+            desc = "API Runtime import is outside approved Workflow/shared/Security/composition boundaries"
             fp = _make_fingerprint(rule_id, rel_path, module)
             if fp not in exemptions:
                 violations.append(Violation(

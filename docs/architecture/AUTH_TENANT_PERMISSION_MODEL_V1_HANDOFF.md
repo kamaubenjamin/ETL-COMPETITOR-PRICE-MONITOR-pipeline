@@ -5,7 +5,7 @@
 
 ## Current State
 
-The platform has a provider-neutral security core, deterministic local identity composition, tenant-aware document projections, tenant-scoped read paths, guarded Document Intelligence API GET routes, and a read-only Streamlit auth preview. Auth remains disabled by default for local compatibility. Production identity, write enforcement, and production composition are not active.
+The platform has a provider-neutral security core, deterministic local identity composition, tenant-aware document projections, tenant-scoped read paths, guarded Document Intelligence API GET routes, and a read-only Streamlit auth preview. v0.16 Phase 3 adds API-owned runtime composition: disabled and local-demo runtime auth map to existing API behavior, while authenticated and production placeholders fail closed. Auth remains disabled by default for compatibility. Production identity, write enforcement, and Streamlit runtime activation are not active.
 
 ## Important Files
 
@@ -13,6 +13,7 @@ The platform has a provider-neutral security core, deterministic local identity 
 - `src/security/providers/local.py`: deterministic local/demo/test identity provider.
 - `src/api/document_intelligence/config.py`: explicit API auth modes and bounded header configuration.
 - `src/api/document_intelligence/auth.py`: API-local identity/context composition and read authorization.
+- `src/api/document_intelligence/app.py`: app-scoped runtime provider/auth activation with compatibility defaults.
 - `src/api/document_intelligence/routers/`: permission declarations for existing GET routes.
 - `src/api/document_intelligence/providers/facade_provider.py`: guard-produced tenant narrowing and safe public projections.
 - `src/document_state/records.py`: tenant-aware `DocumentRecord`.
@@ -81,4 +82,3 @@ The full suite may regenerate `price_history.csv`, `src/canonical_products.json`
 ## Next Recommended Milestone
 
 Plan v0.16 Production Composition / Runtime Selection. Define one explicit composition root for API auth mode, identity provider, Document State backend, Query Facade source, and lifecycle/writer services. It must fail closed, preserve local/dev composition, and avoid adding public mutations or a provider-specific core model until separately approved.
-

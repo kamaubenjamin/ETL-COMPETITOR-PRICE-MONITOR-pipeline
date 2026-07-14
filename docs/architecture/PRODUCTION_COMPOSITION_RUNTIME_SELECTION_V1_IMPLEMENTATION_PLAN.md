@@ -1,7 +1,7 @@
 # Production Composition / Runtime Selection v1 Implementation Plan
 
 **Milestone:** v0.16
-**Status:** Phases 1-2 implemented; Phases 3-6 not started
+**Status:** Phases 1-3 implemented; Phases 4-6 not started
 
 ## 1. Milestone Overview
 
@@ -187,6 +187,8 @@ git status --short --branch
 ### Stop Condition
 
 Stop after API composition activation. Do not add endpoints, mutations, external providers, or Streamlit changes.
+
+**Completion:** Implemented and verified. The API factory now owns activation and accepts either `RuntimeConfig` or `RuntimeComposition`; `platform_runtime` remains FastAPI-free. App-scoped facade provider and auth composition replace singleton use for composed apps, while the module-level default remains compatibility-only. Disabled and local-demo modes map to existing API behavior; authenticated and production placeholders fail closed before resources are built. All existing routes and public contracts remain unchanged.
 
 ## 6. Phase 4: Streamlit Runtime Selection And Safe Config Preview
 

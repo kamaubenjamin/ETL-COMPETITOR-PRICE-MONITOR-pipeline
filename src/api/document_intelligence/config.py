@@ -5,6 +5,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 
+from src.platform_runtime import (
+    AuthConfig as RuntimeAuthConfig,
+    AuthMode as RuntimeAuthMode,
+    RuntimeErrorCode,
+    RuntimeValidationError,
+)
+
 
 class APIAuthMode(str, Enum):
     DISABLED = "disabled"
@@ -36,3 +43,15 @@ class APIAuthConfig:
     @property
     def enabled(self) -> bool:
         return self.mode != APIAuthMode.DISABLED
+
+
+def api_auth_config_from_runtime(config: RuntimeAuthConfig) -> APIAuthConfig:
+    """Map only API-supported runtime auth modes; placeholders fail closed."""
+
+    if not isinstance(config, RuntimeAuthConfig):
+        raise RuntimeValidationError(RuntimeErrorCode.INVALID_CONFIG, field="auth")
+    if config.mode == RuntimeAuthMode.DISABLED:
+        return APIAuthConfig(APIAuthMode.DISABLED)
+    if config.mode == RuntimeAuthMode.LOCAL_DEMO:
+        return APIAuthConfig(APIAuthMode.LOCAL_DEMO)
+    raise RuntimeValidationError(RuntimeErrorCode.COMPOSITION_FAILED, field="auth")
