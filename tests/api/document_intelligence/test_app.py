@@ -18,6 +18,8 @@ DOMAIN_PATHS = {
     "/api/v1/documents/{document_id}/export/prepare",
     "/api/v1/documents/{document_id}/export",
     "/api/v1/documents/upload", "/api/v1/uploads", "/api/v1/uploads/{upload_id}",
+    "/api/v1/uploads/{upload_id}/progress", "/api/v1/uploads/{upload_id}/timeline",
+    "/api/v1/documents/{document_id}/processing-status",
 }
 EXPECTED_PATHS = {"/health", "/api/v1/health", "/api/v1/status", "/openapi.json", "/docs", "/docs/oauth2-redirect", "/redoc"} | DOMAIN_PATHS
 

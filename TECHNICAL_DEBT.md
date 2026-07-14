@@ -4,7 +4,7 @@ Technical debt and missing test fixtures
 
 ### Current Status
 
-**Phases 1-3 are implemented and verified; Phase 4 has not started.**
+**Phases 1-4 are implemented and verified; Phase 5 has not started.**
 
 ADR-024 and the v0.19 plans select a separate transport-neutral upload policy boundary around existing deterministic ingestion and Document State writers. The API will own multipart transport, authentication, tenant/permission gates, IDs, and safe envelopes. Raw content will reach the path-based ingestion pipeline only through a private opaque staging port; FlowSync remains non-authoritative.
 
@@ -28,6 +28,8 @@ Phase 1 provides immutable upload contracts, deterministic validation and stable
 Phase 2 provides metadata-only upload POST validation plus safe upload history/detail GET contracts. The API owns authentication, active tenant, actor, and `document:ingest` authorization; disabled mode and valid authorized requests both remain unable to stage. Multipart transport, raw bytes, storage, ingestion, Document State writes, processing activation, service-account production policy, and FlowSync remain deferred. The API suite passes 103 tests with 9 skips.
 
 Phase 3 provides a no-I/O activation service over validated commands and opaque staged-artifact references, deterministic upload/document/source-event identities, safe processing and writer intents, structural ingestion/writer ports, fixed safe receipts/results, prerequisite ordering, and exception sanitization. Test-local fakes prove calls occur only after validation and artifact matching. Concrete artifact resolution, ingestion execution, Document State command mapping/lifecycle calls, durable state, API activation, and operational recovery remain deferred. Upload Runtime passes 62 tests; API passes 105 tests with 9 skips.
+
+Phase 4 provides immutable safe progress read models, a separate capability-aligned read-status catalog, deterministic stage ordering and approximate percentage derivation, safe projections, tenant-scoped in-memory queries, and guarded upload/document progress API reads. The provider remains ephemeral; durable progress persistence, direct Query Facade/Document State adapters, processing activation, and FlowSync presentation remain deferred.
 
 ## v0.18 Export Activation Deferred
 

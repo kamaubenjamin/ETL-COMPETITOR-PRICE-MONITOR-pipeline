@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.19. Phases 1-3 implement and verify the isolated contract foundation, guarded metadata API, and deterministic activation/integration-port boundary. Activation requires successful validation and a matching opaque artifact, produces safe ingestion and received-document intents, and calls only injected ports. The API cannot supply an artifact and remains staging-disabled. No concrete storage, ingestion pipeline, Document State writer/lifecycle adapter, UI action, migration, dependency, or real processing execution is implemented yet.
+Accepted for v0.19. Phases 1-4 implement and verify the isolated contract foundation, guarded metadata API, deterministic activation/integration-port boundary, and tenant-scoped progress projections. Activation requires successful validation and a matching opaque artifact, produces safe ingestion and received-document intents, and calls only injected ports. Progress reads use immutable allowlisted facts, deterministic stage ordering, and concealed cross-tenant lookup. The API cannot supply an artifact and remains staging-disabled. No concrete storage, ingestion pipeline, Document State writer/lifecycle adapter, UI action, migration, dependency, or real processing execution is implemented yet.
 
 ## Context
 

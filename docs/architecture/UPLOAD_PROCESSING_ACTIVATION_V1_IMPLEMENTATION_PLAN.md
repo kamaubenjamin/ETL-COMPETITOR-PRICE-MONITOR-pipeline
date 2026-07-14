@@ -1,7 +1,7 @@
 # Upload + Processing Activation v1 Implementation Plan
 
 **Milestone:** v0.19
-**Status:** Phases 1-3 implemented and verified; Phase 4 not started
+**Status:** Phases 1-4 implemented and verified; Phase 5 not started
 
 ## 1. Delivery Rules
 
@@ -81,6 +81,8 @@ Successful command creation, writer read-after-write, in-memory/SQLite compositi
 No async queue, production blob storage, OCR/LLM, matching invention, export, or ERP.
 
 ## 5. Phase 4: Processing Status And Progress Read Models
+
+**Status:** Complete. Immutable safe progress models, capability-aligned status/stage vocabularies, deterministic projection/query helpers, bounded tenant-scoped in-memory reads, and guarded upload/document progress API projections are implemented. They consume only safe facts and perform no mutation or processing activation.
 
 ### Deliverables
 

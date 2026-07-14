@@ -451,7 +451,7 @@ Status:
 - Phase 1 implemented: immutable upload contracts, validation policy/issues/results, safe command/result/error models, deterministic SHA-256 idempotency keys, opaque artifact references, and structural staging port
 - Phase 2 implemented: API-authoritative permission/tenant guard, strict JSON metadata validation, safe tenant-filtered upload summary reads, and always-disabled staging response
 - Phase 3 implemented: validated opaque-artifact activation, deterministic processing and received-document intents, safe receipts/results, and injected ingestion/Document State adapter ports with test-local fakes
-- Phase 4 not started
+- Phase 4 implemented: immutable progress read models, deterministic stage/percentage projections, tenant-scoped bounded queries, and guarded upload/document processing-status API reads
 - No multipart bytes, UI behavior, migration, dependency, storage adapter implementation, concrete ingestion/Document State adapter, OCR/LLM, export activation, or ERP connection added
 
 Planned capabilities:
@@ -468,7 +468,7 @@ Proposed phases:
 1. Upload contracts, validation, and command model
 2. Guarded API upload boundary
 3. Ingestion and Document State writer integration
-4. Processing status/progress read models
+4. Processing status/progress read models (complete)
 5. FlowSync upload UI and processing timeline
 6. Verification, closure, handoff, and tag recommendation
 

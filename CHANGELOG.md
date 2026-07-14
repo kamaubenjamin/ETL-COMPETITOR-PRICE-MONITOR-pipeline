@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.19 Phase 4 immutable upload progress summaries, stages, events, timelines, failures, document links, bounded pages, deterministic approximate percentage projections, safe failure mapping, tenant-scoped in-memory queries, and guarded upload progress/timeline and document processing-status API reads; no staging, ingestion execution, lifecycle mutation, persistence, migration, UI, Streamlit, dashboard, competitor-price, dependency, OCR/LLM, export mutation, ERP, filesystem, network, or external service was added.
+
 - Added v0.19 Phase 3 controlled upload activation with validated opaque-artifact binding, deterministic upload/document/source-event identities, safe ingestion and received-document intents, fixed processing outcomes and receipts, injected ingestion/Document State integration ports, prerequisite call ordering, and sanitized failure mapping; only test-local fakes execute ports, while API staging, paths, raw bytes, concrete ingestion/writer/lifecycle adapters, persistence, UI, Streamlit, dashboard, competitor-price, migration, dependency, OCR/LLM, export mutation, ERP, filesystem, database, network, and external services remain absent.
 
 - Added v0.19 Phase 2 guarded upload API contracts with strict JSON metadata-only validation through Upload Runtime, API-owned authenticated tenant-scoped `document:ingest` authorization, fixed safe validation/staging-unavailable envelopes, and app-scoped tenant-filtered upload summary GETs; no multipart bytes, staging, filesystem/object storage, ingestion, Document State write, processing activation, UI, Streamlit, dashboard, competitor-price, migration, dependency, OCR/LLM, export mutation, ERP, database, network, or external service was added.

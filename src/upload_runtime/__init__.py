@@ -19,6 +19,24 @@ from .processing import (
     UploadIngestionActivationIntent,
     UploadProcessingStatus,
 )
+from .progress import STAGE_ORDER, UploadProgressStage, UploadProgressStatus, approximate_progress, stage_sequence
+from .progress_errors import UploadProgressErrorCode
+from .projections import (
+    project_activation_result,
+    project_progress_summary,
+    project_safe_upload_summary,
+    project_timeline,
+    project_upload_result,
+)
+from .queries import UploadProgressQueryService, UploadProgressRecord
+from .read_models import (
+    UploadDocumentLink,
+    UploadProcessingFailure,
+    UploadProcessingTimeline,
+    UploadProgressEvent,
+    UploadProgressPage,
+    UploadProgressSummary,
+)
 from .results import UploadResult
 from .validation import UploadValidationIssue, UploadValidationPolicy, UploadValidationResult, validate_upload
 
@@ -30,4 +48,9 @@ __all__ = [
     "UploadErrorCode", "UploadFileType", "UploadIdempotencyKey", "UploadProcessingIntent",
     "UploadResult", "UploadSource", "UploadStatus", "UploadValidationIssue",
     "UploadValidationPolicy", "UploadValidationResult", "upload_idempotency_key", "validate_upload",
+    "STAGE_ORDER", "UploadDocumentLink", "UploadProcessingFailure", "UploadProcessingTimeline",
+    "UploadProgressErrorCode", "UploadProgressEvent", "UploadProgressPage", "UploadProgressQueryService",
+    "UploadProgressRecord", "UploadProgressStage", "UploadProgressStatus", "UploadProgressSummary", "approximate_progress",
+    "project_activation_result", "project_progress_summary", "project_safe_upload_summary",
+    "project_timeline", "project_upload_result", "stage_sequence",
 ]

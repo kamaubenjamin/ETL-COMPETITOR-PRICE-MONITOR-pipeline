@@ -65,7 +65,7 @@ def upload_document(request: Request, payload: dict[str, Any] = Body(...)) -> No
 def list_uploads(
     request: Request,
     limit: int = Query(DEFAULT_PAGE_SIZE, ge=1, le=MAX_PAGE_SIZE),
-    offset: int = Query(0, ge=0),
+    offset: int = Query(0, ge=0, le=10_000),
 ) -> dict[str, object]:
     scope = authorize_read(request, Permission.DOCUMENT_LIST, resource_type="upload_collection")
     rows = _provider(request).list_uploads(tenant_id=scope.tenant_id)
@@ -84,4 +84,51 @@ def get_upload(upload_id: str, request: Request) -> dict[str, object]:
     row = _provider(request).get_upload(upload_id, tenant_id=scope.tenant_id)
     if row is None:
         raise DocumentIntelligenceAPIError("upload_not_found", "Upload was not found.", status_code=404)
+    return success_response(row, request_id=request.state.request_id)
+
+
+@router.get("/uploads/{upload_id}/progress")
+def get_upload_progress(upload_id: str, request: Request) -> dict[str, object]:
+    scope = authorize_read(
+        request,
+        Permission.DOCUMENT_READ,
+        resource_type="upload_progress",
+        resource_id=upload_id,
+        conceal_unauthorized_resource=True,
+    )
+    row = _provider(request).get_progress(upload_id, tenant_id=scope.tenant_id)
+    if row is None:
+        raise DocumentIntelligenceAPIError("upload_progress_not_found", "Upload progress was not found.", status_code=404)
+    return success_response(row, request_id=request.state.request_id)
+
+
+@router.get("/uploads/{upload_id}/timeline")
+def get_upload_timeline(upload_id: str, request: Request) -> dict[str, object]:
+    scope = authorize_read(
+        request,
+        Permission.DOCUMENT_READ,
+        resource_type="upload_timeline",
+        resource_id=upload_id,
+        conceal_unauthorized_resource=True,
+    )
+    row = _provider(request).get_timeline(upload_id, tenant_id=scope.tenant_id)
+    if row is None:
+        raise DocumentIntelligenceAPIError("upload_timeline_not_found", "Upload timeline was not found.", status_code=404)
+    return success_response(row, request_id=request.state.request_id)
+
+
+@router.get("/documents/{document_id}/processing-status")
+def get_document_processing_status(document_id: str, request: Request) -> dict[str, object]:
+    scope = authorize_read(
+        request,
+        Permission.DOCUMENT_READ,
+        resource_type="document_processing_status",
+        resource_id=document_id,
+        conceal_unauthorized_resource=True,
+    )
+    row = _provider(request).get_document_processing_status(document_id, tenant_id=scope.tenant_id)
+    if row is None:
+        raise DocumentIntelligenceAPIError(
+            "document_processing_status_not_found", "Document processing status was not found.", status_code=404
+        )
     return success_response(row, request_id=request.state.request_id)
