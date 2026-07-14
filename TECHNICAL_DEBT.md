@@ -1,12 +1,12 @@
 Technical debt and missing test fixtures
 
-## v0.19 Upload + Processing Activation Planning
+## v0.19 Upload + Processing Activation
 
 ### Current Status
 
-**Phases 1-5 are implemented and verified; Phase 6 has not started.**
+**v0.19 is implemented, verified, and closed pending owner tag.**
 
-ADR-024 and the v0.19 plans select a separate transport-neutral upload policy boundary around existing deterministic ingestion and Document State writers. The API will own multipart transport, authentication, tenant/permission gates, IDs, and safe envelopes. Raw content will reach the path-based ingestion pipeline only through a private opaque staging port; FlowSync remains non-authoritative.
+ADR-024 and the v0.19 plans establish a separate transport-neutral upload policy boundary around existing deterministic ingestion and Document State writers. The API owns the current JSON metadata preview, authentication, tenant/permission gates, IDs, and safe envelopes. Future multipart/raw content may reach the path-based ingestion pipeline only through an approved private opaque staging boundary; FlowSync remains non-authoritative.
 
 Debt intentionally retained:
 
@@ -29,9 +29,11 @@ Phase 2 provides metadata-only upload POST validation plus safe upload history/d
 
 Phase 3 provides a no-I/O activation service over validated commands and opaque staged-artifact references, deterministic upload/document/source-event identities, safe processing and writer intents, structural ingestion/writer ports, fixed safe receipts/results, prerequisite ordering, and exception sanitization. Test-local fakes prove calls occur only after validation and artifact matching. Concrete artifact resolution, ingestion execution, Document State command mapping/lifecycle calls, durable state, API activation, and operational recovery remain deferred. Upload Runtime passes 62 tests; API passes 105 tests with 9 skips.
 
-Phase 4 provides immutable safe progress read models, a separate capability-aligned read-status catalog, deterministic stage ordering and approximate percentage derivation, safe projections, tenant-scoped in-memory queries, and guarded upload/document progress API reads. The provider remains ephemeral; durable progress persistence, direct Query Facade/Document State adapters, processing activation, and FlowSync presentation remain deferred.
+Phase 4 provides immutable safe progress read models, a separate capability-aligned read-status catalog, deterministic stage ordering and approximate percentage derivation, safe projections, tenant-scoped in-memory queries, and guarded upload/document progress API reads. The provider remains ephemeral; durable progress persistence, direct Query Facade/Document State adapters, and processing activation remain deferred. FlowSync presentation was delivered in Phase 5.
 
 Phase 5 provides a FlowSync guarded metadata validation preview and read-only progress experience. The browser never reads or transmits selected document content; staging-disabled remains explicit, recent/progress/timeline data remains API-owned, and refresh is manual. Durable recent-upload data, populated event timelines, real staging/transport, processing activation, production authentication, polling/realtime updates, and operational retry remain deferred.
+
+Phase 6 closes the milestone with architecture summary, handoff, release notes, aligned status records, verification evidence, explicit production-unavailable state, deferred-work ownership, recommended tag, and v0.20 handoff. The verified implementation baseline remains 1,777 passed and 9 skipped; FlowSync validation/typecheck/build passed and boundary verification is compliant. Closure changes documentation only.
 
 ## v0.18 Export Activation Deferred
 

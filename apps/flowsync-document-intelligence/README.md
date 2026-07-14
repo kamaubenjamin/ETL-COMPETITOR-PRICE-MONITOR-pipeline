@@ -6,12 +6,12 @@ The application consumes the versioned Document Intelligence API over HTTP. The 
 
 ## Milestone State
 
-v0.17 is implemented, verified, and tagged. v0.18 is implemented, verified, and closed pending owner tag; its FlowSync change is limited to the read-only export-readiness/history placeholder and disabled export action. The UI foundation establishes:
+v0.17 is implemented, verified, and tagged. v0.18 and v0.19 are implemented, verified, and closed pending their owner tags. v0.18 adds the read-only export-readiness/history placeholder and disabled export action. v0.19 adds the guarded upload metadata preview and read-only processing timeline. The UI foundation establishes:
 
 - the Vite, React, and TypeScript application boundary
 - an enterprise app shell with sidebar and header
 - route metadata and safe placeholder pages
-- a GET-only API client and strict response-envelope parser
+- a GET-only read client, one guarded JSON metadata-preview POST, and strict response-envelope parsers
 - fixed privacy-safe loading and error states
 - theme foundations for later product views
 - a real read-only document dashboard backed by `GET /api/v1/documents`

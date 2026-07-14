@@ -434,7 +434,7 @@ Proposed phases:
 3. Export attempt/result repository integration
 4. Export service with placeholder adapters and lifecycle/audit integration
 5. API mutation contract boundary and FlowSync export-readiness placeholders, gated by owner approval
-6. Verification, closure, handoff, and tag recommendation
+6. Verification, closure, handoff, and tag recommendation (complete pending owner tag)
 
 References:
 - `docs/architecture/EXPORT_RUNTIME_ERP_INTEGRATION_BOUNDARY_V1_PLAN.md`
@@ -453,11 +453,13 @@ Status:
 - Phase 3 implemented: validated opaque-artifact activation, deterministic processing and received-document intents, safe receipts/results, and injected ingestion/Document State adapter ports with test-local fakes
 - Phase 4 implemented: immutable progress read models, deterministic stage/percentage projections, tenant-scoped bounded queries, and guarded upload/document processing-status API reads
 - Phase 5 implemented: FlowSync guarded metadata preview, recent uploads, API-supplied timeline, document processing-status panel, responsive states, and no-content-transmission checks
-- No multipart bytes, UI behavior, migration, dependency, storage adapter implementation, concrete ingestion/Document State adapter, OCR/LLM, export activation, or ERP connection added
+- Phase 6 completed: summary, handoff, release notes, verification record, closure alignment, and owner tag recommendation
+- Milestone implemented, verified, and closed pending owner tag `v0.19-upload-processing-activation`
+- No multipart bytes, migration, dependency, storage adapter implementation, concrete ingestion/Document State adapter, OCR/LLM, export activation, or ERP connection added
 
 Planned capabilities:
 - Standard-library-first upload contracts, validation, commands, safe results/errors, and narrow ports
-- API-authoritative multipart mutation gated by authenticated tenant scope and `document:ingest`
+- API-authoritative JSON metadata preview gated by authenticated tenant scope and `document:ingest`; multipart remains deferred
 - Allowlisted PDF, CSV, XLSX, TXT, and EML evaluation with bounded filename/type/size/content checks
 - Private opaque artifact staging into the existing deterministic ingestion pipeline
 - Existing Document State ingestion/processing writers and lifecycle advancement integration
@@ -477,6 +479,9 @@ References:
 - `docs/architecture/UPLOAD_PROCESSING_ACTIVATION_V1_PLAN.md`
 - `docs/architecture/UPLOAD_PROCESSING_ACTIVATION_V1_IMPLEMENTATION_PLAN.md`
 - `docs/adr/ADR-024-upload-processing-activation-boundary.md`
+- `docs/architecture/UPLOAD_PROCESSING_ACTIVATION_V1_SUMMARY.md`
+- `docs/architecture/UPLOAD_PROCESSING_ACTIVATION_V1_HANDOFF.md`
+- `docs/releases/v0.19-upload-processing-activation.md`
 
 ## Prior Milestone Context
 

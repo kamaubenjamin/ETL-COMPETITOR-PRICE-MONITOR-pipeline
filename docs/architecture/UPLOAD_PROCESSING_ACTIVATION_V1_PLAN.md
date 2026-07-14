@@ -1,7 +1,7 @@
 # Upload + Processing Activation v1 Plan
 
 **Milestone:** v0.19
-**Status:** Phases 1-3 implemented and verified; Phases 4-6 pending
+**Status:** Implemented, verified, and closed pending owner tag
 **Recommended package:** `src/upload_runtime/`
 
 ## 1. Goal
@@ -17,35 +17,33 @@ Define and phase a safe mutation boundary through which an authenticated, tenant
 - No forced async queue/outbox design unless required before production activation.
 - No changes to Streamlit, `dashboard.py`, or competitor-price modules.
 
-## 3. Current State
+## 3. Planning Baseline And Delivered State
 
 - `DocumentIngestionEngine` and `IngestionPipeline` deterministically load/classify/normalize/parse/validate path-based inputs.
 - Existing loaders recognize PDF, CSV, XLS/XLSX, TXT, and EML.
 - `src/document_state/writers/` already defines safe ingestion/processing commands, idempotency, record mapping, and repository-neutral writers.
 - Lifecycle policy/service govern document snapshot advancement; Query Facade and API already project documents and processing history.
 - `document:ingest` exists and is assigned only to approved roles/service accounts.
-- API mutation composition and raw-file transport/storage are not active. FlowSync has no upload UI.
+- API raw-file transport/storage and processing mutation composition are not active. FlowSync provides a guarded metadata preview and read-only progress UI.
 
-The gap is a controlled raw-byte boundary between HTTP transport and the existing path-based ingestion producer, plus safe orchestration into Document State.
+The planning gap was a controlled raw-byte boundary between HTTP transport and the existing path-based ingestion producer, plus safe orchestration into Document State. v0.19 closes the contract, validation, intent, progress-read, API-preview, and FlowSync portions of that gap. Raw-file transport, real staging, ingestion execution, and concrete Document State adapters remain deferred.
 
 ## 4. Architecture Decision
 
-Use a small standard-library-first `src/upload_runtime/` package rather than placing validation in FastAPI routes or Document State writers. Upload validation, safe metadata, upload identity/status, and ingestion activation commands form a reusable policy boundary. API code owns HTTP multipart handling and authorization. A producer-side adapter owns controlled staging and calls the existing ingestion pipeline. Existing Document State writers remain the persistence boundary.
+Use a small standard-library-first `src/upload_runtime/` package rather than placing validation in FastAPI routes or Document State writers. Upload validation, safe metadata, upload identity/status, and ingestion activation commands form a reusable policy boundary. API code owns the current JSON metadata transport and authorization; any future multipart transport also belongs at that outer boundary. A future producer-side adapter will own controlled staging and call the existing ingestion pipeline. Existing Document State writers remain the persistence boundary.
 
 ```text
-FlowSync upload UI
-  -> authenticated multipart API boundary
-  -> upload policy/service (contracts + validation + idempotency)
-  -> private artifact staging port
-  -> existing deterministic ingestion pipeline adapter
-  -> existing ingestion/processing writer ports
-  -> lifecycle advancement service
-  -> Document State repositories
-  -> Query Facade / API processing projections
+FlowSync upload preview
+  -> Guarded upload metadata API
+  -> Upload Runtime validation
+  -> Opaque staging boundary
+  -> Activation intents
+  -> Ingestion / Document State adapter ports
+  -> Progress projections
   -> FlowSync progress timeline
 ```
 
-Raw bytes cross only the HTTP-to-upload-service/staging boundary. They are never embedded in JSON commands, writer records, audit metadata, public responses, or UI state. A controlled staging adapter may provide a private path to the current ingestion pipeline; that path is never returned publicly.
+No raw bytes cross the v0.19 boundary. The current POST accepts JSON metadata only. Any future raw transport must terminate at an approved private staging adapter and must never embed bytes or paths in JSON commands, writer records, audit metadata, public responses, or UI state.
 
 ## 5. Proposed Package Boundary
 
@@ -138,21 +136,23 @@ The first durable record should establish tenant-owned document status `received
 
 ## 14. API Boundary
 
-Routes to evaluate in Phase 2:
+Routes delivered through Phases 2 and 4:
 
 - `POST /api/v1/documents/upload`
 - `GET /api/v1/uploads`
 - `GET /api/v1/uploads/{upload_id}`
+- `GET /api/v1/uploads/{upload_id}/progress`
+- `GET /api/v1/uploads/{upload_id}/timeline`
 - `GET /api/v1/documents/{document_id}/processing-status`
 
-The POST route uses multipart streaming, not base64 JSON. It remains disabled by default and can activate only in explicitly validated local/demo composition before production prerequisites exist. The API authorizes `document:ingest` (or a future distinct `document:upload` added only by separate security review), enforces exact active tenant scope, binds actor attribution, applies rate/size controls, and returns the standard envelope. GET history/status reads are tenant-scoped and conceal unauthorized resources.
+The POST route accepts strict JSON metadata only; multipart and raw bytes are not implemented. It remains staging-disabled. The API authorizes `document:ingest` where authentication is enabled, enforces active tenant scope, binds actor attribution, applies metadata policy, and returns the standard envelope. Valid authorized metadata reaches the governed staging-disabled state rather than claiming upload success. GET history/status reads are tenant-scoped and conceal unauthorized resources.
 
 Default/unauthenticated mode must not mutate. Production/unsupported composition fails closed. Error responses contain fixed codes/messages and safe field names only.
 
 ## 15. Tenant And Security Rules
 
 - Require authenticated principal, active tenant, and `document:ingest` for mutation.
-- Never accept tenant or actor identity from multipart fields.
+- Never accept tenant or actor identity from client metadata or any future multipart fields.
 - Service accounts require explicit tenant scope and permission; cross-tenant upload is disabled.
 - Authorize before buffering/staging significant content where transport permits.
 - Bind upload, artifact handle, document, audit, and processing identities to the same tenant.
@@ -160,11 +160,11 @@ Default/unauthenticated mode must not mutate. Production/unsupported composition
 - Use idempotency/request identity to prevent accidental duplicate ingestion.
 - Raw download remains deferred.
 
-## 16. FlowSync UI Plan
+## 16. FlowSync UI Delivery
 
-Preserve the v0.17 dark-green sidebar, white workspace, calm enterprise layout, green semantic status accents, and API-authority language. Before backend activation, show a safe disabled/unavailable upload entry. After approved activation, provide an accessible file picker/drag-drop surface, allowlisted type/source hints, selected filename/size display, validation errors, recent tenant-scoped uploads, and processing timeline.
+Phase 5 preserves the v0.17 dark-green sidebar, white workspace, calm enterprise layout, green semantic status accents, and API-authority language. `/uploads` provides an accessible browser-local picker, selected filename/type/size, safe validation feedback, recent tenant-scoped uploads, API-supplied processing timelines, and manual refresh while staging remains disabled.
 
-The UI does not inspect content beyond browser-required selection metadata, determine final document type, generate IDs, interpret processing results, decide access, expose paths, or trigger export. Disabled indicators state that OCR, LLM, and export are not active. No optimistic lifecycle success is shown before API confirmation.
+The UI sends only filename, size, inferred extension, and browser content type after the explicit **Validate upload** action. It does not inspect content, determine final document type, generate IDs, decide access, expose paths, trigger export, or fabricate processing events. Approximate progress is labeled only when supplied by the API.
 
 ## 17. Privacy And Audit
 
@@ -221,3 +221,7 @@ Phase 4 adds immutable JSON-safe upload progress summaries, stages, events, time
 ## 26. Phase 5 Implementation Record
 
 Phase 5 adds the FlowSync `/uploads` navigation and page while preserving the v0.17 shell and theme. File selection projects only filename, size, extension, and browser content-type metadata; the selected file object is not retained or transmitted. An explicit `Validate upload` action sends JSON to the guarded metadata endpoint, maps staging-disabled and validation issues to fixed safe copy, and never claims staging or processing. Recent uploads, progress, timelines, and document processing status use strict allowlisted parsers, API-owned access decisions, supplied events only, approximate labels only when provided, empty/error states, and manual refresh. Dependency-free validation rejects content-reading/encoding and binary/multipart transmission patterns. No backend, storage, ingestion, lifecycle, export, ERP, OCR/LLM, Streamlit, or competitor-price behavior is added.
+
+## 27. Phase 6 Closure Record
+
+Phase 6 creates the final architecture summary, handoff, and release notes; aligns the plan, implementation plan, ADR, roadmap, technical debt, changelog, and FlowSync guidance; and closes v0.19 pending the owner tag `v0.19-upload-processing-activation`. Closure records the previously passing 1,777-test repository baseline, focused suite counts, successful FlowSync validation/typecheck/build, compliant boundary verification, and the absence of raw-file transmission. No source code, tests, API/UI behavior, dependency, migration, staging, ingestion execution, export, ERP, OCR/LLM, Streamlit, dashboard, or competitor-price behavior changes in Phase 6.

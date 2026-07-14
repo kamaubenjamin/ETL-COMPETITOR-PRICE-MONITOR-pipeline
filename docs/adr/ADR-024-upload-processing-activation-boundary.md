@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.19. Phases 1-5 implement and verify the isolated contract foundation, guarded metadata API, deterministic activation/integration-port boundary, tenant-scoped progress projections, and FlowSync guarded upload/progress experience. Activation requires successful validation and a matching opaque artifact, produces safe ingestion and received-document intents, and calls only injected ports. Progress reads use immutable allowlisted facts, deterministic stage ordering, and concealed cross-tenant lookup. FlowSync retains only browser file metadata, sends JSON validation metadata after explicit action, and presents staging-disabled without claiming upload success. The API cannot supply an artifact and remains staging-disabled. No concrete storage, ingestion pipeline, Document State writer/lifecycle adapter, migration, dependency, or real processing execution is implemented yet.
+Accepted and closed for v0.19 pending owner tag. Phases 1-6 implement and verify the isolated contract foundation, guarded JSON metadata API, deterministic activation/integration-port boundary, tenant-scoped progress projections, FlowSync guarded upload/progress experience, and closure documentation. Activation requires successful validation and a matching opaque artifact, produces safe ingestion and received-document intents, and calls only injected ports. Progress reads use immutable allowlisted facts, deterministic stage ordering, and concealed cross-tenant lookup. FlowSync retains only browser file metadata, sends JSON validation metadata after explicit action, and presents staging-disabled without claiming upload success. The API cannot supply an artifact and remains staging-disabled. No concrete storage, ingestion pipeline, Document State writer/lifecycle adapter, migration, dependency, or real processing execution is implemented.
 
 ## Context
 
@@ -12,16 +12,16 @@ Putting file policy in FastAPI routes, parsing in FlowSync, or raw producer resu
 
 ## Decision
 
-Create a transport-neutral `src/upload_runtime/` policy package for immutable upload contracts, deterministic validation, safe commands/results/errors, idempotency, and narrow ports. FastAPI owns multipart transport and authorization. A private staging port turns streamed content into an opaque artifact reference. A producer-side adapter resolves that reference for the existing ingestion pipeline and maps only safe results into existing Document State writer commands and lifecycle service calls.
+Create a transport-neutral `src/upload_runtime/` policy package for immutable upload contracts, deterministic validation, safe commands/results/errors, idempotency, and narrow ports. FastAPI owns the current JSON metadata transport and authorization; future multipart/raw transport remains deferred at this outer boundary. An opaque staging port and producer-side adapter contracts define how a future trusted artifact could reach the existing ingestion pipeline and map only safe results into existing Document State writer commands and lifecycle service calls.
 
 ```text
-FlowSync
-  -> API authorization + multipart transport
-  -> Upload Runtime validation/orchestration
-  -> private artifact staging port
-  -> existing deterministic ingestion producer
-  -> existing Document State writers + lifecycle
-  -> Query Facade/API safe progress
+FlowSync upload preview
+  -> Guarded upload metadata API
+  -> Upload Runtime validation
+  -> Opaque staging boundary
+  -> Activation intents
+  -> Ingestion / Document State adapter ports
+  -> Progress projections
   -> FlowSync timeline
 ```
 

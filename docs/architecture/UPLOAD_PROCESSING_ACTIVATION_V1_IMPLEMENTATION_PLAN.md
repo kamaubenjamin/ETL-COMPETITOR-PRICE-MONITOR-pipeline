@@ -1,7 +1,7 @@
 # Upload + Processing Activation v1 Implementation Plan
 
 **Milestone:** v0.19
-**Status:** Phases 1-5 implemented and verified; Phase 6 not started
+**Status:** Implemented, verified, and closed pending owner tag
 
 ## 1. Delivery Rules
 
@@ -41,11 +41,11 @@ No API route, staging implementation, ingestion call, writer call, or UI.
 
 ### Deliverables
 
-- Plan-approved multipart POST contract and upload history/detail GET contracts.
+- Guarded JSON metadata POST contract and upload history/detail GET contracts; multipart remains deferred.
 - API-local schemas/projections matching the existing response envelope.
 - App-scoped upload provider/service port; disabled placeholder by default.
 - Authentication, active tenant, `document:ingest`, service-account, concealment, request/idempotency, size, and rate-control hooks.
-- Safe fixed errors; no raw multipart reflection.
+- Safe fixed errors; no raw body or future multipart reflection.
 
 ### Activation
 
@@ -53,7 +53,7 @@ Default/disabled auth always rejects mutation. An explicitly validated local/dem
 
 ### Tests
 
-Disabled default, unauthenticated, permission/tenant/service-account denial, malformed multipart, size enforcement, safe envelope, no body/path leakage, tenant-scoped reads, no runtime/export/ERP invocation, and unchanged existing GET routes.
+Disabled default, unauthenticated, permission/tenant/service-account denial, malformed metadata, size enforcement, safe envelope, no body/path leakage, tenant-scoped reads, no runtime/export/ERP invocation, and unchanged existing GET routes.
 
 ### Stop Condition
 
@@ -124,6 +124,8 @@ Source validation, typecheck/build, accessibility states, disabled/unavailable a
 No production enablement or closure without full verification.
 
 ## 7. Phase 6: Verification, Closure, Handoff, And Tag
+
+**Status:** Complete pending owner tag. Summary, handoff, release notes, roadmap/debt/ADR/plan/changelog closure, verification evidence, deferred production-activation risks, and the v0.20 handoff recommendation are recorded. No implementation behavior changed during closure.
 
 ### Deliverables
 
