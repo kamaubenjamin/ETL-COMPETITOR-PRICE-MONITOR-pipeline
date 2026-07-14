@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.18. Phases 1-2 implement and verify the dependency-light contract boundary plus pure payload construction, normalization, fingerprinting, idempotency policy, and readiness linkage; service, persistence, adapter, API, and UI integration remain unimplemented.
+Accepted for v0.18. Phases 1-3 implement and verify the dependency-light contract boundary, pure payload/idempotency policy, and persistence-neutral attempt/result repository integration with deterministic in-memory support; durable persistence, service, adapter, API, and UI integration remain unimplemented.
 
 ## Context
 
@@ -50,6 +50,8 @@ The API remains authoritative. FlowSync may display readiness/history and submit
 ## Persistence And Composition Decision
 
 Core defines persistence ports for attempts/results. Platform Runtime injects repositories, security, readiness sources, lifecycle, audit, target catalog, adapters, and credential handles. A later Document State/SQLite adapter may implement durable storage through additive, conformance-tested records and migrations. API/UI never access repositories directly and missing adapters never fall back.
+
+Phase 3 implements these ports with separate structural reader/writer contracts and an explicit in-memory store. The store atomically enforces unique attempt IDs and idempotency keys, one immutable terminal result per matching attempt, and expected-version status updates. Strict duplicate identity remains the server-derived idempotency key. Same-tenant/document/target activity is available as a separate optional lock query and does not redefine key equivalence. Durable storage and composition activation remain deferred.
 
 ## Privacy Decision
 

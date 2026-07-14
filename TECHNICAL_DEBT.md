@@ -479,15 +479,15 @@ References:
 
 ### Current Status
 
-**v0.18 Phases 1-2 are implemented and verified; Phase 3 has not started.**
+**v0.18 Phases 1-3 are implemented and verified; Phase 4 has not started.**
 
-The platform now has a dependency-light export contract package with fixed statuses, immutable target/readiness/payload/attempt/result/lifecycle/audit shapes, a pure safe-command payload builder, deterministic normalization, domain-separated payload fingerprints and idempotency policy, privacy-safe errors, readiness linkage, and a structural adapter port. It still has no export evaluator, source projection mapper, attempt/result persistence, service, adapter implementation, duplicate claim, reconciliation model, or public export command. API and FlowSync remain read-only.
+The platform now has a dependency-light export contract package, pure safe-command payload construction, deterministic fingerprints/idempotency policy, persistence-neutral attempt/result repository ports, bounded safe queries, and a lock-protected in-memory store with atomic duplicate claims and optimistic status updates. It still has no export evaluator, source projection mapper, durable attempt/result persistence, service, adapter implementation, reconciliation orchestration, or public export command. API and FlowSync remain read-only.
 
 The v0.18 plan selects `src/export_runtime/` as a deterministic policy/orchestration boundary and keeps real vendor adapters, credentials, and network behavior outside core contracts. Readiness and `document:export` tenant authorization precede payload construction; attempts are claimed idempotently before delivery; only recorded confirmed success may request lifecycle advancement to `exported`.
 
 Debt intentionally retained during planning:
 
-- Export readiness evaluation, source projection mapping, repositories, service, adapters, and platform composition
+- Export readiness evaluation, source projection mapping, durable repositories, service, adapters, and platform composition
 - Durable attempt/result schema and migration decision
 - Real ERP/vendor adapters, SDKs, credentials, secret resolution, and network policy
 - Unknown-delivery reconciliation, queue/worker, and transactional outbox
@@ -498,6 +498,8 @@ Debt intentionally retained during planning:
 - Production telemetry, alerts, rate limits, SLOs, and operational runbooks
 
 Phase 2 verification: 73 Export Runtime tests, 80 API tests with 9 skips, 84 Platform Runtime tests, 60 Security tests, 330 Document State tests, 239 Query Facade/Review tests, and 64 Streamlit UI tests pass. The full regression passes 1,608 tests with 9 skips. Runtime boundary verification is compliant with the two pre-existing U+FEFF warnings.
+
+Phase 3 provides separate read/write repository Protocols, fixed repository errors, bounded stable attempt/result pages, atomic process-local uniqueness for attempt IDs and idempotency keys, expected-version attempt status transitions, one immutable terminal result per attempt, strict active duplicate lookup by idempotency key, and an optional same document-target active lock helper. State is process-local and non-durable; SQLite/Document State integration, retry/reconciliation orchestration, service composition, and API/UI reads remain deferred. Phase 3 focused verification passes 110 tests; all required API, Platform Runtime, Security, Document State, Query Facade/Review, and Streamlit UI suites pass unchanged. The full regression passes 1,645 tests with 9 skips.
 
 Guardrails:
 

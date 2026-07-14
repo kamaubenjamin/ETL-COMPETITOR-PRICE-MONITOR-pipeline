@@ -1,7 +1,7 @@
 # Export Runtime / ERP Integration Boundary v1 Implementation Plan
 
 **Milestone:** v0.18
-**Status:** Phases 1-2 implemented and verified; Phase 3 not started
+**Status:** Phases 1-3 implemented and verified; Phase 4 not started
 
 ## 1. Milestone Overview
 
@@ -146,24 +146,25 @@ Stop after deterministic payload/idempotency verification. Do not invoke adapter
 
 ## 5. Phase 3: Attempt / Result Repository Integration
 
+**Completion:** Implemented with persistence-neutral Protocols and deterministic in-memory support only. Separate reader/writer views share a lock-protected store; attempt IDs and idempotency keys are unique; result writes require an existing matching attempt and allow only one immutable terminal result per attempt; status updates use expected-version compare-and-swap and a fixed transition catalog; queries are bounded, stable, and privacy-safe. Strict duplicate detection uses the same idempotency key, while same document-target activity is a separate optional helper. No SQLite migration, Document State adapter, service, lifecycle mutation, API/UI integration, or external dependency was added. The focused suite passes 110 tests and required compatibility suites pass unchanged.
+
 ### Scope
 
 Implement persistence-neutral attempt/result repositories and deterministic in-memory support first. If durable SQLite integration is approved, add explicit Document State records/repositories and an additive migration behind export ports in this phase; do not expose them to API/UI.
 
 ### Expected Files
 
-Likely create:
+Create:
 
 - `src/export_runtime/repositories.py`
-- `src/export_runtime/repositories_in_memory.py`
-- `tests/export_runtime/test_repositories.py`
-- `tests/export_runtime/test_repository_conformance.py`
-
-If owner-approved durable integration is included:
-
-- Document State export record/repository adapter files
-- one checksum-verified additive SQLite migration
-- SQLite conformance tests
+- `src/export_runtime/store.py`
+- `src/export_runtime/queries.py`
+- `src/export_runtime/repository_errors.py`
+- `tests/export_runtime/test_export_repositories.py`
+- `tests/export_runtime/test_export_store.py`
+- `tests/export_runtime/test_export_queries.py`
+- `tests/export_runtime/test_export_repository_privacy.py`
+- `tests/export_runtime/test_phase3_boundaries.py`
 
 ### Deliverables
 
@@ -171,7 +172,7 @@ If owner-approved durable integration is included:
 - Append-oriented attempts and immutable terminal results.
 - Optimistic attempt-status transitions.
 - Deterministic tenant/target/status/document filters and bounded pagination.
-- Retry lineage and safe reconciliation-required representation.
+- Existing retry lineage fields and safe future reconciliation support.
 - In-memory durability-neutral test composition.
 
 ### Tests
@@ -180,15 +181,20 @@ If owner-approved durable integration is included:
 - Duplicate successful/active operations return existing state safely.
 - Retryable failure creates linked attempt; unknown delivery blocks blind retry.
 - Immutable returns and no internal-state leakage.
-- In-memory/SQLite conformance if durable support is included.
-- Migration replay/checksum/reopen behavior if SQLite changes are approved.
+- Fixed safe repository errors and recursive boundary/privacy checks.
+- No SQLite or migration behavior in Phase 3.
 
 ### Verification
 
 ```text
 python -m pytest tests/export_runtime -q
-python -m pytest tests/document_state -q
+python -m pytest tests/api/document_intelligence tests/platform_runtime tests/security tests/document_state -q
+python -m pytest tests/workflow_runtime/query_facade tests/review_runtime tests/ui/streamlit -q
 python scripts/verify_boundaries.py
+python -m py_compile src/export_runtime/repositories.py
+python -m py_compile src/export_runtime/store.py
+python -m py_compile src/export_runtime/queries.py
+python -m py_compile src/export_runtime/repository_errors.py
 git diff --check
 git status --short --branch
 ```

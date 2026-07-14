@@ -70,8 +70,7 @@ def test_existing_source_modules_do_not_import_export_runtime():
     assert violations == []
 
 
-def test_phase_one_contains_no_io_or_adapter_implementation_modules():
+def test_export_runtime_contains_no_service_or_adapter_implementation_modules_yet():
     module_names = {path.name for path in PACKAGE.glob("*.py")}
     assert "service.py" not in module_names
-    assert "repositories.py" not in module_names
     assert not (PACKAGE / "adapters").exists()

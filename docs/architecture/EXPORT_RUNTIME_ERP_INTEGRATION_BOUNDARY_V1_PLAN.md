@@ -1,7 +1,7 @@
 # Export Runtime / ERP Integration Boundary v1 Plan
 
 **Milestone:** v0.18
-**Status:** Phases 1-2 implemented and verified; Phase 3 not started
+**Status:** Phases 1-3 implemented and verified; Phase 4 not started
 **Recommended package:** `src/export_runtime/`
 
 ## 1. Problem Statement
@@ -256,6 +256,8 @@ Contracts, persistence, logs, audit, API responses, and UI projections must excl
 Phase 1 delivers the standard-library-only `src/export_runtime/` contract package. It defines fixed export/attempt/readiness/target/operation catalogs; immutable target, permission, readiness, payload party/line, attempt, adapter result, export result, lifecycle decision, and audit intent contracts; bounded scalar metadata; deterministic canonical payload fingerprints and domain-separated idempotency keys; fixed privacy-safe errors; and a structural `ExportAdapterPort`. It implements no readiness evaluator, payload mapper, repository, service, adapter, API/UI integration, persistence, I/O, or external call. Thirty-eight focused tests and all required regressions pass.
 
 Phase 2 adds a pure `ExportPayloadBuilder` over safe, already-structured command inputs; deterministic whitespace, currency, and date normalization; domain-separated canonical payload fingerprints; an explicit idempotency policy over the Phase 1 key foundation; and `payload_invalid` readiness linkage. Unsafe/raw-shaped inputs and unrestricted metadata fail with fixed non-reflective results. The builder performs no repository, facade, API, adapter, persistence, or I/O work. The combined Export Runtime suite passes 73 tests and all required regressions pass.
+
+Phase 3 adds persistence-neutral read/write repository Protocols, bounded deterministic attempt/result queries, fixed repository-safe errors, and an explicitly composed lock-protected in-memory store. Attempts and idempotency keys are unique, attempt status updates use optimistic versions and a fixed transition catalog, terminal results are immutable and require an existing matching attempt, and safe list projections contain no payload body or adapter response. Strict duplicate identity is the idempotency key; a separate optional helper reports an active same-tenant/document/target operation. No SQLite, Document State, service, adapter, lifecycle mutation, API/UI integration, or I/O is added. The combined Export Runtime suite passes 110 tests and all required compatibility suites pass.
 
 ## 25. Deferred Work
 

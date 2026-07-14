@@ -5,11 +5,12 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[2]
 PACKAGE = ROOT / "src" / "export_runtime"
-PHASE_TWO_MODULES = {"builder.py", "fingerprints.py", "normalization.py", "policy.py"}
+PHASE_THREE = {"queries.py", "repositories.py", "repository_errors.py", "store.py"}
 FORBIDDEN = {
     "api",
     "document_state",
     "platform_runtime",
+    "review_runtime",
     "security",
     "storage",
     "telemetry",
@@ -28,9 +29,9 @@ def imports_for(path):
             yield node.level, node.module or ""
 
 
-def test_phase_two_modules_use_only_standard_library_and_package_local_imports():
+def test_phase_three_modules_import_only_standard_library_and_package_local_modules():
     violations = []
-    for name in PHASE_TWO_MODULES:
+    for name in PHASE_THREE:
         for level, module in imports_for(PACKAGE / name):
             root = module.split(".", 1)[0]
             if level:
@@ -42,12 +43,25 @@ def test_phase_two_modules_use_only_standard_library_and_package_local_imports()
     assert violations == []
 
 
-def test_phase_two_adds_no_service_adapter_or_io_surface():
+def test_phase_three_adds_no_persistence_adapter_service_or_io_surface():
     names = {path.name for path in PACKAGE.glob("*.py")}
     assert "service.py" not in names
+    assert "repositories_sqlite.py" not in names
     assert not (PACKAGE / "adapters").exists()
-    for name in PHASE_TWO_MODULES:
-        source = (PACKAGE / name).read_text(encoding="utf-8-sig")
+    for name in PHASE_THREE:
+        source = (PACKAGE / name).read_text(encoding="utf-8-sig").lower()
+        assert "sqlite" not in source
+        assert "requests" not in source
         assert "open(" not in source
-        assert "sqlite" not in source.lower()
-        assert "requests" not in source.lower()
+
+
+def test_existing_source_still_does_not_import_export_runtime():
+    violations = []
+    for path in (ROOT / "src").rglob("*.py"):
+        if PACKAGE in path.parents:
+            continue
+        for _level, module in imports_for(path):
+            if module == "export_runtime" or module.startswith("export_runtime.") or module.startswith("src.export_runtime"):
+                violations.append(str(path.relative_to(ROOT)))
+    assert violations == []
+
