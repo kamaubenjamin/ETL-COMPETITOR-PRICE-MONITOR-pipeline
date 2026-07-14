@@ -380,7 +380,7 @@ Status:
 - Phase 4 implemented: normalized auth/access/unavailable/malformed request states, fixed non-reflective messages, API-enforced visibility notices, and display-only runtime guidance with no frontend permission logic
 - Phase 5 implemented: lockfile-backed advisory-free dependencies, strict typecheck/build, desktop/mobile and deep-link rendered smoke, safe no-API startup, keyboard skip navigation, and generated-output tracking guards
 - Phase 6 completed: focused verification, summary, handoff, release notes, closure records, and owner tag recommendation
-- Milestone implemented, verified, and closed pending owner tag `v0.17-flowsync-document-intelligence-ui`
+- Milestone implemented, verified, closed, and tagged as `v0.17-flowsync-document-intelligence-ui`
 - Approved visual mockup recorded as directional product/design reference
 
 Planned capabilities:
@@ -405,6 +405,35 @@ References:
 - `docs/architecture/FLOWSYNC_DOCUMENT_INTELLIGENCE_UI_V1_PLAN.md`
 - `docs/architecture/FLOWSYNC_DOCUMENT_INTELLIGENCE_UI_V1_IMPLEMENTATION_PLAN.md`
 - `docs/adr/ADR-022-flowsync-document-intelligence-ui-boundary.md`
+
+### v0.18 Export Runtime / ERP Integration Boundary
+
+Status:
+- Architecture plan, implementation plan, and ADR-023 created
+- Planning complete; implementation not started
+- No export runtime code, endpoint, mutation route, migration, UI change, dependency, or ERP connection added
+
+Planned capabilities:
+- Independent `src/export_runtime/` policy and orchestration boundary
+- Deterministic export readiness, sanitized payload, idempotency, attempt/result, audit, retry, and lifecycle contracts
+- Atomic duplicate prevention and explicit unknown-delivery reconciliation
+- Isolated CSV/ERP placeholder adapters behind `ExportAdapterPort`
+- Default-deny `document:export`, tenant scope, service-account scope, and explicit cross-tenant controls
+- Lifecycle advancement to `exported` only after recorded confirmed success
+- Future authenticated API mutation boundary and disabled/read-only FlowSync export presentation
+
+Proposed phases:
+1. Export runtime contracts and status/readiness model
+2. Export payload builder and idempotency policy
+3. Export attempt/result repository integration
+4. Export service with placeholder adapters and lifecycle/audit integration
+5. API mutation contract boundary and FlowSync export-readiness placeholders, gated by owner approval
+6. Verification, closure, handoff, and tag recommendation
+
+References:
+- `docs/architecture/EXPORT_RUNTIME_ERP_INTEGRATION_BOUNDARY_V1_PLAN.md`
+- `docs/architecture/EXPORT_RUNTIME_ERP_INTEGRATION_BOUNDARY_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-023-export-runtime-erp-integration-boundary.md`
 
 ## Prior Milestone Context
 

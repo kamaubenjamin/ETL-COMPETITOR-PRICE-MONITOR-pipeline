@@ -437,7 +437,7 @@ References:
 
 ### Current Status
 
-**v0.17 is implemented and verified; the milestone is closed pending the owner tag.**
+**v0.17 is implemented, verified, closed, and tagged as `v0.17-flowsync-document-intelligence-ui`.**
 
 The approved product direction is a clean enterprise FlowSync application with sidebar navigation, safe tenant/user context, a document dashboard, detail/quality/review/workflow/audit views, and explicit unauthorized/unavailable states. It remains a separate API consumer and must not share domain state or business logic with FlowSync Competitor Price, root `dashboard.py`, legacy `src/api/app.py`, or Streamlit.
 
@@ -472,6 +472,44 @@ References:
 - `docs/architecture/FLOWSYNC_DOCUMENT_INTELLIGENCE_UI_V1_SUMMARY.md`
 - `docs/architecture/FLOWSYNC_DOCUMENT_INTELLIGENCE_UI_V1_HANDOFF.md`
 - `docs/releases/v0.17-flowsync-document-intelligence-ui.md`
+
+---
+
+## Export Runtime / ERP Integration Boundary v1
+
+### Current Status
+
+**v0.18 planning is complete; implementation has not started.**
+
+The platform has export-related permission and lifecycle vocabulary but no governed export runtime, payload contract, attempt/result persistence, adapter port, duplicate claim, reconciliation model, or public export command. API and FlowSync remain read-only.
+
+The v0.18 plan selects `src/export_runtime/` as a deterministic policy/orchestration boundary and keeps real vendor adapters, credentials, and network behavior outside core contracts. Readiness and `document:export` tenant authorization precede payload construction; attempts are claimed idempotently before delivery; only recorded confirmed success may request lifecycle advancement to `exported`.
+
+Debt intentionally retained during planning:
+
+- Export runtime implementation, tests, repositories, and platform composition
+- Durable attempt/result schema and migration decision
+- Real ERP/vendor adapters, SDKs, credentials, secret resolution, and network policy
+- Unknown-delivery reconciliation, queue/worker, and transactional outbox
+- Public authenticated export mutation routes and export-history reads
+- Export-specific read permission decision
+- FlowSync readiness/history presentation and future export controls
+- CSV encryption, signing, delivery, retention, and download authorization
+- Production telemetry, alerts, rate limits, SLOs, and operational runbooks
+
+Guardrails:
+
+- UI/API routes must never call an ERP or repository directly.
+- Export core must not own credentials, vendor SDKs, HTTP routing, or UI logic.
+- Failed/unknown exports must not mark a document exported.
+- Duplicate prevention must be atomic and tenant-scoped.
+- No raw document/row/correction/artifact payload, credential, claim, path, stack trace, or vendor body may enter public records or audit.
+
+References:
+
+- `docs/architecture/EXPORT_RUNTIME_ERP_INTEGRATION_BOUNDARY_V1_PLAN.md`
+- `docs/architecture/EXPORT_RUNTIME_ERP_INTEGRATION_BOUNDARY_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-023-export-runtime-erp-integration-boundary.md`
 
 ---
 
