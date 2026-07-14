@@ -449,8 +449,9 @@ References:
 Status:
 - Architecture plan, implementation plan, and ADR-024 created
 - Phase 1 implemented: immutable upload contracts, validation policy/issues/results, safe command/result/error models, deterministic SHA-256 idempotency keys, opaque artifact references, and structural staging port
-- Phase 2 not started
-- No endpoint, UI behavior, migration, dependency, storage adapter implementation, ingestion/writer integration, OCR/LLM, export activation, or ERP connection added
+- Phase 2 implemented: API-authoritative permission/tenant guard, strict JSON metadata validation, safe tenant-filtered upload summary reads, and always-disabled staging response
+- Phase 3 not started
+- No multipart bytes, UI behavior, migration, dependency, storage adapter implementation, ingestion/writer integration, OCR/LLM, export activation, or ERP connection added
 
 Planned capabilities:
 - Standard-library-first upload contracts, validation, commands, safe results/errors, and narrow ports

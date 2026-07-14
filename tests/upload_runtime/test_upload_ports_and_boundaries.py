@@ -68,6 +68,7 @@ def test_existing_source_modules_do_not_import_upload_runtime():
             continue
         for _level, module in imports_for(path):
             if module == "upload_runtime" or module.startswith("upload_runtime.") or module.startswith("src.upload_runtime"):
-                violations.append(str(path.relative_to(ROOT)))
+                relative = str(path.relative_to(ROOT)).replace("\\", "/")
+                if not relative.startswith("src/api/document_intelligence/"):
+                    violations.append(relative)
     assert violations == []
-

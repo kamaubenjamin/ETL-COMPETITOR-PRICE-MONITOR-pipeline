@@ -18,6 +18,7 @@ from .responses import error_response
 from .routers import domain_routers, root_router, versioned_router
 from .providers import FacadeDocumentIntelligenceProvider, facade_provider
 from .providers.export_provider import empty_export_provider
+from .providers.upload_provider import empty_upload_provider
 from src.security.providers import IdentityProvider
 from src.platform_runtime import (
     RuntimeComposition,
@@ -75,6 +76,7 @@ def create_document_intelligence_app(
         else facade_provider
     )
     application.state.document_intelligence_export_provider = empty_export_provider
+    application.state.document_intelligence_upload_provider = empty_upload_provider
     application.state.platform_runtime = composed
     application.state.platform_runtime_summary = (
         composed.to_safe_dict()

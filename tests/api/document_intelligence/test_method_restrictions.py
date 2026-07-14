@@ -17,6 +17,7 @@ def test_openapi_registers_get_only_for_all_v09_paths():
     disabled_posts = {
         "/api/v1/documents/{document_id}/export/prepare",
         "/api/v1/documents/{document_id}/export",
+        "/api/v1/documents/upload",
     }
     assert all(
         set(operations) == ({"post"} if path in disabled_posts else {"get"})

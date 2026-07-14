@@ -166,3 +166,65 @@ def authorize_read(
             concealed=conceal_unauthorized_resource and not unauthenticated,
         )
     return AuthorizedReadScope(True, requested_tenant, principal.principal_id)
+
+
+def authorize_mutation(
+    request: Request,
+    permission: Permission,
+    *,
+    resource_type: str,
+    resource_id: str | None = None,
+) -> AuthorizedReadScope:
+    """Authorize an API-owned mutation; disabled compatibility mode stays inactive."""
+
+    composition = _composition(request)
+    if not composition.config.enabled:
+        return AuthorizedReadScope(False)
+    identity_id = request.headers.get(composition.config.identity_header)
+    try:
+        result = composition.identity_provider.resolve(identity_id)
+    except Exception:
+        raise DocumentIntelligenceAPIError(
+            "identity_provider_unavailable", "Identity could not be resolved.", status_code=503
+        ) from None
+    if not isinstance(result, IdentityProviderResult):
+        raise DocumentIntelligenceAPIError(
+            "identity_provider_unavailable", "Identity could not be resolved.", status_code=503
+        )
+    if not result.resolved or result.principal is None:
+        raise _auth_error(status_code=401)
+    principal = result.principal
+    requested_tenant = request.headers.get(composition.config.tenant_header)
+    if requested_tenant is None and principal.tenant_scope.tenant_ids:
+        requested_tenant = principal.tenant_scope.tenant_ids[0]
+    try:
+        context = AuthorizationContext(
+            principal=principal,
+            active_tenant_id=requested_tenant,
+            mode=(
+                AuthorizationMode.LOCAL_PREVIEW
+                if composition.config.mode == APIAuthMode.LOCAL_DEMO
+                else AuthorizationMode.PRODUCTION
+                if composition.config.mode == APIAuthMode.PRODUCTION
+                else AuthorizationMode.AUTHENTICATED
+            ),
+            allow_cross_tenant=composition.config.allow_cross_tenant,
+            request_id=getattr(request.state, "request_id", None),
+        )
+        authorization_request = AuthorizationRequest(
+            required_permission=permission,
+            requested_tenant_id=requested_tenant,
+            resource_tenant_id=requested_tenant,
+            resource_id=resource_id,
+            resource_type=resource_type,
+            operation="write",
+        )
+    except ValueError:
+        raise DocumentIntelligenceAPIError(
+            "invalid_request", "Authorization request is invalid.", status_code=400
+        ) from None
+    decision = composition.guard(context, authorization_request)
+    if not decision.allowed:
+        unauthenticated = decision.reason in {DecisionReason.MISSING_IDENTITY, DecisionReason.UNAUTHENTICATED}
+        raise _auth_error(status_code=401 if unauthenticated else 403)
+    return AuthorizedReadScope(True, requested_tenant, principal.principal_id)

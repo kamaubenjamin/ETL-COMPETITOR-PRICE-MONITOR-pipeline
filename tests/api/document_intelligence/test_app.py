@@ -17,6 +17,7 @@ DOMAIN_PATHS = {
     "/api/v1/export-attempts/{attempt_id}",
     "/api/v1/documents/{document_id}/export/prepare",
     "/api/v1/documents/{document_id}/export",
+    "/api/v1/documents/upload", "/api/v1/uploads", "/api/v1/uploads/{upload_id}",
 }
 EXPECTED_PATHS = {"/health", "/api/v1/health", "/api/v1/status", "/openapi.json", "/docs", "/docs/oauth2-redirect", "/redoc"} | DOMAIN_PATHS
 
@@ -43,6 +44,7 @@ def test_openapi_contains_only_get_operations_except_disabled_export_contracts()
     post_paths = {
         "/api/v1/documents/{document_id}/export/prepare",
         "/api/v1/documents/{document_id}/export",
+        "/api/v1/documents/upload",
     }
     assert all(
         set(operations) == ({"post"} if path in post_paths else {"get"})

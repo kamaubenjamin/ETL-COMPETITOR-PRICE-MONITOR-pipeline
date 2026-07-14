@@ -12,7 +12,7 @@ Rules verified (from RUNTIME_BOUNDARY_MAP.md):
   R02 — Entity Runtime must not import Matching or Review runtimes
   R03 — Matching Runtime must not import Document Runtime
   R04 — Review Runtime must not import Document or Entity runtimes
-  R05 — API Runtime may import Workflow Runtime/shared utilities; Document Intelligence API may import Security
+  R05 — API Runtime may import Workflow Runtime/shared utilities; Document Intelligence API may import Security, Platform composition, and Upload Runtime
   R12 — Shared utilities must not import runtime-specific modules
 """
 
@@ -282,13 +282,19 @@ def _check_consumer_rule(
         if rule_key == "api_runtime":
             # R05 special: API may import workflow_runtime. ADR-020 additionally
             # approves Document Intelligence API -> provider-neutral Security;
-            # ADR-021 permits API-owned activation of platform runtime composition.
+            # ADR-021 permits API-owned activation of platform runtime composition;
+            # ADR-024 permits the guarded API boundary to consume Upload Runtime contracts.
             if matches_any_prefix(module, ["src.workflow_runtime"]):
                 continue
             normalized_path = rel_path.replace("\\", "/")
             if (
                 normalized_path.startswith("src/api/document_intelligence/")
                 and matches_any_prefix(module, ["src.security"])
+            ):
+                continue
+            if (
+                normalized_path.startswith("src/api/document_intelligence/")
+                and matches_any_prefix(module, ["src.upload_runtime"])
             ):
                 continue
             if (
@@ -307,7 +313,7 @@ def _check_consumer_rule(
             if matches_any_prefix(module, SHARED_UTILITY_PACKAGES):
                 continue
             # Anything else starting with src. is forbidden
-            desc = "API Runtime import is outside approved Workflow/shared/Security/composition boundaries"
+            desc = "API Runtime import is outside approved Workflow/shared/Security/composition/upload boundaries"
             fp = _make_fingerprint(rule_id, rel_path, module)
             if fp not in exemptions:
                 violations.append(Violation(

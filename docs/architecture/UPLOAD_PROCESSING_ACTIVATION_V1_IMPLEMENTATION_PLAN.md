@@ -1,7 +1,7 @@
 # Upload + Processing Activation v1 Implementation Plan
 
 **Milestone:** v0.19
-**Status:** Phase 1 implemented and verified; Phase 2 not started
+**Status:** Phases 1-2 implemented and verified; Phase 3 not started
 
 ## 1. Delivery Rules
 
@@ -36,6 +36,8 @@ Contract immutability/serialization, valid formats, every rejection reason, file
 No API route, staging implementation, ingestion call, writer call, or UI.
 
 ## 3. Phase 2: Guarded API Upload Boundary
+
+**Status:** Complete as a fail-closed metadata-only contract. Safe GET summaries and strict JSON metadata validation are registered; mutation requires authenticated tenant-scoped `document:ingest` where auth is enabled and always ends with staging unavailable. Multipart bytes and staging remain deferred.
 
 ### Deliverables
 

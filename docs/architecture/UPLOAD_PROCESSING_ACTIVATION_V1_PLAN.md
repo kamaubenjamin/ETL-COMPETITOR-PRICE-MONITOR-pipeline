@@ -1,7 +1,7 @@
 # Upload + Processing Activation v1 Plan
 
 **Milestone:** v0.19
-**Status:** Phase 1 implemented and verified; Phases 2-6 pending
+**Status:** Phases 1-2 implemented and verified; Phases 3-6 pending
 **Recommended package:** `src/upload_runtime/`
 
 ## 1. Goal
@@ -205,3 +205,7 @@ Production blob storage, malware scanning vendor, raw download, retention/legal 
 ## 22. Phase 1 Implementation Record
 
 Phase 1 adds the isolated standard-library-only `src/upload_runtime/` contract foundation: fixed source/file-type/status/error catalogs, immutable JSON-safe upload commands, validation policy/issues/results, safe artifact and processing-intent contracts, safe operation results/errors, domain-separated SHA-256 idempotency keys, and a structural staging port. Validation deterministically covers tenant/actor presence, filename traversal/safety/length, allowlisted and unsafe extensions, empty/maximum size, and declared MIME compatibility. Raw bytes, content, paths, credentials, claims, stack traces, nested metadata, API/runtime service behavior, staging I/O, ingestion, persistence, UI, OCR/LLM, export, and ERP remain absent. The focused suite passes 46 tests.
+
+## 23. Phase 2 Implementation Record
+
+Phase 2 adds guarded API contracts for `POST /api/v1/documents/upload`, `GET /api/v1/uploads`, and `GET /api/v1/uploads/{upload_id}`. Because no staging implementation exists and multipart support would add transport/dependency complexity, POST accepts strict JSON metadata only. Disabled auth returns `upload_staging_not_enabled`; authenticated local/demo requests require API-owned tenant scope and `document:ingest`, run Phase 1 validation, return safe fixed validation issues when invalid, and still return HTTP 503 staging unavailable when valid. GET routes use an app-scoped bounded tenant-filtered placeholder provider. No bytes are accepted or persisted, and no staging, ingestion, Document State, export, ERP, OCR/LLM, filesystem, database, network, or UI behavior is added. The API suite passes 103 tests with 9 optional transport skips.
