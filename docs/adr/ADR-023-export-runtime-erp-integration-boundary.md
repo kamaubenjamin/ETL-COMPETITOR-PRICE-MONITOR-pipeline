@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed for v0.18. Planning is complete; implementation has not started.
+Accepted for v0.18. Phase 1 implements and verifies the dependency-light contract boundary; service, persistence, adapter, API, and UI integration remain unimplemented.
 
 ## Context
 
@@ -13,6 +13,8 @@ Direct ERP calls from FlowSync, API routes, workflow writers, or repositories wo
 ## Decision
 
 Create an independent `src/export_runtime/` domain boundary. It will own deterministic export readiness, payload construction, idempotency, attempt/result orchestration, adapter invocation, audit intent, retry classification, and lifecycle decision. It will consume explicit injected ports and will not own HTTP routing, UI behavior, credentials, vendor SDKs, database engines, or document processing.
+
+Phase 1 confirms this boundary with standard-library-only immutable contracts, fixed catalogs, bounded scalar metadata, sanitized payload and result shapes, deterministic SHA-256 fingerprints/idempotency keys, fixed safe errors, and a structural adapter port. Existing runtime packages do not import `export_runtime`; no execution behavior is active.
 
 The runtime and adapters are separate:
 
@@ -106,4 +108,3 @@ Rejected because failure or timeout would create false lifecycle state.
 ## Acceptance
 
 ADR-023 is accepted when owners approve `src/export_runtime/` as the policy/orchestration boundary, isolated adapters behind ports, readiness-before-payload behavior, atomic duplicate prevention, recorded-success-before-lifecycle behavior, default-deny tenant/security rules, privacy constraints, and gated API/UI activation.
-

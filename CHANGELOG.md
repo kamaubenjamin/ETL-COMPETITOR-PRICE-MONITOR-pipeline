@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.18 Phase 1 Export Runtime contract foundation with fixed export/operation/readiness/target catalogs, immutable JSON-safe target/permission/readiness/payload/attempt/adapter-result/export-result/lifecycle/audit contracts, bounded scalar metadata, canonical payload fingerprinting, domain-separated SHA-256 idempotency keys, fixed privacy-safe errors, structural `ExportAdapterPort`, and recursive boundary tests; no service, repository, adapter implementation, API, mutation, migration, UI, Streamlit, dependency, I/O, or ERP connection was added.
+
 - Added v0.18 Export Runtime / ERP Integration Boundary planning and ADR-023, selecting an independent deterministic export runtime, readiness-before-payload policy, tenant-scoped `document:export` authorization, sanitized versioned payloads, atomic idempotency claims, auditable attempt/result records, isolated CSV/ERP adapter ports, recorded-success-before-lifecycle advancement, safe retry/reconciliation behavior, and gated future API/FlowSync integration; no code, endpoint, mutation, migration, dependency, UI, Streamlit, ERP connection, dashboard, or competitor-price behavior changed.
 
 - Closed and tagged v0.17 FlowSync Document Intelligence UI as `v0.17-flowsync-document-intelligence-ui`, with the verified isolated Vite/React/TypeScript application, GET-only API boundary, read-only document/quality/review/workflow/audit views, API-authoritative access states, advisory-free dependency lock, passing validation/typecheck/build, desktop/mobile rendered verification, and release summary/handoff notes; no backend endpoint, Streamlit, dashboard, competitor-price, migration, dependency, or mutation behavior changed.

@@ -479,15 +479,15 @@ References:
 
 ### Current Status
 
-**v0.18 planning is complete; implementation has not started.**
+**v0.18 Phase 1 is implemented and verified; Phase 2 has not started.**
 
-The platform has export-related permission and lifecycle vocabulary but no governed export runtime, payload contract, attempt/result persistence, adapter port, duplicate claim, reconciliation model, or public export command. API and FlowSync remain read-only.
+The platform now has a dependency-light export contract package with fixed statuses, immutable target/readiness/payload/attempt/result/lifecycle/audit shapes, deterministic payload fingerprints and idempotency keys, privacy-safe errors, and a structural adapter port. It still has no export evaluator, payload mapper, attempt/result persistence, service, adapter implementation, duplicate claim, reconciliation model, or public export command. API and FlowSync remain read-only.
 
 The v0.18 plan selects `src/export_runtime/` as a deterministic policy/orchestration boundary and keeps real vendor adapters, credentials, and network behavior outside core contracts. Readiness and `document:export` tenant authorization precede payload construction; attempts are claimed idempotently before delivery; only recorded confirmed success may request lifecycle advancement to `exported`.
 
 Debt intentionally retained during planning:
 
-- Export runtime implementation, tests, repositories, and platform composition
+- Export readiness evaluation, payload mapping, repositories, service, adapters, and platform composition
 - Durable attempt/result schema and migration decision
 - Real ERP/vendor adapters, SDKs, credentials, secret resolution, and network policy
 - Unknown-delivery reconciliation, queue/worker, and transactional outbox
@@ -496,6 +496,8 @@ Debt intentionally retained during planning:
 - FlowSync readiness/history presentation and future export controls
 - CSV encryption, signing, delivery, retention, and download authorization
 - Production telemetry, alerts, rate limits, SLOs, and operational runbooks
+
+Phase 1 verification: 38 Export Runtime tests, 80 API tests with 9 skips, 84 Platform Runtime tests, 60 Security tests, 330 Document State tests, 239 Query Facade/Review tests, and 64 Streamlit UI tests pass. Runtime boundary verification is compliant with the two pre-existing U+FEFF warnings.
 
 Guardrails:
 

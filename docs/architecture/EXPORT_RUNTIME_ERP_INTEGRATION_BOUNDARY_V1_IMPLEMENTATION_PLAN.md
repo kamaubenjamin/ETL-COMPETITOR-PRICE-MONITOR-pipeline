@@ -1,7 +1,7 @@
 # Export Runtime / ERP Integration Boundary v1 Implementation Plan
 
 **Milestone:** v0.18
-**Status:** Planning complete; implementation not started
+**Status:** Phase 1 implemented and verified; Phase 2 not started
 
 ## 1. Milestone Overview
 
@@ -23,6 +23,8 @@ No implementation phase may let API routes or UI components call adapters or rep
 
 ## 3. Phase 1: Contracts And Status / Readiness Model
 
+**Completion:** Implemented. The standard-library-only package provides fixed catalogs, immutable JSON-safe target/permission/readiness/payload/attempt/result/lifecycle/audit contracts, bounded privacy validation, canonical payload fingerprinting, domain-separated SHA-256 idempotency keys, fixed safe errors, and a runtime-checkable structural adapter port. It contains no evaluator, mapper registry, repository, service, adapter implementation, API/UI integration, persistence, I/O, or external dependency. The focused suite passes 38 tests; API, Platform Runtime, Security, Document State, Query Facade, Review Runtime, and boundary regressions pass unchanged.
+
 ### Scope
 
 Create the dependency-light export domain contracts, error catalog, status catalog, readiness policy, and structural ports. No repositories, adapters, service orchestration, API routes, or UI changes.
@@ -33,22 +35,27 @@ Create:
 
 - `src/export_runtime/__init__.py`
 - `src/export_runtime/contracts.py`
+- `src/export_runtime/statuses.py`
 - `src/export_runtime/readiness.py`
+- `src/export_runtime/payloads.py`
 - `src/export_runtime/attempts.py`
 - `src/export_runtime/results.py`
+- `src/export_runtime/idempotency.py`
 - `src/export_runtime/errors.py`
 - `src/export_runtime/ports.py`
-- `tests/export_runtime/__init__.py`
-- `tests/export_runtime/test_contracts.py`
-- `tests/export_runtime/test_readiness.py`
-- `tests/export_runtime/test_ports.py`
-- `tests/export_runtime/test_boundaries.py`
+- `tests/export_runtime/test_statuses.py`
+- `tests/export_runtime/test_readiness_contracts.py`
+- `tests/export_runtime/test_payload_contracts.py`
+- `tests/export_runtime/test_attempt_result_contracts.py`
+- `tests/export_runtime/test_idempotency.py`
+- `tests/export_runtime/test_error_privacy.py`
+- `tests/export_runtime/test_ports_and_boundaries.py`
 
 Modify documentation status only.
 
 ### Deliverables
 
-- `ExportTarget`, `ExportReadinessRequest/Result`, `ExportAttempt`, `ExportResult`, `ExportAuditEvent`, `ExportPermission`, and `ExportLifecycleDecision`.
+- `ExportTarget`, `ExportReadinessResult`, `ExportAttempt`, `ExportResult`, `ExportAuditIntent`, `ExportPermission`, and `ExportLifecycleDecision`.
 - Fixed export status and failure/reason catalogs.
 - Pure ordered readiness policy over injected safe projections.
 - Read-only/read-write attempt/result ports, target catalog port, adapter port, and narrow authorization/lifecycle/audit intent ports.
@@ -76,7 +83,7 @@ git status --short --branch
 
 ### Stop Condition
 
-Stop after contracts/readiness verification. Do not implement payload construction or repositories.
+Stop after contract/readiness/payload/idempotency foundation verification. Do not implement payload mapping, repositories, services, adapters, API, or UI integration.
 
 ## 4. Phase 2: Payload Builder And Idempotency Policy
 
@@ -348,4 +355,3 @@ Recommended owner-reviewed commits:
 Recommended final tag after Phase 6 owner review:
 
 `v0.18-export-runtime-erp-integration-boundary`
-

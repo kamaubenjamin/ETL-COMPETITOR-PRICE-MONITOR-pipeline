@@ -1,7 +1,7 @@
 # Export Runtime / ERP Integration Boundary v1 Plan
 
 **Milestone:** v0.18
-**Status:** Planning complete; implementation not started
+**Status:** Phase 1 implemented and verified; Phase 2 not started
 **Recommended package:** `src/export_runtime/`
 
 ## 1. Problem Statement
@@ -102,7 +102,7 @@ All contracts should be immutable, versioned where payload compatibility matters
 - `ExportResult`: attempt ID, terminal success/failure classification, safe adapter code, optional bounded external reference, timestamps, and retryability; no raw adapter body.
 - `ExportStatus`: fixed operation-state catalog kept separate from document lifecycle status.
 - `ExportIdempotencyKey`: bounded digest derived from approved canonical inputs.
-- `ExportAuditEvent`: event type, document/attempt/target references, actor reference, outcome code, timestamp, and allowlisted scalar metadata.
+- `ExportAuditIntent`: event type, document/attempt/target references, actor reference, outcome code, timestamp, and bounded scalar metadata.
 - `ExportPermission`: required permission and evaluated tenant/resource scope; authorization decisions remain owned by `src/security/`.
 - `ExportLifecycleDecision`: whether success permits advancement, expected document version, lifecycle result, and projection-pending state.
 
@@ -155,7 +155,7 @@ The runtime should persist the accepted attempt before external delivery, then p
 
 ## 13. Idempotency And Duplicate Prevention
 
-The canonical idempotency digest should include domain separation plus tenant ID, document ID, document projection/version, target ID, payload schema version, and payload fingerprint. Caller-supplied request keys may be included as an additional bounded input but cannot replace the server-derived digest.
+The canonical idempotency digest includes domain separation plus tenant ID, document ID, target ID, payload fingerprint, operation type, and operation version. The payload fingerprint already covers payload schema and document projection version. Caller-supplied request keys may be included later as an additional bounded input but cannot replace the server-derived digest.
 
 The attempt repository must enforce a unique claim atomically. Concurrent requests with the same digest cannot both invoke the adapter. Replays return the existing attempt/result or `duplicate_prevented`. A retry after a retryable failure creates a new attempt linked to the prior attempt and uses an explicit retry ordinal or retry command while preserving the original operation lineage.
 
@@ -252,6 +252,8 @@ Contracts, persistence, logs, audit, API responses, and UI projections must excl
 4. Export service with placeholder adapters and lifecycle/audit integration.
 5. API mutation contract boundary and FlowSync export-readiness placeholders, gated from activation until owner approval.
 6. Verification, documentation, release closure, handoff, and tag recommendation.
+
+Phase 1 delivers the standard-library-only `src/export_runtime/` contract package. It defines fixed export/attempt/readiness/target/operation catalogs; immutable target, permission, readiness, payload party/line, attempt, adapter result, export result, lifecycle decision, and audit intent contracts; bounded scalar metadata; deterministic canonical payload fingerprints and domain-separated idempotency keys; fixed privacy-safe errors; and a structural `ExportAdapterPort`. It implements no readiness evaluator, payload mapper, repository, service, adapter, API/UI integration, persistence, I/O, or external call. Thirty-eight focused tests and all required regressions pass.
 
 ## 25. Deferred Work
 

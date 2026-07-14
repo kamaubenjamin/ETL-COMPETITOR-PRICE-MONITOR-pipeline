@@ -410,8 +410,9 @@ References:
 
 Status:
 - Architecture plan, implementation plan, and ADR-023 created
-- Planning complete; implementation not started
-- No export runtime code, endpoint, mutation route, migration, UI change, dependency, or ERP connection added
+- Phase 1 implemented: standard-library-only export catalogs, immutable readiness/payload/attempt/result/lifecycle/audit contracts, deterministic payload fingerprints/idempotency keys, privacy-safe errors, and structural adapter port
+- Phase 2 not started
+- No export service, adapter implementation, endpoint, mutation route, migration, UI change, dependency, I/O, or ERP connection added
 
 Planned capabilities:
 - Independent `src/export_runtime/` policy and orchestration boundary
