@@ -1,7 +1,7 @@
 # FlowSync Document Intelligence UI v1 Implementation Plan
 
 **Milestone:** v0.17
-**Status:** Phases 1-2 implemented; Phase 3 not started
+**Status:** Phases 1-3 implemented; Phase 4 not started
 
 ## 1. Milestone Overview
 
@@ -100,6 +100,8 @@ Stop after read-only document list/detail. Do not add validation, matching, revi
 
 ## 6. Phase 3: Validation, Matching, Review, Workflow, And Audit Views
 
+**Status:** Implemented
+
 ### Scope
 
 Implement all remaining read-only operational views supported by existing APIs.
@@ -130,6 +132,15 @@ Run targeted feature/component tests, privacy scans, accessibility checks, type-
 ### Stop Condition
 
 Stop after supported read-only views. Do not enable any action or request an API change automatically.
+
+### Delivered
+
+- Validation issue metrics/table and matching candidate/confidence views use bounded document API projections.
+- Review queue/detail joins safe case, correction-summary, and dry-run reprocess-plan reads without protected values or commands.
+- Workflow run summaries and audit events use deterministic tables/timelines; audit detail is restricted to an explicit scalar display allowlist.
+- Shared confidence, severity, priority, read-only notice, and timeline components preserve accessible text labels.
+- The dependency-free validator checks all Phase 3 pages/routes/functions, GET-only transport, mutation-surface absence, privacy strings, fixture fallback, and forbidden imports.
+- `npm run validate` passes. Type-check, build, and browser screenshot verification were not run because dependencies are declared but not installed.
 
 ## 7. Phase 4: Auth/Tenant-Aware States And Error Hardening
 

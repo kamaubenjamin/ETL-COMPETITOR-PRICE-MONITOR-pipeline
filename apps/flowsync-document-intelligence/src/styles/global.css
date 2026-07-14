@@ -350,6 +350,81 @@ a:focus-visible {
   font-size: 12px;
 }
 
+.read-only-notice {
+  display: inline-flex;
+  max-width: 360px;
+  min-height: 36px;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid #b9d8ca;
+  border-radius: var(--radius-small);
+  background: var(--color-positive-soft);
+  color: var(--color-positive);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.severity-badge,
+.priority-badge {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  padding: 3px 7px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface-muted);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.severity-badge--error,
+.priority-badge--urgent,
+.priority-badge--high {
+  border-color: #e1b6b6;
+  background: var(--color-critical-soft);
+  color: var(--color-critical);
+}
+
+.severity-badge--warning,
+.priority-badge--normal {
+  border-color: #e3ca95;
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+}
+
+.priority-badge--low {
+  color: var(--color-text-muted);
+}
+
+.confidence {
+  display: grid;
+  min-width: 128px;
+  grid-template-columns: minmax(70px, 1fr) 38px;
+  align-items: center;
+  gap: 8px;
+}
+
+.confidence-track {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--color-surface-muted);
+}
+
+.confidence-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-accent);
+}
+
+.confidence strong {
+  font-size: 11px;
+}
+
 .content-section {
   padding-top: 4px;
 }
@@ -810,6 +885,17 @@ a:focus-visible {
   font-size: 11px;
 }
 
+.operational-timeline li {
+  align-items: start;
+}
+
+.operational-timeline time {
+  display: block;
+  margin-top: 4px;
+  color: var(--color-text-muted);
+  font-size: 10px;
+}
+
 @media (max-width: 1080px) {
   .header-context .context-chip {
     display: none;
@@ -893,6 +979,10 @@ a:focus-visible {
   .page-heading {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .read-only-notice {
+    max-width: none;
   }
 
   .status-grid,

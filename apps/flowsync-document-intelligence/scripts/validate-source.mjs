@@ -25,6 +25,12 @@ const requiredFiles = [
   "src/pages/DocumentDetailPage.tsx",
   "src/api/documents.ts",
   "src/app/routes.ts",
+  "src/pages/DocumentValidationPage.tsx",
+  "src/pages/DocumentMatchingPage.tsx",
+  "src/pages/ReviewCasesPage.tsx",
+  "src/pages/ReviewCaseDetailPage.tsx",
+  "src/pages/WorkflowsPage.tsx",
+  "src/pages/AuditPage.tsx",
 ];
 for (const name of requiredFiles) {
   if (!source.some((file) => file.name === name)) failures.push(`missing required source: ${name}`);
@@ -36,8 +42,24 @@ for (const route of [
   "/documents/:documentId",
   "/documents/:documentId/validation",
   "/documents/:documentId/matching",
+  "/review",
+  "/review/:reviewCaseId",
+  "/workflows",
+  "/audit",
 ]) {
   if (!routeSource.includes(route)) failures.push(`missing route contract: ${route}`);
+}
+
+const apiRequirements = {
+  "src/api/reviews.ts": ["listReviewCases", "getReviewCase", "listCorrectionHistory"],
+  "src/api/workflows.ts": ["listWorkflowRuns"],
+  "src/api/audit.ts": ["listAuditEvents"],
+};
+for (const [name, functions] of Object.entries(apiRequirements)) {
+  const content = source.find((file) => file.name === name)?.content ?? "";
+  for (const apiFunction of functions) {
+    if (!content.includes(`function ${apiFunction}`)) failures.push(`missing API function: ${apiFunction}`);
+  }
 }
 
 const documentApi = source.find((file) => file.name === "src/api/documents.ts")?.content ?? "";
@@ -59,11 +81,23 @@ const forbiddenPatterns = [
   { pattern: /\b(?:fixture|mock)_?(?:fallback)?\b/i, label: "fixture fallback" },
 ];
 
+const phaseThreePages = new Set([
+  "src/pages/DocumentValidationPage.tsx", "src/pages/DocumentMatchingPage.tsx",
+  "src/pages/ReviewCasesPage.tsx", "src/pages/ReviewCaseDetailPage.tsx",
+  "src/pages/WorkflowsPage.tsx", "src/pages/AuditPage.tsx",
+]);
+
 for (const file of source) {
   for (const { pattern, label } of forbiddenPatterns) {
     if (pattern.test(file.content)) failures.push(`${label} found in ${file.name}`);
   }
+  if (phaseThreePages.has(file.name) && /onClick=|<form|type=["']submit["']/.test(file.content)) {
+    failures.push(`interactive mutation surface found in ${file.name}`);
+  }
 }
+
+const actionSources = source.filter((file) => phaseThreePages.has(file.name)).map((file) => file.content).join("\n");
+if (/method:\s*["'](?:POST|PUT|PATCH|DELETE)["']/i.test(actionSources)) failures.push("Phase 3 mutation request found");
 
 const clientSource = source.find((file) => file.name === "src/api/client.ts")?.content ?? "";
 if (!clientSource.includes('method: "GET"')) failures.push("GET-only client method is missing");
@@ -73,4 +107,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`Validated ${sourceFiles.length} frontend source files: routes, GET-only API, boundaries, and privacy checks passed.`);
+console.log(`Validated ${sourceFiles.length} frontend source files: Phase 3 routes, GET-only API, boundaries, and privacy checks passed.`);

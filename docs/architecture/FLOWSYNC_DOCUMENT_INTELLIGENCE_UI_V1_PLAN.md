@@ -1,7 +1,7 @@
 # FlowSync Document Intelligence UI v1 Plan
 
 **Milestone:** v0.17
-**Status:** Phases 1-2 implemented; Phase 3 not started
+**Status:** Phases 1-3 implemented; Phase 4 not started
 **Product surface:** FlowSync Document Intelligence
 
 ## 1. Problem Statement
@@ -270,6 +270,8 @@ Each phase is one Codex session and stops before the next phase.
 Phase 1 delivers the isolated frontend boundary, responsive enterprise shell, sidebar/header navigation, all approved route contracts, safe static placeholders, status/loading/empty/error components, API-safe TypeScript models, allowlisted endpoint builders, a GET-only client, strict v1 envelope validation, fixed non-reflective errors, semantic design tokens, and explicit package scripts. It makes no live request at startup, installs no dependencies, implements no product data view, auth/session behavior, or mutation, and changes no backend, Streamlit, dashboard, or competitor-price source.
 
 Phase 2 delivers the first real product screens at `/documents` and `/documents/:documentId`. Document payloads receive bounded runtime projection before rendering; list/detail state is local and cancellation-safe; filters narrow API reads without acting as authorization; search is labeled as applying to loaded results; and no API failure falls back to fixtures. The detail view uses only existing document, processing, validation, and matching endpoints. Protected preview, review/workflow/audit correlation, actions, auth/session behavior, and final browser polish remain deferred.
+
+Phase 3 delivers read-only validation, matching, review list/detail, workflow, and audit pages from existing GET contracts. Runtime payload parsers fail closed, audit metadata is reduced to an explicit display allowlist, correction history omits protected values, and page-local request state provides fixed loading, empty, unavailable, unauthorized, malformed-response, and safe-error behavior. No upload, review decision, correction submission, reprocess request, workflow execution, export action, fixture fallback, backend change, or global state was added. Dependency-backed type-check/build and browser rendering remain deferred because frontend dependencies are not installed.
 
 ## 23. Deferred Work
 

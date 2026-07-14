@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.17. Phases 1-2 implement the approved frontend boundary and read-only document list/detail views; later quality, review, workflow, and audit views remain pending.
+Accepted for v0.17. Phases 1-3 implement the approved frontend boundary and all planned read-only document, validation, matching, review, workflow, and audit views; auth/session hardening and final product verification remain pending.
 
 ## Context
 
@@ -28,6 +28,8 @@ The UI will:
 8. remain themeable and responsive without changing backend contracts
 
 The owner-approved application location is `apps/flowsync-document-intelligence/`. Phase 1 creates an isolated Vite, React, and TypeScript package there with no imports from backend Python packages, Streamlit, or competitor-price modules. Dependency installation is explicit and remains outside repository automation.
+
+Phase 3 completes the read-only operational route set using only existing GET contracts. Review history remains a protected-value-free summary, audit metadata is allowlisted before presentation, and workflow/reprocess information is descriptive only. No command control or backend capability is inferred by the UI.
 
 ## Product Separation Decision
 
