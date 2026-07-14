@@ -1,7 +1,7 @@
 # FlowSync Document Intelligence UI v1 Plan
 
 **Milestone:** v0.17
-**Status:** Phase 1 implemented; Phase 2 not started
+**Status:** Phases 1-2 implemented; Phase 3 not started
 **Product surface:** FlowSync Document Intelligence
 
 ## 1. Problem Statement
@@ -40,6 +40,7 @@ v0.17 defines a separate FlowSync Document Intelligence application that consume
 - v0.16 provides explicit runtime composition and deliberately fails closed for unsupported production configurations.
 - Streamlit is an internal read-only console with `local_preview` and `api_preview`; it is not the FlowSync product architecture.
 - Phase 1 establishes the owner-approved isolated Vite, React, and TypeScript application at `apps/flowsync-document-intelligence/`. It includes the app shell, route metadata, static safe pages, GET-only API contracts, strict envelope parsing, fixed safe errors, and semantic theme foundations. Dependencies are declared but not installed by repository automation.
+- Phase 2 implements navigation-driven document list and detail reads using the existing API client. The list provides API status/type filters, explicitly current-result search, stable safe columns, result-set status metrics, and fixed loading/empty/error states. Detail composes existing document, processing, validation, and matching GETs into safe metadata, summaries, tabs, and processing history while keeping Review, Workflow, Audit, raw preview, and every mutation unavailable.
 
 ## 5. UI Product Boundary
 
@@ -267,6 +268,8 @@ FlowSync never imports or constructs `RuntimeConfig`, `RuntimeComposition`, repo
 Each phase is one Codex session and stops before the next phase.
 
 Phase 1 delivers the isolated frontend boundary, responsive enterprise shell, sidebar/header navigation, all approved route contracts, safe static placeholders, status/loading/empty/error components, API-safe TypeScript models, allowlisted endpoint builders, a GET-only client, strict v1 envelope validation, fixed non-reflective errors, semantic design tokens, and explicit package scripts. It makes no live request at startup, installs no dependencies, implements no product data view, auth/session behavior, or mutation, and changes no backend, Streamlit, dashboard, or competitor-price source.
+
+Phase 2 delivers the first real product screens at `/documents` and `/documents/:documentId`. Document payloads receive bounded runtime projection before rendering; list/detail state is local and cancellation-safe; filters narrow API reads without acting as authorization; search is labeled as applying to loaded results; and no API failure falls back to fixtures. The detail view uses only existing document, processing, validation, and matching endpoints. Protected preview, review/workflow/audit correlation, actions, auth/session behavior, and final browser polish remain deferred.
 
 ## 23. Deferred Work
 

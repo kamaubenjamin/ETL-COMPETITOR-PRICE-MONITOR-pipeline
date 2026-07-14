@@ -74,3 +74,13 @@ export class ApiClientError extends Error {
   }
 }
 
+export function toSafeClientError(error: unknown): SafeClientError {
+  if (error instanceof ApiClientError) {
+    return error.safe;
+  }
+  return Object.freeze({
+    kind: "unavailable",
+    code: "api_unavailable",
+    message: FIXED_MESSAGES.unavailable,
+  });
+}

@@ -7,24 +7,52 @@ import type {
   ProcessingStatus,
   ValidationIssue,
 } from "../types/document";
+import {
+  parseDocumentSummary,
+  parseMatchingResult,
+  parseProcessingStatus,
+  parseValidationIssue,
+} from "../types/document";
+import { ApiClientError } from "./errors";
+import type { ApiEnvelope } from "../types/api";
 
-export function listDocuments(client: DocumentIntelligenceApiClient, query: DocumentListQuery = {}) {
-  return client.get<DocumentSummary[]>(API_ENDPOINTS.documents, { ...query });
+function mapEnvelopeList<T>(
+  envelope: ApiEnvelope<unknown>,
+  parser: (value: unknown) => T | null,
+): ApiEnvelope<T[]> {
+  if (!Array.isArray(envelope.data)) {
+    throw ApiClientError.invalidResponse(envelope.request_id);
+  }
+  const data = envelope.data.map(parser);
+  if (data.some((item) => item === null)) {
+    throw ApiClientError.invalidResponse(envelope.request_id);
+  }
+  return { ...envelope, data: data as T[] };
 }
 
-export function getDocument(client: DocumentIntelligenceApiClient, documentId: string) {
-  return client.get<DocumentSummary>(API_ENDPOINTS.document(documentId));
+export async function listDocuments(client: DocumentIntelligenceApiClient, query: DocumentListQuery = {}) {
+  const envelope = await client.get<unknown>(API_ENDPOINTS.documents, { ...query });
+  return mapEnvelopeList<DocumentSummary>(envelope, parseDocumentSummary);
 }
 
-export function getDocumentProcessing(client: DocumentIntelligenceApiClient, documentId: string) {
-  return client.get<ProcessingStatus[]>(API_ENDPOINTS.processing(documentId));
+export async function getDocument(client: DocumentIntelligenceApiClient, documentId: string) {
+  const envelope = await client.get<unknown>(API_ENDPOINTS.document(documentId));
+  const data = parseDocumentSummary(envelope.data);
+  if (!data) throw ApiClientError.invalidResponse(envelope.request_id);
+  return { ...envelope, data } as ApiEnvelope<DocumentSummary>;
 }
 
-export function getDocumentValidation(client: DocumentIntelligenceApiClient, documentId: string) {
-  return client.get<ValidationIssue[]>(API_ENDPOINTS.validation(documentId));
+export async function getDocumentProcessing(client: DocumentIntelligenceApiClient, documentId: string) {
+  const envelope = await client.get<unknown>(API_ENDPOINTS.processing(documentId));
+  return mapEnvelopeList<ProcessingStatus>(envelope, parseProcessingStatus);
 }
 
-export function getDocumentMatching(client: DocumentIntelligenceApiClient, documentId: string) {
-  return client.get<MatchingResult[]>(API_ENDPOINTS.matching(documentId));
+export async function getDocumentValidation(client: DocumentIntelligenceApiClient, documentId: string) {
+  const envelope = await client.get<unknown>(API_ENDPOINTS.validation(documentId));
+  return mapEnvelopeList<ValidationIssue>(envelope, parseValidationIssue);
 }
 
+export async function getDocumentMatching(client: DocumentIntelligenceApiClient, documentId: string) {
+  const envelope = await client.get<unknown>(API_ENDPOINTS.matching(documentId));
+  return mapEnvelopeList<MatchingResult>(envelope, parseMatchingResult);
+}

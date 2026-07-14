@@ -1,7 +1,7 @@
 # FlowSync Document Intelligence UI v1 Implementation Plan
 
 **Milestone:** v0.17
-**Status:** Phase 1 implemented; Phase 2 not started
+**Status:** Phases 1-2 implemented; Phase 3 not started
 
 ## 1. Milestone Overview
 
@@ -64,6 +64,8 @@ Use the confirmed FlowSync host commands for type-check, unit tests, lint, and b
 Stop after shell, routes, contracts, and API client foundation. Do not build data pages or add backend contracts.
 
 ## 5. Phase 2: Document List And Detail Read-Only Views
+
+**Completion:** Implemented. `/documents` now performs navigation-driven GET reads with API-compatible status/type filters, explicitly current-result search, safe status metrics, stable table columns, pagination totals, and fixed loading/empty/error states. `/documents/:documentId` composes existing detail, processing, validation, and matching GETs into safe metadata, summary cards, section tabs/placeholders, and processing history. Runtime payload projection rejects malformed records; state remains page-local and cancellation-safe; retry performs GET only; and API failures never activate fixtures. No protected preview, auth/session handling, upload, correction, decision, reprocess, workflow, export, backend, Streamlit, or competitor-price behavior was added. Dependency-free source validation passes; dependency-backed typecheck/build and browser visual verification remain pending.
 
 ### Scope
 

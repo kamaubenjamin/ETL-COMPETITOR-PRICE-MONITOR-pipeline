@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.17. Phase 1 implements the approved frontend boundary; later product views remain pending.
+Accepted for v0.17. Phases 1-2 implement the approved frontend boundary and read-only document list/detail views; later quality, review, workflow, and audit views remain pending.
 
 ## Context
 
