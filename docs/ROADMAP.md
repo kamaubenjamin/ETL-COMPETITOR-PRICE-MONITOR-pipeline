@@ -483,6 +483,40 @@ References:
 - `docs/architecture/UPLOAD_PROCESSING_ACTIVATION_V1_HANDOFF.md`
 - `docs/releases/v0.19-upload-processing-activation.md`
 
+### v0.20 Business Workflow / Rules Studio
+
+Status:
+- Architecture plan, seven-phase implementation plan, and ADR-025 created
+- Planning only; implementation has not started
+- Existing Workflow Runtime remains the sole execution authority
+- Recommended independent `workflow_studio` governance package above the runtime
+- No source, endpoint, UI behavior, permission, migration, dependency, OCR/LLM, ERP/export, or upload-staging change added
+
+Planned capabilities:
+- Immutable tenant-scoped workflow, rule, condition, action, version, validation, preview, publication, and audit contracts
+- Explicit Studio operation catalog mapped only to proven existing runtime capabilities
+- Schema, semantic, dependency/DAG, runtime-compatibility, security, and publication validation
+- Editable drafts, immutable published versions, approval, deactivation, archive, and lineage-preserving rollback
+- Bounded deterministic dry runs over approved fixtures or privacy-checked samples with no production side effects
+- Controlled legacy Sanifu/Docsift translation proposals and per-operation migration reports
+- Guarded Workflow Management API with dedicated permission evaluation and optimistic concurrency
+- Structured FlowSync Rules Studio preserving the approved visual identity and API authority
+- Explicit prohibition of arbitrary code, shell, raw SQL, filesystem, unrestricted HTTP, secrets, direct ERP/export, and silent tenant-crossing operations
+
+Proposed phases:
+1. Contracts, statuses, definitions, and operation catalog
+2. Validation engine, dependency checks, and legacy compatibility report
+3. Versioned repository, draft lifecycle, and publication policy
+4. Safe dry-run/test boundary and audit intents
+5. Guarded Workflow Management API
+6. FlowSync Rules Studio UI foundation
+7. Verification, closure, handoff, and tag recommendation
+
+References:
+- `docs/architecture/BUSINESS_WORKFLOW_RULES_STUDIO_V1_PLAN.md`
+- `docs/architecture/BUSINESS_WORKFLOW_RULES_STUDIO_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-025-business-workflow-rules-studio-boundary.md`
+
 ## Prior Milestone Context
 
 ### v0.5 Runtime Hardening
@@ -612,6 +646,8 @@ Dependencies:
 
 ## Next Milestones
 
+- Implement v0.20 Business Workflow / Rules Studio through seven reviewed phases after owner approval
+- Keep existing Workflow Runtime as execution authority and begin with contracts/catalog, not production execution or a visual canvas
 - Close and tag v0.7 Review / Correction Runtime after the Phase 5 documentation commit
 - Plan durable Review Runtime persistence and trusted service boundaries
 - Workflow Runtime Locking

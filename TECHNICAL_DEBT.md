@@ -1,5 +1,41 @@
 Technical debt and missing test fixtures
 
+## v0.20 Business Workflow / Rules Studio Planning
+
+### Current Status
+
+**Planning complete; implementation has not started.**
+
+ADR-025 and the v0.20 plans select a separate `workflow_studio` governance package above the existing Workflow Runtime. The runtime remains execution authority. The Studio is responsible for safe definitions, operation descriptors, validation, drafts, immutable versions, approval/publication policy, bounded preview, legacy migration reports, and audit intents through narrow ports.
+
+Debt and decisions intentionally retained for implementation phases:
+
+- Exact compiler/mapping contract from fine-grained Studio actions to existing coarse runtime operations
+- Which candidate actions have proven deterministic publishable runtime implementations
+- Richer input/output schemas and field-path type propagation across stages
+- Durable repository choice, transaction model, one-active-version constraint, and migration approval
+- Environment promotion and distinction between publication and production execution activation
+- Preview adapter fidelity, timeouts, cancellation, resource accounting, fixture ownership, and retention
+- Tenant-safe master-data source ownership, snapshotting, and replay policy
+- Approval separation policy for small teams and platform administrators
+- Definition diff/redaction policy and audit retention
+- Version numbering, archive retention, deactivation, and rollback operational semantics
+- Permission-catalog expansion beyond existing `workflow:read` and `workflow:run`
+- Legacy Sanifu/Docsift fixtures and operation-by-operation semantic equivalence decisions
+- Live authenticated API/UI testing, deployment, monitoring, and operational runbooks
+- Collaborative editing, comments, visual canvas, reusable subworkflows, and parameter libraries
+- Semantic classification and all LLM assistance
+
+Planning explicitly prohibits arbitrary code, eval/exec, shell, imports, raw SQL, unrestricted HTTP, filesystem access, direct database writes, arbitrary JavaScript, secrets, direct ERP/export, upload staging, OCR/LLM execution, automatic production publication, unbounded execution, plugins/marketplace, and silent legacy conversion.
+
+Recommended implementation begins with immutable contracts and an explicit operation catalog, then validation/legacy reporting, version/publication policy, bounded preview, API, FlowSync, and closure. Do not start with a visual canvas or production execution binding.
+
+### References
+
+- `docs/architecture/BUSINESS_WORKFLOW_RULES_STUDIO_V1_PLAN.md`
+- `docs/architecture/BUSINESS_WORKFLOW_RULES_STUDIO_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-025-business-workflow-rules-studio-boundary.md`
+
 ## v0.19 Upload + Processing Activation
 
 ### Current Status

@@ -1,0 +1,200 @@
+# Business Workflow / Rules Studio v1 Implementation Plan
+
+**Milestone:** v0.20
+**Status:** Planning complete; implementation not started
+**Phases:** Seven reviewed phases
+
+## 1. Delivery Rules
+
+- Implement one reviewed phase at a time and stop after its verification evidence.
+- Preserve the existing Workflow Runtime as execution authority.
+- Keep Studio core policy independent from API, FlowSync, Streamlit, persistence implementations, ERP/export, external services, and arbitrary extension loading.
+- Never introduce executable user source, `eval`/`exec`, shell, raw SQL, filesystem, unrestricted HTTP, direct database mutation, credentials, or secrets.
+- Do not activate production workflow execution, ERP, export, upload staging, OCR/LLM, or automatic publication by convenience.
+- New permissions, persistence schemas, dependencies, and production adapters require explicit phase approval.
+- Every phase must record what remains unavailable and must not let API/UI imply activation before it exists.
+
+## 2. Phase 1: Contracts, Statuses, Definitions, And Operation Catalog
+
+### Deliverables
+
+- Create the standard-library-first `workflow_studio` package foundation.
+- Immutable JSON-safe workflow, rule, condition, action, version, author/reviewer, and safe metadata contracts.
+- Fixed workflow/version/publication status catalog and pure transition policy.
+- Restricted field/path, condition operator, error policy, and output policy catalogs.
+- Operation descriptor/catalog contracts separating Studio actions from existing runtime operations.
+- Initial catalog entries marked `supported`, `planned`, `unavailable`, or `deprecated`; only proven mappings are publishable.
+- Fixed privacy-safe errors and validation issue contracts.
+
+### Tests
+
+Immutability, serialization, bounded fields/collections/depth, ID/timestamp/status validation, transition table, published immutability, scalar-only metadata, unsafe key/value rejection, operation descriptor consistency, prohibited executable fields, and recursive boundary imports.
+
+### Stop Condition
+
+No service, repository implementation, runtime compiler, preview execution, API, UI, permission change, persistence, or migration.
+
+## 3. Phase 2: Validation Engine, Dependency Policy, And Legacy Compatibility Report
+
+### Deliverables
+
+- Ordered schema, semantic, path, condition, action-argument, dependency, and runtime-compatibility validators.
+- Deterministic graph construction, missing-dependency rejection, cycle detection, and stable topological ordering.
+- Protected-field and unsafe-path policy.
+- Registry compatibility port for runtime operation/version/contract availability.
+- Security-validation intent accepting trusted tenant/source capability facts from outer composition.
+- Strict legacy reference parser/translator interface that produces proposals only.
+- Migration report with supported, partially supported, unsupported, and manual-review outcomes plus source lineage.
+
+### Tests
+
+Every issue code/order, duplicate IDs, dependency cycles, disabled/skipped dependency behavior, invalid paths, boolean-depth limits, unknown/unavailable operations, argument errors, protected fields, runtime version mismatch, missing feature port, tenant-source mismatch, deterministic results, and legacy no-silent-conversion fixtures.
+
+### Stop Condition
+
+No legacy definition execution, repository writes, runtime invocation, preview, API, UI, LLM, or production operation registration.
+
+## 4. Phase 3: Versioned Repository, Draft Lifecycle, And Publication Policy
+
+### Deliverables
+
+- Persistence-neutral reader/writer protocols for workflow identity, immutable versions, drafts, publication/activation, and audit intents.
+- Deterministic lock-protected in-memory implementation for tests/local composition.
+- Unique tenant/workflow/version identities and optimistic draft updates.
+- Immutable published versions and append-only derivation lineage.
+- Pure approval, publish, deactivate, archive, and rollback-as-new-version policies.
+- One-active-version policy per tenant/workflow/environment where enabled.
+- Safe version queries, bounded pagination, stable ordering, and concealed tenant reads.
+- Evaluate SQLite schema/transactions; implement only after explicit approval and migration review.
+
+### Tests
+
+Tenant isolation, optimistic conflicts, unique versions, immutable publication, edit-derived draft behavior, author/reviewer separation, approval gates, atomic activation claims, deactivation/archive, rollback lineage, deterministic pages, concurrent claims, and in-memory/approved-backend equivalence if a durable adapter is included.
+
+### Stop Condition
+
+No runtime execution, API, UI, production persistence selection, automatic promotion, or direct Document State reuse.
+
+## 5. Phase 4: Safe Dry-Run Boundary And Audit Intents
+
+### Deliverables
+
+- Immutable preview command, fixture reference, bounded inline sample, policy limits, trace summary, rule/stage result, redacted output, and preview result contracts.
+- `WorkflowPreviewPort` plus a controlled adapter into the existing Workflow Runtime dry-run composition.
+- Compiler from a validated immutable Studio version to existing runtime DSL/operation descriptors; no second scheduler.
+- Explicit no-side-effect ports/placeholders for alerts, master data, export, ERP, Document State, and lifecycle.
+- Maximum sample/output size, rules/actions/steps, collection items, duration, recursion, and trace events.
+- Deterministic replay identity and timeout/cancellation outcomes.
+- Safe audit intents for definition, validation, preview, approval, publication, deactivation, archival, and import activity.
+
+### Tests
+
+Deterministic replay, rule-by-rule outcomes, stable timing buckets where deterministic, step/item/output/time limits, cancellation, redaction, safe errors, fixture eligibility, unavailable port behavior, and proofs of no Document State/lifecycle/export/ERP/alert/email/master-data mutation, network, filesystem, secrets, or raw trace leakage.
+
+### Stop Condition
+
+Preview only: no production workflow run, scheduler binding, external adapter, durable raw preview output, API, or UI.
+
+## 6. Phase 5: Guarded Workflow Management API
+
+### Deliverables
+
+- App-scoped provider/service boundary over approved Studio services.
+- Tenant-scoped read contracts for definitions, details, versions, operations, preview summaries, and audit history.
+- Guarded create/edit/new-version/validate/test/approve/publish/deactivate/archive contracts as approved.
+- Exact expected-version and idempotency semantics for mutations.
+- API-authoritative permission, tenant, catalog, fixture, validation, approval, publication, and concealment behavior.
+- Fixed safe envelopes and non-reflective errors.
+- No client-supplied tenant/actor, executable source, secrets, raw samples beyond approved bounded preview schema, or unrestricted metadata.
+
+### Permissions To Evaluate
+
+`workflow:read`, `workflow:create`, `workflow:edit`, `workflow:test`, `workflow:approve`, `workflow:publish`, `workflow:deactivate`, and `workflow:admin`. Reuse `workflow:run` only for actual runtime execution semantics, not Studio management.
+
+### Tests
+
+Authentication, permission matrix, tenant narrowing/concealment, platform-admin audit, payload limits, unsafe fields, draft concurrency, published mutation denial, validate/test gates, approval separation, publication/deactivation idempotency, safe errors, operation catalog reads, malformed requests, method restrictions, and no direct runtime/ERP/export/Document State mutation.
+
+### Stop Condition
+
+No FlowSync changes, production scheduler activation, external service, automatic publication, or broad existing API behavior change.
+
+## 7. Phase 6: FlowSync Rules Studio UI Foundation
+
+### Deliverables
+
+- Preserve v0.17 visual identity and current shell/access/error patterns.
+- Workflow definitions list with draft/published/status filters supplied by API.
+- Structured workflow overview and stage/rule editor.
+- Condition and allowlisted action builders driven by the API operation catalog.
+- Dependency selection/reorder experience with accessible validation feedback.
+- Validation results, safe fixture test panel, bounded rule-level preview, version history, publication panel, and audit history.
+- Safe unsupported legacy operation, cycle, invalid path, unknown function, protected field, unavailable source, test-failed, and publication-blocked states.
+- API-authoritative access; no local publication, runtime registry mutation, arbitrary code editor, secret input, ERP/export call, or client execution.
+
+### UX Decision
+
+Use structured forms, ordered cards, and a read-only dependency visualization first. A drag-and-drop programming canvas is not required and should not be introduced until keyboard accessibility, dependency semantics, and maintainability are justified.
+
+### Tests
+
+Source validation, strict typecheck/build, route registration, parser allowlists, loading/empty/access/unavailable/malformed states, keyboard and screen-reader semantics, mobile layout, operation catalog behavior, explicit actions only, no browser credential storage, no arbitrary code or unsafe fields, no fixture fallback, and no ERP/export/runtime-direct imports or requests.
+
+### Stop Condition
+
+No production execution activation, LLM assistance, collaborative editing, external plugin system, or visual canvas requirement.
+
+## 8. Phase 7: Verification, Closure, Handoff, And Tag
+
+### Deliverables
+
+- Architecture summary, handoff, release notes, roadmap/debt/ADR/plan/changelog closure.
+- Focused Studio contract/validation/versioning/preview/repository/API/security/FlowSync evidence.
+- Existing Workflow Runtime, locking, Query Facade, Review Runtime, Document State, platform, export, upload, API, Streamlit, and full regression evidence proportionate to changes.
+- Boundary/privacy/arbitrary-execution scans and production-unavailable statement.
+- Deferred work, activation prerequisites, risks, and v0.21 recommendation.
+- Owner-reviewed tag recommendation; suggested tag `v0.20-business-workflow-rules-studio`.
+
+## 9. Verification Matrix
+
+Each phase should run its focused suites and applicable compatibility suites. Candidate closure matrix:
+
+```text
+python -m pytest tests/workflow_studio -q
+python -m pytest tests/workflow_runtime -q
+python -m pytest tests/workflow_runtime/query_facade tests/review_runtime -q
+python -m pytest tests/api/document_intelligence -q
+python -m pytest tests/security -q
+python -m pytest tests/platform_runtime -q
+python -m pytest tests/document_state -q
+python -m pytest tests/export_runtime tests/upload_runtime -q
+python -m pytest tests/ui/streamlit -q
+python scripts/verify_boundaries.py
+
+cd apps/flowsync-document-intelligence
+npm run validate
+npm run typecheck
+npm run build
+
+git diff --check
+git status --short --branch
+```
+
+Run `python -m pytest -q` at closure when practical. Exact paths may be refined only after Phase 1 creates the package/tests.
+
+## 10. Dependency, Migration, And Activation Gates
+
+No parser library, expression engine, graph library, database migration, editor framework, LLM client, plugin runtime, queue, or external adapter is authorized by this planning phase. Any proposed dependency or migration requires ownership, threat review, compatibility, deterministic behavior, failure modes, operations, rollback, and explicit approval.
+
+Production workflow publication must remain distinct from production execution activation. Do not bind published definitions to schedules or live events until durable repository, authentication, operation adapters, rollback, monitoring, and operational controls are approved.
+
+## 11. Recommended Commit Sequence
+
+1. `feat(workflow-studio): add governed definition contracts and catalog`
+2. `feat(workflow-studio): add validation and legacy compatibility reporting`
+3. `feat(workflow-studio): add version and publication policies`
+4. `feat(workflow-studio): add bounded deterministic preview boundary`
+5. `feat(api): add guarded workflow management contracts`
+6. `feat(flowsync): add structured rules studio views`
+7. `docs: close v0.20 business workflow rules studio`
+
