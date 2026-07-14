@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed for v0.19; planning only. No upload mutation, endpoint, UI action, storage adapter, migration, dependency, or processing activation is implemented by this ADR.
+Accepted for v0.19. Phase 1 implements and verifies the isolated standard-library upload contract/validation/idempotency/staging-port foundation. No upload mutation, endpoint, UI action, storage adapter, migration, dependency, ingestion call, writer integration, or processing activation is implemented yet.
 
 ## Context
 
@@ -102,4 +102,3 @@ Production storage and malware scanning, raw download, retention/legal hold, que
 ## Acceptance
 
 ADR-024 is accepted when owners approve `upload_runtime` as the raw-input policy boundary, API-authoritative auth/tenant behavior, opaque staging references, deterministic ingestion-first processing, reuse of governed writers/lifecycle, privacy rules, default-disabled activation, and the six-phase implementation plan.
-

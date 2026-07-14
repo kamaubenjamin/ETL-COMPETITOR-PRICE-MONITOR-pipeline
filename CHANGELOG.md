@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.19 Phase 1 standard-library Upload Runtime contracts with fixed upload source/type/status/error catalogs, immutable JSON-safe activation commands, deterministic tenant/actor/filename/type/size/MIME validation, bounded scalar-only metadata, safe artifact/processing intents and results, domain-separated opaque SHA-256 idempotency keys, a structural no-I/O staging port, and recursive privacy/boundary tests; no endpoint, UI, Streamlit, dashboard, competitor-price, staging implementation, ingestion/writer call, migration, dependency, OCR/LLM, export mutation, ERP, file, database, or network I/O was added.
+
 - Added v0.19 Upload + Processing Activation planning and ADR-024, selecting a transport-neutral upload policy boundary, API-authoritative authenticated tenant-scoped multipart mutation, deterministic file safety validation, opaque private staging into the existing ingestion pipeline, governed Document State writer/lifecycle integration, safe progress projections, and a phased FlowSync upload/timeline plan; no upload package, endpoint, UI behavior, migration, dependency, Streamlit, dashboard, competitor-price, OCR/LLM, export mutation, ERP connection, or production storage was added.
 
 - Closed v0.18 Export Runtime / ERP Integration Boundary as implemented and verified pending owner tag, with final architecture summary, handoff, release notes, focused/full regression evidence, boundary confirmation, explicit disabled API/FlowSync state, deferred production activation risks, and v0.19 Upload + Processing Activation recommendation; no runtime, API, UI, Streamlit, dashboard, competitor-price, dependency, migration, or ERP behavior was added during closure.

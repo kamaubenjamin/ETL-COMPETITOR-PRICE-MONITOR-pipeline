@@ -1,13 +1,15 @@
 # Upload + Processing Activation v1 Implementation Plan
 
 **Milestone:** v0.19
-**Status:** Planning complete; implementation not started
+**Status:** Phase 1 implemented and verified; Phase 2 not started
 
 ## 1. Delivery Rules
 
 Implement one phase per reviewed change. Every phase stops after its focused and compatibility verification. No phase may silently activate production upload, bypass API authorization, expose raw content/paths, trigger export, connect ERP, or add OCR/LLM. Real storage, dependencies, and migrations require separate approval.
 
 ## 2. Phase 1: Upload Contracts, Validation, And Command Model
+
+**Status:** Complete. The standard-library contract package, deterministic validation, safe commands/results/errors, opaque references, idempotency policy, staging Protocol, privacy checks, and recursive boundary tests are implemented. No staging implementation or outer integration was added.
 
 ### Deliverables
 
@@ -157,4 +159,3 @@ Do not add a MIME library, malware scanner, queue, storage SDK, OCR/LLM client, 
 4. `feat(api): add safe upload processing projections`
 5. `feat(flowsync): add guarded upload and processing views`
 6. `docs: close v0.19 upload processing activation`
-

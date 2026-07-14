@@ -1,7 +1,7 @@
 # Upload + Processing Activation v1 Plan
 
 **Milestone:** v0.19
-**Status:** Planning complete; implementation not started
+**Status:** Phase 1 implemented and verified; Phases 2-6 pending
 **Recommended package:** `src/upload_runtime/`
 
 ## 1. Goal
@@ -202,3 +202,6 @@ Production blob storage, malware scanning vendor, raw download, retention/legal 
 - Upload never triggers export, ERP, OCR, or LLM.
 - No production mode activates without storage/security/operations approval.
 
+## 22. Phase 1 Implementation Record
+
+Phase 1 adds the isolated standard-library-only `src/upload_runtime/` contract foundation: fixed source/file-type/status/error catalogs, immutable JSON-safe upload commands, validation policy/issues/results, safe artifact and processing-intent contracts, safe operation results/errors, domain-separated SHA-256 idempotency keys, and a structural staging port. Validation deterministically covers tenant/actor presence, filename traversal/safety/length, allowlisted and unsafe extensions, empty/maximum size, and declared MIME compatibility. Raw bytes, content, paths, credentials, claims, stack traces, nested metadata, API/runtime service behavior, staging I/O, ingestion, persistence, UI, OCR/LLM, export, and ERP remain absent. The focused suite passes 46 tests.

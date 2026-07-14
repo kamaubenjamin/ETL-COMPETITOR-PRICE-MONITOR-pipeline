@@ -448,8 +448,9 @@ References:
 
 Status:
 - Architecture plan, implementation plan, and ADR-024 created
-- Planning complete; implementation not started
-- No upload package, endpoint, UI behavior, migration, dependency, storage adapter, OCR/LLM, export activation, or ERP connection added
+- Phase 1 implemented: immutable upload contracts, validation policy/issues/results, safe command/result/error models, deterministic SHA-256 idempotency keys, opaque artifact references, and structural staging port
+- Phase 2 not started
+- No endpoint, UI behavior, migration, dependency, storage adapter implementation, ingestion/writer integration, OCR/LLM, export activation, or ERP connection added
 
 Planned capabilities:
 - Standard-library-first upload contracts, validation, commands, safe results/errors, and narrow ports

@@ -4,7 +4,7 @@ Technical debt and missing test fixtures
 
 ### Current Status
 
-**Planning complete; implementation not started.**
+**Phase 1 is implemented and verified; Phase 2 has not started.**
 
 ADR-024 and the v0.19 plans select a separate transport-neutral upload policy boundary around existing deterministic ingestion and Document State writers. The API will own multipart transport, authentication, tenant/permission gates, IDs, and safe envelopes. Raw content will reach the path-based ingestion pipeline only through a private opaque staging port; FlowSync remains non-authoritative.
 
@@ -22,6 +22,8 @@ Debt intentionally retained:
 - Enabled export, upload-to-export automation, and ERP integration
 
 These are deferred prerequisites or later product decisions, not planning omissions. No production upload should activate until the applicable security, storage, and operational items are resolved.
+
+Phase 1 provides immutable upload contracts, deterministic validation and stable issue ordering, bounded scalar-only metadata, privacy-safe results/errors, opaque staging references, domain-separated idempotency keys, and a structural no-I/O staging port. It does not stage bytes, inspect signatures/content, call ingestion, persist state, expose API routes, or modify FlowSync. The focused Upload Runtime suite passes 46 tests.
 
 ## v0.18 Export Activation Deferred
 
