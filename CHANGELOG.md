@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.16 Phase 2 internal runtime composition with validation-before-construction, explicit in-memory or file-backed SQLite Document State selection, one shared lifecycle advancement service injected into all four writers, Document State-backed Workflow Query Facade wiring, deterministic snapshot ownership, tenant-scoped reads, redacted diagnostics, SQLite reconstruction verification, and fail-closed deferred/production modes; API and Streamlit activation remain unchanged and deferred.
+
 - Added v0.16 Phase 1 standard-library platform runtime contracts with fixed runtime/backend/auth/identity/API/Streamlit mode catalogs, immutable redacted configuration, stable safe validation errors/results, deterministic compatibility helpers and matrix enforcement, explicit pilot placeholder requirements, and always fail-closed production while PostgreSQL and production identity adapters remain deferred; no environment reads, service wiring, API/UI changes, dependencies, migrations, or external integrations were added.
 
 - Added v0.16 Production Composition / Runtime Selection planning and ADR-021, selecting an outer `src/platform_runtime/` composition root, explicit local/test/demo/local-API-auth/pilot/production modes, a strict backend/auth/identity/Streamlit matrix, pure redacted configuration loading, composed Document State/lifecycle/writer/Query Facade/API dependencies, and deliberately unavailable fail-closed production until real persistence and identity adapters exist; no code, tests, endpoints, dependencies, migrations, UI behavior, PostgreSQL, or Supabase integration was added.

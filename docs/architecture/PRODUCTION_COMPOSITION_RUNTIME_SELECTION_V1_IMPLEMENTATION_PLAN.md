@@ -1,7 +1,7 @@
 # Production Composition / Runtime Selection v1 Implementation Plan
 
 **Milestone:** v0.16
-**Status:** Phase 1 implemented; Phases 2-6 not started
+**Status:** Phases 1-2 implemented; Phases 3-6 not started
 
 ## 1. Milestone Overview
 
@@ -131,6 +131,8 @@ git status --short --branch
 ### Stop Condition
 
 Stop after internal service composition. Do not modify API or Streamlit.
+
+**Completion:** Implemented and verified. Phase 2 adds explicit validated composition for in-memory and SQLite Document State, one shared `LifecycleAdvancementService`, all four lifecycle-aware writer services, and `DocumentStateQueryFacadeAdapter` behind `WorkflowQueryFacadePort`. SQLite reconstruction, writer-to-advance-to-query reads, tenant filtering, safe summaries, one-way imports, and fail-closed unsupported/production modes are covered. API and Streamlit activation remain Phase 3 and later work.
 
 ## 5. Phase 3: API Provider, App, And Auth Composition Activation
 

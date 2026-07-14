@@ -4,6 +4,7 @@ from pathlib import Path
 
 ROOT = Path("src/platform_runtime")
 STANDARD_ROOTS = {"__future__", "dataclasses", "enum", "typing"}
+APPROVED_INTEGRATION_ROOTS = {"src.document_state", "src.workflow_runtime.query_facade"}
 
 
 def _imports(path):
@@ -15,8 +16,10 @@ def _imports(path):
             yield f"{'.' * node.level}{node.module}"
 
 
-def test_platform_runtime_phase_one_imports_only_standard_or_package_local_modules():
+def test_platform_runtime_core_imports_only_standard_or_package_local_modules():
     for path in ROOT.rglob("*.py"):
+        if path.name in {"composition.py", "document_state.py", "lifecycle.py", "query_facade.py", "writers.py"}:
+            continue
         for module in _imports(path):
             if module.startswith("."):
                 continue
@@ -33,8 +36,16 @@ def test_existing_production_modules_do_not_import_platform_runtime_yet():
         ), path
 
 
-def test_platform_runtime_has_no_composition_or_integration_modules_yet():
-    for name in ("api.py", "composition.py", "document_state.py", "security.py"):
+def test_platform_runtime_integration_imports_only_approved_public_boundaries():
+    for name in ("composition.py", "document_state.py", "lifecycle.py", "query_facade.py", "writers.py"):
+        for module in _imports(ROOT / name):
+            if module.startswith(".") or module.split(".")[0] in STANDARD_ROOTS:
+                continue
+            assert any(module == root or module.startswith(f"{root}.") for root in APPROVED_INTEGRATION_ROOTS), module
+
+
+def test_platform_runtime_has_no_api_or_security_composition_modules_yet():
+    for name in ("api.py", "security.py", "streamlit.py"):
         assert not (ROOT / name).exists()
 
 
@@ -42,4 +53,3 @@ def test_platform_runtime_has_no_environment_or_import_time_io():
     source = "\n".join(path.read_text(encoding="utf-8-sig") for path in ROOT.rglob("*.py"))
     for forbidden in ("os.environ", "os.getenv", "open(", "urlopen", "sqlite3", "requests"):
         assert forbidden not in source
-

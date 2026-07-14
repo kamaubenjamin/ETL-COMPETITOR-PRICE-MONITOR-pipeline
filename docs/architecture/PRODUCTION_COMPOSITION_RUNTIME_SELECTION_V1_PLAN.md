@@ -1,7 +1,7 @@
 # Production Composition / Runtime Selection v1 Plan
 
 **Milestone:** v0.16
-**Status:** Phase 1 implemented; Phases 2-6 not started
+**Status:** Phases 1-2 implemented; Phases 3-6 not started
 
 ## 1. Problem Statement
 
@@ -286,6 +286,8 @@ Errors contain stable codes and safe field names only. They do not echo values, 
 6. Release closure, handoff, and owner tag recommendation.
 
 Phase 1 delivered the standard-library-only `src/platform_runtime/` contract package with fixed runtime, backend, auth, identity-provider, API exposure, and Streamlit mode catalogs; immutable nested configuration; redacted JSON-safe projection; stable privacy-safe validation errors/results; pure compatibility helpers; and deterministic fail-closed matrix validation. It performs no environment reads, resource construction, service composition, API integration, Streamlit integration, or external-provider activation.
+
+Phase 2 delivers the internal runtime composition root. It validates configuration before construction, explicitly selects in-memory or file-backed SQLite Document State with no fallback, composes one lifecycle advancement service, injects it into all four writer services, and exposes a Document State-backed Workflow Query Facade using an explicit snapshot timestamp. The frozen result provides a redacted safe summary and ownership hook. API app creation, auth/provider activation, Streamlit behavior, production persistence, and external providers remain unchanged and deferred.
 
 ## 21. Deferred Work
 

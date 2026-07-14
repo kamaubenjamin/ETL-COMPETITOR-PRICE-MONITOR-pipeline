@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.16. Phase 1 implements dependency-light runtime/config contracts and the pure fail-closed validation matrix. Service composition, API/provider injection, Streamlit integration, production adapters, and release closure remain pending.
+Accepted for v0.16. Phases 1-2 implement dependency-light runtime/config contracts, the pure fail-closed validation matrix, and internal Document State/lifecycle/writer/Query Facade composition. API/provider injection, Streamlit integration, production adapters, hardening, and release closure remain pending.
 
 ## Context
 

@@ -337,7 +337,8 @@ References:
 Status:
 - Architecture plan, implementation plan, and ADR-021 created
 - Phase 1 implemented: fixed runtime/backend/auth/identity/API/Streamlit modes, immutable redacted configuration, safe validation errors/results, pure compatibility helpers, deterministic matrix tests, and production fail-closed behavior
-- Phases 2-6 not started
+- Phase 2 implemented: validated in-memory/SQLite Document State composition, shared lifecycle advancement, four lifecycle-aware writers, Query Facade wiring, tenant-safe reads, redacted diagnostics, and no fallback
+- Phases 3-6 not started
 
 Planned capabilities:
 - Explicit `local`, `test`, `demo`, `local_api_auth`, `pilot`, and `production` runtime modes

@@ -395,11 +395,11 @@ References:
 
 ### Current Status
 
-**v0.16 Phase 1 is implemented; Phases 2-6 have not started.**
+**v0.16 Phases 1-2 are implemented; Phases 3-6 have not started.**
 
 Current composition debt:
 
-- No single composition root owns Document State, lifecycle, writer, Query Facade, API provider, auth, and app construction.
+- Internal Document State, lifecycle, writer, and Query Facade composition is now owned by `src/platform_runtime/`; API provider, auth, and app construction are not yet activated there.
 - API routes still obtain a module-level deterministic facade provider instead of an app-scoped composed provider.
 - Runtime mode, backend, auth, identity provider, and Streamlit provider compatibility is not represented by one validated contract.
 - Production persistence and identity adapters do not exist, so production must remain deliberately unavailable.
@@ -411,6 +411,8 @@ The v0.16 plan selects an outer `src/platform_runtime/` package with one-way imp
 Production will reject startup until an implemented production PostgreSQL adapter and real identity provider are injected. It will never fall back to in-memory, SQLite, local identities, disabled auth, or local Streamlit preview.
 
 Phase 1 provides only immutable configuration contracts and pure validation. It intentionally does not read environment variables, construct resources, wire services, activate API/Streamlit composition, or implement deferred adapters. Pilot is a validated placeholder requiring explicit SQLite and an explicitly available external provider; production remains invalid for every current backend/provider combination.
+
+Phase 2 provides a frozen internal composition result over explicitly selected in-memory or SQLite Document State, one shared lifecycle service, all four lifecycle-aware writer services, and the Document State Query Facade adapter. Configuration validates before construction, unsupported modes fail closed, SQLite never falls back to memory, snapshot time is explicit, and safe summaries redact paths. API/auth/app and Streamlit activation, resource-bearing production shutdown, PostgreSQL/Supabase, and external identity providers remain deferred.
 
 References:
 

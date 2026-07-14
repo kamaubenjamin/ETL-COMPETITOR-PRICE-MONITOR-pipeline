@@ -19,6 +19,7 @@ class RuntimeErrorCode(str, Enum):
     API_MODE_NOT_ALLOWED = "api_mode_not_allowed"
     STREAMLIT_MODE_NOT_ALLOWED = "streamlit_mode_not_allowed"
     PRODUCTION_NOT_AVAILABLE = "production_not_available"
+    COMPOSITION_FAILED = "composition_failed"
 
 
 _MESSAGES = {
@@ -35,6 +36,7 @@ _MESSAGES = {
     RuntimeErrorCode.API_MODE_NOT_ALLOWED: "API exposure mode is not allowed for this configuration.",
     RuntimeErrorCode.STREAMLIT_MODE_NOT_ALLOWED: "Streamlit mode is not allowed for this runtime mode.",
     RuntimeErrorCode.PRODUCTION_NOT_AVAILABLE: "Production runtime is not available.",
+    RuntimeErrorCode.COMPOSITION_FAILED: "Runtime composition could not be completed.",
 }
 
 _SAFE_FIELDS = frozenset(
@@ -66,4 +68,3 @@ class RuntimeValidationError(Exception):
 
     def to_dict(self) -> dict[str, str | None]:
         return {"code": self.code.value, "field": self.field, "message": self.message}
-
