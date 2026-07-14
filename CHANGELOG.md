@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Closed v0.17 FlowSync Document Intelligence UI pending owner tag with the verified isolated Vite/React/TypeScript application, GET-only API boundary, read-only document/quality/review/workflow/audit views, API-authoritative access states, advisory-free dependency lock, passing validation/typecheck/build, desktop/mobile rendered verification, and release summary/handoff notes; no backend endpoint, Streamlit, dashboard, competitor-price, migration, dependency, or mutation behavior changed.
+
 - Added v0.17 Phase 5 FlowSync dependency and visual verification with an app-local lockfile, expanded generated-output ignores, advisory-free Vite 8.1.4/React plugin 5.2.0 tooling, passing source validation/strict TypeScript/production build, desktop/mobile and deep-link headless Chrome smoke, safe no-API startup, keyboard skip navigation, explicit mobile menu semantics, and source checks for required scripts and tracked generated directories; no backend/API/Streamlit/dashboard/competitor-price, auth/session, fixture fallback, or mutation behavior changed.
 
 - Added v0.17 Phase 4 FlowSync access and availability hardening with normalized idle/loading/success/empty/unauthorized/forbidden/concealed-not-found/unavailable/malformed/safe-error states, fixed non-reflective API/runtime/access-configuration messages, API-enforced visibility notices, dedicated unauthorized/unavailable guidance, display-only runtime preview safety, and expanded dependency-free checks for frontend access decisions, sensitive fields, browser credential storage, mutation methods, fixture fallback, and forbidden imports; no login, session, role, local scope security, backend/API/Streamlit/dashboard/competitor-price, or mutation behavior was added.

@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.17. Phases 1-5 implement the approved frontend boundary, all read-only operational views, API-authoritative access/error states, dependency-backed production builds, and desktop/mobile rendered verification; release closure remains pending.
+Accepted and implemented for v0.17. All six phases are complete and verified; the milestone is closed pending the owner tag.
 
 ## Context
 
@@ -147,4 +147,4 @@ Rejected because the owner-confirmed FlowSync host and toolchain are not present
 
 ## Acceptance
 
-ADR-022 is accepted when owners approve the independent product boundary, API-only read model, route/page architecture, API-authoritative auth/tenant behavior, mockup-as-direction posture, privacy rules, six-phase implementation sequence, and requirement to confirm the FlowSync host before source creation.
+ADR-022 acceptance is fulfilled by the isolated application at `apps/flowsync-document-intelligence/`, its GET-only API boundary, API-authoritative auth/tenant posture, implemented route/page architecture, privacy rules, dependency-backed build, rendered desktop/mobile verification, and six-phase closure documentation. Future mutations and protected-value access require separate architecture decisions.

@@ -437,7 +437,7 @@ References:
 
 ### Current Status
 
-**v0.17 Phases 1-5 are implemented; Phase 6 has not started.**
+**v0.17 is implemented and verified; the milestone is closed pending the owner tag.**
 
 The approved product direction is a clean enterprise FlowSync application with sidebar navigation, safe tenant/user context, a document dashboard, detail/quality/review/workflow/audit views, and explicit unauthorized/unavailable states. It remains a separate API consumer and must not share domain state or business logic with FlowSync Competitor Price, root `dashboard.py`, legacy `src/api/app.py`, or Streamlit.
 
@@ -462,11 +462,16 @@ Phase 4 provides a normalized request-state catalog, fixed safe API/runtime/auth
 
 Phase 5 provides a reproducible lockfile, advisory-free Vite 8 toolchain, passing dependency-free validation/strict typecheck/production build, and headless Chrome desktop/mobile/deep-link verification. The app starts safely without an API; shell spacing, responsive controls, unavailable states, runtime guidance, skip navigation, and menu semantics were verified. Comprehensive screen-reader/contrast automation, tablet matrix, live authenticated API smoke, unit/component test tooling, deployment, CSP, telemetry, and final visual theme remain deferred.
 
+Phase 6 closes the read-only UI foundation with summary, handoff, release notes, final status records, and owner tag guidance. Remaining items are deferred product or production work rather than incomplete v0.17 scope: live authenticated API verification, identity/session integration, mutation and export contracts, protected preview/value access, deployment, full accessibility/browser automation, and final theming.
+
 References:
 
 - `docs/architecture/FLOWSYNC_DOCUMENT_INTELLIGENCE_UI_V1_PLAN.md`
 - `docs/architecture/FLOWSYNC_DOCUMENT_INTELLIGENCE_UI_V1_IMPLEMENTATION_PLAN.md`
 - `docs/adr/ADR-022-flowsync-document-intelligence-ui-boundary.md`
+- `docs/architecture/FLOWSYNC_DOCUMENT_INTELLIGENCE_UI_V1_SUMMARY.md`
+- `docs/architecture/FLOWSYNC_DOCUMENT_INTELLIGENCE_UI_V1_HANDOFF.md`
+- `docs/releases/v0.17-flowsync-document-intelligence-ui.md`
 
 ---
 

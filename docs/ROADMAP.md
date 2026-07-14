@@ -379,7 +379,8 @@ Status:
 - Phase 3 implemented: read-only validation/matching quality views, review queue/detail summaries, workflow activity, allowlisted audit events, strict payload projection, and reusable confidence/severity/priority/timeline presentation
 - Phase 4 implemented: normalized auth/access/unavailable/malformed request states, fixed non-reflective messages, API-enforced visibility notices, and display-only runtime guidance with no frontend permission logic
 - Phase 5 implemented: lockfile-backed advisory-free dependencies, strict typecheck/build, desktop/mobile and deep-link rendered smoke, safe no-API startup, keyboard skip navigation, and generated-output tracking guards
-- Phase 6 not started
+- Phase 6 completed: focused verification, summary, handoff, release notes, closure records, and owner tag recommendation
+- Milestone implemented, verified, and closed pending owner tag `v0.17-flowsync-document-intelligence-ui`
 - Approved visual mockup recorded as directional product/design reference
 
 Planned capabilities:

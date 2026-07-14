@@ -1,7 +1,7 @@
 # FlowSync Document Intelligence UI v1 Plan
 
 **Milestone:** v0.17
-**Status:** Phases 1-5 implemented; Phase 6 not started
+**Status:** Implemented and verified; closed pending owner tag
 **Product surface:** FlowSync Document Intelligence
 
 ## 1. Problem Statement
@@ -277,26 +277,27 @@ Phase 4 normalizes page request handling across explicit idle, loading, success,
 
 Phase 5 installs and locks the frontend dependency graph, upgrades the Vite development toolchain to advisory-free compatible versions, and verifies dependency-free validation, strict TypeScript, and the production build. Headless Chrome inspection confirms the shell, safe unavailable behavior, all deep links, runtime preview, and unauthorized/unavailable routes at desktop and mobile sizes. Product polish adds a keyboard skip link and explicit mobile navigation semantics. Build output and dependencies remain ignored and untracked; no API, backend, Streamlit, dashboard, competitor-price, auth/session, or mutation behavior changed.
 
+Phase 6 closes v0.17 with verified architecture summary, future-agent handoff, release notes, roadmap/debt/changelog updates, and an owner tag recommendation. It adds no runtime or product feature and preserves the read-only API boundary.
+
 ## 23. Deferred Work
 
-- Final frontend host/toolchain selection if FlowSync source remains external.
-- Real identity/session provider and production token handling.
-- Public upload and document mutation contracts.
-- Review correction/decision/assignment and reprocess commands.
-- Workflow execution and ERP/export actions.
+- Live authenticated API integration verification and real identity/session provider integration.
+- Public upload and document mutation contracts and UI.
+- Review correction/decision/assignment and reprocess commands and UI.
+- Workflow execution, ERP/export contracts, adapters, and UI.
 - Protected raw document preview and encrypted blob access policy.
-- Production deployment, CSP, telemetry, analytics, localization, and feature flags.
-- Final brand theme, advanced motion, and extended usability research.
+- Production deployment/hosting, CSP, telemetry, analytics, localization, and feature flags.
+- Richer design system/theming, full screen-reader/contrast audit, broader viewport coverage, and E2E browser automation in CI.
 - PostgreSQL/Supabase production composition and multi-tenant hardening.
 
 ## 24. Risks And Open Questions
 
-- The frontend boundary is now approved and scaffolded in this repository, but dependency installation, lockfile selection, lint/test tooling, and deployment ownership remain to be finalized before broader implementation.
+- The frontend is dependency-locked and build-verified, but a dedicated unit/component test runner, CI browser automation, package maintenance, and deployment ownership remain open.
 - The approved mockup is directional but is not stored as a versioned artifact in the referenced repository paths.
 - Current API contracts do not provide raw document preview, protected correction values, mutation actions, or a dedicated session/tenant display endpoint.
 - Lifecycle timelines may require a future additive read contract if current processing/workflow/audit records cannot be safely correlated.
 - Client-side status counts or search can mislead if presented as global results rather than current-page projections.
-- Production API/runtime and identity adapters remain unavailable, so early UI integration is necessarily local/demo or contract-fixture based.
+- Production API/runtime and identity adapters remain unavailable, so verified runtime behavior is limited to local safe-unavailable rendering rather than live authenticated integration.
 
 ## 25. Acceptance Criteria
 
@@ -305,5 +306,5 @@ Phase 5 installs and locks the frontend dependency graph, upgrades the Vite deve
 - Existing GET-only API contracts cover every enabled v0.17 view; unsupported features are visibly deferred.
 - The approved mockup is documented as directional, not a backend or pixel-perfect contract.
 - API authority and tenant/security boundaries cannot be bypassed by UI behavior.
-- Implementation is divided into six narrow, independently verifiable phases.
-- Planning changes documentation only.
+- All six phases are implemented or closed with verification evidence.
+- Release claims remain limited to the read-only UI behavior and tests recorded in the summary and release notes.

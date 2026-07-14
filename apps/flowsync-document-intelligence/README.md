@@ -4,9 +4,9 @@ This is the isolated FlowSync product UI for the Intelligent Document Processing
 
 The application consumes the versioned Document Intelligence API over HTTP. The API remains authoritative for identity, tenant scope, permissions, resource visibility, and errors. Frontend code must not import backend Python packages, repositories, runtime composition, Streamlit, or competitor-price modules.
 
-## Current Phase
+## Milestone State
 
-v0.17 Phases 1-5 establish:
+v0.17 is implemented and verified; release documentation is closed pending owner tag. The milestone establishes:
 
 - the Vite, React, and TypeScript application boundary
 - an enterprise app shell with sidebar and header
@@ -36,6 +36,8 @@ npm run typecheck
 npm run build
 npm run dev
 ```
+
+Use `npm install` only when intentionally refreshing dependencies; review `package-lock.json` and run `npm audit --audit-level=moderate` afterward.
 
 `npm run validate` performs dependency-free source checks for routes, scripts, GET-only behavior, generated-directory tracking, boundaries, and privacy. The development server binds to `http://127.0.0.1:4174`. `npm run lint` remains a placeholder until frontend lint tooling is approved.
 
