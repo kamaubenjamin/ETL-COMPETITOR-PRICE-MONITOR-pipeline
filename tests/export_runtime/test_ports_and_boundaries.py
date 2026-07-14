@@ -70,7 +70,8 @@ def test_existing_source_modules_do_not_import_export_runtime():
     assert violations == []
 
 
-def test_export_runtime_contains_no_service_or_adapter_implementation_modules_yet():
+def test_export_runtime_has_no_durable_repository_or_real_adapter_implementation():
     module_names = {path.name for path in PACKAGE.glob("*.py")}
-    assert "service.py" not in module_names
-    assert not (PACKAGE / "adapters").exists()
+    assert "repositories_sqlite.py" not in module_names
+    adapter_files = {path.name for path in (PACKAGE / "adapters").glob("*.py")}
+    assert adapter_files == {"__init__.py", "placeholder.py"}

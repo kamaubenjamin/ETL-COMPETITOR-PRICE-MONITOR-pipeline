@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.18. Phases 1-3 implement and verify the dependency-light contract boundary, pure payload/idempotency policy, and persistence-neutral attempt/result repository integration with deterministic in-memory support; durable persistence, service, adapter, API, and UI integration remain unimplemented.
+Accepted for v0.18. Phases 1-4 implement and verify the dependency-light contract boundary, pure payload/idempotency policy, process-local attempt/result repositories, and an injected internal service with deterministic no-I/O placeholders plus audit/lifecycle intents; durable persistence, real adapters, audit/lifecycle writers, API, and UI integration remain unimplemented.
 
 ## Context
 
@@ -17,6 +17,8 @@ Create an independent `src/export_runtime/` domain boundary. It will own determi
 Phase 1 confirms this boundary with standard-library-only immutable contracts, fixed catalogs, bounded scalar metadata, sanitized payload and result shapes, deterministic SHA-256 fingerprints/idempotency keys, fixed safe errors, and a structural adapter port. Existing runtime packages do not import `export_runtime`; no execution behavior is active.
 
 Phase 2 confirms that payload construction remains pure and caller-fed. `ExportPayloadBuilder` accepts only a safe structured command, normalizes bounded supplied values without inference, returns fixed success/invalid/privacy outcomes, and links invalid payloads to the existing readiness code. Canonical payload hashing uses SHA-256 with explicit domain separation, and `ExportIdempotencyPolicy` composes that digest with the Phase 1 key contract. No source repository, runtime, adapter, API, UI, or I/O is consulted.
+
+Phase 4 confirms the internal orchestration boundary with caller-supplied readiness and identity facts, injected repositories and adapter, synchronous deterministic attempt transitions, terminal result persistence, and returned audit/lifecycle intents. The service does not authorize, resolve tenants, query runtime state, write audit/lifecycle state, or select a backend. Placeholder adapters perform no external work.
 
 The runtime and adapters are separate:
 
@@ -37,6 +39,8 @@ Export attempt status is distinct from `DocumentStatus`. The runtime may represe
 
 Payload preparation and failed delivery never mark a document exported. The adapter-confirmed result is recorded first. Only confirmed success may request the existing governed lifecycle transition to `exported`. If projection advancement conflicts, the result is retained and projection repair occurs without redelivery.
 
+Phase 4 returns lifecycle decisions only and calls no lifecycle writer. Stored confirmed success recommends `exported`; readiness denial, invalid payload, duplicate prevention, adapter failure/unavailability, and repository failure recommend `unchanged`. Projection advancement and repair remain deferred.
+
 ## Idempotency Decision
 
 The server derives a domain-separated digest from tenant, document, document version, target, payload schema, and payload fingerprint. Attempt persistence claims that digest atomically before adapter invocation. Equivalent active or successful operations cannot invoke the adapter twice. Retries are explicit linked attempts; unknown delivery outcomes require reconciliation.
@@ -52,6 +56,8 @@ The API remains authoritative. FlowSync may display readiness/history and submit
 Core defines persistence ports for attempts/results. Platform Runtime injects repositories, security, readiness sources, lifecycle, audit, target catalog, adapters, and credential handles. A later Document State/SQLite adapter may implement durable storage through additive, conformance-tested records and migrations. API/UI never access repositories directly and missing adapters never fall back.
 
 Phase 3 implements these ports with separate structural reader/writer contracts and an explicit in-memory store. The store atomically enforces unique attempt IDs and idempotency keys, one immutable terminal result per matching attempt, and expected-version status updates. Strict duplicate identity remains the server-derived idempotency key. Same-tenant/document/target activity is available as a separate optional lock query and does not redefine key equivalence. Durable storage and composition activation remain deferred.
+
+Phase 4 uses these ports through injection. Exact-key and active document-target duplicates stop before adapter execution and return a transient duplicate result without replacing the stored terminal result. Audit records are returned as bounded intents rather than persisted. Durable repositories and outer composition remain deferred.
 
 ## Privacy Decision
 

@@ -479,15 +479,15 @@ References:
 
 ### Current Status
 
-**v0.18 Phases 1-3 are implemented and verified; Phase 4 has not started.**
+**v0.18 Phases 1-4 are implemented and verified; Phase 5 has not started.**
 
-The platform now has a dependency-light export contract package, pure safe-command payload construction, deterministic fingerprints/idempotency policy, persistence-neutral attempt/result repository ports, bounded safe queries, and a lock-protected in-memory store with atomic duplicate claims and optimistic status updates. It still has no export evaluator, source projection mapper, durable attempt/result persistence, service, adapter implementation, reconciliation orchestration, or public export command. API and FlowSync remain read-only.
+The platform now has a dependency-light export contract package, pure payload/idempotency policy, process-local attempt/result repositories, and an injected internal service with safe command/result contracts, deterministic no-I/O placeholders, duplicate blocking, terminal result persistence, and returned audit/lifecycle intents. It still has no export evaluator, source projection mapper, durable attempt/result persistence, real adapter, audit/lifecycle writer, reconciliation orchestration, or public export command. API and FlowSync remain read-only.
 
 The v0.18 plan selects `src/export_runtime/` as a deterministic policy/orchestration boundary and keeps real vendor adapters, credentials, and network behavior outside core contracts. Readiness and `document:export` tenant authorization precede payload construction; attempts are claimed idempotently before delivery; only recorded confirmed success may request lifecycle advancement to `exported`.
 
 Debt intentionally retained during planning:
 
-- Export readiness evaluation, source projection mapping, durable repositories, service, adapters, and platform composition
+- Export readiness evaluation, source projection mapping, durable repositories, real adapters, and platform composition
 - Durable attempt/result schema and migration decision
 - Real ERP/vendor adapters, SDKs, credentials, secret resolution, and network policy
 - Unknown-delivery reconciliation, queue/worker, and transactional outbox
@@ -500,6 +500,8 @@ Debt intentionally retained during planning:
 Phase 2 verification: 73 Export Runtime tests, 80 API tests with 9 skips, 84 Platform Runtime tests, 60 Security tests, 330 Document State tests, 239 Query Facade/Review tests, and 64 Streamlit UI tests pass. The full regression passes 1,608 tests with 9 skips. Runtime boundary verification is compliant with the two pre-existing U+FEFF warnings.
 
 Phase 3 provides separate read/write repository Protocols, fixed repository errors, bounded stable attempt/result pages, atomic process-local uniqueness for attempt IDs and idempotency keys, expected-version attempt status transitions, one immutable terminal result per attempt, strict active duplicate lookup by idempotency key, and an optional same document-target active lock helper. State is process-local and non-durable; SQLite/Document State integration, retry/reconciliation orchestration, service composition, and API/UI reads remain deferred. Phase 3 focused verification passes 110 tests; all required API, Platform Runtime, Security, Document State, Query Facade/Review, and Streamlit UI suites pass unchanged. The full regression passes 1,645 tests with 9 skips.
+
+Phase 4 provides synchronous internal orchestration over caller-owned readiness and identity facts. It uses injected repositories and one injected adapter, records terminal results before returning lifecycle intent, converts adapter exceptions to fixed safe failures, and returns bounded audit intents without writing them. Exact-key duplicates and active document-target conflicts are blocked before delivery; duplicate results are transient and do not overwrite stored history. Failed/unavailable outcomes intentionally recommend no lifecycle change. Durable attempts/results, async execution, retries/reconciliation, audit/lifecycle writers, real adapters, platform composition, API mutations, and UI actions remain deferred. Phase 4 focused verification passes 133 tests; all required compatibility suites pass unchanged. The full regression passes 1,668 tests with 9 skips.
 
 Guardrails:
 

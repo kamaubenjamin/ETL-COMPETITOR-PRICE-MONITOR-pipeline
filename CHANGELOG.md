@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.18 Phase 4 internal `ExportRuntimeService` orchestration with immutable safe commands/results, caller-supplied readiness and identity facts, deterministic payload/idempotency claims, synchronous attempt transitions, stored terminal results, exact and document-target duplicate blocking, successful/failing/unavailable no-I/O placeholders, sanitized adapter exception handling, and returned audit/lifecycle intents; no durable persistence, audit/lifecycle writer, real adapter, API, mutation, UI, Streamlit, dependency, file/network I/O, or ERP connection was added.
+
 - Added v0.18 Phase 3 persistence-neutral export attempt/result repository Protocols, fixed privacy-safe repository errors, bounded deterministic queries, separate in-memory reader/writer views, lock-protected unique attempt and idempotency claims, optimistic status transitions, immutable terminal result consistency, strict active duplicate lookup, optional document-target activity checks, and recursive privacy/boundary tests; no durable persistence, migration, service, adapter, lifecycle mutation, API, UI, Streamlit, dependency, I/O, or ERP connection was added.
 
 - Added v0.18 Phase 2 deterministic export payload construction with safe structured commands, fixed success/invalid/privacy outcomes, non-mutating whitespace/currency/date normalization, domain-separated canonical SHA-256 fingerprints, opaque idempotency policy keys, `payload_invalid` readiness linkage, expanded unsafe-key rejection, and boundary/privacy tests; no source repository, service, adapter, API, mutation, migration, UI, Streamlit, dependency, I/O, or ERP connection was added.

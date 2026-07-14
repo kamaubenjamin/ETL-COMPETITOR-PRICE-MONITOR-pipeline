@@ -1,7 +1,7 @@
 # Export Runtime / ERP Integration Boundary v1 Plan
 
 **Milestone:** v0.18
-**Status:** Phases 1-3 implemented and verified; Phase 4 not started
+**Status:** Phases 1-4 implemented and verified; Phase 5 not started
 **Recommended package:** `src/export_runtime/`
 
 ## 1. Problem Statement
@@ -258,6 +258,8 @@ Phase 1 delivers the standard-library-only `src/export_runtime/` contract packag
 Phase 2 adds a pure `ExportPayloadBuilder` over safe, already-structured command inputs; deterministic whitespace, currency, and date normalization; domain-separated canonical payload fingerprints; an explicit idempotency policy over the Phase 1 key foundation; and `payload_invalid` readiness linkage. Unsafe/raw-shaped inputs and unrestricted metadata fail with fixed non-reflective results. The builder performs no repository, facade, API, adapter, persistence, or I/O work. The combined Export Runtime suite passes 73 tests and all required regressions pass.
 
 Phase 3 adds persistence-neutral read/write repository Protocols, bounded deterministic attempt/result queries, fixed repository-safe errors, and an explicitly composed lock-protected in-memory store. Attempts and idempotency keys are unique, attempt status updates use optimistic versions and a fixed transition catalog, terminal results are immutable and require an existing matching attempt, and safe list projections contain no payload body or adapter response. Strict duplicate identity is the idempotency key; a separate optional helper reports an active same-tenant/document/target operation. No SQLite, Document State, service, adapter, lifecycle mutation, API/UI integration, or I/O is added. The combined Export Runtime suite passes 110 tests and all required compatibility suites pass.
+
+Phase 4 adds an injected internal `ExportRuntimeService`, immutable safe command/result contracts, successful/failing/unavailable no-I/O placeholder adapters, and pure audit/lifecycle intent factories. Caller-supplied readiness blocks before payload or adapter access. Ready operations use deterministic payload/idempotency policy, atomically claim an attempt, advance synchronously through `preparing -> exporting -> exported|failed`, persist one terminal result, and only then return audit and lifecycle intents. Exact-key and active document-target duplicates do not invoke the adapter or overwrite stored history. Failed, unavailable, blocked, duplicate, invalid-payload, and repository outcomes recommend no lifecycle change; only stored confirmed success recommends `exported`. No audit writer, Document State mutation, durable persistence, API/UI integration, network, file I/O, or real ERP adapter is added. The combined Export Runtime suite passes 133 tests and all required compatibility suites pass.
 
 ## 25. Deferred Work
 

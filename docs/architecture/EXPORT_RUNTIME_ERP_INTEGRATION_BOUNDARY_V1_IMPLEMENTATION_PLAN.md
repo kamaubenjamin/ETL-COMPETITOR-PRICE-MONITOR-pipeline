@@ -1,7 +1,7 @@
 # Export Runtime / ERP Integration Boundary v1 Implementation Plan
 
 **Milestone:** v0.18
-**Status:** Phases 1-3 implemented and verified; Phase 4 not started
+**Status:** Phases 1-4 implemented and verified; Phase 5 not started
 
 ## 1. Milestone Overview
 
@@ -205,6 +205,8 @@ Stop after repository/idempotency conformance. Do not add service orchestration 
 
 ## 6. Phase 4: Export Service, Placeholder Adapters, Audit, And Lifecycle
 
+**Completion:** Implemented as an internal, standard-library-only orchestration boundary. `ExportRuntimeService` consumes caller-supplied safe readiness/identity facts, injected repositories and adapter, and the existing payload/idempotency foundation. It performs a simplified synchronous `preparing -> exporting -> terminal` sequence, records the terminal result before producing lifecycle intent, catches adapter exceptions into fixed safe failures, and blocks exact or active document-target duplicates before delivery. Audit and lifecycle are immutable returned intents only. Successful, failing, and unavailable placeholders perform no I/O. No platform composition, durable persistence, audit writer, Document State mutation, API/UI integration, public command, network, or real ERP behavior was added. The focused suite passes 133 tests; required compatibility suites pass unchanged.
+
 ### Scope
 
 Implement the orchestration service with explicit dependencies, deterministic CSV/ERP placeholders, safe result mapping, audit intent, and lifecycle advancement. No real ERP, public endpoint, or enabled FlowSync action.
@@ -214,31 +216,35 @@ Implement the orchestration service with explicit dependencies, deterministic CS
 Create:
 
 - `src/export_runtime/service.py`
+- `src/export_runtime/commands.py`
 - `src/export_runtime/adapters/__init__.py`
-- `src/export_runtime/adapters/csv_placeholder.py`
-- `src/export_runtime/adapters/erp_placeholder.py`
-- `tests/export_runtime/test_service.py`
+- `src/export_runtime/adapters/placeholder.py`
+- `src/export_runtime/audit.py`
+- `src/export_runtime/lifecycle.py`
+- `src/export_runtime/service_errors.py`
+- `tests/export_runtime/test_export_service.py`
 - `tests/export_runtime/test_placeholder_adapters.py`
-- `tests/export_runtime/test_lifecycle_audit_integration.py`
+- `tests/export_runtime/test_export_service_lifecycle.py`
+- `tests/export_runtime/test_export_service_audit.py`
+- `tests/export_runtime/test_export_service_privacy.py`
+- `tests/export_runtime/test_phase4_boundaries.py`
 
 Modify `src/platform_runtime/` only in a dedicated composition step if explicit export-runtime injection is approved.
 
 ### Deliverables
 
-- `ExportRuntimeService.prepare()` with no external call.
-- `ExportRuntimeService.export()` using readiness, payload, claim, adapter, result, audit, and lifecycle ports.
-- Deterministic adapter registry; unsupported target fails closed.
-- Placeholder CSV serialization and no-network ERP behavior.
-- Recorded-success-first lifecycle advancement and projection repair path.
-- Safe retry/reconciliation behavior.
+- `ExportRuntimeService.export()` using caller readiness, payload, claim, adapter, result, audit intent, and lifecycle intent.
+- Deterministic successful, failing, and unavailable adapter placeholders.
+- Recorded-success-first lifecycle intent with no projection mutation.
+- Safe duplicate, adapter exception, repository error, and unavailable behavior.
 
 ### Tests
 
-- Permission/tenant/readiness denial occurs before payload or adapter access.
-- Successful placeholder export records attempt/result/audit then advances lifecycle.
+- Caller readiness denial occurs before payload or adapter access.
+- Successful placeholder export records attempt/result then returns audit/lifecycle intents.
 - Failed/unavailable adapter records failure without exported lifecycle.
 - Duplicate calls do not invoke adapter twice.
-- Lifecycle conflict produces projection-pending and replay repair without redelivery.
+- Exact and active document-target duplicates return safe transient duplicate results without redelivery or history overwrite.
 - Adapter errors/results contain no raw exception/body/credential/path.
 - In-memory and SQLite composition parity where available.
 
@@ -246,8 +252,15 @@ Modify `src/platform_runtime/` only in a dedicated composition step if explicit 
 
 ```text
 python -m pytest tests/export_runtime -q
-python -m pytest tests/security tests/document_state tests/platform_runtime -q
+python -m pytest tests/api/document_intelligence tests/platform_runtime tests/security tests/document_state -q
+python -m pytest tests/workflow_runtime/query_facade tests/review_runtime tests/ui/streamlit -q
 python scripts/verify_boundaries.py
+python -m py_compile src/export_runtime/service.py
+python -m py_compile src/export_runtime/commands.py
+python -m py_compile src/export_runtime/adapters/placeholder.py
+python -m py_compile src/export_runtime/audit.py
+python -m py_compile src/export_runtime/lifecycle.py
+python -m py_compile src/export_runtime/service_errors.py
 git diff --check
 git status --short --branch
 ```

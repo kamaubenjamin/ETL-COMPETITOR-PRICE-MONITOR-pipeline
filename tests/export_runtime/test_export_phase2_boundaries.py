@@ -42,10 +42,7 @@ def test_phase_two_modules_use_only_standard_library_and_package_local_imports()
     assert violations == []
 
 
-def test_phase_two_adds_no_service_adapter_or_io_surface():
-    names = {path.name for path in PACKAGE.glob("*.py")}
-    assert "service.py" not in names
-    assert not (PACKAGE / "adapters").exists()
+def test_phase_two_modules_remain_free_of_service_adapter_and_io_dependencies():
     for name in PHASE_TWO_MODULES:
         source = (PACKAGE / name).read_text(encoding="utf-8-sig")
         assert "open(" not in source
