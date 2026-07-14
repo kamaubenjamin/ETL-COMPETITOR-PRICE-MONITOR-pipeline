@@ -1,0 +1,27 @@
+:root {
+  color-scheme: light;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --color-canvas: #f4f6f5;
+  --color-surface: #ffffff;
+  --color-surface-muted: #edf1ef;
+  --color-border: #d7dfda;
+  --color-text: #1e2924;
+  --color-text-muted: #617068;
+  --color-sidebar: #17231d;
+  --color-sidebar-muted: #aebdb5;
+  --color-accent: #17765d;
+  --color-accent-soft: #dcefe8;
+  --color-warning: #9a6519;
+  --color-warning-soft: #fff0d2;
+  --color-critical: #b54747;
+  --color-critical-soft: #fbe5e5;
+  --color-positive: #26734f;
+  --color-positive-soft: #def0e6;
+  --shadow-low: 0 1px 2px rgba(23, 35, 29, 0.08);
+  --radius-small: 4px;
+  --radius-medium: 6px;
+  --sidebar-width: 248px;
+}
+

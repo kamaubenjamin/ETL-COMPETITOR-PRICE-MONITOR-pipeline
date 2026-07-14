@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed for v0.17. Planning approved; implementation not started.
+Accepted for v0.17. Phase 1 implements the approved frontend boundary; later product views remain pending.
 
 ## Context
 
@@ -27,7 +27,7 @@ The UI will:
 7. use the approved mockup as an information-architecture and visual-direction reference
 8. remain themeable and responsive without changing backend contracts
 
-No frontend package manifest or FlowSync Document Intelligence source package was found in the targeted repository scan. Phase 1 must confirm whether the application belongs in an existing external FlowSync host or a new owner-approved `apps/flowsync-document-intelligence/` package. The planning decision does not authorize a new framework or dependency set.
+The owner-approved application location is `apps/flowsync-document-intelligence/`. Phase 1 creates an isolated Vite, React, and TypeScript package there with no imports from backend Python packages, Streamlit, or competitor-price modules. Dependency installation is explicit and remains outside repository automation.
 
 ## Product Separation Decision
 
@@ -142,4 +142,3 @@ Rejected because the owner-confirmed FlowSync host and toolchain are not present
 ## Acceptance
 
 ADR-022 is accepted when owners approve the independent product boundary, API-only read model, route/page architecture, API-authoritative auth/tenant behavior, mockup-as-direction posture, privacy rules, six-phase implementation sequence, and requirement to confirm the FlowSync host before source creation.
-

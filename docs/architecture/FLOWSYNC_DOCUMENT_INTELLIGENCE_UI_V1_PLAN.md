@@ -1,7 +1,7 @@
 # FlowSync Document Intelligence UI v1 Plan
 
 **Milestone:** v0.17
-**Status:** Planning complete; implementation not started
+**Status:** Phase 1 implemented; Phase 2 not started
 **Product surface:** FlowSync Document Intelligence
 
 ## 1. Problem Statement
@@ -39,7 +39,7 @@ v0.17 defines a separate FlowSync Document Intelligence application that consume
 - v0.15 provides API-authoritative permission checks and tenant-narrowed reads for supported configurations.
 - v0.16 provides explicit runtime composition and deliberately fails closed for unsupported production configurations.
 - Streamlit is an internal read-only console with `local_preview` and `api_preview`; it is not the FlowSync product architecture.
-- No frontend package manifest or dedicated FlowSync Document Intelligence source package is currently present in this repository. Phase 1 must confirm the actual FlowSync host repository/toolchain before creating source files.
+- Phase 1 establishes the owner-approved isolated Vite, React, and TypeScript application at `apps/flowsync-document-intelligence/`. It includes the app shell, route metadata, static safe pages, GET-only API contracts, strict envelope parsing, fixed safe errors, and semantic theme foundations. Dependencies are declared but not installed by repository automation.
 
 ## 5. UI Product Boundary
 
@@ -67,7 +67,7 @@ FlowSync app shell and router
   -> platform runtime composition
 ```
 
-Recommended logical modules, with exact paths finalized in Phase 1 after the FlowSync host is confirmed:
+The approved frontend location is `apps/flowsync-document-intelligence/`, with these logical modules:
 
 - `app/`: product shell, route registration, top-level providers, and error boundary.
 - `api/`: GET-only client, envelope validation, pagination/filter serialization, and safe error mapping.
@@ -79,7 +79,7 @@ Recommended logical modules, with exact paths finalized in Phase 1 after the Flo
 - `models/`: UI-local typed response and view-model contracts derived from public API payloads.
 - `test/`: fixtures, API-client tests, component tests, route tests, and accessibility checks.
 
-If the FlowSync host is added to this repository, prefer an isolated application such as `apps/flowsync-document-intelligence/`. If FlowSync lives in another repository, implement there and keep this repository limited to API and architecture contracts. Do not create a parallel frontend toolchain until ownership is confirmed.
+The package is a standalone Vite, React, and TypeScript application. It imports no backend Python package, Streamlit module, or competitor-price code. Its dependency installation and build outputs remain local to the application boundary.
 
 ## 7. Route And Page Model
 
@@ -266,6 +266,8 @@ FlowSync never imports or constructs `RuntimeConfig`, `RuntimeComposition`, repo
 
 Each phase is one Codex session and stops before the next phase.
 
+Phase 1 delivers the isolated frontend boundary, responsive enterprise shell, sidebar/header navigation, all approved route contracts, safe static placeholders, status/loading/empty/error components, API-safe TypeScript models, allowlisted endpoint builders, a GET-only client, strict v1 envelope validation, fixed non-reflective errors, semantic design tokens, and explicit package scripts. It makes no live request at startup, installs no dependencies, implements no product data view, auth/session behavior, or mutation, and changes no backend, Streamlit, dashboard, or competitor-price source.
+
 ## 23. Deferred Work
 
 - Final frontend host/toolchain selection if FlowSync source remains external.
@@ -280,7 +282,7 @@ Each phase is one Codex session and stops before the next phase.
 
 ## 24. Risks And Open Questions
 
-- The FlowSync host repository and frontend framework are not present in the targeted repository scan; ownership and location must be confirmed before Phase 1 source creation.
+- The frontend boundary is now approved and scaffolded in this repository, but dependency installation, lockfile selection, lint/test tooling, and deployment ownership remain to be finalized before broader implementation.
 - The approved mockup is directional but is not stored as a versioned artifact in the referenced repository paths.
 - Current API contracts do not provide raw document preview, protected correction values, mutation actions, or a dedicated session/tenant display endpoint.
 - Lifecycle timelines may require a future additive read contract if current processing/workflow/audit records cannot be safely correlated.
@@ -296,4 +298,3 @@ Each phase is one Codex session and stops before the next phase.
 - API authority and tenant/security boundaries cannot be bypassed by UI behavior.
 - Implementation is divided into six narrow, independently verifiable phases.
 - Planning changes documentation only.
-

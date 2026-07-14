@@ -1,7 +1,7 @@
 # FlowSync Document Intelligence UI v1 Implementation Plan
 
 **Milestone:** v0.17
-**Status:** Planning complete; Phase 1 not started
+**Status:** Phase 1 implemented; Phase 2 not started
 
 ## 1. Milestone Overview
 
@@ -21,17 +21,13 @@ No phase may modify Streamlit, root `dashboard.py`, legacy `src/api/app.py`, com
 - Support keyboard, screen-reader, and responsive behavior from the first shared components.
 - Stop after each phase; never continue automatically.
 
-## 3. Provisional Source Layout
+## 3. Approved Source Layout
 
-The exact path is a Phase 1 decision because no FlowSync frontend manifest is currently present in this repository. Preferred options, in order:
-
-1. an isolated feature/application package inside the owner-confirmed FlowSync host
-2. `apps/flowsync-document-intelligence/` if this repository becomes the approved frontend host
-3. a separate FlowSync repository consuming this repository's API contracts
-
-Logical folders should be `app`, `api`, `features`, `components`, `models`, and `test`. Do not create a second frontend framework or package manager configuration merely to satisfy a provisional path.
+The approved application location is `apps/flowsync-document-intelligence/`. Phase 1 creates a standalone Vite, React, and TypeScript boundary with `app`, `api`, `pages`, `components`, `types`, `state`, and `styles` modules. It declares only frontend dependencies and imports no backend, Streamlit, or competitor-price source.
 
 ## 4. Phase 1: UI Boundary, App Shell, Routes, And API Client Contracts
+
+**Completion:** Implemented. The isolated application has a responsive sidebar/header shell, all approved routes and static pages, safe status/loading/empty/error components, local TypeScript response models, branded endpoint builders, a GET-only client, strict standard-envelope validation, fixed privacy-safe errors, semantic theme foundations, README boundary guidance, and clear typecheck/build/lint scripts. No dependency install, lockfile, live API call, auth/session behavior, data view, mutation, backend change, Streamlit change, or competitor-price change was made.
 
 ### Scope
 
@@ -281,4 +277,3 @@ Recommended owner-reviewed commits:
 Recommended final tag after Phase 6 owner review:
 
 `v0.17-flowsync-document-intelligence-ui`
-

@@ -437,13 +437,13 @@ References:
 
 ### Current Status
 
-**v0.17 planning is complete; implementation has not started.**
+**v0.17 Phase 1 is implemented; Phase 2 has not started.**
 
 The approved product direction is a clean enterprise FlowSync application with sidebar navigation, safe tenant/user context, a document dashboard, detail/quality/review/workflow/audit views, and explicit unauthorized/unavailable states. It remains a separate API consumer and must not share domain state or business logic with FlowSync Competitor Price, root `dashboard.py`, legacy `src/api/app.py`, or Streamlit.
 
 Current UI debt and prerequisites:
 
-- No frontend package manifest or dedicated FlowSync Document Intelligence source package was found in the targeted repository scan; the owner-confirmed host and toolchain must be identified before Phase 1 source creation.
+- The approved app now exists at `apps/flowsync-document-intelligence/`; dependencies are declared but not installed, and lockfile, lint/test runner, deployment, and package-maintenance ownership remain open.
 - The current API is read-only and does not expose sanctioned raw document preview, raw correction values, upload, review decisions, reprocessing commands, workflow execution, or export actions.
 - Real production identity/session and runtime adapters remain unavailable.
 - A safe public workspace/user display contract may be needed before showing top-header context.
@@ -451,6 +451,8 @@ Current UI debt and prerequisites:
 - Final design system, responsive browser matrix, accessibility validation, deployment, CSP, telemetry, and analytics remain implementation work.
 
 The v0.17 plan keeps API authorization and tenant scope authoritative, defines a GET-only envelope-validating client, treats unsupported mockup regions as explicit placeholders, and sequences implementation across six narrow phases. The approved mockup is a directional reference, not a pixel-perfect or backend-capability contract.
+
+Phase 1 provides the isolated Vite/React/TypeScript boundary, responsive enterprise shell, approved route catalog, static safe page states, API-local public payload types, branded endpoint builders, GET-only client, strict v1 envelope validation, fixed non-reflective errors, and semantic theme foundations. It performs no live request at startup, installs no dependencies, and adds no auth/session, product data view, mutation, backend, Streamlit, dashboard, or competitor-price behavior.
 
 References:
 
