@@ -30,8 +30,10 @@ _CODE_PATTERN = re.compile(r"^[a-z][a-z0-9_]{0,63}$")
 _CURRENCY_PATTERN = re.compile(r"^[A-Z]{3}$")
 _FINGERPRINT_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 _UNSAFE_KEY_TOKENS = (
+    "adapter_response",
     "artifact_payload",
     "authorization",
+    "backend_config",
     "backend_path",
     "claim",
     "connection_string",
@@ -43,6 +45,7 @@ _UNSAFE_KEY_TOKENS = (
     "exception",
     "file_contents",
     "file_path",
+    "raw_file",
     "new_value",
     "ocr_output",
     "old_value",
@@ -51,11 +54,14 @@ _UNSAFE_KEY_TOKENS = (
     "raw_payload",
     "raw_row",
     "raw_rows",
+    "request_body",
+    "response_body",
     "secret",
     "stack_trace",
     "storage_path",
     "token",
     "traceback",
+    "vendor_response",
 )
 _UNSAFE_TEXT_MARKERS = (
     "authorization:",

@@ -411,7 +411,8 @@ References:
 Status:
 - Architecture plan, implementation plan, and ADR-023 created
 - Phase 1 implemented: standard-library-only export catalogs, immutable readiness/payload/attempt/result/lifecycle/audit contracts, deterministic payload fingerprints/idempotency keys, privacy-safe errors, and structural adapter port
-- Phase 2 not started
+- Phase 2 implemented: deterministic safe-command payload builder, pure normalization, domain-separated canonical fingerprints, idempotency policy, privacy rejection, and `payload_invalid` readiness linkage
+- Phase 3 not started
 - No export service, adapter implementation, endpoint, mutation route, migration, UI change, dependency, I/O, or ERP connection added
 
 Planned capabilities:

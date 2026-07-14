@@ -1,7 +1,7 @@
 # Export Runtime / ERP Integration Boundary v1 Implementation Plan
 
 **Milestone:** v0.18
-**Status:** Phase 1 implemented and verified; Phase 2 not started
+**Status:** Phases 1-2 implemented and verified; Phase 3 not started
 
 ## 1. Milestone Overview
 
@@ -87,6 +87,8 @@ Stop after contract/readiness/payload/idempotency foundation verification. Do no
 
 ## 4. Phase 2: Payload Builder And Idempotency Policy
 
+**Completion:** Implemented. Phase 2 provides a pure safe-command payload builder, deterministic normalization, domain-separated canonical SHA-256 fingerprints, idempotency policy helpers, and `payload_invalid` readiness linkage. Unsafe/raw-shaped inputs receive fixed privacy-safe failures. No mapper plugin, repository, service, adapter, API/UI integration, persistence, I/O, or external dependency was added. The combined focused suite passes 73 tests; all required compatibility and boundary suites pass unchanged.
+
 ### Scope
 
 Add pure canonical payload building, schema validation, fingerprinting, and deterministic idempotency derivation. No adapter invocation or persistence.
@@ -95,20 +97,26 @@ Add pure canonical payload building, schema validation, fingerprinting, and dete
 
 Create:
 
-- `src/export_runtime/payloads.py`
-- `src/export_runtime/idempotency.py`
-- `tests/export_runtime/test_payloads.py`
-- `tests/export_runtime/test_idempotency.py`
+- `src/export_runtime/builder.py`
+- `src/export_runtime/fingerprints.py`
+- `src/export_runtime/normalization.py`
+- `src/export_runtime/policy.py`
+- `tests/export_runtime/test_payload_builder.py`
+- `tests/export_runtime/test_payload_fingerprints.py`
+- `tests/export_runtime/test_idempotency_policy.py`
+- `tests/export_runtime/test_payload_builder_privacy.py`
+- `tests/export_runtime/test_export_phase2_boundaries.py`
 
 Modify Phase 1 exports/contracts only when required by verified design gaps.
 
 ### Deliverables
 
-- Versioned `ExportPayload` with target and document projection identity.
-- Target-specific mapper registry with fixed allowlist; no dynamic plugins.
+- Safe `ExportPayloadBuildCommand`, deterministic builder, and fixed build results.
+- Pure normalization of supplied structured values; no inference or accounting calculation.
 - Canonical JSON serialization and SHA-256 content fingerprint.
 - Domain-separated idempotency digest over tenant/document/version/target/schema/fingerprint.
-- Safe optional caller-key normalization.
+- Idempotency policy over safe tenant/document/target/fingerprint/operation inputs.
+- Payload validity linkage to the existing `payload_invalid` readiness issue.
 
 ### Tests
 
@@ -123,7 +131,10 @@ Modify Phase 1 exports/contracts only when required by verified design gaps.
 ```text
 python -m pytest tests/export_runtime -q
 python scripts/verify_boundaries.py
-python -m py_compile src/export_runtime/payloads.py
+python -m py_compile src/export_runtime/builder.py
+python -m py_compile src/export_runtime/fingerprints.py
+python -m py_compile src/export_runtime/policy.py
+python -m py_compile src/export_runtime/normalization.py
 python -m py_compile src/export_runtime/idempotency.py
 git diff --check
 git status --short --branch

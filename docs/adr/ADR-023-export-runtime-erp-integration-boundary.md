@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.18. Phase 1 implements and verifies the dependency-light contract boundary; service, persistence, adapter, API, and UI integration remain unimplemented.
+Accepted for v0.18. Phases 1-2 implement and verify the dependency-light contract boundary plus pure payload construction, normalization, fingerprinting, idempotency policy, and readiness linkage; service, persistence, adapter, API, and UI integration remain unimplemented.
 
 ## Context
 
@@ -15,6 +15,8 @@ Direct ERP calls from FlowSync, API routes, workflow writers, or repositories wo
 Create an independent `src/export_runtime/` domain boundary. It will own deterministic export readiness, payload construction, idempotency, attempt/result orchestration, adapter invocation, audit intent, retry classification, and lifecycle decision. It will consume explicit injected ports and will not own HTTP routing, UI behavior, credentials, vendor SDKs, database engines, or document processing.
 
 Phase 1 confirms this boundary with standard-library-only immutable contracts, fixed catalogs, bounded scalar metadata, sanitized payload and result shapes, deterministic SHA-256 fingerprints/idempotency keys, fixed safe errors, and a structural adapter port. Existing runtime packages do not import `export_runtime`; no execution behavior is active.
+
+Phase 2 confirms that payload construction remains pure and caller-fed. `ExportPayloadBuilder` accepts only a safe structured command, normalizes bounded supplied values without inference, returns fixed success/invalid/privacy outcomes, and links invalid payloads to the existing readiness code. Canonical payload hashing uses SHA-256 with explicit domain separation, and `ExportIdempotencyPolicy` composes that digest with the Phase 1 key contract. No source repository, runtime, adapter, API, UI, or I/O is consulted.
 
 The runtime and adapters are separate:
 

@@ -4,8 +4,6 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import dataclass, field
-import hashlib
-import json
 from typing import Any
 
 from .contracts import (
@@ -106,8 +104,6 @@ class ExportPayload(JsonContract):
 
 
 def payload_fingerprint(payload: ExportPayload) -> str:
-    if not isinstance(payload, ExportPayload):
-        raise ValueError("payload must be an ExportPayload")
-    canonical = json.dumps(payload.to_dict(), sort_keys=True, separators=(",", ":"), ensure_ascii=True)
-    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+    from .fingerprints import fingerprint_export_payload
 
+    return fingerprint_export_payload(payload)

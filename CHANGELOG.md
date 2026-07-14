@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.18 Phase 2 deterministic export payload construction with safe structured commands, fixed success/invalid/privacy outcomes, non-mutating whitespace/currency/date normalization, domain-separated canonical SHA-256 fingerprints, opaque idempotency policy keys, `payload_invalid` readiness linkage, expanded unsafe-key rejection, and boundary/privacy tests; no source repository, service, adapter, API, mutation, migration, UI, Streamlit, dependency, I/O, or ERP connection was added.
+
 - Added v0.18 Phase 1 Export Runtime contract foundation with fixed export/operation/readiness/target catalogs, immutable JSON-safe target/permission/readiness/payload/attempt/adapter-result/export-result/lifecycle/audit contracts, bounded scalar metadata, canonical payload fingerprinting, domain-separated SHA-256 idempotency keys, fixed privacy-safe errors, structural `ExportAdapterPort`, and recursive boundary tests; no service, repository, adapter implementation, API, mutation, migration, UI, Streamlit, dependency, I/O, or ERP connection was added.
 
 - Added v0.18 Export Runtime / ERP Integration Boundary planning and ADR-023, selecting an independent deterministic export runtime, readiness-before-payload policy, tenant-scoped `document:export` authorization, sanitized versioned payloads, atomic idempotency claims, auditable attempt/result records, isolated CSV/ERP adapter ports, recorded-success-before-lifecycle advancement, safe retry/reconciliation behavior, and gated future API/FlowSync integration; no code, endpoint, mutation, migration, dependency, UI, Streamlit, ERP connection, dashboard, or competitor-price behavior changed.
