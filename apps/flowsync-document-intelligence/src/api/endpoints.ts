@@ -27,6 +27,9 @@ export const API_ENDPOINTS = Object.freeze({
     endpoint(`/api/v1/documents/${segment(documentId)}/validation`),
   matching: (documentId: string) =>
     endpoint(`/api/v1/documents/${segment(documentId)}/matching`),
+  documentExports: (documentId: string) => endpoint(`/api/v1/documents/${segment(documentId)}/exports`),
+  exportAttempts: endpoint("/api/v1/export-attempts"),
+  exportAttempt: (attemptId: string) => endpoint(`/api/v1/export-attempts/${segment(attemptId)}`),
   reviewCases: endpoint("/api/v1/review-cases"),
   reviewCase: (reviewCaseId: string) =>
     endpoint(`/api/v1/review-cases/${segment(reviewCaseId)}`),
@@ -36,4 +39,3 @@ export const API_ENDPOINTS = Object.freeze({
   workflowRuns: endpoint("/api/v1/workflow-runs"),
   auditEvents: endpoint("/api/v1/audit-events"),
 });
-

@@ -67,6 +67,8 @@ Payloads, records, audit, logs, errors, API responses, and UI projections exclud
 
 Potential prepare/export POST routes and export-history GET routes are planning candidates only. POST activation is gated on verified runtime, persistence, security, idempotency, audit, lifecycle, and owner approval. FlowSync export controls remain disabled until the API mutation and real identity/session boundary exist.
 
+Phase 5 implements those HTTP contracts without activation. Export-history reads expose bounded summaries through API tenant scope; both mutation routes return a fixed unavailable envelope in every current auth mode and never compose `ExportRuntimeService`. FlowSync reads document history only, shows API-authoritative readiness language, and renders a permanently disabled action. Activation, payload submission, ERP adapters, and production delivery remain deferred.
+
 ## Consequences
 
 ### Positive

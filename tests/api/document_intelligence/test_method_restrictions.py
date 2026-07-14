@@ -14,7 +14,14 @@ def _test_client():
 def test_openapi_registers_get_only_for_all_v09_paths():
     schema = create_document_intelligence_app().openapi()
     assert schema["paths"]
-    assert all(set(operations) == {"get"} for operations in schema["paths"].values())
+    disabled_posts = {
+        "/api/v1/documents/{document_id}/export/prepare",
+        "/api/v1/documents/{document_id}/export",
+    }
+    assert all(
+        set(operations) == ({"post"} if path in disabled_posts else {"get"})
+        for path, operations in schema["paths"].items()
+    )
 
 
 @pytest.mark.parametrize("method", ["post", "put", "patch", "delete"])

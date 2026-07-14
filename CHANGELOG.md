@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.18 Phase 5 guarded export API contracts with tenant-filtered safe GET summaries, always-disabled prepare/export POST envelopes, and a FlowSync read-only export-readiness/history placeholder with no client mutation call, payload construction, runtime execution, real adapter, dependency, migration, Streamlit, dashboard, or external connection.
+
 - Added v0.18 Phase 4 internal `ExportRuntimeService` orchestration with immutable safe commands/results, caller-supplied readiness and identity facts, deterministic payload/idempotency claims, synchronous attempt transitions, stored terminal results, exact and document-target duplicate blocking, successful/failing/unavailable no-I/O placeholders, sanitized adapter exception handling, and returned audit/lifecycle intents; no durable persistence, audit/lifecycle writer, real adapter, API, mutation, UI, Streamlit, dependency, file/network I/O, or ERP connection was added.
 
 - Added v0.18 Phase 3 persistence-neutral export attempt/result repository Protocols, fixed privacy-safe repository errors, bounded deterministic queries, separate in-memory reader/writer views, lock-protected unique attempt and idempotency claims, optimistic status transitions, immutable terminal result consistency, strict active duplicate lookup, optional document-target activity checks, and recursive privacy/boundary tests; no durable persistence, migration, service, adapter, lifecycle mutation, API, UI, Streamlit, dependency, I/O, or ERP connection was added.

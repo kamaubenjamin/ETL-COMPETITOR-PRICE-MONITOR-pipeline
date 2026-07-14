@@ -11,6 +11,7 @@ import {
 import { DocumentMetadataPanel } from "../components/DocumentMetadataPanel";
 import { DocumentSectionCard } from "../components/DocumentSectionCard";
 import { EmptyState } from "../components/EmptyState";
+import { ExportReadinessPanel } from "../components/ExportReadinessPanel";
 import { LoadingState } from "../components/LoadingState";
 import { SafeErrorState } from "../components/SafeErrorState";
 import { StatusChip } from "../components/StatusChip";
@@ -95,6 +96,8 @@ export function DocumentDetailPage() {
         <DocumentSectionCard title="Workflow" value="Not available" detail="Workflow correlation is deferred" icon={<Workflow size={20} />} />
         <DocumentSectionCard title="Audit" value="Not available" detail="Document audit correlation is deferred" icon={<ScrollText size={20} />} />
       </section>
+
+      <ExportReadinessPanel documentId={document.id} />
 
       <section className="processing-section" id="processing" aria-labelledby="processing-heading">
         <div className="section-heading">

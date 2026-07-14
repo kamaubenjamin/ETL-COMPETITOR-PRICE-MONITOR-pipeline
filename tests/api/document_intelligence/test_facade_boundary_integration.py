@@ -119,8 +119,8 @@ def test_all_facade_api_projections_are_json_compatible_and_privacy_safe():
 
 def test_v09_paths_methods_envelope_and_pagination_remain_unchanged():
     schema = create_document_intelligence_app().openapi()
-    assert set(schema["paths"]) == V09_PATHS
-    assert all(set(operations) == {"get"} for operations in schema["paths"].values())
+    assert V09_PATHS <= set(schema["paths"])
+    assert all(set(schema["paths"][path]) == {"get"} for path in V09_PATHS)
     response = list_documents(_request(), status=None, document_type=None, limit=1, offset=0)
     assert set(response) == {"success", "data", "error", "metadata", "api_version", "request_id"}
     assert response["metadata"]["pagination"] == {"limit": 1, "offset": 0, "total": 3}

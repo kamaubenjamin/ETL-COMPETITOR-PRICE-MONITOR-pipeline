@@ -50,6 +50,9 @@ const requiredFiles = [
   "src/components/AccessScopeNotice.tsx",
   "src/components/SafeAlert.tsx",
   "src/state/requestState.ts",
+  "src/api/exports.ts",
+  "src/types/export.ts",
+  "src/components/ExportReadinessPanel.tsx",
 ];
 for (const name of requiredFiles) {
   if (!source.some((file) => file.name === name)) failures.push(`missing required source: ${name}`);
@@ -147,6 +150,12 @@ for (const file of source) {
 
 const clientSource = source.find((file) => file.name === "src/api/client.ts")?.content ?? "";
 if (!clientSource.includes('method: "GET"')) failures.push("GET-only client method is missing");
+
+const exportSource = source.filter((file) => file.name.includes("Export") || file.name.endsWith("/exports.ts")).map((file) => file.content).join("\n");
+for (const message of ["Export boundary planned", "Export execution is disabled until API mutation activation is approved", "ERP adapters are not connected"]) {
+  if (!exportSource.includes(message)) failures.push(`missing export placeholder copy: ${message}`);
+}
+if (/method:\s*["']POST["']|\.post\s*\(/i.test(exportSource)) failures.push("export mutation request found");
 
 if (failures.length) {
   console.error(failures.join("\n"));

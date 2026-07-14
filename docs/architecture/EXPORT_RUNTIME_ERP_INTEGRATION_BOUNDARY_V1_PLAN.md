@@ -261,6 +261,8 @@ Phase 3 adds persistence-neutral read/write repository Protocols, bounded determ
 
 Phase 4 adds an injected internal `ExportRuntimeService`, immutable safe command/result contracts, successful/failing/unavailable no-I/O placeholder adapters, and pure audit/lifecycle intent factories. Caller-supplied readiness blocks before payload or adapter access. Ready operations use deterministic payload/idempotency policy, atomically claim an attempt, advance synchronously through `preparing -> exporting -> exported|failed`, persist one terminal result, and only then return audit and lifecycle intents. Exact-key and active document-target duplicates do not invoke the adapter or overwrite stored history. Failed, unavailable, blocked, duplicate, invalid-payload, and repository outcomes recommend no lifecycle change; only stored confirmed success recommends `exported`. No audit writer, Document State mutation, durable persistence, API/UI integration, network, file I/O, or real ERP adapter is added. The combined Export Runtime suite passes 133 tests and all required compatibility suites pass.
 
+Phase 5 adds versioned export-history GET contracts backed by an app-scoped, tenant-filtered safe summary provider. Prepare/export POST contracts exist but always return `mutation_not_enabled`; they do not authorize or invoke the export runtime, and activation configuration remains deferred. FlowSync adds a read-only readiness/history panel, a disabled export control, fixed unavailable states, and GET-only API consumption. No payload is built in the browser, no real adapter is connected, and no production delivery path is enabled.
+
 ## 25. Deferred Work
 
 - Real ERP/vendor adapters and SDKs.

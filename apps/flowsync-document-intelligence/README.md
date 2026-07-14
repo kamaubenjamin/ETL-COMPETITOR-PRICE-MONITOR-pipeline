@@ -23,7 +23,7 @@ v0.17 is implemented and verified; release documentation is closed pending owner
 - dependency-locked Vite/React/TypeScript builds with zero known npm advisories
 - desktop/mobile rendered smoke verification and keyboard-accessible shell navigation
 
-Raw preview, upload, correction, review decision, reprocess, workflow execution, and export actions are not implemented.
+Raw preview, upload, correction, review decision, reprocess, workflow execution, and enabled export actions are not implemented. v0.18 Phase 5 adds a read-only document export-readiness panel and safe GET-only attempt-history projection. The export control remains disabled, mutation activation is deferred, and no ERP adapter is connected.
 
 ## Commands
 

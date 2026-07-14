@@ -1,5 +1,9 @@
 Technical debt and missing test fixtures
 
+## v0.18 Export Activation Deferred
+
+Phase 5 deliberately exposes no executable export mutation. The POST contracts return `mutation_not_enabled`, the read provider is ephemeral and summary-only, and FlowSync is GET-only. Before activation, add authenticated production identity, exact tenant/resource authorization, durable attempt/result persistence, audit and lifecycle writers, target catalog ownership, approved adapter composition, reconciliation, rate limits, and operational controls.
+
 ## Extraction & Transformation Capability Hardening v1
 
 ### Current Status

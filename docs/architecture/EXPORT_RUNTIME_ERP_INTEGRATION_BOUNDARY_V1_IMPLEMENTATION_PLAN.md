@@ -317,6 +317,10 @@ npm run build
 
 Stop after the approved API/UI boundary work. Do not connect a real ERP or proceed to closure automatically.
 
+### Phase 5 Implementation Status
+
+Implemented as a fail-closed contract boundary: safe tenant-filtered GET summaries are available, while prepare/export POST routes always return `mutation_not_enabled`. FlowSync provides only read-only readiness and attempt-history presentation with a disabled action. Runtime invocation, activation flags, request payload schemas, real adapters, persistence, and production delivery remain deferred.
+
 ## 8. Phase 6: Verification, Documentation, And Release Closure
 
 ### Deliverables

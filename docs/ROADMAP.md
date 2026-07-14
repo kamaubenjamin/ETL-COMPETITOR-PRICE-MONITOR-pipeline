@@ -580,6 +580,12 @@ Dependencies:
 
 ## Cross-Cutting Initiatives
 
+## v0.18 Export Runtime / ERP Boundary
+
+- Phases 1-4: internal contracts, payload policy, repositories, and placeholder service complete.
+- Phase 5: guarded export API contracts and read-only FlowSync readiness/history placeholders implemented; mutation remains disabled.
+- Phase 6: final verification and release closure remains pending.
+
 ### Documentation
 
 - Maintain architecture docs in `docs/architecture`
