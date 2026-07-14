@@ -20,6 +20,13 @@ export const API_ENDPOINTS = Object.freeze({
   health: endpoint("/api/v1/health"),
   status: endpoint("/api/v1/status"),
   documents: endpoint("/api/v1/documents"),
+  uploads: endpoint("/api/v1/uploads"),
+  upload: (uploadId: string) => endpoint(`/api/v1/uploads/${segment(uploadId)}`),
+  uploadProgress: (uploadId: string) => endpoint(`/api/v1/uploads/${segment(uploadId)}/progress`),
+  uploadTimeline: (uploadId: string) => endpoint(`/api/v1/uploads/${segment(uploadId)}/timeline`),
+  uploadValidationPreview: endpoint("/api/v1/documents/upload"),
+  documentProcessingStatus: (documentId: string) =>
+    endpoint(`/api/v1/documents/${segment(documentId)}/processing-status`),
   document: (documentId: string) => endpoint(`/api/v1/documents/${segment(documentId)}`),
   processing: (documentId: string) =>
     endpoint(`/api/v1/documents/${segment(documentId)}/processing`),

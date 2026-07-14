@@ -1,7 +1,7 @@
 # Upload + Processing Activation v1 Implementation Plan
 
 **Milestone:** v0.19
-**Status:** Phases 1-4 implemented and verified; Phase 5 not started
+**Status:** Phases 1-5 implemented and verified; Phase 6 not started
 
 ## 1. Delivery Rules
 
@@ -100,6 +100,8 @@ Tenant narrowing, concealed resources, deterministic ordering/pagination, read-a
 No new mutation or UI action.
 
 ## 6. Phase 5: FlowSync Upload UI And Processing Timeline
+
+**Status:** Complete. FlowSync now provides a guarded `/uploads` experience that inspects browser-local metadata, explicitly submits JSON validation metadata only, treats staging-disabled as a governed preview result, reads recent uploads and API-supplied progress/timeline events, and adds a read-only document processing-status panel. Manual refresh, safe request states, responsive layout, and source checks prevent file-content transmission or unsupported processing claims.
 
 ### Deliverables
 

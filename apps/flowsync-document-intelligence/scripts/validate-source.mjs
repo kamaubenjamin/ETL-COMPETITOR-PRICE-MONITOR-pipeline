@@ -53,6 +53,15 @@ const requiredFiles = [
   "src/api/exports.ts",
   "src/types/export.ts",
   "src/components/ExportReadinessPanel.tsx",
+  "src/pages/UploadsPage.tsx",
+  "src/api/uploads.ts",
+  "src/types/upload.ts",
+  "src/state/uploadViewModels.ts",
+  "src/components/UploadDocumentPanel.tsx",
+  "src/components/UploadValidationSummary.tsx",
+  "src/components/UploadProgressTimeline.tsx",
+  "src/components/RecentUploadsPanel.tsx",
+  "src/components/ProcessingStatusPanel.tsx",
 ];
 for (const name of requiredFiles) {
   if (!source.some((file) => file.name === name)) failures.push(`missing required source: ${name}`);
@@ -68,6 +77,7 @@ for (const route of [
   "/review/:reviewCaseId",
   "/workflows",
   "/audit",
+  "/uploads",
 ]) {
   if (!routeSource.includes(route)) failures.push(`missing route contract: ${route}`);
 }
@@ -76,6 +86,10 @@ const apiRequirements = {
   "src/api/reviews.ts": ["listReviewCases", "getReviewCase", "listCorrectionHistory"],
   "src/api/workflows.ts": ["listWorkflowRuns"],
   "src/api/audit.ts": ["listAuditEvents"],
+  "src/api/uploads.ts": [
+    "listUploads", "getUploadProgress", "getUploadTimeline",
+    "getDocumentProcessingStatus", "validateUploadMetadataPreview",
+  ],
 };
 for (const [name, functions] of Object.entries(apiRequirements)) {
   const content = source.find((file) => file.name === name)?.content ?? "";
@@ -96,7 +110,6 @@ for (const apiFunction of [
 }
 
 const forbiddenPatterns = [
-  { pattern: /method:\s*["'](?:POST|PUT|PATCH|DELETE)["']/i, label: "mutation method" },
   { pattern: /from\s+["'][^"']*(?:document_state|platform_runtime|ui\/streamlit|competitor)/i, label: "forbidden import" },
   { pattern: /\b(?:Authorization|Bearer|localStorage|sessionStorage|document\.cookie)\b/, label: "credential or browser storage" },
   { pattern: /\b(?:tenant_id|raw_document|raw_rows|correction_value|artifact_payload|storage_path|stack_trace|backend_config|access_token|raw_claims)\b/i, label: "sensitive field" },
@@ -150,6 +163,42 @@ for (const file of source) {
 
 const clientSource = source.find((file) => file.name === "src/api/client.ts")?.content ?? "";
 if (!clientSource.includes('method: "GET"')) failures.push("GET-only client method is missing");
+if ((clientSource.match(/method:\s*["']POST["']/g) ?? []).length !== 1) {
+  failures.push("exactly one guarded metadata POST method is required");
+}
+for (const file of source) {
+  if (file.name !== "src/api/client.ts" && /method:\s*["'](?:POST|PUT|PATCH|DELETE)["']/i.test(file.content)) {
+    failures.push(`unapproved mutation method found in ${file.name}`);
+  }
+}
+
+const uploadBoundarySource = source
+  .filter((file) => file.name.includes("upload") || file.name.includes("Upload"))
+  .map((file) => file.content)
+  .join("\n");
+for (const [pattern, label] of [
+  [/FormData/i, "form data transmission"],
+  [/multipart\/form-data/i, "multipart transmission"],
+  [/FileReader/i, "file content reader"],
+  [/readAsDataURL/i, "data URL reader"],
+  [/arrayBuffer/i, "byte buffer reader"],
+  [/base64/i, "encoded file content"],
+  [/\bBlob\b/i, "binary payload"],
+]) {
+  if (pattern.test(uploadBoundarySource)) failures.push(`${label} found in upload sources`);
+}
+for (const message of [
+  "Upload validation preview",
+  "File staging is not enabled yet",
+  "The selected file will not leave this browser in the current release",
+  "Processing will become available after the staging boundary is activated",
+  "Validate upload",
+]) {
+  if (!uploadBoundarySource.includes(message)) failures.push(`missing governed upload copy: ${message}`);
+}
+for (const unsafeClaim of ["Upload and process", "Upload successful", "File uploaded"]) {
+  if (uploadBoundarySource.includes(unsafeClaim)) failures.push(`unsafe upload claim found: ${unsafeClaim}`);
+}
 
 const exportSource = source.filter((file) => file.name.includes("Export") || file.name.endsWith("/exports.ts")).map((file) => file.content).join("\n");
 for (const message of ["Export boundary planned", "Export execution is disabled until API mutation activation is approved", "ERP adapters are not connected"]) {
@@ -162,4 +211,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`Validated ${sourceFiles.length} frontend source files: Phase 5 scripts, routes, GET-only API, boundaries, and privacy checks passed.`);
+console.log(`Validated ${sourceFiles.length} frontend source files: Phase 5 routes, guarded metadata preview, read-only progress, boundaries, and privacy checks passed.`);

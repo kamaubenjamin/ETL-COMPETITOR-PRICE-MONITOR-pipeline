@@ -13,6 +13,7 @@ import { DocumentSectionCard } from "../components/DocumentSectionCard";
 import { EmptyState } from "../components/EmptyState";
 import { ExportReadinessPanel } from "../components/ExportReadinessPanel";
 import { LoadingState } from "../components/LoadingState";
+import { ProcessingStatusPanel } from "../components/ProcessingStatusPanel";
 import { SafeErrorState } from "../components/SafeErrorState";
 import { StatusChip } from "../components/StatusChip";
 import { toDocumentDetailViewModel } from "../state/documentViewModels";
@@ -98,6 +99,8 @@ export function DocumentDetailPage() {
       </section>
 
       <ExportReadinessPanel documentId={document.id} />
+
+      <ProcessingStatusPanel documentId={document.id} />
 
       <section className="processing-section" id="processing" aria-labelledby="processing-heading">
         <div className="section-heading">

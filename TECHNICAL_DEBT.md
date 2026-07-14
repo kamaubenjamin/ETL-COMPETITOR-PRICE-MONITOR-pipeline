@@ -4,7 +4,7 @@ Technical debt and missing test fixtures
 
 ### Current Status
 
-**Phases 1-4 are implemented and verified; Phase 5 has not started.**
+**Phases 1-5 are implemented and verified; Phase 6 has not started.**
 
 ADR-024 and the v0.19 plans select a separate transport-neutral upload policy boundary around existing deterministic ingestion and Document State writers. The API will own multipart transport, authentication, tenant/permission gates, IDs, and safe envelopes. Raw content will reach the path-based ingestion pipeline only through a private opaque staging port; FlowSync remains non-authoritative.
 
@@ -30,6 +30,8 @@ Phase 2 provides metadata-only upload POST validation plus safe upload history/d
 Phase 3 provides a no-I/O activation service over validated commands and opaque staged-artifact references, deterministic upload/document/source-event identities, safe processing and writer intents, structural ingestion/writer ports, fixed safe receipts/results, prerequisite ordering, and exception sanitization. Test-local fakes prove calls occur only after validation and artifact matching. Concrete artifact resolution, ingestion execution, Document State command mapping/lifecycle calls, durable state, API activation, and operational recovery remain deferred. Upload Runtime passes 62 tests; API passes 105 tests with 9 skips.
 
 Phase 4 provides immutable safe progress read models, a separate capability-aligned read-status catalog, deterministic stage ordering and approximate percentage derivation, safe projections, tenant-scoped in-memory queries, and guarded upload/document progress API reads. The provider remains ephemeral; durable progress persistence, direct Query Facade/Document State adapters, processing activation, and FlowSync presentation remain deferred.
+
+Phase 5 provides a FlowSync guarded metadata validation preview and read-only progress experience. The browser never reads or transmits selected document content; staging-disabled remains explicit, recent/progress/timeline data remains API-owned, and refresh is manual. Durable recent-upload data, populated event timelines, real staging/transport, processing activation, production authentication, polling/realtime updates, and operational retry remain deferred.
 
 ## v0.18 Export Activation Deferred
 

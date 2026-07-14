@@ -11,6 +11,7 @@ import { RuntimePreviewPage } from "./pages/RuntimePreviewPage";
 import { UnauthorizedPage } from "./pages/UnauthorizedPage";
 import { UnavailablePage } from "./pages/UnavailablePage";
 import { WorkflowsPage } from "./pages/WorkflowsPage";
+import { UploadsPage } from "./pages/UploadsPage";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Route element={<AppShell />}>
           <Route index element={<Navigate to="/documents" replace />} />
           <Route path="documents" element={<DocumentsPage />} />
+          <Route path="uploads" element={<UploadsPage />} />
           <Route path="documents/:documentId" element={<DocumentDetailPage />} />
           <Route path="documents/:documentId/validation" element={<DocumentValidationPage />} />
           <Route path="documents/:documentId/matching" element={<DocumentMatchingPage />} />
@@ -35,4 +37,3 @@ export default function App() {
     </BrowserRouter>
   );
 }
-

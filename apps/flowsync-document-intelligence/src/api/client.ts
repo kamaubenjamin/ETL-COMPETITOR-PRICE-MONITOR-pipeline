@@ -2,6 +2,7 @@ import type { ApiEndpoint } from "./endpoints";
 import { ApiClientError } from "./errors";
 import { parseApiEnvelope } from "./envelope";
 import type { ApiEnvelope } from "../types/api";
+import type { UploadMetadataPreviewRequest } from "../types/upload";
 
 export type QueryValue = string | number | boolean | undefined;
 export type ApiQuery = Readonly<Record<string, QueryValue>>;
@@ -75,6 +76,49 @@ export class DocumentIntelligenceApiClient {
     }
     return envelope;
   }
+
+  async validateUploadMetadata<T>(
+    endpoint: ApiEndpoint,
+    payload: UploadMetadataPreviewRequest,
+  ): Promise<ApiEnvelope<T>> {
+    const url = new URL(`${this.baseUrl}${endpoint}`);
+    let response: Response;
+    try {
+      response = await this.fetchImplementation(url, {
+        method: "POST",
+        headers: { Accept: "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        cache: "no-store",
+        credentials: "omit",
+      });
+    } catch {
+      throw ApiClientError.unavailable();
+    }
+
+    let responsePayload: unknown;
+    try {
+      responsePayload = await response.json();
+    } catch {
+      throw ApiClientError.invalidResponse(response.headers.get("X-Request-ID") ?? undefined);
+    }
+    const envelope = parseApiEnvelope<T>(responsePayload);
+    const governedPreviewCodes = new Set([
+      "upload_staging_not_enabled",
+      "upload_validation_failed",
+      "invalid_upload_metadata",
+    ]);
+    if (!response.ok && envelope.error && governedPreviewCodes.has(envelope.error.code)) {
+      return envelope;
+    }
+    if (!response.ok || !envelope.success) {
+      throw ApiClientError.forStatus(
+        response.status,
+        envelope.error?.code ?? `http_${response.status}`,
+        envelope.request_id,
+      );
+    }
+    return envelope;
+  }
 }
 
 const DEFAULT_LOCAL_API_URL = "http://127.0.0.1:8001";
@@ -84,4 +128,3 @@ export function createApiClient(): DocumentIntelligenceApiClient {
     baseUrl: import.meta.env.VITE_DOCUMENT_INTELLIGENCE_API_BASE_URL ?? DEFAULT_LOCAL_API_URL,
   });
 }
-

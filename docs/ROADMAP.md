@@ -452,6 +452,7 @@ Status:
 - Phase 2 implemented: API-authoritative permission/tenant guard, strict JSON metadata validation, safe tenant-filtered upload summary reads, and always-disabled staging response
 - Phase 3 implemented: validated opaque-artifact activation, deterministic processing and received-document intents, safe receipts/results, and injected ingestion/Document State adapter ports with test-local fakes
 - Phase 4 implemented: immutable progress read models, deterministic stage/percentage projections, tenant-scoped bounded queries, and guarded upload/document processing-status API reads
+- Phase 5 implemented: FlowSync guarded metadata preview, recent uploads, API-supplied timeline, document processing-status panel, responsive states, and no-content-transmission checks
 - No multipart bytes, UI behavior, migration, dependency, storage adapter implementation, concrete ingestion/Document State adapter, OCR/LLM, export activation, or ERP connection added
 
 Planned capabilities:
@@ -469,7 +470,7 @@ Proposed phases:
 2. Guarded API upload boundary
 3. Ingestion and Document State writer integration
 4. Processing status/progress read models (complete)
-5. FlowSync upload UI and processing timeline
+5. FlowSync upload UI and processing timeline (complete)
 6. Verification, closure, handoff, and tag recommendation
 
 References:

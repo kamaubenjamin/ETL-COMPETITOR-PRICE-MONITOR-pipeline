@@ -1,5 +1,6 @@
 import {
   FileStack,
+  UploadCloud,
   ListChecks,
   ScrollText,
   Settings2,
@@ -12,6 +13,7 @@ import { NAVIGATION_ROUTES, type RouteId } from "../app/routes";
 
 const ICONS: Partial<Record<RouteId, LucideIcon>> = {
   documents: FileStack,
+  uploads: UploadCloud,
   review: ListChecks,
   workflows: Workflow,
   audit: ScrollText,

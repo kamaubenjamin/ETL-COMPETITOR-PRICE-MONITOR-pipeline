@@ -23,7 +23,7 @@ v0.17 is implemented, verified, and tagged. v0.18 is implemented, verified, and 
 - dependency-locked Vite/React/TypeScript builds with zero known npm advisories
 - desktop/mobile rendered smoke verification and keyboard-accessible shell navigation
 
-Raw preview, upload, correction, review decision, reprocess, workflow execution, and enabled export actions are not implemented. v0.18 Phase 5 adds a read-only document export-readiness panel and safe GET-only attempt-history projection. The export control remains disabled, mutation activation is deferred, and no ERP adapter is connected.
+Raw preview, file transfer/staging, correction, review decision, reprocess, workflow execution, and enabled export actions are not implemented. v0.18 Phase 5 adds a read-only document export-readiness panel and safe GET-only attempt-history projection. v0.19 Phase 5 adds `/uploads`, an explicit JSON metadata validation preview, browser-local file metadata inspection, recent upload reads, supplied-event processing timelines, manual refresh, and document processing-status projection. The preview treats staging-disabled as the expected governed state and never transmits document content. Export remains disabled, mutation activation is deferred, and no ERP adapter is connected.
 
 ## Commands
 
@@ -39,7 +39,7 @@ npm run dev
 
 Use `npm install` only when intentionally refreshing dependencies; review `package-lock.json` and run `npm audit --audit-level=moderate` afterward.
 
-`npm run validate` performs dependency-free source checks for routes, scripts, GET-only behavior, generated-directory tracking, boundaries, and privacy. The development server binds to `http://127.0.0.1:4174`. `npm run lint` remains a placeholder until frontend lint tooling is approved.
+`npm run validate` performs dependency-free source checks for routes, scripts, GET-only reads, the single guarded metadata-preview POST, absence of file-content transmission APIs, generated-directory tracking, boundaries, and privacy. The development server binds to `http://127.0.0.1:4174`. `npm run lint` remains a placeholder until frontend lint tooling is approved.
 
 ## Configuration
 

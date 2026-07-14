@@ -1,5 +1,6 @@
 export type RouteId =
   | "documents"
+  | "uploads"
   | "document-detail"
   | "document-validation"
   | "document-matching"
@@ -21,6 +22,7 @@ export interface AppRouteDefinition {
 
 export const APP_ROUTES = Object.freeze([
   { id: "documents", path: "/documents", label: "Documents", description: "Document workload", navigation: "primary" },
+  { id: "uploads", path: "/uploads", label: "Uploads", description: "Guarded validation preview and processing status", navigation: "primary" },
   { id: "document-detail", path: "/documents/:documentId", label: "Document detail", description: "Document status and metadata", navigation: "contextual" },
   { id: "document-validation", path: "/documents/:documentId/validation", label: "Validation", description: "Field-level validation", navigation: "contextual" },
   { id: "document-matching", path: "/documents/:documentId/matching", label: "Matching", description: "Candidate matching", navigation: "contextual" },
@@ -36,4 +38,3 @@ export const APP_ROUTES = Object.freeze([
 export const NAVIGATION_ROUTES = APP_ROUTES.filter(
   (route) => route.navigation === "primary" || route.navigation === "secondary",
 );
-
