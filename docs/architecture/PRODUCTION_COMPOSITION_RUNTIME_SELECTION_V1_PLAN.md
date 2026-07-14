@@ -1,7 +1,7 @@
 # Production Composition / Runtime Selection v1 Plan
 
 **Milestone:** v0.16
-**Status:** Planned; implementation not started
+**Status:** Phase 1 implemented; Phases 2-6 not started
 
 ## 1. Problem Statement
 
@@ -285,6 +285,8 @@ Errors contain stable codes and safe field names only. They do not echo values, 
 5. Production fail-closed verification and boundary hardening.
 6. Release closure, handoff, and owner tag recommendation.
 
+Phase 1 delivered the standard-library-only `src/platform_runtime/` contract package with fixed runtime, backend, auth, identity-provider, API exposure, and Streamlit mode catalogs; immutable nested configuration; redacted JSON-safe projection; stable privacy-safe validation errors/results; pure compatibility helpers; and deterministic fail-closed matrix validation. It performs no environment reads, resource construction, service composition, API integration, Streamlit integration, or external-provider activation.
+
 ## 21. Deferred Work
 
 - PostgreSQL/Supabase repositories and production migrations.
@@ -317,4 +319,3 @@ Errors contain stable codes and safe field names only. They do not echo values, 
 - Secrets and storage paths cannot appear in safe config, errors, or descriptors.
 - Implementation is split into six narrow, independently verifiable phases.
 - No code, tests, endpoints, migrations, dependencies, or UI behavior change during planning.
-

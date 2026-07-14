@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.16 Phase 1 standard-library platform runtime contracts with fixed runtime/backend/auth/identity/API/Streamlit mode catalogs, immutable redacted configuration, stable safe validation errors/results, deterministic compatibility helpers and matrix enforcement, explicit pilot placeholder requirements, and always fail-closed production while PostgreSQL and production identity adapters remain deferred; no environment reads, service wiring, API/UI changes, dependencies, migrations, or external integrations were added.
+
 - Added v0.16 Production Composition / Runtime Selection planning and ADR-021, selecting an outer `src/platform_runtime/` composition root, explicit local/test/demo/local-API-auth/pilot/production modes, a strict backend/auth/identity/Streamlit matrix, pure redacted configuration loading, composed Document State/lifecycle/writer/Query Facade/API dependencies, and deliberately unavailable fail-closed production until real persistence and identity adapters exist; no code, tests, endpoints, dependencies, migrations, UI behavior, PostgreSQL, or Supabase integration was added.
 
 - Closed and tagged v0.15 Auth, Tenant, and Permission Boundaries as `v0.15-auth-tenant-permission-boundaries`, with provider-neutral security contracts, deterministic local identity resolution, default-deny permission guards, tenant-aware document reads and SQLite migration, guarded GET-only API reads, non-authoritative Streamlit auth preview, verified privacy/boundary compatibility, and release handoff documentation; production identity, writer enforcement, child-record tenant expansion, PostgreSQL/RLS, and public mutations remain deferred.

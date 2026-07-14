@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed for v0.16; implementation not started.
+Accepted for v0.16. Phase 1 implements dependency-light runtime/config contracts and the pure fail-closed validation matrix. Service composition, API/provider injection, Streamlit integration, production adapters, and release closure remain pending.
 
 ## Context
 
@@ -133,4 +133,3 @@ Streamlit remains non-authoritative. Local preview is allowed only in local/test
 ## Acceptance
 
 ADR-021 is accepted when the package location, explicit mode matrix, fail-closed production posture, one-way boundaries, API injection strategy, lifecycle/writer wiring, and configuration safety rules are approved. Planning adds no source code, tests, dependencies, migrations, endpoints, or UI changes.
-

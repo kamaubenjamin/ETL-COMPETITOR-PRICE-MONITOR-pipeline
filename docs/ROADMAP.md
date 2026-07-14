@@ -336,7 +336,8 @@ References:
 
 Status:
 - Architecture plan, implementation plan, and ADR-021 created
-- Planning only; implementation not started
+- Phase 1 implemented: fixed runtime/backend/auth/identity/API/Streamlit modes, immutable redacted configuration, safe validation errors/results, pure compatibility helpers, deterministic matrix tests, and production fail-closed behavior
+- Phases 2-6 not started
 
 Planned capabilities:
 - Explicit `local`, `test`, `demo`, `local_api_auth`, `pilot`, and `production` runtime modes

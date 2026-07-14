@@ -395,7 +395,7 @@ References:
 
 ### Current Status
 
-**v0.16 is planned; implementation has not started.**
+**v0.16 Phase 1 is implemented; Phases 2-6 have not started.**
 
 Current composition debt:
 
@@ -409,6 +409,8 @@ Current composition debt:
 The v0.16 plan selects an outer `src/platform_runtime/` package with one-way imports into approved public boundaries. It defines explicit local/test/demo/local-API-auth/pilot/production modes, a strict backend/auth matrix, pure allowlisted config loading, lifecycle/writer/Query Facade wiring, app-scoped API provider injection, non-authoritative Streamlit selection, and production fail-closed behavior.
 
 Production will reject startup until an implemented production PostgreSQL adapter and real identity provider are injected. It will never fall back to in-memory, SQLite, local identities, disabled auth, or local Streamlit preview.
+
+Phase 1 provides only immutable configuration contracts and pure validation. It intentionally does not read environment variables, construct resources, wire services, activate API/Streamlit composition, or implement deferred adapters. Pilot is a validated placeholder requiring explicit SQLite and an explicitly available external provider; production remains invalid for every current backend/provider combination.
 
 References:
 

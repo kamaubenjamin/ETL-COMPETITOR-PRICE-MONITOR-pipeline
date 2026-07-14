@@ -1,7 +1,7 @@
 # Production Composition / Runtime Selection v1 Implementation Plan
 
 **Milestone:** v0.16
-**Status:** Planned; implementation not started
+**Status:** Phase 1 implemented; Phases 2-6 not started
 
 ## 1. Milestone Overview
 
@@ -75,6 +75,8 @@ git status --short --branch
 ### Stop Condition
 
 Stop after contracts and pure validation. Do not construct repositories, services, API apps, or Streamlit providers.
+
+**Completion:** Implemented and verified. Phase 1 provides fixed enums and helpers, immutable `RuntimeConfig` with nested backend/auth/API/Streamlit contracts, redacted safe serialization, stable `RuntimeValidationError` and `RuntimeValidationResult`, and pure validation of local/test/demo/local-API-auth/pilot/production combinations. Pilot accepts only explicit SQLite plus an explicitly available external authenticated provider. Production always rejects while `future_postgres` and a production identity adapter remain unavailable. No service, API, UI, repository, writer, persistence, or environment integration was added.
 
 ## 4. Phase 2: Document State, Query Facade, Lifecycle, And Writers
 
@@ -357,4 +359,3 @@ Recommended owner-reviewed commits:
 Recommended tag after Phase 6 owner review:
 
 `v0.16-production-composition-runtime-selection`
-
