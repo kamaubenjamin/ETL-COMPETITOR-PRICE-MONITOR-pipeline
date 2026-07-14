@@ -1,7 +1,7 @@
 # Business Workflow / Rules Studio v1 Plan
 
 **Milestone:** v0.20
-**Status:** Planning complete; Phases 1-2 implemented and focused verification passed
+**Status:** Planning complete; Phases 1-3 implemented and focused verification passed
 **Recommended package:** `src/workflow_studio/`
 
 ## Phase 1 Implementation Record
@@ -19,6 +19,14 @@ Phase 2 adds a deterministic side-effect-free validation service, fixed validati
 Structural validity, preview eligibility, test readiness, and publication eligibility are reported independently. Unavailable or unproven operations can remain structurally modeled while explicitly blocking preview/publication. Required features are evaluated only against caller-supplied labels; the validator does not decide tenant authorization or query security, repositories, files, databases, APIs, or networks.
 
 Legacy input is limited to modeled scalar-safe descriptors. Reports preserve bounded lineage, classify exact labels deterministically, identify candidate Studio mappings and missing proof/ports, and always state that no executable conversion was produced. Phase 2 adds 54 tests, bringing the focused Workflow Studio suite to 102 tests. Later plan sections remain prospective.
+
+## Phase 3 Implementation Record
+
+Phase 3 adds persistence-neutral repository contracts, a deterministic lock-protected in-memory store, optimistic revision envelopes, explicit draft/version transitions, immutable-history cloning, pure publication policy, controlled governed-definition publication/deactivation/archive services, and privacy-safe audit intents. It does not activate Workflow Runtime execution.
+
+Workflow IDs, version IDs, and publication IDs are tenant-scoped; the same workflow ID may exist in different tenants, while identities cannot collide inside a tenant. Version labels are unique per tenant/workflow. Only one current pre-publication draft and one active publication are permitted per tenant/workflow. Pagination is stable and bounded to limits 1-100 and offsets 0-10,000.
+
+Content edits are permitted only while a version is `draft`. Approved, published, superseded, inactive, and archived history cannot be rewritten. Rollback clones prior immutable content into a new draft/version and must traverse validation, test, approval, and publication again. Publication records governed definition availability only; no scheduler/runtime binding, API, UI, database, filesystem, or network behavior was added. Phase 3 adds 45 tests, bringing the focused Workflow Studio suite to 147 tests.
 
 ## 1. Objective
 

@@ -4,7 +4,7 @@ Technical debt and missing test fixtures
 
 ### Current Status
 
-**Planning complete; Phases 1-2 are implemented and focused verification passed. Phases 3-7 have not started.**
+**Planning complete; Phases 1-3 are implemented and focused verification passed. Phases 4-7 have not started.**
 
 ADR-025 and the v0.20 plans select a separate `workflow_studio` governance package above the existing Workflow Runtime. The runtime remains execution authority. The Studio is responsible for safe definitions, operation descriptors, validation, drafts, immutable versions, approval/publication policy, bounded preview, legacy migration reports, and audit intents through narrow ports.
 
@@ -14,12 +14,16 @@ Phase 2 now provides pure validation result contracts and service policy, determ
 
 Phase 2 verification passes 102 focused Workflow Studio tests and the full practical regression of 1,879 tests with 9 skips. Boundary verification remains compliant.
 
+Phase 3 adds tenant-scoped repository protocols, a lock-protected non-durable in-memory store, optimistic revisions, unique version/publication policy, explicit draft transitions, immutable history cloning, pure publication eligibility evaluation, controlled governed-definition publication/deactivation/archive, and safe audit intents. Workflow and version identities are tenant-scoped; version labels are unique per tenant/workflow. Publication does not activate runtime execution.
+
+Phase 3 verification passes 147 focused Workflow Studio tests and the full practical regression of 1,924 tests with 9 skips. Boundary verification remains compliant.
+
 Debt and decisions intentionally retained for implementation phases:
 
 - Exact compiler/mapping contract from fine-grained Studio actions to existing coarse runtime operations
 - Compiler proof and argument/contract equivalence for the 27 currently unavailable candidate actions
 - Richer input/output schemas and field-path type propagation across stages
-- Durable repository choice, transaction model, one-active-version constraint, and migration approval
+- Durable repository choice, cross-process transaction/locking model, schema and migration approval; the current one-active-version guarantee is process-local only
 - Environment promotion and distinction between publication and production execution activation
 - Preview adapter fidelity, timeouts, cancellation, resource accounting, fixture ownership, and retention
 - Tenant-safe master-data source ownership, snapshotting, and replay policy

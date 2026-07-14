@@ -1,7 +1,7 @@
 # Business Workflow / Rules Studio v1 Implementation Plan
 
 **Milestone:** v0.20
-**Status:** Phases 1-2 implemented and focused verification passed; Phases 3-7 not started
+**Status:** Phases 1-3 implemented and focused verification passed; Phases 4-7 not started
 **Phases:** Seven reviewed phases
 
 ## 1. Delivery Rules
@@ -78,6 +78,8 @@ No legacy definition execution, repository writes, runtime invocation, preview, 
 
 ## 4. Phase 3: Versioned Repository, Draft Lifecycle, And Publication Policy
 
+**Status:** Complete for the approved Phase 3 scope.
+
 ### Deliverables
 
 - Persistence-neutral reader/writer protocols for workflow identity, immutable versions, drafts, publication/activation, and audit intents.
@@ -87,7 +89,7 @@ No legacy definition execution, repository writes, runtime invocation, preview, 
 - Pure approval, publish, deactivate, archive, and rollback-as-new-version policies.
 - One-active-version policy per tenant/workflow/environment where enabled.
 - Safe version queries, bounded pagination, stable ordering, and concealed tenant reads.
-- Evaluate SQLite schema/transactions; implement only after explicit approval and migration review.
+- SQLite schema/transactions remain deferred pending explicit approval and migration review.
 
 ### Tests
 
@@ -96,6 +98,17 @@ Tenant isolation, optimistic conflicts, unique versions, immutable publication, 
 ### Stop Condition
 
 No runtime execution, API, UI, production persistence selection, automatic promotion, or direct Document State reuse.
+
+### Implementation Evidence
+
+- Added eight standard-library/package-local Phase 3 modules and 45 tests; the combined Workflow Studio suite passes 147 tests.
+- Required focused regressions pass unchanged, and the full practical regression passes 1,924 tests with 9 skips.
+- Added tenant-scoped read/write/publication protocols and a lock-protected, non-durable in-memory store with stable bounded pagination and optimistic revisions.
+- Tenant-scoped workflow/version/publication identities, unique workflow version labels, one current pre-publication draft, one active publication, and cross-workflow reference checks are enforced.
+- Content updates are draft-only. Store- and service-level transition tables prevent direct reopening or content rewriting of approved/published/superseded/inactive/archived history.
+- Publication policy consumes supplied validation, test, approval, permission, feature, legacy-review, tenant, and revision facts without querying security or repositories itself.
+- Controlled publication atomically creates an active record, supersedes the previous active record/version when explicitly allowed, updates definition references, and emits safe audit intents. Deactivation never auto-activates another version; archival retains history.
+- No durable persistence, migration, runtime execution/activation, preview, API, UI, external audit writer, dependency, OCR/LLM, ERP/export, or upload staging was added.
 
 ## 5. Phase 4: Safe Dry-Run Boundary And Audit Intents
 
