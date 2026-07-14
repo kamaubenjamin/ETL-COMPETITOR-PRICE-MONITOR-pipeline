@@ -414,8 +414,10 @@ Status:
 - Phase 2 implemented: deterministic safe-command payload builder, pure normalization, domain-separated canonical fingerprints, idempotency policy, privacy rejection, and `payload_invalid` readiness linkage
 - Phase 3 implemented: persistence-neutral attempt/result repository Protocols, bounded deterministic queries, privacy-safe errors, lock-protected in-memory store, optimistic status updates, atomic duplicate claims, and immutable terminal results
 - Phase 4 implemented: injected internal export service, safe command/result contracts, no-I/O success/failure/unavailable placeholders, duplicate blocking, stored terminal results, and returned audit/lifecycle intents
-- Phase 5 not started
-- No real adapter, audit/lifecycle writer, endpoint, mutation route, migration, UI change, dependency, I/O, or ERP connection added
+- Phase 5 implemented: safe export-history GET contracts, always-disabled prepare/export POST contracts, and read-only FlowSync readiness/history placeholder
+- Phase 6 completed: focused/full verification, boundary confirmation, summary, handoff, release notes, closure records, and owner tag recommendation
+- Milestone implemented, verified, and closed pending owner tag `v0.18-export-runtime-erp-integration-boundary`
+- No real adapter, audit/lifecycle writer, enabled mutation, migration, dependency, external I/O, or ERP connection added
 
 Planned capabilities:
 - Independent `src/export_runtime/` policy and orchestration boundary
@@ -437,7 +439,10 @@ Proposed phases:
 References:
 - `docs/architecture/EXPORT_RUNTIME_ERP_INTEGRATION_BOUNDARY_V1_PLAN.md`
 - `docs/architecture/EXPORT_RUNTIME_ERP_INTEGRATION_BOUNDARY_V1_IMPLEMENTATION_PLAN.md`
+- `docs/architecture/EXPORT_RUNTIME_ERP_INTEGRATION_BOUNDARY_V1_SUMMARY.md`
+- `docs/architecture/EXPORT_RUNTIME_ERP_INTEGRATION_BOUNDARY_V1_HANDOFF.md`
 - `docs/adr/ADR-023-export-runtime-erp-integration-boundary.md`
+- `docs/releases/v0.18-export-runtime-erp-integration-boundary.md`
 
 ## Prior Milestone Context
 
@@ -584,7 +589,7 @@ Dependencies:
 
 - Phases 1-4: internal contracts, payload policy, repositories, and placeholder service complete.
 - Phase 5: guarded export API contracts and read-only FlowSync readiness/history placeholders implemented; mutation remains disabled.
-- Phase 6: final verification and release closure remains pending.
+- Phase 6: final verification and release closure completed; owner tag remains pending.
 
 ### Documentation
 

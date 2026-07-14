@@ -6,7 +6,7 @@ The application consumes the versioned Document Intelligence API over HTTP. The 
 
 ## Milestone State
 
-v0.17 is implemented and verified; release documentation is closed pending owner tag. The milestone establishes:
+v0.17 is implemented, verified, and tagged. v0.18 is implemented, verified, and closed pending owner tag; its FlowSync change is limited to the read-only export-readiness/history placeholder and disabled export action. The UI foundation establishes:
 
 - the Vite, React, and TypeScript application boundary
 - an enterprise app shell with sidebar and header

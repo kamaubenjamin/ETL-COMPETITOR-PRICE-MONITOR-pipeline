@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.18. Phases 1-4 implement and verify the dependency-light contract boundary, pure payload/idempotency policy, process-local attempt/result repositories, and an injected internal service with deterministic no-I/O placeholders plus audit/lifecycle intents; durable persistence, real adapters, audit/lifecycle writers, API, and UI integration remain unimplemented.
+Accepted and implemented for v0.18; milestone verified and closed pending owner tag. The dependency-light runtime, payload/idempotency policy, process-local repositories, injected service, no-I/O placeholders, audit/lifecycle intents, guarded API contracts, and disabled/read-only FlowSync placeholder are complete. Durable persistence, real adapters, audit/lifecycle writers, and mutation activation remain deferred.
 
 ## Context
 
@@ -120,3 +120,5 @@ Rejected because failure or timeout would create false lifecycle state.
 ## Acceptance
 
 ADR-023 is accepted when owners approve `src/export_runtime/` as the policy/orchestration boundary, isolated adapters behind ports, readiness-before-payload behavior, atomic duplicate prevention, recorded-success-before-lifecycle behavior, default-deny tenant/security rules, privacy constraints, and gated API/UI activation.
+
+The architecture is implemented and verified. The current API gate intentionally resolves mutation as unavailable; this acceptance does not authorize production export execution.

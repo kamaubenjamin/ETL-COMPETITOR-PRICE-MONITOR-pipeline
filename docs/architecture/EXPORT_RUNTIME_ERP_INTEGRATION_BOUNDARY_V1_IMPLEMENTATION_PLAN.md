@@ -1,7 +1,7 @@
 # Export Runtime / ERP Integration Boundary v1 Implementation Plan
 
 **Milestone:** v0.18
-**Status:** Phases 1-4 implemented and verified; Phase 5 not started
+**Status:** Phases 1-6 implemented and verified; closed pending owner tag
 
 ## 1. Milestone Overview
 
@@ -322,6 +322,8 @@ Stop after the approved API/UI boundary work. Do not connect a real ERP or proce
 Implemented as a fail-closed contract boundary: safe tenant-filtered GET summaries are available, while prepare/export POST routes always return `mutation_not_enabled`. FlowSync provides only read-only readiness and attempt-history presentation with a disabled action. Runtime invocation, activation flags, request payload schemas, real adapters, persistence, and production delivery remain deferred.
 
 ## 8. Phase 6: Verification, Documentation, And Release Closure
+
+**Status:** Complete. Focused and full regression verification, frontend verification, boundary checks, summary, handoff, release notes, roadmap/debt/ADR/plan updates, and tag recommendation are recorded.
 
 ### Deliverables
 

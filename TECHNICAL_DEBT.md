@@ -483,9 +483,9 @@ References:
 
 ### Current Status
 
-**v0.18 Phases 1-4 are implemented and verified; Phase 5 has not started.**
+**v0.18 is implemented, verified, and closed pending owner tag.**
 
-The platform now has a dependency-light export contract package, pure payload/idempotency policy, process-local attempt/result repositories, and an injected internal service with safe command/result contracts, deterministic no-I/O placeholders, duplicate blocking, terminal result persistence, and returned audit/lifecycle intents. It still has no export evaluator, source projection mapper, durable attempt/result persistence, real adapter, audit/lifecycle writer, reconciliation orchestration, or public export command. API and FlowSync remain read-only.
+The platform now has a dependency-light export contract package, pure payload/idempotency policy, process-local attempt/result repositories, an injected internal service, safe history GET contracts, disabled mutation contracts, and a read-only FlowSync export placeholder. It still has no production readiness evaluator/source mapper, durable attempt/result persistence, real adapter, audit/lifecycle writer, reconciliation orchestration, or enabled public export command.
 
 The v0.18 plan selects `src/export_runtime/` as a deterministic policy/orchestration boundary and keeps real vendor adapters, credentials, and network behavior outside core contracts. Readiness and `document:export` tenant authorization precede payload construction; attempts are claimed idempotently before delivery; only recorded confirmed success may request lifecycle advancement to `exported`.
 
@@ -500,6 +500,8 @@ Debt intentionally retained during planning:
 - FlowSync readiness/history presentation and future export controls
 - CSV encryption, signing, delivery, retention, and download authorization
 - Production telemetry, alerts, rate limits, SLOs, and operational runbooks
+
+Phase 5 adds safe tenant-filtered export summaries and fixed disabled POST envelopes without composing or invoking the runtime. FlowSync remains GET-only and displays a disabled action. Phase 6 confirms 133 Export Runtime tests, 87 API tests with 9 skips, 84 Platform Runtime tests, 60 Security tests, 330 Document State tests, 239 Query Facade/Review tests, 64 Streamlit tests, and 1,675 full-regression tests with 9 skips. FlowSync validation/typecheck/build pass and boundary verification is compliant.
 
 Phase 2 verification: 73 Export Runtime tests, 80 API tests with 9 skips, 84 Platform Runtime tests, 60 Security tests, 330 Document State tests, 239 Query Facade/Review tests, and 64 Streamlit UI tests pass. The full regression passes 1,608 tests with 9 skips. Runtime boundary verification is compliant with the two pre-existing U+FEFF warnings.
 

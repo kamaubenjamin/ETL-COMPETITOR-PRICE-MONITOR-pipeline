@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Closed v0.18 Export Runtime / ERP Integration Boundary as implemented and verified pending owner tag, with final architecture summary, handoff, release notes, focused/full regression evidence, boundary confirmation, explicit disabled API/FlowSync state, deferred production activation risks, and v0.19 Upload + Processing Activation recommendation; no runtime, API, UI, Streamlit, dashboard, competitor-price, dependency, migration, or ERP behavior was added during closure.
+
 - Added v0.18 Phase 5 guarded export API contracts with tenant-filtered safe GET summaries, always-disabled prepare/export POST envelopes, and a FlowSync read-only export-readiness/history placeholder with no client mutation call, payload construction, runtime execution, real adapter, dependency, migration, Streamlit, dashboard, or external connection.
 
 - Added v0.18 Phase 4 internal `ExportRuntimeService` orchestration with immutable safe commands/results, caller-supplied readiness and identity facts, deterministic payload/idempotency claims, synchronous attempt transitions, stored terminal results, exact and document-target duplicate blocking, successful/failing/unavailable no-I/O placeholders, sanitized adapter exception handling, and returned audit/lifecycle intents; no durable persistence, audit/lifecycle writer, real adapter, API, mutation, UI, Streamlit, dependency, file/network I/O, or ERP connection was added.

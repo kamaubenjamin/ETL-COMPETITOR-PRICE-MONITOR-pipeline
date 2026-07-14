@@ -1,7 +1,7 @@
 # Export Runtime / ERP Integration Boundary v1 Plan
 
 **Milestone:** v0.18
-**Status:** Phases 1-4 implemented and verified; Phase 5 not started
+**Status:** Implemented, verified, and closed pending owner tag
 **Recommended package:** `src/export_runtime/`
 
 ## 1. Problem Statement
@@ -293,3 +293,7 @@ Phase 5 adds versioned export-history GET contracts backed by an app-scoped, ten
 - Failed or uncertain attempts cannot falsely advance the document to `exported`.
 - Only confirmed recorded success can request governed lifecycle advancement.
 - Real ERP connections, dependencies, endpoints, migrations, and UI actions remain unimplemented during planning.
+
+## 28. Closure
+
+All six v0.18 phases are complete. The runtime, safe repository/service/placeholder boundaries, disabled API contracts, and read-only FlowSync placeholder are implemented and verified. Production mutation, durable persistence, real delivery adapters, credential handling, audit/lifecycle writers, and enabled UI action remain explicitly deferred rather than incomplete release scope. See the milestone summary, handoff, and release note for closure evidence and the recommended owner tag.
