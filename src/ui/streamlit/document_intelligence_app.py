@@ -39,13 +39,20 @@ from src.ui.streamlit.view_models import (
     validation_rows,
     workflow_run_rows,
 )
+from src.ui.streamlit.runtime_preview import (
+    PREVIEW_AUTH_MODES,
+    PREVIEW_BACKENDS,
+    PREVIEW_RUNTIME_MODES,
+    RuntimePreviewSelection,
+    runtime_preview_mismatch,
+)
 
 
 PAGE_TITLE = "Intelligent Document Processing Platform"
 SNAPSHOT = datetime(2026, 7, 11, 9, 35, tzinfo=timezone.utc)
 
 
-def _sidebar_filters() -> dict[str, str | None]:
+def _sidebar_filters() -> dict[str, object]:
     with st.sidebar:
         st.header("Operator Console")
         st.caption("Document Intelligence workspace")
@@ -57,6 +64,7 @@ def _sidebar_filters() -> dict[str, str | None]:
         )
         api_base_url = None
         auth_preview_identity = "unspecified"
+        runtime_preview = RuntimePreviewSelection()
         if provider_mode == "api_preview":
             api_base_url = st.text_input(
                 "API base URL",
@@ -73,6 +81,24 @@ def _sidebar_filters() -> dict[str, str | None]:
                 help="Development preview only. The API remains authoritative for permissions.",
             )
             st.caption("Platform-admin cross-tenant access is disabled by default. No credentials are stored.")
+            with st.expander("Runtime preview (non-authoritative)", expanded=False):
+                st.caption("Display labels only. The API selects runtime, backend, auth, and tenant scope.")
+                preview_mode = st.selectbox(
+                    "Runtime mode label",
+                    PREVIEW_RUNTIME_MODES,
+                    format_func=lambda value: value.replace("_", " ").title(),
+                )
+                preview_backend = st.selectbox(
+                    "Backend label",
+                    PREVIEW_BACKENDS,
+                    format_func=lambda value: value.replace("_", " ").title(),
+                )
+                preview_auth = st.selectbox(
+                    "Auth mode label",
+                    PREVIEW_AUTH_MODES,
+                    format_func=lambda value: value.replace("_", " ").title(),
+                )
+                runtime_preview = RuntimePreviewSelection(preview_mode, preview_backend, preview_auth)
         st.subheader("Scope")
         workspace = st.selectbox("Workspace", ["Operations", "Finance", "Procurement"])
         document_type = st.selectbox("Document Type", ["All", "Invoice", "Purchase Order", "Bank Statement", "Receipt"])
@@ -89,6 +115,7 @@ def _sidebar_filters() -> dict[str, str | None]:
         "provider_mode": provider_mode,
         "api_base_url": api_base_url,
         "auth_preview_identity": auth_preview_identity,
+        "runtime_preview": runtime_preview,
         "document_type": None if document_type == "All" else document_type,
         "workflow": None if workflow == "All" else workflow,
         "runtime_status": None if runtime_status == "All" else runtime_status,
@@ -96,7 +123,7 @@ def _sidebar_filters() -> dict[str, str | None]:
     }
 
 
-def _render_overview(provider, filters: dict[str, str | None]) -> None:
+def _render_overview(provider, filters: dict[str, object]) -> None:
     documents = provider.documents(document_type=filters["document_type"], status=filters["runtime_status"])
     reviews = provider.review_cases(status=filters["review_status"])
     runs = provider.workflow_runs(workflow_name=filters["workflow"])
@@ -156,7 +183,7 @@ def main() -> None:
             )
             provider = DocumentIntelligenceAPIProvider(client)
         except ValueError:
-            provider = DocumentIntelligenceAPIProvider(None, initial_error="invalid_configuration: API base URL is invalid.")
+            provider = DocumentIntelligenceAPIProvider(None, initial_error_code="invalid_configuration")
     else:
         provider = LocalOperatorConsoleProvider()
     documents = provider.documents(document_type=filters["document_type"], status=filters["runtime_status"])
@@ -169,8 +196,21 @@ def main() -> None:
             "Run mode: Read-only API preview | GET only | API-authorized | No mutation",
             icon=":material/api:",
         )
+        preview = filters["runtime_preview"]
+        assert isinstance(preview, RuntimePreviewSelection)
+        with st.expander("Runtime configuration preview", expanded=False):
+            st.caption("Non-authoritative display only. Runtime composition remains API-owned.")
+            st.json(preview.to_safe_dict())
+        mismatch = runtime_preview_mismatch(
+            preview,
+            auth_preview_identity=str(filters["auth_preview_identity"]),
+        )
         if provider.last_error:
             st.warning(provider.last_error, icon=":material/cloud_off:")
+        elif mismatch:
+            st.warning(mismatch, icon=":material/info:")
+        else:
+            st.caption(provider.runtime_state()["message"])
     tabs = st.tabs(["01 Overview", "02 Inbox", "03 Upload", "04 Processing", "05 Validation", "06 Matching", "07 Reviews", "08 Workflows", "09 Audit"])
 
     with tabs[0]:

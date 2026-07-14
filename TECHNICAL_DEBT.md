@@ -395,7 +395,7 @@ References:
 
 ### Current Status
 
-**v0.16 Phases 1-3 are implemented; Phases 4-6 have not started.**
+**v0.16 Phases 1-4 are implemented; Phases 5-6 have not started.**
 
 Current composition debt:
 
@@ -415,6 +415,8 @@ Phase 1 provides only immutable configuration contracts and pure validation. It 
 Phase 2 provides a frozen internal composition result over explicitly selected in-memory or SQLite Document State, one shared lifecycle service, all four lifecycle-aware writer services, and the Document State Query Facade adapter. Configuration validates before construction, unsupported modes fail closed, SQLite never falls back to memory, snapshot time is explicit, and safe summaries redact paths. API/auth/app and Streamlit activation, resource-bearing production shutdown, PostgreSQL/Supabase, and external identity providers remain deferred.
 
 Phase 3 activates runtime composition in the API-owned app factory. `RuntimeConfig` and precomposed runtime entrypoints install an app-scoped facade provider, auth composition, safe diagnostics, and cleanup hook. Disabled and local-demo auth map to existing behavior; authenticated/production placeholders reject before construction. Default app behavior and all GET contracts remain compatible. Streamlit activation, real external identity, production persistence, and public mutations remain deferred.
+
+Phase 4 adds a pure Streamlit-local preview contract with fixed runtime/backend/auth labels and bounded safe API runtime states. The controls are explicitly non-authoritative, do not import or construct platform services, and preserve API URL and allowlisted local-demo identity behavior. API unavailability, runtime/auth configuration failures, unauthorized/forbidden/concealed reads, and malformed envelopes use fixed messages without reflected backend details. Enforced deployment-mode selection, real production diagnostics, identity providers, and runtime activation remain outside Streamlit and deferred.
 
 References:
 

@@ -18,6 +18,11 @@ _SAFE_ERROR_MESSAGES = {
     "api_unavailable": "Document Intelligence API is unavailable.",
     "identity_provider_unavailable": "Identity resolution is temporarily unavailable.",
     "invalid_response": "Document Intelligence API returned an invalid response.",
+    "invalid_configuration": "API preview configuration is invalid.",
+    "runtime_unavailable": "Document Intelligence runtime is unavailable.",
+    "composition_failed": "Document Intelligence runtime is unavailable.",
+    "auth_configuration_error": "API runtime authentication is unavailable.",
+    "provider_configuration_error": "API runtime data provider is unavailable.",
 }
 
 
@@ -30,10 +35,23 @@ def safe_api_preview_error(code: str) -> str:
 class DocumentIntelligenceAPIProvider:
     """Maps consumer-neutral API projections to operator-console records."""
 
-    def __init__(self, client: DocumentIntelligenceAPIClient | None, *, initial_error: str | None = None) -> None:
+    def __init__(self, client: DocumentIntelligenceAPIClient | None, *, initial_error_code: str | None = None) -> None:
         self.client = client
-        self.last_error: str | None = initial_error
-        self.last_error_code: str | None = "invalid_configuration" if initial_error else None
+        self.last_error_code: str | None = initial_error_code or (
+            "runtime_unavailable" if client is None else None
+        )
+        self.last_error: str | None = (
+            safe_api_preview_error(self.last_error_code) if self.last_error_code else None
+        )
+
+    def runtime_state(self) -> Record:
+        """Return bounded display state without reflecting backend diagnostics."""
+
+        return {
+            "available": self.last_error_code is None,
+            "code": self.last_error_code or "available",
+            "message": self.last_error or "API runtime is available for read-only preview.",
+        }
 
     def _safe(self, read: Callable[[], list[Record]]) -> list[Record]:
         if self.client is None:

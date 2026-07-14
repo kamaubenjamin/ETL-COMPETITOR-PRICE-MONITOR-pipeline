@@ -1,7 +1,7 @@
 # Production Composition / Runtime Selection v1 Plan
 
 **Milestone:** v0.16
-**Status:** Phases 1-3 implemented; Phases 4-6 not started
+**Status:** Phases 1-4 implemented; Phases 5-6 not started
 
 ## 1. Problem Statement
 
@@ -290,6 +290,8 @@ Phase 1 delivered the standard-library-only `src/platform_runtime/` contract pac
 Phase 2 delivers the internal runtime composition root. It validates configuration before construction, explicitly selects in-memory or file-backed SQLite Document State with no fallback, composes one lifecycle advancement service, injects it into all four writer services, and exposes a Document State-backed Workflow Query Facade using an explicit snapshot timestamp. The frozen result provides a redacted safe summary and ownership hook. API app creation, auth/provider activation, Streamlit behavior, production persistence, and external providers remain unchanged and deferred.
 
 Phase 3 activates that composition at the API-owned application boundary. The app factory accepts either validated `RuntimeConfig` or an existing `RuntimeComposition`, installs a facade-backed provider and mapped auth composition on `app.state`, and registers the runtime cleanup hook. Routers resolve the app-scoped provider while retaining the existing singleton only for default compatibility. Disabled and local-demo auth are supported; authenticated and production placeholders reject before runtime construction. Paths, methods, envelopes, payload meanings, tenant narrowing, request IDs, and security headers remain unchanged. Streamlit remains untouched.
+
+Phase 4 adds non-authoritative runtime preview labels to Streamlit `api_preview`. Fixed local/test/demo/local-API-auth, API-default/in-memory/SQLite, and disabled/local-demo labels are display-only; they never construct services, select persistence, decide tenant scope, or enforce permissions. Existing API URL and allowlisted local-demo identity controls remain unchanged. Runtime, auth, unavailable, forbidden, concealed-not-found, and malformed-response states map to fixed operator-safe messages. `local_preview` remains the unchanged default.
 
 ## 21. Deferred Work
 

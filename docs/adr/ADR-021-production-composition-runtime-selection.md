@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.16. Phases 1-3 implement dependency-light runtime/config contracts, the pure fail-closed validation matrix, internal Document State/lifecycle/writer/Query Facade composition, and API-owned app/provider/auth activation. Streamlit integration, production adapters, hardening, and release closure remain pending.
+Accepted for v0.16. Phases 1-4 implement dependency-light runtime/config contracts, the pure fail-closed validation matrix, internal Document State/lifecycle/writer/Query Facade composition, API-owned app/provider/auth activation, and non-authoritative Streamlit runtime preview. Production adapters, hardening, and release closure remain pending.
 
 ## Context
 
@@ -83,7 +83,7 @@ The current module-level deterministic API app/provider remains an explicitly lo
 
 ## Streamlit Decision
 
-Streamlit remains non-authoritative. Local preview is allowed only in local/test modes. Demo, local-api-auth, pilot, and production use API preview. Streamlit may display a safe runtime descriptor but cannot select a backend, broaden tenant scope, decide permissions, or silently fall back to fixtures.
+Streamlit remains non-authoritative. `local_preview` remains the compatibility default and `api_preview` retains API URL and local-demo identity-header controls. Runtime/backend/auth labels shown in Phase 4 are explicitly display-only and do not activate a platform mode. Streamlit cannot construct runtime services, select a backend, broaden tenant scope, decide permissions, reflect raw errors, or silently fall back to fixtures. Enforced demo/pilot/production mode selection remains owned by composed application configuration, not UI controls.
 
 ## Compatibility Decision
 

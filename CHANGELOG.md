@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.16 Phase 4 non-authoritative Streamlit runtime preview with fixed safe runtime/backend/auth labels, unchanged local-preview default, preserved API URL and allowlisted local-demo identity behavior, bounded runtime availability state, fixed mismatch/auth/unavailable/forbidden/concealed/malformed-response messages, and no platform-runtime, repository, lifecycle, writer, Query Facade, or security-policy imports; Streamlit still performs no backend, tenant, permission, or runtime selection.
+
 - Added v0.16 Phase 3 API runtime activation with `RuntimeConfig` or precomposed runtime app-factory entrypoints, app-scoped facade provider and auth composition, disabled/local-demo auth mapping, tenant-narrowed composed reads, safe runtime diagnostics and shutdown ownership, preserved default singleton compatibility, and fail-closed authenticated/production placeholders; no endpoints, methods, payload meanings, Streamlit behavior, migrations, dependencies, or external providers changed.
 
 - Added v0.16 Phase 2 internal runtime composition with validation-before-construction, explicit in-memory or file-backed SQLite Document State selection, one shared lifecycle advancement service injected into all four writers, Document State-backed Workflow Query Facade wiring, deterministic snapshot ownership, tenant-scoped reads, redacted diagnostics, SQLite reconstruction verification, and fail-closed deferred/production modes; API and Streamlit activation remain unchanged and deferred.

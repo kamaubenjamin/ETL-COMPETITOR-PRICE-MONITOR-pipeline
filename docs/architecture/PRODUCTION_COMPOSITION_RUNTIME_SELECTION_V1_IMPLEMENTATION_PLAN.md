@@ -1,7 +1,7 @@
 # Production Composition / Runtime Selection v1 Implementation Plan
 
 **Milestone:** v0.16
-**Status:** Phases 1-3 implemented; Phases 4-6 not started
+**Status:** Phases 1-4 implemented; Phases 5-6 not started
 
 ## 1. Milestone Overview
 
@@ -238,6 +238,8 @@ git status --short --branch
 ### Stop Condition
 
 Stop after safe mode display/provider selection. Do not add UI writes, login/session flows, or external identity.
+
+**Completion:** Implemented and verified. Streamlit keeps `local_preview` unchanged and adds fixed, explicitly non-authoritative runtime/backend/auth labels only inside `api_preview`. API base URL and v0.15 identity-header behavior are preserved. A pure UI-local preview contract and bounded provider runtime state map unavailable, configuration, authentication, authorization, concealed-not-found, and malformed-response conditions to fixed safe messages. Streamlit imports no platform runtime, repositories, lifecycle, writers, Query Facade, or security policy internals and never falls back to local data.
 
 ## 7. Phase 5: Production Fail-Closed And Boundary Hardening
 
