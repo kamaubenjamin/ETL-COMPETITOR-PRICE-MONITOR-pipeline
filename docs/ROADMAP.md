@@ -342,7 +342,7 @@ Status:
 - Phase 4 implemented: non-authoritative Streamlit runtime/backend/auth labels, preserved API URL and identity preview, fixed safe runtime/auth/error states, and unchanged local preview default
 - Phase 5 implemented: exhaustive production/deferred-backend rejection, composition invariants, precomposed-config revalidation, app/provider isolation, recursive import enforcement, and privacy-safe failure verification
 - Phase 6 implemented: focused/full verification, summary, handoff, release notes, closure records, and owner tag recommendation
-- Milestone implemented and verified; closed pending owner tag `v0.16-production-composition-runtime-selection`
+- Milestone implemented, verified, closed, and tagged as `v0.16-production-composition-runtime-selection`
 
 Planned capabilities:
 - Explicit `local`, `test`, `demo`, `local_api_auth`, `pilot`, and `production` runtime modes
@@ -369,6 +369,36 @@ References:
 - `docs/architecture/PRODUCTION_COMPOSITION_RUNTIME_SELECTION_V1_PLAN.md`
 - `docs/architecture/PRODUCTION_COMPOSITION_RUNTIME_SELECTION_V1_IMPLEMENTATION_PLAN.md`
 - `docs/adr/ADR-021-production-composition-runtime-selection.md`
+
+### v0.17 FlowSync Document Intelligence UI
+
+Status:
+- Architecture plan, implementation plan, and ADR-022 created
+- Planning complete; implementation not started
+- Approved visual mockup recorded as directional product/design reference
+
+Planned capabilities:
+- Independent FlowSync Document Intelligence product boundary, separate from Competitor Price and Streamlit
+- Enterprise app shell with sidebar, safe user/workspace context, and responsive navigation
+- Read-only document dashboard, detail, processing/lifecycle, validation, matching, review, workflow, and audit views
+- GET-only Document Intelligence API client with strict envelope, pagination, filter, and error handling
+- API-authoritative authentication, tenant scope, permissions, and resource visibility
+- Explicit loading, empty, unauthorized, forbidden, concealed-not-found, unavailable, and malformed-response states
+- Semantic design tokens and reusable accessible components aligned to the approved mockup direction
+- Future placeholders, but no enabled upload, correction, decision, reprocess, workflow, or export mutations
+
+Proposed phases:
+1. UI boundary, app shell, route contracts, API client contracts, and host/toolchain confirmation
+2. Document list/detail read-only views
+3. Validation, matching, review, workflow, and audit read-only views
+4. Auth/tenant-aware UI states and unavailable/error hardening
+5. Product polish, accessibility, responsive tests, and integration verification
+6. Release closure, handoff, and tag recommendation
+
+References:
+- `docs/architecture/FLOWSYNC_DOCUMENT_INTELLIGENCE_UI_V1_PLAN.md`
+- `docs/architecture/FLOWSYNC_DOCUMENT_INTELLIGENCE_UI_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-022-flowsync-document-intelligence-ui-boundary.md`
 
 ## Prior Milestone Context
 

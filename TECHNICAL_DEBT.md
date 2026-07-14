@@ -395,7 +395,7 @@ References:
 
 ### Current Status
 
-**v0.16 is implemented and verified; closed pending owner tag.**
+**v0.16 is implemented, verified, closed, and tagged.**
 
 Current composition debt:
 
@@ -430,6 +430,33 @@ References:
 - `docs/architecture/PRODUCTION_COMPOSITION_RUNTIME_SELECTION_V1_HANDOFF.md`
 - `docs/adr/ADR-021-production-composition-runtime-selection.md`
 - `docs/releases/v0.16-production-composition-runtime-selection.md`
+
+---
+
+## FlowSync Document Intelligence UI v1
+
+### Current Status
+
+**v0.17 planning is complete; implementation has not started.**
+
+The approved product direction is a clean enterprise FlowSync application with sidebar navigation, safe tenant/user context, a document dashboard, detail/quality/review/workflow/audit views, and explicit unauthorized/unavailable states. It remains a separate API consumer and must not share domain state or business logic with FlowSync Competitor Price, root `dashboard.py`, legacy `src/api/app.py`, or Streamlit.
+
+Current UI debt and prerequisites:
+
+- No frontend package manifest or dedicated FlowSync Document Intelligence source package was found in the targeted repository scan; the owner-confirmed host and toolchain must be identified before Phase 1 source creation.
+- The current API is read-only and does not expose sanctioned raw document preview, raw correction values, upload, review decisions, reprocessing commands, workflow execution, or export actions.
+- Real production identity/session and runtime adapters remain unavailable.
+- A safe public workspace/user display contract may be needed before showing top-header context.
+- Current processing/workflow/audit records may not support every desired lifecycle timeline correlation without an additive read contract.
+- Final design system, responsive browser matrix, accessibility validation, deployment, CSP, telemetry, and analytics remain implementation work.
+
+The v0.17 plan keeps API authorization and tenant scope authoritative, defines a GET-only envelope-validating client, treats unsupported mockup regions as explicit placeholders, and sequences implementation across six narrow phases. The approved mockup is a directional reference, not a pixel-perfect or backend-capability contract.
+
+References:
+
+- `docs/architecture/FLOWSYNC_DOCUMENT_INTELLIGENCE_UI_V1_PLAN.md`
+- `docs/architecture/FLOWSYNC_DOCUMENT_INTELLIGENCE_UI_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-022-flowsync-document-intelligence-ui-boundary.md`
 
 ---
 
