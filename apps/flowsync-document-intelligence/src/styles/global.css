@@ -16,6 +16,25 @@ body {
   letter-spacing: 0;
 }
 
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: calc(var(--sidebar-width) + 8px);
+  z-index: 100;
+  padding: 8px 10px;
+  border-radius: var(--radius-small);
+  background: var(--color-surface);
+  color: var(--color-accent);
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  transform: translateY(-160%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 button,
 input,
 select {
@@ -991,6 +1010,10 @@ a:focus-visible {
 }
 
 @media (max-width: 760px) {
+  .skip-link {
+    left: 60px;
+  }
+
   .app-frame {
     display: block;
   }

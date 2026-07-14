@@ -437,13 +437,13 @@ References:
 
 ### Current Status
 
-**v0.17 Phases 1-4 are implemented; Phase 5 has not started.**
+**v0.17 Phases 1-5 are implemented; Phase 6 has not started.**
 
 The approved product direction is a clean enterprise FlowSync application with sidebar navigation, safe tenant/user context, a document dashboard, detail/quality/review/workflow/audit views, and explicit unauthorized/unavailable states. It remains a separate API consumer and must not share domain state or business logic with FlowSync Competitor Price, root `dashboard.py`, legacy `src/api/app.py`, or Streamlit.
 
 Current UI debt and prerequisites:
 
-- The approved app now exists at `apps/flowsync-document-intelligence/`; dependencies are declared but not installed, and lockfile, lint/test runner, deployment, and package-maintenance ownership remain open.
+- The approved app exists at `apps/flowsync-document-intelligence/`; dependencies are installed and lockfile-controlled with zero current npm advisories. A real unit/component test runner, deployment, and package-maintenance ownership remain open.
 - The current API is read-only and does not expose sanctioned raw document preview, raw correction values, upload, review decisions, reprocessing commands, workflow execution, or export actions.
 - Real production identity/session and runtime adapters remain unavailable.
 - A safe public workspace/user display contract may be needed before showing top-header context.
@@ -459,6 +459,8 @@ Phase 2 provides API-backed document list/detail screens with bounded runtime pa
 Phase 3 provides API-backed validation, matching, review queue/detail, workflow, and audit views with runtime payload parsers, bounded page-local state, safe correction summaries, dry-run reprocess summaries, confidence/severity/priority labels, and allowlisted audit display metadata. The pages add no commands, fixture fallback, API changes, or backend imports. Real auth/session integration, protected previews/values, server-backed correlation beyond existing identifiers, dependency-backed typecheck/build, browser/accessibility screenshots, and final theming remain deferred.
 
 Phase 4 provides a normalized request-state catalog, fixed safe API/runtime/auth-configuration messages, concealed-resource handling, API-enforced access-scope notices, and non-authoritative runtime guidance. Frontend guards are usability-only: no identity/session adapter, login, role/permission decision, local scope security filter, credential storage, backend selection, or mutation was added. Real production identity integration, dependency-backed typecheck/build, browser/accessibility screenshots, and final product polish remain deferred.
+
+Phase 5 provides a reproducible lockfile, advisory-free Vite 8 toolchain, passing dependency-free validation/strict typecheck/production build, and headless Chrome desktop/mobile/deep-link verification. The app starts safely without an API; shell spacing, responsive controls, unavailable states, runtime guidance, skip navigation, and menu semantics were verified. Comprehensive screen-reader/contrast automation, tablet matrix, live authenticated API smoke, unit/component test tooling, deployment, CSP, telemetry, and final visual theme remain deferred.
 
 References:
 

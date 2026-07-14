@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.17. Phases 1-4 implement the approved frontend boundary, all planned read-only operational views, and consistent API-authoritative access/error states; product polish and final verification remain pending.
+Accepted for v0.17. Phases 1-5 implement the approved frontend boundary, all read-only operational views, API-authoritative access/error states, dependency-backed production builds, and desktop/mobile rendered verification; release closure remains pending.
 
 ## Context
 
@@ -32,6 +32,8 @@ The owner-approved application location is `apps/flowsync-document-intelligence/
 Phase 3 completes the read-only operational route set using only existing GET contracts. Review history remains a protected-value-free summary, audit metadata is allowlisted before presentation, and workflow/reprocess information is descriptive only. No command control or backend capability is inferred by the UI.
 
 Phase 4 implements usability-only access and availability guards. Every page maps API/client outcomes into fixed unauthorized, forbidden, concealed-not-found, unavailable, malformed, or safe-error states. Access-scope language explicitly attributes visibility enforcement to the API. The frontend does not parse identity data, decide roles or permissions, broaden scope, store a session, or activate runtime services.
+
+Phase 5 confirms the decision in a locked, advisory-free frontend toolchain. Strict TypeScript and production builds pass, all routes start without a live API, and desktop/mobile rendering preserves safe unavailable behavior. Accessibility polish remains presentational and does not create client-side authorization. Generated dependencies and build output remain outside version control.
 
 ## Product Separation Decision
 

@@ -4,13 +4,14 @@ interface HeaderProps {
   title: string;
   subtitle: string;
   onMenuOpen: () => void;
+  menuOpen: boolean;
 }
 
-export function Header({ title, subtitle, onMenuOpen }: HeaderProps) {
+export function Header({ title, subtitle, onMenuOpen, menuOpen }: HeaderProps) {
   return (
     <header className="top-header">
       <div className="header-title-group">
-        <button className="icon-button menu-button" type="button" onClick={onMenuOpen} aria-label="Open navigation">
+        <button className="icon-button menu-button" type="button" onClick={onMenuOpen} aria-label="Open navigation" aria-controls="primary-sidebar" aria-expanded={menuOpen}>
           <Menu size={20} aria-hidden="true" />
         </button>
         <div>
@@ -26,4 +27,3 @@ export function Header({ title, subtitle, onMenuOpen }: HeaderProps) {
     </header>
   );
 }
-

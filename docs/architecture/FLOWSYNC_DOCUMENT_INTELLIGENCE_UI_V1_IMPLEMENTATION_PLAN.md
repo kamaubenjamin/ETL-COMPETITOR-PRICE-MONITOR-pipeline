@@ -1,7 +1,7 @@
 # FlowSync Document Intelligence UI v1 Implementation Plan
 
 **Milestone:** v0.17
-**Status:** Phases 1-4 implemented; Phase 5 not started
+**Status:** Phases 1-5 implemented; Phase 6 not started
 
 ## 1. Milestone Overview
 
@@ -188,6 +188,8 @@ Stop after read-only auth/error hardening. Do not implement identity providers, 
 
 ## 8. Phase 5: Product Polish, Tests, And Integration Verification
 
+**Status:** Implemented
+
 ### Scope
 
 Bring the approved read-only product surface to demo/review quality and verify the complete client boundary.
@@ -214,6 +216,16 @@ Bring the approved read-only product surface to demo/review quality and verify t
 ### Stop Condition
 
 Stop after polish and verification. Do not add endpoints, protected previews, upload, review decisions, workflow execution, or export actions.
+
+### Delivered
+
+- App-local dependencies are installed and captured in `package-lock.json`; `.gitignore` excludes dependencies, production output, coverage, local environment files, logs, and TypeScript build metadata.
+- Vite `8.1.4` and React plugin `5.2.0` replace the vulnerable Vite 5 toolchain. `npm audit --audit-level=moderate` reports zero vulnerabilities on Node `24.12.0`.
+- `npm run validate`, strict `npm run typecheck`, and `npm run build` pass. The production bundle builds without API availability.
+- Headless Chrome verifies desktop and mobile document/unavailable layouts, every application deep link, unauthorized guidance, and the display-only runtime preview. No response failures or startup compile errors remain.
+- A skip-to-content link and explicit mobile menu expansion/control attributes improve baseline keyboard and assistive navigation.
+- Source validation now requires `validate`, `typecheck`, `build`, and `dev` scripts and rejects tracked dependency, production-output, or coverage directories.
+- Broader screen-reader, contrast tooling, tablet matrix, and live authenticated API integration remain deferred to release closure or future product work.
 
 ## 9. Phase 6: Release Closure And Handoff
 

@@ -1,7 +1,7 @@
 # FlowSync Document Intelligence UI v1 Plan
 
 **Milestone:** v0.17
-**Status:** Phases 1-4 implemented; Phase 5 not started
+**Status:** Phases 1-5 implemented; Phase 6 not started
 **Product surface:** FlowSync Document Intelligence
 
 ## 1. Problem Statement
@@ -274,6 +274,8 @@ Phase 2 delivers the first real product screens at `/documents` and `/documents/
 Phase 3 delivers read-only validation, matching, review list/detail, workflow, and audit pages from existing GET contracts. Runtime payload parsers fail closed, audit metadata is reduced to an explicit display allowlist, correction history omits protected values, and page-local request state provides fixed loading, empty, unavailable, unauthorized, malformed-response, and safe-error behavior. No upload, review decision, correction submission, reprocess request, workflow execution, export action, fixture fallback, backend change, or global state was added. Dependency-backed type-check/build and browser rendering remain deferred because frontend dependencies are not installed.
 
 Phase 4 normalizes page request handling across explicit idle, loading, success, empty, unauthorized, forbidden, concealed-not-found, unavailable, malformed, and safe-error states. Fixed client messages cover API/runtime availability and access-configuration mismatch without reflecting backend details. Access-scope notices state that visibility is API-enforced; frontend guards remain usability-only and contain no role, permission, organization, login, session, or credential decisions. Runtime preview remains display-only and cannot select or activate services. No mutation, backend, or API behavior changed.
+
+Phase 5 installs and locks the frontend dependency graph, upgrades the Vite development toolchain to advisory-free compatible versions, and verifies dependency-free validation, strict TypeScript, and the production build. Headless Chrome inspection confirms the shell, safe unavailable behavior, all deep links, runtime preview, and unauthorized/unavailable routes at desktop and mobile sizes. Product polish adds a keyboard skip link and explicit mobile navigation semantics. Build output and dependencies remain ignored and untracked; no API, backend, Streamlit, dashboard, competitor-price, auth/session, or mutation behavior changed.
 
 ## 23. Deferred Work
 

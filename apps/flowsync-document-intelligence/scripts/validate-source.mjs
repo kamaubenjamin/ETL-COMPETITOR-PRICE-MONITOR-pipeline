@@ -1,10 +1,26 @@
 import { readFileSync, readdirSync, statSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const sourceRoot = join(root, "src");
 const failures = [];
+const packageJson = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
+
+for (const script of ["validate", "typecheck", "build", "dev"]) {
+  if (typeof packageJson.scripts?.[script] !== "string") failures.push(`missing package script: ${script}`);
+}
+
+const trackedFiles = execFileSync("git", ["ls-files"], { cwd: root, encoding: "utf8" })
+  .split(/\r?\n/)
+  .filter(Boolean)
+  .map((name) => name.replaceAll("\\", "/"));
+for (const name of trackedFiles) {
+  if (name.includes("/node_modules/") || name.includes("/dist/") || name.includes("/coverage/")) {
+    failures.push(`generated directory is tracked: ${name}`);
+  }
+}
 
 function walk(directory) {
   return readdirSync(directory).flatMap((name) => {
@@ -137,4 +153,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`Validated ${sourceFiles.length} frontend source files: Phase 4 auth states, GET-only API, boundaries, and privacy checks passed.`);
+console.log(`Validated ${sourceFiles.length} frontend source files: Phase 5 scripts, routes, GET-only API, boundaries, and privacy checks passed.`);

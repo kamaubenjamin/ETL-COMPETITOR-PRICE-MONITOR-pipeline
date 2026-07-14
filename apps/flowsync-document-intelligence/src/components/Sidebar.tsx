@@ -32,7 +32,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         aria-label="Close navigation"
         onClick={onClose}
       />
-      <aside className={`sidebar ${open ? "sidebar--open" : ""}`} aria-label="Primary navigation">
+      <aside className={`sidebar ${open ? "sidebar--open" : ""}`} aria-label="Primary navigation" id="primary-sidebar">
         <div className="sidebar-brand">
           <div className="brand-mark" aria-hidden="true">F</div>
           <div>
@@ -73,4 +73,3 @@ export function Sidebar({ open, onClose }: SidebarProps) {
     </>
   );
 }
-
