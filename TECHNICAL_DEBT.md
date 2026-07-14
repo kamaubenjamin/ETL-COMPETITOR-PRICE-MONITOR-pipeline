@@ -354,7 +354,7 @@ References:
 
 ### Current Status
 
-**v0.15 is implemented and verified; closed pending owner tag.**
+**v0.15 is implemented, verified, closed, and tagged.**
 
 Current security debt:
 
@@ -388,6 +388,33 @@ References:
 - `docs/architecture/AUTH_TENANT_PERMISSION_MODEL_V1_HANDOFF.md`
 - `docs/adr/ADR-020-auth-tenant-permission-boundaries.md`
 - `docs/releases/v0.15-auth-tenant-permission-boundaries.md`
+
+---
+
+## Production Composition / Runtime Selection v1
+
+### Current Status
+
+**v0.16 is planned; implementation has not started.**
+
+Current composition debt:
+
+- No single composition root owns Document State, lifecycle, writer, Query Facade, API provider, auth, and app construction.
+- API routes still obtain a module-level deterministic facade provider instead of an app-scoped composed provider.
+- Runtime mode, backend, auth, identity provider, and Streamlit provider compatibility is not represented by one validated contract.
+- Production persistence and identity adapters do not exist, so production must remain deliberately unavailable.
+- Pilot tenancy constraints remain unresolved while child Document State records lack direct tenant columns.
+- Resource shutdown ownership, safe secret references, and redacted runtime descriptors are not yet formalized.
+
+The v0.16 plan selects an outer `src/platform_runtime/` package with one-way imports into approved public boundaries. It defines explicit local/test/demo/local-API-auth/pilot/production modes, a strict backend/auth matrix, pure allowlisted config loading, lifecycle/writer/Query Facade wiring, app-scoped API provider injection, non-authoritative Streamlit selection, and production fail-closed behavior.
+
+Production will reject startup until an implemented production PostgreSQL adapter and real identity provider are injected. It will never fall back to in-memory, SQLite, local identities, disabled auth, or local Streamlit preview.
+
+References:
+
+- `docs/architecture/PRODUCTION_COMPOSITION_RUNTIME_SELECTION_V1_PLAN.md`
+- `docs/architecture/PRODUCTION_COMPOSITION_RUNTIME_SELECTION_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-021-production-composition-runtime-selection.md`
 
 ---
 

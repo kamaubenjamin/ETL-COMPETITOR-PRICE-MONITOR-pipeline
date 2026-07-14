@@ -302,7 +302,7 @@ Status:
 - Phase 4 implemented: explicit API auth modes, provider-neutral identity resolution, centralized GET-route permission guards, tenant-narrowed provider reads, safe 401/403/404 behavior, and unchanged default local preview
 - Phase 5 implemented: optional allowlisted local-demo identity headers for Streamlit `api_preview`, fixed privacy-safe auth/unavailable states, unchanged default `local_preview`, and API-authoritative permission enforcement
 - Phase 6 completed: focused/full verification, boundary confirmation, summary, handoff, release notes, roadmap, debt, plan, ADR, and changelog closure
-- Implemented and verified; closed pending owner tag `v0.15-auth-tenant-permission-boundaries`
+- Implemented, verified, closed, and tagged as `v0.15-auth-tenant-permission-boundaries`
 
 Planned capabilities:
 - Provider-neutral `src/security/` identity and authorization boundary
@@ -331,6 +331,38 @@ References:
 - `docs/architecture/AUTH_TENANT_PERMISSION_MODEL_V1_HANDOFF.md`
 - `docs/adr/ADR-020-auth-tenant-permission-boundaries.md`
 - `docs/releases/v0.15-auth-tenant-permission-boundaries.md`
+
+### v0.16 Production Composition / Runtime Selection
+
+Status:
+- Architecture plan, implementation plan, and ADR-021 created
+- Planning only; implementation not started
+
+Planned capabilities:
+- Explicit `local`, `test`, `demo`, `local_api_auth`, `pilot`, and `production` runtime modes
+- Immutable safe configuration loaded from an explicitly supplied allowlisted mapping
+- Fixed runtime/backend/auth/identity/Streamlit compatibility matrix
+- Outer `src/platform_runtime/` composition root with one-way dependency boundaries
+- Explicit Document State in-memory/SQLite selection with no fallback
+- Lifecycle advancement and all four writer services wired from composed repository ports
+- Document State Query Facade adapter and facade-backed API provider composition
+- App-scoped API provider/auth dependency injection without route or payload changes
+- Non-authoritative Streamlit runtime/provider selection
+- Production fail-closed behavior while PostgreSQL and real identity providers remain deferred
+- Secret, path, DSN, credential, and raw-config redaction
+
+Proposed phases:
+1. Runtime mode/config contracts and validation matrix
+2. Document State, Query Facade, lifecycle, and writer composition
+3. API app/provider/auth composition activation
+4. Streamlit runtime selection and safe config preview
+5. Production fail-closed verification and boundary hardening
+6. Release closure, handoff, and tag recommendation
+
+References:
+- `docs/architecture/PRODUCTION_COMPOSITION_RUNTIME_SELECTION_V1_PLAN.md`
+- `docs/architecture/PRODUCTION_COMPOSITION_RUNTIME_SELECTION_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-021-production-composition-runtime-selection.md`
 
 ## Prior Milestone Context
 
