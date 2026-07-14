@@ -114,6 +114,8 @@ class StudioOperationDefinition(StudioContract):
     input_contract_hints: tuple[OperationContractHint, ...] = ()
     output_contract_hints: tuple[OperationContractHint, ...] = ()
     privacy_notes: tuple[str, ...] = ()
+    requires_source_path: bool = False
+    requires_target_path: bool = False
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "name", safe_code(self.name, "operation name"))
@@ -135,6 +137,8 @@ class StudioOperationDefinition(StudioContract):
         for field_name in ("runtime_mapping_proven", "preview_eligible", "publication_eligible"):
             if not isinstance(getattr(self, field_name), bool):
                 raise ValueError(f"{field_name} must be a boolean")
+        if not isinstance(self.requires_source_path, bool) or not isinstance(self.requires_target_path, bool):
+            raise ValueError("operation path requirements must be booleans")
         object.__setattr__(self, "required_features", _labels(self.required_features, "required_features"))
         object.__setattr__(self, "arguments", _modeled(self.arguments, OperationArgumentDefinition, "arguments"))
         object.__setattr__(self, "input_contract_hints", _modeled(self.input_contract_hints, OperationContractHint, "input_contract_hints"))

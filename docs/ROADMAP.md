@@ -488,10 +488,11 @@ References:
 Status:
 - Architecture plan, seven-phase implementation plan, and ADR-025 created
 - Phase 1 implemented: immutable Workflow Studio contracts, fixed statuses, safe structured rules/conditions/actions, privacy-safe metadata/errors, structural ports, and deterministic in-memory operation catalog
-- Phase 1 focused verification passed with 48 tests; later phases have not started
+- Phase 2 implemented: deterministic validation results/service, dependency and cycle analysis, condition/path checks, catalog compatibility/readiness gates, and report-only legacy compatibility classification
+- Phases 1-2 focused verification passed with 102 tests; Phases 3-7 have not started
 - Existing Workflow Runtime remains the sole execution authority
 - Recommended independent `workflow_studio` governance package above the runtime
-- No validator, legacy importer, repository/publication behavior, preview, endpoint, UI behavior, permission, migration, dependency, OCR/LLM, ERP/export, upload-staging, or production execution change added
+- No executable legacy importer, repository/publication behavior, preview, endpoint, UI behavior, permission, migration, dependency, OCR/LLM, ERP/export, upload-staging, or production execution change added
 
 Planned capabilities:
 - Immutable tenant-scoped workflow, rule, condition, action, version, validation, preview, publication, and audit contracts
@@ -506,7 +507,7 @@ Planned capabilities:
 
 Phases:
 1. Contracts, statuses, definitions, and operation catalog - implemented and focused verification passed
-2. Validation engine, dependency checks, and legacy compatibility report
+2. Validation engine, dependency checks, and legacy compatibility report - implemented and focused verification passed
 3. Versioned repository, draft lifecycle, and publication policy
 4. Safe dry-run/test boundary and audit intents
 5. Guarded Workflow Management API

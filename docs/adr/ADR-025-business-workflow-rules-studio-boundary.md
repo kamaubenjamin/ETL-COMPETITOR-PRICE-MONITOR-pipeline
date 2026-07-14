@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for the v0.20 architecture boundary. Phase 1 contracts and the conservative operation catalog are implemented; later validation, repository/versioning/publication behavior, preview, endpoint, permission, migration, dependency, and UI work remains unauthorized until its reviewed phase.
+Accepted for the v0.20 architecture boundary. Phases 1-2 contracts, conservative operation catalog, deterministic validation, dependency analysis, and report-only legacy compatibility are implemented; repository/versioning/publication behavior, preview, endpoint, permission, migration, dependency, and UI work remains unauthorized until its reviewed phase.
 
 ## Context
 

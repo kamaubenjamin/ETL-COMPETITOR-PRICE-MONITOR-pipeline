@@ -28,14 +28,18 @@ MAX_HINT_ITEMS = 32
 _ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
 _CODE = re.compile(r"^[a-z][a-z0-9_]{0,63}$")
 _VERSION = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,31}$")
-_PATH = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)*$")
+_PATH = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*(?:\[\])?(?:\.[A-Za-z_][A-Za-z0-9_]*(?:\[\])?)*$")
 
 _UNSAFE_KEY_PARTS = (
-    "authorization", "backend", "claim", "content", "cookie", "credential",
+    "authorization", "backend", "claim", "code", "command", "content", "cookie", "credential",
     "document_bytes", "exception", "file_path", "filesystem", "password", "payload",
-    "private_key", "raw", "secret", "sql", "stack", "storage_path", "token", "traceback",
+    "private_key", "python", "javascript", "raw", "script", "secret", "sql", "stack",
+    "storage_path", "token", "traceback", "function_body", "source_code",
 )
-_UNSAFE_PATH_PARTS = {"authorization", "claims", "credentials", "password", "secret", "token"}
+_UNSAFE_PATH_PARTS = {
+    "_internal", "internal", "system", "security", "auth", "authorization", "claims",
+    "credentials", "password", "secret", "token",
+}
 _CODE_LIKE = re.compile(
     r"(?:__import__|\beval\s*\(|\bexec\s*\(|\bos\.system\b|\bsubprocess\b|"
     r"\bpowershell\b|\bcmd\.exe\b|\bselect\s+.+\s+from\b|\binsert\s+into\b|"
@@ -113,7 +117,7 @@ def logical_path(value: Any, field_name: str) -> str:
     result = bounded_text(value, field_name, maximum=256)
     if not _PATH.fullmatch(result):
         raise ValueError(f"{field_name} must be a safe logical path")
-    if any(part.lower() in _UNSAFE_PATH_PARTS for part in result.split(".")):
+    if any(part.removesuffix("[]").lower() in _UNSAFE_PATH_PARTS for part in result.split(".")):
         raise ValueError(f"{field_name} contains a protected path segment")
     return result
 

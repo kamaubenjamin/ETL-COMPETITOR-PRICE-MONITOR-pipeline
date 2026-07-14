@@ -1,7 +1,7 @@
 # Business Workflow / Rules Studio v1 Implementation Plan
 
 **Milestone:** v0.20
-**Status:** Phase 1 implemented and focused verification passed; Phases 2-7 not started
+**Status:** Phases 1-2 implemented and focused verification passed; Phases 3-7 not started
 **Phases:** Seven reviewed phases
 
 ## 1. Delivery Rules
@@ -46,14 +46,16 @@ No service, repository implementation, runtime compiler, preview execution, API,
 
 ## 3. Phase 2: Validation Engine, Dependency Policy, And Legacy Compatibility Report
 
+**Status:** Complete for the approved Phase 2 scope.
+
 ### Deliverables
 
 - Ordered schema, semantic, path, condition, action-argument, dependency, and runtime-compatibility validators.
 - Deterministic graph construction, missing-dependency rejection, cycle detection, and stable topological ordering.
 - Protected-field and unsafe-path policy.
-- Registry compatibility port for runtime operation/version/contract availability.
+- Existing structural catalog port reused for operation/version/contract availability.
 - Security-validation intent accepting trusted tenant/source capability facts from outer composition.
-- Strict legacy reference parser/translator interface that produces proposals only.
+- Strict modeled legacy descriptor/report interface; no raw parser or executable translation is included.
 - Migration report with supported, partially supported, unsupported, and manual-review outcomes plus source lineage.
 
 ### Tests
@@ -63,6 +65,16 @@ Every issue code/order, duplicate IDs, dependency cycles, disabled/skipped depen
 ### Stop Condition
 
 No legacy definition execution, repository writes, runtime invocation, preview, API, UI, LLM, or production operation registration.
+
+### Implementation Evidence
+
+- Added seven standard-library/package-local validation modules and 54 Phase 2 tests; the combined Workflow Studio suite passes 102 tests.
+- Required focused regressions pass unchanged, and the full practical regression passes 1,879 tests with 9 skips.
+- Dependency validation detects missing, self, duplicate, and cyclic references, reports only actual strongly connected cycle members, and produces a stable lexical topological order when valid.
+- Condition/path checks enforce modeled operators, value shapes, depth/width, controlled `[]` collection segments, protected namespaces, and rejection of physical, URL, SQL, shell, traversal, wildcard, and expression paths.
+- Operation compatibility distinguishes structural validity from preview/publication readiness, validates versions, declared arguments, path requirements, determinism, mappings, and caller-supplied required features.
+- Legacy reports classify exact proven mappings as supported, semantic candidates as partial, generic wrappers as manual review, and unavailable semantic/external capabilities as unsupported. They do not return executable workflows.
+- No repository, version lifecycle, publication mutation, preview, runtime import/invocation, API, UI, dependency, migration, or production activation was added.
 
 ## 4. Phase 3: Versioned Repository, Draft Lifecycle, And Publication Policy
 

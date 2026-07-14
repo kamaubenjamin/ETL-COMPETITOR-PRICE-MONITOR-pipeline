@@ -1,7 +1,7 @@
 # Business Workflow / Rules Studio v1 Plan
 
 **Milestone:** v0.20
-**Status:** Planning complete; Phase 1 implemented and focused verification passed
+**Status:** Planning complete; Phases 1-2 implemented and focused verification passed
 **Recommended package:** `src/workflow_studio/`
 
 ## Phase 1 Implementation Record
@@ -11,6 +11,14 @@ Phase 1 establishes the standard-library-only `src/workflow_studio/` contract bo
 The initial catalog exposes the 30 reviewed business-safe names. Exact existing runtime labels `filter`, `fuzzy_match`, and `compare` are marked available and publication-eligible. The other 27 names remain visible but unavailable and unpublishable until a later compiler phase proves their mapping, schemas, limits, and semantics. Catalog recognition never authorizes execution.
 
 Phase 1 focused verification covers 48 tests for serialization, immutability, statuses, safe rule dependencies, modeled conditions/actions, privacy boundaries, catalog ordering/eligibility, protocols, and forbidden imports. Later plan sections remain prospective.
+
+## Phase 2 Implementation Record
+
+Phase 2 adds a deterministic side-effect-free validation service, fixed validation issue/result contracts, stable dependency and cycle analysis, controlled logical-path validation, condition revalidation, action/catalog compatibility checks, caller-supplied publication-readiness facts, and non-executable Sanifu/Docsift compatibility reporting. Workflow Runtime remains the sole execution authority and is not imported.
+
+Structural validity, preview eligibility, test readiness, and publication eligibility are reported independently. Unavailable or unproven operations can remain structurally modeled while explicitly blocking preview/publication. Required features are evaluated only against caller-supplied labels; the validator does not decide tenant authorization or query security, repositories, files, databases, APIs, or networks.
+
+Legacy input is limited to modeled scalar-safe descriptors. Reports preserve bounded lineage, classify exact labels deterministically, identify candidate Studio mappings and missing proof/ports, and always state that no executable conversion was produced. Phase 2 adds 54 tests, bringing the focused Workflow Studio suite to 102 tests. Later plan sections remain prospective.
 
 ## 1. Objective
 

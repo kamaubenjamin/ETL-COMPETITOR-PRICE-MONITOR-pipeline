@@ -4,11 +4,15 @@ Technical debt and missing test fixtures
 
 ### Current Status
 
-**Planning complete; Phase 1 is implemented and focused verification passed. Phases 2-7 have not started.**
+**Planning complete; Phases 1-2 are implemented and focused verification passed. Phases 3-7 have not started.**
 
 ADR-025 and the v0.20 plans select a separate `workflow_studio` governance package above the existing Workflow Runtime. The runtime remains execution authority. The Studio is responsible for safe definitions, operation descriptors, validation, drafts, immutable versions, approval/publication policy, bounded preview, legacy migration reports, and audit intents through narrow ports.
 
 Phase 1 now provides immutable JSON-safe definition/version/publication/rule/condition/action contracts, fixed statuses, structural ports, scalar-only bounded metadata, privacy-safe fixed errors, and a stable in-memory catalog. Of 30 reviewed names, only exact registered runtime labels `filter`, `fuzzy_match`, and `compare` are available and publication-eligible; 27 compiler-dependent candidates remain visibly unavailable. No runtime compiler/import, validator, repository, lifecycle, preview, API, UI, or execution behavior exists in the Studio package.
+
+Phase 2 now provides pure validation result contracts and service policy, deterministic dependency/cycle analysis, logical-path and condition checks, catalog argument/version/feature compatibility, distinct structural/preview/publication readiness, and report-only legacy compatibility classification. The legacy boundary accepts modeled safe descriptors and never emits an executable conversion. No repository, publication lifecycle, runtime compiler/invocation, preview, API, UI, or persistence exists.
+
+Phase 2 verification passes 102 focused Workflow Studio tests and the full practical regression of 1,879 tests with 9 skips. Boundary verification remains compliant.
 
 Debt and decisions intentionally retained for implementation phases:
 
@@ -23,7 +27,7 @@ Debt and decisions intentionally retained for implementation phases:
 - Definition diff/redaction policy and audit retention
 - Version numbering, archive retention, deactivation, and rollback operational semantics
 - Permission-catalog expansion beyond existing `workflow:read` and `workflow:run`
-- Legacy Sanifu/Docsift fixtures and operation-by-operation semantic equivalence decisions
+- Broader real-world Sanifu/Docsift fixtures and operation-by-operation semantic equivalence proof beyond the initial deterministic label matrix
 - Live authenticated API/UI testing, deployment, monitoring, and operational runbooks
 - Collaborative editing, comments, visual canvas, reusable subworkflows, and parameter libraries
 - Semantic classification and all LLM assistance
