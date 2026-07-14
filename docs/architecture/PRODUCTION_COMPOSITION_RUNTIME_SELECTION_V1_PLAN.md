@@ -1,7 +1,7 @@
 # Production Composition / Runtime Selection v1 Plan
 
 **Milestone:** v0.16
-**Status:** Phases 1-4 implemented; Phases 5-6 not started
+**Status:** Phases 1-5 implemented; Phase 6 not started
 
 ## 1. Problem Statement
 
@@ -292,6 +292,8 @@ Phase 2 delivers the internal runtime composition root. It validates configurati
 Phase 3 activates that composition at the API-owned application boundary. The app factory accepts either validated `RuntimeConfig` or an existing `RuntimeComposition`, installs a facade-backed provider and mapped auth composition on `app.state`, and registers the runtime cleanup hook. Routers resolve the app-scoped provider while retaining the existing singleton only for default compatibility. Disabled and local-demo auth are supported; authenticated and production placeholders reject before runtime construction. Paths, methods, envelopes, payload meanings, tenant narrowing, request IDs, and security headers remain unchanged. Streamlit remains untouched.
 
 Phase 4 adds non-authoritative runtime preview labels to Streamlit `api_preview`. Fixed local/test/demo/local-API-auth, API-default/in-memory/SQLite, and disabled/local-demo labels are display-only; they never construct services, select persistence, decide tenant scope, or enforce permissions. Existing API URL and allowlisted local-demo identity controls remain unchanged. Runtime, auth, unavailable, forbidden, concealed-not-found, and malformed-response states map to fixed operator-safe messages. `local_preview` remains the unchanged default.
+
+Phase 5 hardens and verifies the complete fail-closed boundary. Every current production backend/auth combination, deferred PostgreSQL, and incomplete SQLite configuration reject before resources or FastAPI construction. `RuntimeComposition` enforces internal type/backend/writer invariants, precomposed API runtimes revalidate embedded config, and unexpected construction exceptions map to fixed safe errors. Recursive tests constrain API-to-platform imports to approved entrypoints, prevent reverse imports from core packages, prove app-scoped provider isolation, exclude local identities from unsupported auth modes, and verify Streamlit cannot activate production or runtime services.
 
 ## 21. Deferred Work
 

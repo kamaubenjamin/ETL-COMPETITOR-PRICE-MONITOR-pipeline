@@ -5,7 +5,7 @@
 
 ## Current State
 
-The platform has a provider-neutral security core, deterministic local identity composition, tenant-aware document projections, tenant-scoped read paths, guarded Document Intelligence API GET routes, and a read-only Streamlit auth preview. v0.16 Phase 3 adds API-owned runtime composition: disabled and local-demo runtime auth map to existing API behavior, while authenticated and production placeholders fail closed. Phase 4 adds display-only Streamlit runtime/auth labels and fixed safe mismatch/error states without local permission or tenant decisions. Auth remains disabled by default for compatibility. Production identity and write enforcement are not active.
+The platform has a provider-neutral security core, deterministic local identity composition, tenant-aware document projections, tenant-scoped read paths, guarded Document Intelligence API GET routes, and a read-only Streamlit auth preview. v0.16 Phase 3 adds API-owned runtime composition: disabled and local-demo runtime auth map to existing API behavior, while authenticated and production placeholders fail closed. Phase 4 adds display-only Streamlit runtime/auth labels and fixed safe mismatch/error states without local permission or tenant decisions. Phase 5 verifies local identities cannot satisfy authenticated/production placeholders and that no environment or token inference occurs. Auth remains disabled by default for compatibility. Production identity and write enforcement are not active.
 
 ## Important Files
 

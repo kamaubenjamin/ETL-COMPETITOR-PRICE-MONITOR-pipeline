@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added v0.16 Phase 5 production fail-closed and boundary hardening with exhaustive production/deferred-backend/incomplete-config rejection, runtime bundle invariants, safe unexpected-error remapping, caller-supplied composition revalidation, pre-FastAPI failure checks, app-scoped provider isolation, local-identity exclusion from unsupported auth modes, recursive one-way import enforcement, Streamlit authority tests, idempotent cleanup verification, and path/identity/secret/error redaction; production adapters remain unavailable.
+
 - Added v0.16 Phase 4 non-authoritative Streamlit runtime preview with fixed safe runtime/backend/auth labels, unchanged local-preview default, preserved API URL and allowlisted local-demo identity behavior, bounded runtime availability state, fixed mismatch/auth/unavailable/forbidden/concealed/malformed-response messages, and no platform-runtime, repository, lifecycle, writer, Query Facade, or security-policy imports; Streamlit still performs no backend, tenant, permission, or runtime selection.
 
 - Added v0.16 Phase 3 API runtime activation with `RuntimeConfig` or precomposed runtime app-factory entrypoints, app-scoped facade provider and auth composition, disabled/local-demo auth mapping, tenant-narrowed composed reads, safe runtime diagnostics and shutdown ownership, preserved default singleton compatibility, and fail-closed authenticated/production placeholders; no endpoints, methods, payload meanings, Streamlit behavior, migrations, dependencies, or external providers changed.

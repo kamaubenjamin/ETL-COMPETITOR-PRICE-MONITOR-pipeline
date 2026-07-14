@@ -340,7 +340,8 @@ Status:
 - Phase 2 implemented: validated in-memory/SQLite Document State composition, shared lifecycle advancement, four lifecycle-aware writers, Query Facade wiring, tenant-safe reads, redacted diagnostics, and no fallback
 - Phase 3 implemented: API-owned runtime/config activation, app-scoped facade provider and auth composition, disabled/local-demo mapping, tenant-safe reads, compatibility fallback, and fail-closed unsupported auth
 - Phase 4 implemented: non-authoritative Streamlit runtime/backend/auth labels, preserved API URL and identity preview, fixed safe runtime/auth/error states, and unchanged local preview default
-- Phases 5-6 not started
+- Phase 5 implemented: exhaustive production/deferred-backend rejection, composition invariants, precomposed-config revalidation, app/provider isolation, recursive import enforcement, and privacy-safe failure verification
+- Phase 6 not started
 
 Planned capabilities:
 - Explicit `local`, `test`, `demo`, `local_api_auth`, `pilot`, and `production` runtime modes

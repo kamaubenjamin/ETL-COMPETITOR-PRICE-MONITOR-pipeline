@@ -56,8 +56,9 @@ def create_document_intelligence_app(
     elif composed is not None:
         if not isinstance(composed, RuntimeComposition):
             raise RuntimeValidationError(RuntimeErrorCode.INVALID_CONFIG, field="runtime_mode")
-        assert composed.runtime_config.auth is not None
-        runtime_auth = create_runtime_auth_composition(composed.runtime_config.auth)
+        safe_config = assert_runtime_config_valid(composed.runtime_config)
+        assert safe_config.auth is not None
+        runtime_auth = create_runtime_auth_composition(safe_config.auth)
 
     application = FastAPI(
         title="Document Intelligence API",

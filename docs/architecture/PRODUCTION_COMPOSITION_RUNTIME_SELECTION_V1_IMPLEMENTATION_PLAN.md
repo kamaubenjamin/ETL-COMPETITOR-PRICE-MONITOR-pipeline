@@ -1,7 +1,7 @@
 # Production Composition / Runtime Selection v1 Implementation Plan
 
 **Milestone:** v0.16
-**Status:** Phases 1-4 implemented; Phases 5-6 not started
+**Status:** Phases 1-5 implemented; Phase 6 not started
 
 ## 1. Milestone Overview
 
@@ -246,6 +246,8 @@ Stop after safe mode display/provider selection. Do not add UI writes, login/ses
 ### Scope
 
 Verify no unsafe combination, fallback, import path, or serialization can bypass the composition root.
+
+**Completion:** Implemented and verified. Production, deferred PostgreSQL, incomplete SQLite, missing identity, unsupported auth, and forged precomposed-runtime paths reject before resource or app construction. Runtime composition now validates bundle invariants and maps unexpected ordinary failures to a stable safe error. API provider resolution is app-scoped for composed apps, compatibility defaults cannot be reached after invalid runtime input, local identities cannot satisfy authenticated/production placeholders, Streamlit remains display-only, and recursive import/privacy tests enforce all approved one-way boundaries.
 
 ### Expected Files
 

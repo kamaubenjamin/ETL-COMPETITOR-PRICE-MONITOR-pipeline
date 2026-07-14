@@ -395,7 +395,7 @@ References:
 
 ### Current Status
 
-**v0.16 Phases 1-4 are implemented; Phases 5-6 have not started.**
+**v0.16 Phases 1-5 are implemented; Phase 6 has not started.**
 
 Current composition debt:
 
@@ -417,6 +417,8 @@ Phase 2 provides a frozen internal composition result over explicitly selected i
 Phase 3 activates runtime composition in the API-owned app factory. `RuntimeConfig` and precomposed runtime entrypoints install an app-scoped facade provider, auth composition, safe diagnostics, and cleanup hook. Disabled and local-demo auth map to existing behavior; authenticated/production placeholders reject before construction. Default app behavior and all GET contracts remain compatible. Streamlit activation, real external identity, production persistence, and public mutations remain deferred.
 
 Phase 4 adds a pure Streamlit-local preview contract with fixed runtime/backend/auth labels and bounded safe API runtime states. The controls are explicitly non-authoritative, do not import or construct platform services, and preserve API URL and allowlisted local-demo identity behavior. API unavailability, runtime/auth configuration failures, unauthorized/forbidden/concealed reads, and malformed envelopes use fixed messages without reflected backend details. Enforced deployment-mode selection, real production diagnostics, identity providers, and runtime activation remain outside Streamlit and deferred.
+
+Phase 5 proves fail-closed behavior across validation, composition, API activation, auth mapping, Streamlit, imports, and privacy. Runtime bundles enforce backend/service invariants; caller-supplied compositions revalidate embedded config; unexpected construction errors are safely remapped; invalid app creation cannot reach FastAPI or compatibility providers; and recursive tests constrain all outer-layer imports. These guarantees do not make production available: PostgreSQL/Supabase, real identity, secrets, deployment operations, and production telemetry remain deferred.
 
 References:
 

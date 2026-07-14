@@ -27,6 +27,23 @@ class RuntimeComposition:
     writers: RuntimeWriterServices | None = field(repr=False)
     query_facade: WorkflowQueryFacadePort = field(repr=False)
 
+    def __post_init__(self) -> None:
+        if not isinstance(self.runtime_config, RuntimeConfig):
+            raise RuntimeValidationError(RuntimeErrorCode.COMPOSITION_FAILED)
+        if not isinstance(self.document_state, DocumentStateComposition):
+            raise RuntimeValidationError(RuntimeErrorCode.COMPOSITION_FAILED)
+        if not isinstance(self.lifecycle, LifecycleAdvancementService):
+            raise RuntimeValidationError(RuntimeErrorCode.COMPOSITION_FAILED)
+        if self.writers is not None and not isinstance(self.writers, RuntimeWriterServices):
+            raise RuntimeValidationError(RuntimeErrorCode.COMPOSITION_FAILED)
+        if not isinstance(self.query_facade, WorkflowQueryFacadePort):
+            raise RuntimeValidationError(RuntimeErrorCode.COMPOSITION_FAILED)
+        backend = self.runtime_config.backend
+        if backend is None or backend.mode.value != self.document_state.backend:
+            raise RuntimeValidationError(RuntimeErrorCode.COMPOSITION_FAILED, field="backend")
+        if self.runtime_config.writers_enabled != (self.writers is not None):
+            raise RuntimeValidationError(RuntimeErrorCode.COMPOSITION_FAILED)
+
     @property
     def backend(self) -> str:
         return self.document_state.backend
@@ -68,7 +85,7 @@ def compose_runtime(config: RuntimeConfig, *, snapshot_at: str) -> RuntimeCompos
         query_facade = compose_query_facade(document_state, snapshot_at=snapshot_at)
     except RuntimeValidationError:
         raise
-    except (TypeError, ValueError):
+    except Exception:
         raise RuntimeValidationError(RuntimeErrorCode.COMPOSITION_FAILED) from None
     return RuntimeComposition(
         runtime_config=safe_config,
