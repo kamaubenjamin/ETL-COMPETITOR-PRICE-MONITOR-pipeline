@@ -1,7 +1,7 @@
 # Business Workflow / Rules Studio v1 Implementation Plan
 
 **Milestone:** v0.20
-**Status:** Phases 1-3 implemented and focused verification passed; Phases 4-7 not started
+**Status:** Phases 1-4 implemented and focused verification passed; Phases 5-7 not started
 **Phases:** Seven reviewed phases
 
 ## 1. Delivery Rules
@@ -112,6 +112,8 @@ No runtime execution, API, UI, production persistence selection, automatic promo
 
 ## 5. Phase 4: Safe Dry-Run Boundary And Audit Intents
 
+**Status:** Complete for the approved Phase 4 scope.
+
 ### Deliverables
 
 - Immutable preview command, fixture reference, bounded inline sample, policy limits, trace summary, rule/stage result, redacted output, and preview result contracts.
@@ -129,6 +131,16 @@ Deterministic replay, rule-by-rule outcomes, stable timing buckets where determi
 ### Stop Condition
 
 Preview only: no production workflow run, scheduler binding, external adapter, durable raw preview output, API, or UI.
+
+### Implementation Evidence
+
+- Added eight isolated preview modules and 33 tests; the combined Workflow Studio suite passes 180 tests.
+- Required focused regressions pass unchanged, and the full practical regression passes 1,956 tests with 9 skips.
+- Fixed limits cover rules/actions/dependency depth/steps, input/output collections, trace/issues/output fields, strings, nested depth, and duration policy.
+- Modeled inline samples and approved in-memory fixture references are normalized immutably and reject sensitive keys, executable objects, raw bytes, excessive nesting/collections/fields, and oversized strings.
+- The injected runtime Protocol receives only an immutable version, normalized fixture, limits, and policy. Deterministic success/failure/unavailable/limit adapters perform no I/O.
+- The service blocks invalid/ineligible workflows before invocation, catches adapter exceptions safely, re-bounds rule/stage/trace/issue output, and applies stable omission/redaction.
+- No production execution, repository/publication/Document State mutation, runtime implementation import, external adapter, API, UI, dependency, migration, alert/email, ERP/export, master-data write, staging, OCR/LLM, filesystem, database, or network behavior was added.
 
 ## 6. Phase 5: Guarded Workflow Management API
 

@@ -37,6 +37,14 @@ from .operation_catalog import (
     StudioOperationDefinition,
 )
 from .policy_errors import PolicyErrorCode, PolicyIssue
+from .preview import WorkflowPreviewService
+from .preview_adapter import FailingWorkflowPreviewAdapter, LimitExceededWorkflowPreviewAdapter, SuccessfulWorkflowPreviewAdapter, UnavailableWorkflowPreviewAdapter, WorkflowPreviewRuntimePort
+from .preview_audit import WorkflowPreviewAuditEventType, WorkflowPreviewAuditIntent
+from .preview_contracts import WorkflowPreviewCommand, WorkflowPreviewExecutionReference, WorkflowPreviewFixture, WorkflowPreviewFixtureReference, WorkflowPreviewPolicy
+from .preview_errors import WorkflowPreviewErrorCode
+from .preview_fixtures import InMemoryWorkflowPreviewFixtureProvider, normalize_preview_sample
+from .preview_limits import WorkflowPreviewLimits
+from .preview_results import WorkflowPreviewIssue, WorkflowPreviewOutput, WorkflowPreviewResult, WorkflowPreviewRuleResult, WorkflowPreviewRuntimeResult, WorkflowPreviewStageResult, WorkflowPreviewStatus, WorkflowPreviewTraceEvent, WorkflowPreviewTraceEventType
 from .publication import (
     PublicationCommand,
     PublicationPolicyResult,
@@ -103,10 +111,17 @@ __all__ = [
     "StoredWorkflowDefinition", "StoredWorkflowPublication", "StoredWorkflowVersion",
     "WorkflowDefinitionRepositoryPort", "WorkflowPublicationRepositoryPort",
     "WorkflowPublicationService", "WorkflowRepositoryError", "WorkflowStudioAuditEventType",
+    "FailingWorkflowPreviewAdapter", "InMemoryWorkflowPreviewFixtureProvider", "LimitExceededWorkflowPreviewAdapter",
+    "SuccessfulWorkflowPreviewAdapter", "UnavailableWorkflowPreviewAdapter", "WorkflowPreviewAuditEventType",
+    "WorkflowPreviewAuditIntent", "WorkflowPreviewCommand", "WorkflowPreviewErrorCode", "WorkflowPreviewExecutionReference",
+    "WorkflowPreviewFixture", "WorkflowPreviewFixtureReference", "WorkflowPreviewIssue", "WorkflowPreviewLimits",
+    "WorkflowPreviewOutput", "WorkflowPreviewPolicy", "WorkflowPreviewResult", "WorkflowPreviewRuleResult",
+    "WorkflowPreviewRuntimePort", "WorkflowPreviewRuntimeResult", "WorkflowPreviewService", "WorkflowPreviewStageResult",
+    "WorkflowPreviewStatus", "WorkflowPreviewTraceEvent", "WorkflowPreviewTraceEventType",
     "WorkflowStudioAuditIntent", "WorkflowStudioErrorCode", "WorkflowValidationIssue", "WorkflowValidationResult",
     "WorkflowValidationService", "WorkflowVersion", "WorkflowVersionReadPort", "WorkflowVersionStatus",
     "WorkflowVersionRepositoryPort", "WorkflowVersionWritePort", "ValidationIssueCode", "ValidationLayer", "ValidationPolicyFacts",
     "ValidationSeverity", "generate_legacy_compatibility_report", "safe_logical_path",
-    "clone_version_to_draft", "evaluate_publication_policy", "next_integer_version",
+    "clone_version_to_draft", "evaluate_publication_policy", "next_integer_version", "normalize_preview_sample",
     "validate_action_compatibility", "validate_condition", "validate_dependencies", "validate_logical_path",
 ]

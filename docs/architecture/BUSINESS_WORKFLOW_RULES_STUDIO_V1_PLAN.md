@@ -1,7 +1,7 @@
 # Business Workflow / Rules Studio v1 Plan
 
 **Milestone:** v0.20
-**Status:** Planning complete; Phases 1-3 implemented and focused verification passed
+**Status:** Planning complete; Phases 1-4 implemented and focused verification passed
 **Recommended package:** `src/workflow_studio/`
 
 ## Phase 1 Implementation Record
@@ -27,6 +27,14 @@ Phase 3 adds persistence-neutral repository contracts, a deterministic lock-prot
 Workflow IDs, version IDs, and publication IDs are tenant-scoped; the same workflow ID may exist in different tenants, while identities cannot collide inside a tenant. Version labels are unique per tenant/workflow. Only one current pre-publication draft and one active publication are permitted per tenant/workflow. Pagination is stable and bounded to limits 1-100 and offsets 0-10,000.
 
 Content edits are permitted only while a version is `draft`. Approved, published, superseded, inactive, and archived history cannot be rewritten. Rollback clones prior immutable content into a new draft/version and must traverse validation, test, approval, and publication again. Publication records governed definition availability only; no scheduler/runtime binding, API, UI, database, filesystem, or network behavior was added. Phase 3 adds 45 tests, bringing the focused Workflow Studio suite to 147 tests.
+
+## Phase 4 Implementation Record
+
+Phase 4 adds immutable preview commands, fixtures, policies, limits, safe results, rule/stage projections, trace events, audit intents, an injected runtime port, deterministic no-I/O adapters, and a bounded preview service. It imports no Workflow Runtime implementation and does not activate published workflows.
+
+Inline samples and approved fixture references are normalized into immutable scalar-safe mappings/tuples with fixed depth, collection, field, and string bounds. Validation, dependency, preview eligibility, feature, legacy-review, identity, and workflow size gates run before adapter invocation. Adapter exceptions are replaced by fixed issues; results are re-bounded, protected fields are redacted, values are omitted unless explicitly allowed, and trace/audit projections contain no bodies or raw logs.
+
+Duration is a bounded policy/descriptor only because Phase 4 adds no isolated worker or OS-level cancellation. Phase 4 adds 33 tests, bringing the focused Workflow Studio suite to 180 tests. Preview does not publish, persist, mutate repositories/Document State/lifecycle, call ERP/export/alerts/master data, or access files, databases, or networks.
 
 ## 1. Objective
 

@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for the v0.20 architecture boundary. Phases 1-3 contracts, validation, dependency/legacy reporting, process-local repositories, draft/version lifecycle, governed-definition publication policy, and audit intents are implemented; preview/runtime activation, endpoints, permissions, durable persistence/migration, dependencies, and UI work remains unauthorized until its reviewed phase.
+Accepted for the v0.20 architecture boundary. Phases 1-4 contracts, validation, repositories/lifecycle/publication policy, safe bounded preview port/orchestration, projections, and audit intents are implemented; production runtime activation, endpoints, permissions, durable persistence/migration, external adapters, dependencies, and UI work remains unauthorized until its reviewed phase.
 
 ## Context
 

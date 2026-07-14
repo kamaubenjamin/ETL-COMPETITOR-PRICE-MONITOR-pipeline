@@ -490,7 +490,8 @@ Status:
 - Phase 1 implemented: immutable Workflow Studio contracts, fixed statuses, safe structured rules/conditions/actions, privacy-safe metadata/errors, structural ports, and deterministic in-memory operation catalog
 - Phase 2 implemented: deterministic validation results/service, dependency and cycle analysis, condition/path checks, catalog compatibility/readiness gates, and report-only legacy compatibility classification
 - Phase 3 implemented: tenant-scoped process-local repositories, optimistic revisions, explicit draft/version transitions, immutable history, governed-definition publication/deactivation/archive policy, and safe audit intents
-- Phases 1-3 focused verification passed with 147 tests; Phases 4-7 have not started
+- Phase 4 implemented: bounded preview contracts, fixture/sample normalization, fixed limits, injected runtime port, no-I/O adapters, deterministic orchestration, safe rule/stage/trace/output projections, redaction, and preview audit intents
+- Phases 1-4 focused verification passed with 180 tests; Phases 5-7 have not started
 - Existing Workflow Runtime remains the sole execution authority
 - Recommended independent `workflow_studio` governance package above the runtime
 - No durable repository, runtime publication activation, preview, endpoint, UI behavior, permission, migration, dependency, OCR/LLM, ERP/export, upload-staging, or production execution change added
@@ -510,7 +511,7 @@ Phases:
 1. Contracts, statuses, definitions, and operation catalog - implemented and focused verification passed
 2. Validation engine, dependency checks, and legacy compatibility report - implemented and focused verification passed
 3. Versioned repository, draft lifecycle, and publication policy - implemented and focused verification passed
-4. Safe dry-run/test boundary and audit intents
+4. Safe dry-run/test boundary and audit intents - implemented and focused verification passed
 5. Guarded Workflow Management API
 6. FlowSync Rules Studio UI foundation
 7. Verification, closure, handoff, and tag recommendation

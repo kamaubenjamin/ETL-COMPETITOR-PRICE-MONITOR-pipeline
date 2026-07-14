@@ -4,7 +4,7 @@ Technical debt and missing test fixtures
 
 ### Current Status
 
-**Planning complete; Phases 1-3 are implemented and focused verification passed. Phases 4-7 have not started.**
+**Planning complete; Phases 1-4 are implemented and focused verification passed. Phases 5-7 have not started.**
 
 ADR-025 and the v0.20 plans select a separate `workflow_studio` governance package above the existing Workflow Runtime. The runtime remains execution authority. The Studio is responsible for safe definitions, operation descriptors, validation, drafts, immutable versions, approval/publication policy, bounded preview, legacy migration reports, and audit intents through narrow ports.
 
@@ -17,6 +17,10 @@ Phase 2 verification passes 102 focused Workflow Studio tests and the full pract
 Phase 3 adds tenant-scoped repository protocols, a lock-protected non-durable in-memory store, optimistic revisions, unique version/publication policy, explicit draft transitions, immutable history cloning, pure publication eligibility evaluation, controlled governed-definition publication/deactivation/archive, and safe audit intents. Workflow and version identities are tenant-scoped; version labels are unique per tenant/workflow. Publication does not activate runtime execution.
 
 Phase 3 verification passes 147 focused Workflow Studio tests and the full practical regression of 1,924 tests with 9 skips. Boundary verification remains compliant.
+
+Phase 4 adds bounded immutable preview contracts, safe fixture normalization, fixed limits, an injected runtime port, deterministic no-I/O adapters, validation-gated orchestration, redacted projections, bounded traces, and audit intents. Duration remains a policy descriptor because no isolated worker exists. Preview does not activate production execution or mutate governed repositories/Document State.
+
+Phase 4 verification passes 180 focused Workflow Studio tests and the full practical regression of 1,956 tests with 9 skips. Boundary verification remains compliant.
 
 Debt and decisions intentionally retained for implementation phases:
 
