@@ -1,17 +1,19 @@
 Technical debt and missing test fixtures
 
-## v0.20 Business Workflow / Rules Studio Planning
+## v0.20 Business Workflow / Rules Studio
 
 ### Current Status
 
-**Planning complete; implementation has not started.**
+**Planning complete; Phase 1 is implemented and focused verification passed. Phases 2-7 have not started.**
 
 ADR-025 and the v0.20 plans select a separate `workflow_studio` governance package above the existing Workflow Runtime. The runtime remains execution authority. The Studio is responsible for safe definitions, operation descriptors, validation, drafts, immutable versions, approval/publication policy, bounded preview, legacy migration reports, and audit intents through narrow ports.
+
+Phase 1 now provides immutable JSON-safe definition/version/publication/rule/condition/action contracts, fixed statuses, structural ports, scalar-only bounded metadata, privacy-safe fixed errors, and a stable in-memory catalog. Of 30 reviewed names, only exact registered runtime labels `filter`, `fuzzy_match`, and `compare` are available and publication-eligible; 27 compiler-dependent candidates remain visibly unavailable. No runtime compiler/import, validator, repository, lifecycle, preview, API, UI, or execution behavior exists in the Studio package.
 
 Debt and decisions intentionally retained for implementation phases:
 
 - Exact compiler/mapping contract from fine-grained Studio actions to existing coarse runtime operations
-- Which candidate actions have proven deterministic publishable runtime implementations
+- Compiler proof and argument/contract equivalence for the 27 currently unavailable candidate actions
 - Richer input/output schemas and field-path type propagation across stages
 - Durable repository choice, transaction model, one-active-version constraint, and migration approval
 - Environment promotion and distinction between publication and production execution activation

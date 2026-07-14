@@ -1,7 +1,7 @@
 # Business Workflow / Rules Studio v1 Implementation Plan
 
 **Milestone:** v0.20
-**Status:** Planning complete; implementation not started
+**Status:** Phase 1 implemented and focused verification passed; Phases 2-7 not started
 **Phases:** Seven reviewed phases
 
 ## 1. Delivery Rules
@@ -16,15 +16,17 @@
 
 ## 2. Phase 1: Contracts, Statuses, Definitions, And Operation Catalog
 
+**Status:** Complete for the approved Phase 1 scope.
+
 ### Deliverables
 
 - Create the standard-library-first `workflow_studio` package foundation.
 - Immutable JSON-safe workflow, rule, condition, action, version, author/reviewer, and safe metadata contracts.
-- Fixed workflow/version/publication status catalog and pure transition policy.
+- Fixed workflow/version/publication, rule, and operation-availability status catalogs. Transition policy remains Phase 3 work.
 - Restricted field/path, condition operator, error policy, and output policy catalogs.
 - Operation descriptor/catalog contracts separating Studio actions from existing runtime operations.
-- Initial catalog entries marked `supported`, `planned`, `unavailable`, or `deprecated`; only proven mappings are publishable.
-- Fixed privacy-safe errors and validation issue contracts.
+- Initial catalog entries marked `available`, `unavailable`, or `deprecated`; only proven exact runtime mappings are publishable.
+- Fixed privacy-safe errors. Validation issue contracts remain Phase 2 work.
 
 ### Tests
 
@@ -33,6 +35,14 @@ Immutability, serialization, bounded fields/collections/depth, ID/timestamp/stat
 ### Stop Condition
 
 No service, repository implementation, runtime compiler, preview execution, API, UI, permission change, persistence, or migration.
+
+### Implementation Evidence
+
+- Added nine isolated `workflow_studio` modules using only the standard library and package-local imports.
+- Added 48 focused tests across the eight approved test files.
+- The catalog contains all 30 reviewed operation names in stable order. `filter`, `fuzzy_match`, and `compare` are the only available, preview-eligible, publication-eligible entries because their exact runtime labels are registered; all compiler-category candidates remain unavailable.
+- Metadata is scalar-only, bounded, immutable, and rejects sensitive keys, nested payloads, code-like configuration, external URLs, and physical paths.
+- No validation engine, legacy importer, repository, publication behavior, runtime compiler/import, preview, API, UI, dependency, migration, or execution activation was added.
 
 ## 3. Phase 2: Validation Engine, Dependency Policy, And Legacy Compatibility Report
 
@@ -197,4 +207,3 @@ Production workflow publication must remain distinct from production execution a
 5. `feat(api): add guarded workflow management contracts`
 6. `feat(flowsync): add structured rules studio views`
 7. `docs: close v0.20 business workflow rules studio`
-

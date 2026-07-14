@@ -487,10 +487,11 @@ References:
 
 Status:
 - Architecture plan, seven-phase implementation plan, and ADR-025 created
-- Planning only; implementation has not started
+- Phase 1 implemented: immutable Workflow Studio contracts, fixed statuses, safe structured rules/conditions/actions, privacy-safe metadata/errors, structural ports, and deterministic in-memory operation catalog
+- Phase 1 focused verification passed with 48 tests; later phases have not started
 - Existing Workflow Runtime remains the sole execution authority
 - Recommended independent `workflow_studio` governance package above the runtime
-- No source, endpoint, UI behavior, permission, migration, dependency, OCR/LLM, ERP/export, or upload-staging change added
+- No validator, legacy importer, repository/publication behavior, preview, endpoint, UI behavior, permission, migration, dependency, OCR/LLM, ERP/export, upload-staging, or production execution change added
 
 Planned capabilities:
 - Immutable tenant-scoped workflow, rule, condition, action, version, validation, preview, publication, and audit contracts
@@ -503,8 +504,8 @@ Planned capabilities:
 - Structured FlowSync Rules Studio preserving the approved visual identity and API authority
 - Explicit prohibition of arbitrary code, shell, raw SQL, filesystem, unrestricted HTTP, secrets, direct ERP/export, and silent tenant-crossing operations
 
-Proposed phases:
-1. Contracts, statuses, definitions, and operation catalog
+Phases:
+1. Contracts, statuses, definitions, and operation catalog - implemented and focused verification passed
 2. Validation engine, dependency checks, and legacy compatibility report
 3. Versioned repository, draft lifecycle, and publication policy
 4. Safe dry-run/test boundary and audit intents

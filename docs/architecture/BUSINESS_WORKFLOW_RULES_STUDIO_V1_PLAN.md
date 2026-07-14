@@ -1,8 +1,16 @@
 # Business Workflow / Rules Studio v1 Plan
 
 **Milestone:** v0.20
-**Status:** Planning complete; implementation not started
+**Status:** Planning complete; Phase 1 implemented and focused verification passed
 **Recommended package:** `src/workflow_studio/`
+
+## Phase 1 Implementation Record
+
+Phase 1 establishes the standard-library-only `src/workflow_studio/` contract boundary. It provides immutable JSON-safe workflow, version, publication, rule, condition, and action definitions; the fixed status catalogs; privacy-safe errors; structural repository/catalog ports; and a deterministic in-memory operation catalog. It does not add a validation engine, repository, publication behavior, compiler, runtime import, preview, API, UI, permission, persistence, migration, or production execution path.
+
+The initial catalog exposes the 30 reviewed business-safe names. Exact existing runtime labels `filter`, `fuzzy_match`, and `compare` are marked available and publication-eligible. The other 27 names remain visible but unavailable and unpublishable until a later compiler phase proves their mapping, schemas, limits, and semantics. Catalog recognition never authorizes execution.
+
+Phase 1 focused verification covers 48 tests for serialization, immutability, statuses, safe rule dependencies, modeled conditions/actions, privacy boundaries, catalog ordering/eligibility, protocols, and forbidden imports. Later plan sections remain prospective.
 
 ## 1. Objective
 

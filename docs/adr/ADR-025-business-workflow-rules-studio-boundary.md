@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed for v0.20. Planning only; no implementation, endpoint, permission, migration, dependency, or UI behavior is authorized by this ADR alone.
+Accepted for the v0.20 architecture boundary. Phase 1 contracts and the conservative operation catalog are implemented; later validation, repository/versioning/publication behavior, preview, endpoint, permission, migration, dependency, and UI work remains unauthorized until its reviewed phase.
 
 ## Context
 
@@ -125,3 +125,4 @@ Durable backend/schema, environment promotion, production execution binding, sch
 
 ADR-025 is accepted when owners approve the separate Studio package, Workflow Runtime execution authority, explicit operation catalog, no-arbitrary-code policy, immutable publication/version model, safe preview restrictions, legacy migration reporting, tenant/permission model, structured FlowSync direction, seven-phase plan, and production activation gates.
 
+Phase 1 implements only the separate package foundation: immutable modeled contracts, fixed statuses, safe metadata/errors, structural ports, and a stable 30-entry catalog. Only exact registered runtime labels `filter`, `fuzzy_match`, and `compare` are currently marked publication-eligible; 27 compiler-dependent names are explicitly unavailable. This acceptance does not implement or authorize a validator, legacy translation, repository, publication mutation, preview execution, API, UI, or production binding.
