@@ -395,16 +395,16 @@ References:
 
 ### Current Status
 
-**v0.16 Phases 1-5 are implemented; Phase 6 has not started.**
+**v0.16 is implemented and verified; closed pending owner tag.**
 
 Current composition debt:
 
 - Internal Document State, lifecycle, writer, and Query Facade composition is owned by `src/platform_runtime/`; the API factory now activates it without making `platform_runtime` depend on FastAPI.
 - Composed API routes resolve an app-scoped provider; the module-level deterministic facade provider remains only for backward-compatible default app creation.
-- Runtime mode, backend, auth, identity provider, and Streamlit provider compatibility is not represented by one validated contract.
+- Runtime mode, backend, auth, identity provider, and Streamlit provider compatibility is represented by one immutable validated contract and fail-closed matrix.
 - Production persistence and identity adapters do not exist, so production must remain deliberately unavailable.
 - Pilot tenancy constraints remain unresolved while child Document State records lack direct tenant columns.
-- Resource shutdown ownership, safe secret references, and redacted runtime descriptors are not yet formalized.
+- Resource shutdown ownership is minimal for current local resources; production resource ownership and secret resolution remain deferred.
 
 The v0.16 plan selects an outer `src/platform_runtime/` package with one-way imports into approved public boundaries. It defines explicit local/test/demo/local-API-auth/pilot/production modes, a strict backend/auth matrix, pure allowlisted config loading, lifecycle/writer/Query Facade wiring, app-scoped API provider injection, non-authoritative Streamlit selection, and production fail-closed behavior.
 
@@ -420,11 +420,16 @@ Phase 4 adds a pure Streamlit-local preview contract with fixed runtime/backend/
 
 Phase 5 proves fail-closed behavior across validation, composition, API activation, auth mapping, Streamlit, imports, and privacy. Runtime bundles enforce backend/service invariants; caller-supplied compositions revalidate embedded config; unexpected construction errors are safely remapped; invalid app creation cannot reach FastAPI or compatibility providers; and recursive tests constrain all outer-layer imports. These guarantees do not make production available: PostgreSQL/Supabase, real identity, secrets, deployment operations, and production telemetry remain deferred.
 
+Phase 6 confirms 84 Platform Runtime tests, 80 API tests with 9 skips, 64 Streamlit tests, 60 security tests, 330 Document State tests, 239 Query Facade/Review tests, and 1,535 full-regression tests with 9 skips. Boundary verification remains compliant. Closure documentation preserves the distinction between a verified fail-closed composition foundation and an unavailable production deployment.
+
 References:
 
 - `docs/architecture/PRODUCTION_COMPOSITION_RUNTIME_SELECTION_V1_PLAN.md`
 - `docs/architecture/PRODUCTION_COMPOSITION_RUNTIME_SELECTION_V1_IMPLEMENTATION_PLAN.md`
+- `docs/architecture/PRODUCTION_COMPOSITION_RUNTIME_SELECTION_V1_SUMMARY.md`
+- `docs/architecture/PRODUCTION_COMPOSITION_RUNTIME_SELECTION_V1_HANDOFF.md`
 - `docs/adr/ADR-021-production-composition-runtime-selection.md`
+- `docs/releases/v0.16-production-composition-runtime-selection.md`
 
 ---
 

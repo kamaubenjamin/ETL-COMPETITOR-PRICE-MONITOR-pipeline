@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.16. Phases 1-5 implement dependency-light runtime/config contracts, the pure fail-closed validation matrix, internal Document State/lifecycle/writer/Query Facade composition, API-owned app/provider/auth activation, non-authoritative Streamlit runtime preview, and production/boundary/privacy hardening. Production adapters and release closure remain pending.
+Accepted and implemented for v0.16. Runtime/config contracts, the pure fail-closed validation matrix, internal Document State/lifecycle/writer/Query Facade composition, API-owned app/provider/auth activation, non-authoritative Streamlit runtime preview, and production/boundary/privacy hardening are verified. The milestone is closed pending owner tag; production adapters remain deliberately deferred.
 
 ## Context
 

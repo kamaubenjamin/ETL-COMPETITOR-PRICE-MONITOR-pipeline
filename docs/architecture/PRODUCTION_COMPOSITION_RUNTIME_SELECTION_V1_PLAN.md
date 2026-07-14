@@ -1,7 +1,7 @@
 # Production Composition / Runtime Selection v1 Plan
 
 **Milestone:** v0.16
-**Status:** Phases 1-5 implemented; Phase 6 not started
+**Status:** Implemented and verified; closed pending owner tag
 
 ## 1. Problem Statement
 
@@ -294,6 +294,8 @@ Phase 3 activates that composition at the API-owned application boundary. The ap
 Phase 4 adds non-authoritative runtime preview labels to Streamlit `api_preview`. Fixed local/test/demo/local-API-auth, API-default/in-memory/SQLite, and disabled/local-demo labels are display-only; they never construct services, select persistence, decide tenant scope, or enforce permissions. Existing API URL and allowlisted local-demo identity controls remain unchanged. Runtime, auth, unavailable, forbidden, concealed-not-found, and malformed-response states map to fixed operator-safe messages. `local_preview` remains the unchanged default.
 
 Phase 5 hardens and verifies the complete fail-closed boundary. Every current production backend/auth combination, deferred PostgreSQL, and incomplete SQLite configuration reject before resources or FastAPI construction. `RuntimeComposition` enforces internal type/backend/writer invariants, precomposed API runtimes revalidate embedded config, and unexpected construction exceptions map to fixed safe errors. Recursive tests constrain API-to-platform imports to approved entrypoints, prevent reverse imports from core packages, prove app-scoped provider isolation, exclude local identities from unsupported auth modes, and verify Streamlit cannot activate production or runtime services.
+
+Phase 6 closes the milestone with focused and full verification, architecture summary, future-agent handoff, release notes, roadmap and debt updates, and an owner tag recommendation. Production remains deliberately unavailable until real persistence and identity adapters are implemented and approved.
 
 ## 21. Deferred Work
 

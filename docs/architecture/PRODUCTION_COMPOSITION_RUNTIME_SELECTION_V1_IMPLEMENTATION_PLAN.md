@@ -1,7 +1,7 @@
 # Production Composition / Runtime Selection v1 Implementation Plan
 
 **Milestone:** v0.16
-**Status:** Phases 1-5 implemented; Phase 6 not started
+**Status:** Implemented and verified; closed pending owner tag
 
 ## 1. Milestone Overview
 
@@ -290,6 +290,8 @@ git status --short --branch
 Stop after hardening and verification. Do not implement PostgreSQL, Supabase, public mutations, or deployment infrastructure.
 
 ## 8. Phase 6: Release Closure And Handoff
+
+**Completion:** Implemented and verified. Focused runtime, API, Streamlit, security, Document State, Query Facade, and Review suites pass; the full regression passes; boundaries remain compliant; and summary, handoff, release, roadmap, debt, ADR, and changelog documentation now record the fail-closed production posture and deferred adapters without overstating readiness.
 
 ### Expected Files
 

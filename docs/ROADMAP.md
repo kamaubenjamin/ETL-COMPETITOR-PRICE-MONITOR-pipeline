@@ -341,7 +341,8 @@ Status:
 - Phase 3 implemented: API-owned runtime/config activation, app-scoped facade provider and auth composition, disabled/local-demo mapping, tenant-safe reads, compatibility fallback, and fail-closed unsupported auth
 - Phase 4 implemented: non-authoritative Streamlit runtime/backend/auth labels, preserved API URL and identity preview, fixed safe runtime/auth/error states, and unchanged local preview default
 - Phase 5 implemented: exhaustive production/deferred-backend rejection, composition invariants, precomposed-config revalidation, app/provider isolation, recursive import enforcement, and privacy-safe failure verification
-- Phase 6 not started
+- Phase 6 implemented: focused/full verification, summary, handoff, release notes, closure records, and owner tag recommendation
+- Milestone implemented and verified; closed pending owner tag `v0.16-production-composition-runtime-selection`
 
 Planned capabilities:
 - Explicit `local`, `test`, `demo`, `local_api_auth`, `pilot`, and `production` runtime modes

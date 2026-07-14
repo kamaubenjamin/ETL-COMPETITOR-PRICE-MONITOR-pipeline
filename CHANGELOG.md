@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Closed v0.16 Production Composition / Runtime Selection pending owner tag, with immutable runtime selection contracts, redacted configuration, explicit in-memory/SQLite composition, lifecycle/writer/Query Facade wiring, app-scoped API provider/auth activation, display-only Streamlit runtime preview, verified production fail-closed boundaries, full regression verification, and release handoff documentation; production persistence, real identity, secrets, deployment infrastructure, public mutations, and FlowSync integration remain deferred.
+
 - Added v0.16 Phase 5 production fail-closed and boundary hardening with exhaustive production/deferred-backend/incomplete-config rejection, runtime bundle invariants, safe unexpected-error remapping, caller-supplied composition revalidation, pre-FastAPI failure checks, app-scoped provider isolation, local-identity exclusion from unsupported auth modes, recursive one-way import enforcement, Streamlit authority tests, idempotent cleanup verification, and path/identity/secret/error redaction; production adapters remain unavailable.
 
 - Added v0.16 Phase 4 non-authoritative Streamlit runtime preview with fixed safe runtime/backend/auth labels, unchanged local-preview default, preserved API URL and allowlisted local-demo identity behavior, bounded runtime availability state, fixed mismatch/auth/unavailable/forbidden/concealed/malformed-response messages, and no platform-runtime, repository, lifecycle, writer, Query Facade, or security-policy imports; Streamlit still performs no backend, tenant, permission, or runtime selection.
