@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { createApiClient } from "../api/client";
 import { getDocument, getDocumentValidation } from "../api/documents";
-import { toSafeClientError } from "../api/errors";
 import { DataTable, type DataTableColumn } from "../components/DataTable";
 import { EmptyState } from "../components/EmptyState";
 import { LoadingState } from "../components/LoadingState";
@@ -13,7 +12,7 @@ import { SeverityBadge } from "../components/SeverityBadge";
 import { StatusCard } from "../components/StatusCard";
 import { formatDateTime } from "../state/documentViewModels";
 import { validationMetrics } from "../state/operationalViewModels";
-import type { RequestState } from "../state/requestState";
+import { isRequestFailure, malformedRequestState, notFoundRequestState, toRequestFailure, type RequestState } from "../state/requestState";
 import type { DocumentSummary, ValidationIssue } from "../types/document";
 
 interface ValidationData { document: DocumentSummary; issues: ValidationIssue[]; }
@@ -33,21 +32,21 @@ export function DocumentValidationPage() {
     let active = true;
     setState({ status: "loading" });
     if (!documentId) {
-      setState({ status: "error", error: toSafeClientError(null) });
+      setState(notFoundRequestState());
       return () => { active = false; };
     }
     const client = createApiClient();
     Promise.all([getDocument(client, documentId), getDocumentValidation(client, documentId)])
       .then(([document, issues]) => {
         if (!active) return;
-        if (!document.data || !issues.data) setState({ status: "error", error: toSafeClientError(null) });
+        if (!document.data || !issues.data) setState(malformedRequestState(document.request_id));
         else setState({ status: "success", data: { document: document.data, issues: issues.data } });
       })
-      .catch((error) => { if (active) setState({ status: "error", error: toSafeClientError(error) }); });
+      .catch((error) => { if (active) setState(toRequestFailure(error)); });
     return () => { active = false; };
   }, [documentId, reloadKey]);
   if (state.status === "loading") return <LoadingState label="Loading validation summary" />;
-  if (state.status === "error") return <SafeErrorState error={state.error} onRetry={() => setReloadKey((v) => v + 1)} />;
+  if (isRequestFailure(state)) return <SafeErrorState error={state.error} onRetry={() => setReloadKey((v) => v + 1)} />;
   if (state.status !== "success") return <EmptyState title="Validation unavailable" message="No safe validation summary was returned." />;
   const metrics = validationMetrics(state.data.issues);
   return <div className="page-stack">

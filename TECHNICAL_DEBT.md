@@ -437,7 +437,7 @@ References:
 
 ### Current Status
 
-**v0.17 Phases 1-3 are implemented; Phase 4 has not started.**
+**v0.17 Phases 1-4 are implemented; Phase 5 has not started.**
 
 The approved product direction is a clean enterprise FlowSync application with sidebar navigation, safe tenant/user context, a document dashboard, detail/quality/review/workflow/audit views, and explicit unauthorized/unavailable states. It remains a separate API consumer and must not share domain state or business logic with FlowSync Competitor Price, root `dashboard.py`, legacy `src/api/app.py`, or Streamlit.
 
@@ -457,6 +457,8 @@ Phase 1 provides the isolated Vite/React/TypeScript boundary, responsive enterpr
 Phase 2 provides API-backed document list/detail screens with bounded runtime payload projection, page-local cancellation-safe state, API-compatible filters, current-result search, stable status metrics and table columns, safe metadata, processing history, and validation/matching summaries. API failures remain visible with no fixture fallback. Review/workflow/audit correlations, raw preview, protected values, mutations, auth/session integration, dependency-backed typecheck/build, browser screenshots, and final theming remain deferred.
 
 Phase 3 provides API-backed validation, matching, review queue/detail, workflow, and audit views with runtime payload parsers, bounded page-local state, safe correction summaries, dry-run reprocess summaries, confidence/severity/priority labels, and allowlisted audit display metadata. The pages add no commands, fixture fallback, API changes, or backend imports. Real auth/session integration, protected previews/values, server-backed correlation beyond existing identifiers, dependency-backed typecheck/build, browser/accessibility screenshots, and final theming remain deferred.
+
+Phase 4 provides a normalized request-state catalog, fixed safe API/runtime/auth-configuration messages, concealed-resource handling, API-enforced access-scope notices, and non-authoritative runtime guidance. Frontend guards are usability-only: no identity/session adapter, login, role/permission decision, local scope security filter, credential storage, backend selection, or mutation was added. Real production identity integration, dependency-backed typecheck/build, browser/accessibility screenshots, and final product polish remain deferred.
 
 References:
 

@@ -1,7 +1,7 @@
 {
   "name": "@flowsync/document-intelligence-ui",
   "private": true,
-  "version": "0.17.0-phase.3",
+  "version": "0.17.0-phase.4",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -377,7 +377,8 @@ Status:
 - Phase 1 implemented: isolated Vite/React/TypeScript app, enterprise shell, route metadata, safe placeholders, GET-only API client contracts, strict envelope parsing, fixed safe errors, and semantic theme foundations
 - Phase 2 implemented: API-backed read-only document dashboard/detail, safe filters and current-result search, status metrics, stable table/detail projections, processing history, validation/matching summaries, fixed safe states, and no fixture fallback
 - Phase 3 implemented: read-only validation/matching quality views, review queue/detail summaries, workflow activity, allowlisted audit events, strict payload projection, and reusable confidence/severity/priority/timeline presentation
-- Phase 4 not started
+- Phase 4 implemented: normalized auth/access/unavailable/malformed request states, fixed non-reflective messages, API-enforced visibility notices, and display-only runtime guidance with no frontend permission logic
+- Phase 5 not started
 - Approved visual mockup recorded as directional product/design reference
 
 Planned capabilities:

@@ -8,7 +8,6 @@ import {
   getDocumentProcessing,
   getDocumentValidation,
 } from "../api/documents";
-import { toSafeClientError } from "../api/errors";
 import { DocumentMetadataPanel } from "../components/DocumentMetadataPanel";
 import { DocumentSectionCard } from "../components/DocumentSectionCard";
 import { EmptyState } from "../components/EmptyState";
@@ -16,7 +15,7 @@ import { LoadingState } from "../components/LoadingState";
 import { SafeErrorState } from "../components/SafeErrorState";
 import { StatusChip } from "../components/StatusChip";
 import { toDocumentDetailViewModel } from "../state/documentViewModels";
-import type { RequestState } from "../state/requestState";
+import { isRequestFailure, malformedRequestState, notFoundRequestState, toRequestFailure, type RequestState } from "../state/requestState";
 import type { DocumentDetailViewModel } from "../types/viewModels";
 
 export function DocumentDetailPage() {
@@ -30,10 +29,7 @@ export function DocumentDetailPage() {
 
     const load = async () => {
       if (!documentId) {
-        setState({
-          status: "error",
-          error: { kind: "not_found", code: "not_found", message: "The requested resource is unavailable." },
-        });
+        setState(notFoundRequestState());
         return;
       }
       try {
@@ -46,7 +42,7 @@ export function DocumentDetailPage() {
         ]);
         if (!active) return;
         if (!document.data || !processing.data || !validation.data || !matching.data) {
-          setState({ status: "error", error: toSafeClientError(null) });
+          setState(malformedRequestState(document.request_id));
           return;
         }
         setState({
@@ -54,7 +50,7 @@ export function DocumentDetailPage() {
           data: toDocumentDetailViewModel(document.data, processing.data, validation.data, matching.data),
         });
       } catch (error) {
-        if (active) setState({ status: "error", error: toSafeClientError(error) });
+        if (active) setState(toRequestFailure(error));
       }
     };
     void load();
@@ -62,7 +58,7 @@ export function DocumentDetailPage() {
   }, [documentId, reloadKey]);
 
   if (state.status === "loading") return <LoadingState label="Loading document detail" />;
-  if (state.status === "error") return <SafeErrorState error={state.error} onRetry={() => setReloadKey((value) => value + 1)} />;
+  if (isRequestFailure(state)) return <SafeErrorState error={state.error} onRetry={() => setReloadKey((value) => value + 1)} />;
   if (state.status === "empty" || state.status === "idle") {
     return <EmptyState title="Document detail is unavailable" message="No safe document metadata was returned." />;
   }

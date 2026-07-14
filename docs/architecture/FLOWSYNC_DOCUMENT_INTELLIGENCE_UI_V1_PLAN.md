@@ -1,7 +1,7 @@
 # FlowSync Document Intelligence UI v1 Plan
 
 **Milestone:** v0.17
-**Status:** Phases 1-3 implemented; Phase 4 not started
+**Status:** Phases 1-4 implemented; Phase 5 not started
 **Product surface:** FlowSync Document Intelligence
 
 ## 1. Problem Statement
@@ -272,6 +272,8 @@ Phase 1 delivers the isolated frontend boundary, responsive enterprise shell, si
 Phase 2 delivers the first real product screens at `/documents` and `/documents/:documentId`. Document payloads receive bounded runtime projection before rendering; list/detail state is local and cancellation-safe; filters narrow API reads without acting as authorization; search is labeled as applying to loaded results; and no API failure falls back to fixtures. The detail view uses only existing document, processing, validation, and matching endpoints. Protected preview, review/workflow/audit correlation, actions, auth/session behavior, and final browser polish remain deferred.
 
 Phase 3 delivers read-only validation, matching, review list/detail, workflow, and audit pages from existing GET contracts. Runtime payload parsers fail closed, audit metadata is reduced to an explicit display allowlist, correction history omits protected values, and page-local request state provides fixed loading, empty, unavailable, unauthorized, malformed-response, and safe-error behavior. No upload, review decision, correction submission, reprocess request, workflow execution, export action, fixture fallback, backend change, or global state was added. Dependency-backed type-check/build and browser rendering remain deferred because frontend dependencies are not installed.
+
+Phase 4 normalizes page request handling across explicit idle, loading, success, empty, unauthorized, forbidden, concealed-not-found, unavailable, malformed, and safe-error states. Fixed client messages cover API/runtime availability and access-configuration mismatch without reflecting backend details. Access-scope notices state that visibility is API-enforced; frontend guards remain usability-only and contain no role, permission, organization, login, session, or credential decisions. Runtime preview remains display-only and cannot select or activate services. No mutation, backend, or API behavior changed.
 
 ## 23. Deferred Work
 

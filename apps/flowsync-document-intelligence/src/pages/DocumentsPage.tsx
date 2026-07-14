@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { createApiClient } from "../api/client";
 import { listDocuments } from "../api/documents";
-import { toSafeClientError } from "../api/errors";
+import { AccessScopeNotice } from "../components/AccessScopeNotice";
 import { DataTable, type DataTableColumn } from "../components/DataTable";
 import { DocumentSummaryCards } from "../components/DocumentSummaryCards";
 import { EmptyState } from "../components/EmptyState";
@@ -11,7 +11,7 @@ import { LoadingState } from "../components/LoadingState";
 import { SafeErrorState } from "../components/SafeErrorState";
 import { StatusChip } from "../components/StatusChip";
 import { toDocumentRow, toDocumentSummaryMetrics } from "../state/documentViewModels";
-import type { RequestState } from "../state/requestState";
+import { isRequestFailure, malformedRequestState, toRequestFailure, type RequestState } from "../state/requestState";
 import type { DocumentStatus, DocumentSummary, DocumentType } from "../types/document";
 import type { DocumentRowViewModel, DocumentSummaryMetric } from "../types/viewModels";
 
@@ -88,7 +88,7 @@ export function DocumentsPage() {
         if (!active) return;
         const documents = envelope.data;
         if (!documents) {
-          setState({ status: "error", error: toSafeClientError(null) });
+          setState(malformedRequestState(envelope.request_id));
           return;
         }
         if (documents.length === 0) {
@@ -105,7 +105,7 @@ export function DocumentsPage() {
           },
         });
       } catch (error) {
-        if (active) setState({ status: "error", error: toSafeClientError(error) });
+        if (active) setState(toRequestFailure(error));
       }
     };
     void load();
@@ -128,6 +128,8 @@ export function DocumentsPage() {
         </div>
         <span className="read-only-label">API-authoritative read</span>
       </section>
+
+      <AccessScopeNotice />
 
       {state.status === "success" ? <DocumentSummaryCards metrics={state.data.metrics} /> : null}
 
@@ -166,7 +168,7 @@ export function DocumentsPage() {
 
         {state.status === "loading" ? <LoadingState label="Loading documents" /> : null}
         {state.status === "empty" ? <EmptyState title="No documents found" message="No documents match the selected API filters." /> : null}
-        {state.status === "error" ? <SafeErrorState error={state.error} onRetry={() => setReloadKey((value) => value + 1)} /> : null}
+        {isRequestFailure(state) ? <SafeErrorState error={state.error} onRetry={() => setReloadKey((value) => value + 1)} /> : null}
         {state.status === "success" && visibleRows.length === 0 ? (
           <EmptyState title="No current results match" message="Clear or change the current-result search." />
         ) : null}

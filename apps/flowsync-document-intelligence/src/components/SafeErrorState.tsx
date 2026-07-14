@@ -12,12 +12,25 @@ export function SafeErrorState({ error, onRetry }: SafeErrorStateProps) {
     : error.kind === "unavailable"
       ? WifiOff
       : AlertTriangle;
+  const detail = error.kind === "unauthorized"
+    ? "Authentication is handled outside this application."
+    : error.kind === "forbidden"
+      ? "Access is enforced by the Document Intelligence API."
+      : error.kind === "not_found"
+        ? "The resource may not exist or may be outside your current access scope."
+        : error.kind === "invalid_response"
+          ? "No data was displayed because the response could not be safely validated."
+          : error.kind === "auth_mismatch"
+            ? "Contact the environment owner to review access configuration."
+            : error.kind === "runtime_unavailable"
+              ? "The application remains read-only while runtime services are unavailable."
+              : "No protected data was loaded.";
 
   return (
     <section className="safe-error-state" role="status">
       <Icon size={24} aria-hidden="true" />
       <h2>{error.message}</h2>
-      <p>No protected data was loaded.</p>
+      <p>{detail}</p>
       {error.requestId ? <span>Support reference: {error.requestId}</span> : null}
       {onRetry ? (
         <button className="secondary-button" type="button" onClick={onRetry}>

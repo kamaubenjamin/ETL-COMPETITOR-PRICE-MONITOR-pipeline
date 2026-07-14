@@ -2,8 +2,8 @@ import { AlertCircle, ClipboardCheck, UserRoundCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { createApiClient } from "../api/client";
-import { toSafeClientError } from "../api/errors";
 import { listReviewCases } from "../api/reviews";
+import { AccessScopeNotice } from "../components/AccessScopeNotice";
 import { DataTable, type DataTableColumn } from "../components/DataTable";
 import { EmptyState } from "../components/EmptyState";
 import { LoadingState } from "../components/LoadingState";
@@ -14,7 +14,7 @@ import { StatusCard } from "../components/StatusCard";
 import { StatusChip } from "../components/StatusChip";
 import { formatDateTime } from "../state/documentViewModels";
 import { reviewMetrics } from "../state/operationalViewModels";
-import type { RequestState } from "../state/requestState";
+import { isRequestFailure, toRequestFailure, type RequestState } from "../state/requestState";
 import type { ReviewCaseSummary } from "../types/review";
 
 const COLUMNS: readonly DataTableColumn<ReviewCaseSummary>[] = [
@@ -36,15 +36,16 @@ export function ReviewCasesPage() {
     listReviewCases(createApiClient()).then((result) => {
       const data = result.data ?? [];
       if (active) setState(data.length ? { status: "success", data } : { status: "empty" });
-    }).catch((error) => { if (active) setState({ status: "error", error: toSafeClientError(error) }); });
+    }).catch((error) => { if (active) setState(toRequestFailure(error)); });
     return () => { active = false; };
   }, [reloadKey]);
   if (state.status === "loading") return <LoadingState label="Loading review queue" />;
-  if (state.status === "error") return <SafeErrorState error={state.error} onRetry={() => setReloadKey((v) => v + 1)} />;
+  if (isRequestFailure(state)) return <SafeErrorState error={state.error} onRetry={() => setReloadKey((v) => v + 1)} />;
   if (state.status !== "success") return <EmptyState title="No review cases" message="The API returned no review cases for the current view." />;
   const metrics = reviewMetrics(state.data);
   return <div className="page-stack">
     <section className="page-heading"><div><span className="eyebrow">Human review</span><h2>Review queue</h2><p>Read-only workload and case context from the Document Intelligence API.</p></div><ReadOnlyNotice message="Decisions and corrections are not available in this view." /></section>
+    <AccessScopeNotice />
     <section className="status-grid status-grid--five">
       <StatusCard label="Total cases" value={String(metrics.total)} detail="Current API result" icon={<ClipboardCheck size={18} />} />
       <StatusCard label="Review required" value={String(metrics.required)} detail="Awaiting triage" tone={metrics.required ? "critical" : "positive"} icon={<AlertCircle size={18} />} />

@@ -31,6 +31,9 @@ const requiredFiles = [
   "src/pages/ReviewCaseDetailPage.tsx",
   "src/pages/WorkflowsPage.tsx",
   "src/pages/AuditPage.tsx",
+  "src/components/AccessScopeNotice.tsx",
+  "src/components/SafeAlert.tsx",
+  "src/state/requestState.ts",
 ];
 for (const name of requiredFiles) {
   if (!source.some((file) => file.name === name)) failures.push(`missing required source: ${name}`);
@@ -77,7 +80,7 @@ const forbiddenPatterns = [
   { pattern: /method:\s*["'](?:POST|PUT|PATCH|DELETE)["']/i, label: "mutation method" },
   { pattern: /from\s+["'][^"']*(?:document_state|platform_runtime|ui\/streamlit|competitor)/i, label: "forbidden import" },
   { pattern: /\b(?:Authorization|Bearer|localStorage|sessionStorage|document\.cookie)\b/, label: "credential or browser storage" },
-  { pattern: /\b(?:tenant_id|raw_document|raw_rows|correction_value|artifact_payload|storage_path|stack_trace)\b/i, label: "sensitive field" },
+  { pattern: /\b(?:tenant_id|raw_document|raw_rows|correction_value|artifact_payload|storage_path|stack_trace|backend_config|access_token|raw_claims)\b/i, label: "sensitive field" },
   { pattern: /\b(?:fixture|mock)_?(?:fallback)?\b/i, label: "fixture fallback" },
 ];
 
@@ -99,6 +102,33 @@ for (const file of source) {
 const actionSources = source.filter((file) => phaseThreePages.has(file.name)).map((file) => file.content).join("\n");
 if (/method:\s*["'](?:POST|PUT|PATCH|DELETE)["']/i.test(actionSources)) failures.push("Phase 3 mutation request found");
 
+const requestStateSource = source.find((file) => file.name === "src/state/requestState.ts")?.content ?? "";
+for (const status of ["idle", "loading", "success", "empty", "unauthorized", "forbidden", "not_found", "unavailable", "malformed", "safe_error"]) {
+  if (!requestStateSource.includes(`"${status}"`)) failures.push(`missing request state: ${status}`);
+}
+
+const safeCopy = source
+  .filter((file) => ["src/api/errors.ts", "src/components/AccessScopeNotice.tsx", "src/pages/RuntimePreviewPage.tsx"].includes(file.name))
+  .map((file) => file.content)
+  .join("\n");
+for (const message of [
+  "Sign in is required to continue.",
+  "You do not have access to this view.",
+  "not found or is unavailable to your access scope",
+  "temporarily unavailable",
+  "runtime is currently unavailable",
+  "access is not configured for this environment",
+  "invalid response",
+  "API-enforced visibility",
+]) {
+  if (!safeCopy.includes(message)) failures.push(`missing fixed safe copy: ${message}`);
+}
+
+const permissionDecisionPattern = /if\s*\([^)]*\b(?:role|permission|organization)\b|\.filter\s*\([^)]*\b(?:tenant|permission)\b/i;
+for (const file of source) {
+  if (permissionDecisionPattern.test(file.content)) failures.push(`frontend access decision logic found in ${file.name}`);
+}
+
 const clientSource = source.find((file) => file.name === "src/api/client.ts")?.content ?? "";
 if (!clientSource.includes('method: "GET"')) failures.push("GET-only client method is missing");
 
@@ -107,4 +137,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`Validated ${sourceFiles.length} frontend source files: Phase 3 routes, GET-only API, boundaries, and privacy checks passed.`);
+console.log(`Validated ${sourceFiles.length} frontend source files: Phase 4 auth states, GET-only API, boundaries, and privacy checks passed.`);

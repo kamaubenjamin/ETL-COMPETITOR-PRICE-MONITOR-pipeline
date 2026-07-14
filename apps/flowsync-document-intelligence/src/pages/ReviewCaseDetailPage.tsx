@@ -2,7 +2,6 @@ import { ArrowLeft, ClipboardList, FilePenLine, RefreshCcw } from "lucide-react"
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { createApiClient } from "../api/client";
-import { toSafeClientError } from "../api/errors";
 import { getReviewCase, listCorrectionHistory, listReprocessPlans } from "../api/reviews";
 import { EmptyState } from "../components/EmptyState";
 import { LoadingState } from "../components/LoadingState";
@@ -14,7 +13,7 @@ import { StatusChip } from "../components/StatusChip";
 import { TimelineList } from "../components/TimelineList";
 import { displayLabel, formatDateTime } from "../state/documentViewModels";
 import { correctionTimeline, reprocessTimeline } from "../state/operationalViewModels";
-import type { RequestState } from "../state/requestState";
+import { isRequestFailure, malformedRequestState, notFoundRequestState, toRequestFailure, type RequestState } from "../state/requestState";
 import type { CorrectionSummary, ReprocessPlanSummary, ReviewCaseSummary } from "../types/review";
 
 interface ReviewDetailData { reviewCase: ReviewCaseSummary; corrections: CorrectionSummary[]; plans: ReprocessPlanSummary[]; }
@@ -26,18 +25,18 @@ export function ReviewCaseDetailPage() {
   useEffect(() => {
     let active = true;
     setState({ status: "loading" });
-    if (!reviewCaseId) { setState({ status: "error", error: toSafeClientError(null) }); return () => { active = false; }; }
+    if (!reviewCaseId) { setState(notFoundRequestState()); return () => { active = false; }; }
     const client = createApiClient();
     Promise.all([getReviewCase(client, reviewCaseId), listCorrectionHistory(client, reviewCaseId), listReprocessPlans(client)])
       .then(([reviewCase, corrections, plans]) => {
         if (!active) return;
-        if (!reviewCase.data || !corrections.data || !plans.data) setState({ status: "error", error: toSafeClientError(null) });
+        if (!reviewCase.data || !corrections.data || !plans.data) setState(malformedRequestState(reviewCase.request_id));
         else setState({ status: "success", data: { reviewCase: reviewCase.data, corrections: corrections.data, plans: plans.data.filter((plan) => plan.review_case_id === reviewCaseId) } });
-      }).catch((error) => { if (active) setState({ status: "error", error: toSafeClientError(error) }); });
+      }).catch((error) => { if (active) setState(toRequestFailure(error)); });
     return () => { active = false; };
   }, [reviewCaseId, reloadKey]);
   if (state.status === "loading") return <LoadingState label="Loading review case" />;
-  if (state.status === "error") return <SafeErrorState error={state.error} onRetry={() => setReloadKey((v) => v + 1)} />;
+  if (isRequestFailure(state)) return <SafeErrorState error={state.error} onRetry={() => setReloadKey((v) => v + 1)} />;
   if (state.status !== "success") return <EmptyState title="Review case unavailable" message="No safe case summary was returned." />;
   const item = state.data.reviewCase;
   return <div className="page-stack">

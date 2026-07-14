@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { createApiClient } from "../api/client";
 import { getDocument, getDocumentMatching } from "../api/documents";
-import { toSafeClientError } from "../api/errors";
 import { ConfidenceBar } from "../components/ConfidenceBar";
 import { DataTable, type DataTableColumn } from "../components/DataTable";
 import { EmptyState } from "../components/EmptyState";
@@ -13,7 +12,7 @@ import { SafeErrorState } from "../components/SafeErrorState";
 import { StatusCard } from "../components/StatusCard";
 import { StatusChip } from "../components/StatusChip";
 import { matchingMetrics } from "../state/operationalViewModels";
-import type { RequestState } from "../state/requestState";
+import { isRequestFailure, malformedRequestState, notFoundRequestState, toRequestFailure, type RequestState } from "../state/requestState";
 import type { DocumentSummary, MatchingResult } from "../types/document";
 
 interface MatchingData { document: DocumentSummary; results: MatchingResult[]; }
@@ -32,18 +31,18 @@ export function DocumentMatchingPage() {
   useEffect(() => {
     let active = true;
     setState({ status: "loading" });
-    if (!documentId) { setState({ status: "error", error: toSafeClientError(null) }); return () => { active = false; }; }
+    if (!documentId) { setState(notFoundRequestState()); return () => { active = false; }; }
     const client = createApiClient();
     Promise.all([getDocument(client, documentId), getDocumentMatching(client, documentId)])
       .then(([document, results]) => {
         if (!active) return;
-        if (!document.data || !results.data) setState({ status: "error", error: toSafeClientError(null) });
+        if (!document.data || !results.data) setState(malformedRequestState(document.request_id));
         else setState({ status: "success", data: { document: document.data, results: results.data } });
-      }).catch((error) => { if (active) setState({ status: "error", error: toSafeClientError(error) }); });
+      }).catch((error) => { if (active) setState(toRequestFailure(error)); });
     return () => { active = false; };
   }, [documentId, reloadKey]);
   if (state.status === "loading") return <LoadingState label="Loading matching summary" />;
-  if (state.status === "error") return <SafeErrorState error={state.error} onRetry={() => setReloadKey((v) => v + 1)} />;
+  if (isRequestFailure(state)) return <SafeErrorState error={state.error} onRetry={() => setReloadKey((v) => v + 1)} />;
   if (state.status !== "success") return <EmptyState title="Matching unavailable" message="No safe matching summary was returned." />;
   const metrics = matchingMetrics(state.data.results);
   return <div className="page-stack">

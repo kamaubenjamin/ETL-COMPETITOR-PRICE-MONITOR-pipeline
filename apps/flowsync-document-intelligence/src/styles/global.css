@@ -366,6 +366,69 @@ a:focus-visible {
   line-height: 1.4;
 }
 
+.access-scope-notice,
+.safe-alert {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-low);
+}
+
+.access-scope-notice {
+  border-left: 3px solid var(--color-accent);
+  color: var(--color-accent);
+}
+
+.access-scope-notice div,
+.safe-alert div {
+  min-width: 0;
+}
+
+.access-scope-notice strong,
+.access-scope-notice span,
+.safe-alert strong {
+  display: block;
+}
+
+.access-scope-notice strong,
+.safe-alert strong {
+  font-size: 12px;
+}
+
+.access-scope-notice span,
+.safe-alert p {
+  margin: 4px 0 0;
+  color: var(--color-text-muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.safe-alert-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.safe-alert-grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.safe-alert-icon {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  place-items: center;
+  border-radius: var(--radius-small);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
 .severity-badge,
 .priority-badge {
   display: inline-flex;
@@ -921,6 +984,10 @@ a:focus-visible {
   .document-section-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .safe-alert-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 760px) {
@@ -983,6 +1050,11 @@ a:focus-visible {
 
   .read-only-notice {
     max-width: none;
+  }
+
+  .safe-alert-grid,
+  .safe-alert-grid--two {
+    grid-template-columns: 1fr;
   }
 
   .status-grid,

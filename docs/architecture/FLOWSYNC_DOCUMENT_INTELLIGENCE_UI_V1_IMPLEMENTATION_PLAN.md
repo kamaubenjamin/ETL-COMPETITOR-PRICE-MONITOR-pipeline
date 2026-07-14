@@ -1,7 +1,7 @@
 # FlowSync Document Intelligence UI v1 Implementation Plan
 
 **Milestone:** v0.17
-**Status:** Phases 1-3 implemented; Phase 4 not started
+**Status:** Phases 1-4 implemented; Phase 5 not started
 
 ## 1. Milestone Overview
 
@@ -144,6 +144,8 @@ Stop after supported read-only views. Do not enable any action or request an API
 
 ## 7. Phase 4: Auth/Tenant-Aware States And Error Hardening
 
+**Status:** Implemented
+
 ### Scope
 
 Integrate the approved FlowSync session boundary when available and harden all safe states without moving authorization into the UI.
@@ -174,6 +176,15 @@ Run auth-state, privacy, browser-storage, route, API compatibility, accessibilit
 ### Stop Condition
 
 Stop after read-only auth/error hardening. Do not implement identity providers, login, tenant administration, or mutations unless separately approved.
+
+### Delivered
+
+- One request-state mapper now distinguishes unauthorized, forbidden, concealed not-found, unavailable, malformed, and fixed safe-error outcomes across every data page.
+- Client status mapping uses fixed codes and copy for API/runtime availability and access-configuration mismatch; raw API messages are never rendered.
+- Access-scope notices explain that record visibility and permissions are API-enforced and may limit returned results.
+- Dedicated unauthorized, unavailable, and runtime-preview pages provide fixed, display-only guidance without selecting services or inspecting identity data.
+- The dependency-free validator requires the Phase 4 state catalog and safe copy, and rejects frontend permission decisions, local scope filtering, browser credential storage, sensitive fields, mutation methods, fixture fallback, and forbidden imports.
+- No session adapter was added because no approved identity boundary is available. Type-check, build, browser, and accessibility verification remain deferred because frontend dependencies are not installed.
 
 ## 8. Phase 5: Product Polish, Tests, And Integration Verification
 
