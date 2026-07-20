@@ -17,7 +17,7 @@ The entrypoint only imports and re-exports the existing FastAPI instance. It con
 
 ## Minimal Dependency Strategy
 
-`requirements-api.txt` is the reviewed API-only install manifest. Phase 6 hosted deployment exposed an incomplete Phase 3 packaging assumption: importing the existing app also traverses `platform_runtime`, `workflow_runtime`, and the eager `src.transforms` package exports, which require pandas during module import. The manifest therefore directly pins `fastapi==0.139.2`, `httpx==0.28.1`, `PyJWT[crypto]==2.10.1`, and `pandas==3.0.2`. Their declared dependencies remain transitive. Vercel does not need `uvicorn` for an ASGI function.
+`requirements-api.txt` is the reviewed API-only install manifest. Phase 6 initially exposed an eager import from `platform_runtime` through the Workflow Runtime package facade into pandas. Adding pandas exceeded the Vercel bundle limit, so the facade now resolves its existing public runtime implementations lazily. Clean API startup directly requires only `fastapi==0.139.2`, `httpx==0.28.1`, and `PyJWT[crypto]==2.10.1`. Their declared dependencies remain transitive. Vercel does not need `uvicorn` for an ASGI function.
 
 The root `requirements.txt` remains the broad local ETL/Streamlit/test manifest and is intentionally not the Project B install source. `vercel.json` sets the exact install command:
 
@@ -25,7 +25,7 @@ The root `requirements.txt` remains the broad local ETL/Streamlit/test manifest 
 python -m pip install -r requirements-api.txt
 ```
 
-This prevents Streamlit, Selenium, Playwright, ETL scraping/PDF packages, pytest, development tools, and unrelated competitor-price dependencies from being intentionally installed into the API function. NumPy, python-dateutil, and tzdata are installed transitively by pandas and are not duplicated as direct pins.
+This prevents pandas, NumPy, Streamlit, Selenium, Playwright, ETL scraping/PDF packages, pytest, development tools, and unrelated competitor-price dependencies from being intentionally installed into the API function. Full local transformation execution continues to use the root development/runtime manifest.
 
 ## Python Runtime
 

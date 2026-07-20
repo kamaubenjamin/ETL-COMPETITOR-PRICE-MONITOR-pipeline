@@ -52,7 +52,7 @@ No Vercel deployment, Supabase resource, migration, API/frontend behavior change
 ### Implementation Record
 
 - Added `api/index.py` as a side-effect-free re-export of the existing FastAPI app.
-- Pinned Python 3.12 and added an exact minimal API-only Vercel install manifest. A Phase 6 clean-install hotfix corrected the original FastAPI-only assumption by adding `pandas==3.0.2`, which is required by the existing startup import closure through Workflow Runtime and `src.transforms`; pandas' own dependencies remain transitive.
+- Pinned Python 3.12 and added an exact minimal API-only Vercel install manifest. Phase 6 initially proved an eager Workflow Runtime package import reached pandas, then a bundle-size hotfix moved the existing public Runtime facade to lazy exports. Clean startup now excludes pandas and NumPy, so the deployment manifest contains only FastAPI, the Supabase HTTP client, and JWT/crypto verification.
 - Added minimal function bundle exclusions without excluding required `src` imports or adding frontend rewrites.
 - Activated strict exact-origin CORS only when configured, with HTTPS required for hosted environments and no credentials.
 - Rejected local-demo identity authority in UAT/pilot/production composition; hosted mutations remain fail-closed pending Phase 5.

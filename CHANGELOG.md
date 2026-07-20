@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Fixed the v0.21 Phase 6 Vercel API startup manifest by adding the proven `pandas==3.0.2` dependency required by the existing `api.index` transitive import closure. Added a dependency/no-I/O startup validator and clean Python 3.12 install verification while retaining the API-only manifest boundary; no Auth, CORS, route, schema, runtime behavior, deployment, commit, push, or tag change was made.
+- Fixed the v0.21 Phase 6 Vercel API bundle overflow by making the `src.workflow_runtime` public facade lazy, preventing API startup from importing pandas/NumPy while preserving explicit runtime and transformation imports. Restored the three-package API manifest and expanded clean-import, no-I/O, required-route, prohibited-dependency, and explicit transformation regression coverage. No Auth, CORS, route, schema, Supabase/RLS, business behavior, deployment, commit, push, or tag change was made.
 
 - Added v0.21 Phase 5 Supabase Auth and tenant-bootstrap preparation with the official singleton browser client, existing-user email/password sign-in, session restoration/refresh/sign-out, protected FlowSync routes, bearer propagation, asymmetric FastAPI JWT/JWKS verification, RLS-constrained one-membership tenant resolution, fixed server role permissions, safe session projection, minimal tenant/membership schema, and owner bootstrap documentation. No cloud user, remote migration, deployment, document/workflow persistence, storage, execution, OCR/LLM, ERP/export, worker, production activation, commit, push, or tag was performed.
 

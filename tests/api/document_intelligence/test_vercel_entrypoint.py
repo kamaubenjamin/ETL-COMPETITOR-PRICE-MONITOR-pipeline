@@ -40,9 +40,10 @@ def test_vercel_runtime_and_minimal_manifest_are_explicit() -> None:
         "fastapi==0.139.2",
         "httpx==0.28.1",
         "pyjwt[crypto]==2.10.1",
-        "pandas==3.0.2",
     ]
     for prohibited in (
+        "pandas",
+        "numpy",
         "streamlit",
         "selenium",
         "playwright",
@@ -54,8 +55,6 @@ def test_vercel_runtime_and_minimal_manifest_are_explicit() -> None:
         "uvicorn",
     ):
         assert prohibited not in manifest
-    for transitive_only in ("numpy", "python-dateutil", "tzdata"):
-        assert transitive_only not in manifest
 
     config = json.loads((ROOT / "vercel.json").read_text(encoding="utf-8"))
     assert config["installCommand"] == "python -m pip install -r requirements-api.txt"
@@ -78,6 +77,59 @@ def test_api_runtime_dependency_validator_passes_for_the_active_interpreter() ->
 
     assert result.returncode == 0, result.stdout + result.stderr
     assert "api runtime dependency validation passed" in result.stdout.lower()
+
+
+def test_vercel_entrypoint_does_not_eagerly_import_tabular_dependencies() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "from api.index import app; import sys; "
+                "assert 'pandas' not in sys.modules; "
+                "assert 'numpy' not in sys.modules; "
+                "paths=set(app.openapi()['paths']); "
+                "assert '/health' in paths; "
+                "assert '/api/v1/health' in paths; "
+                "assert '/api/v1/workflow-definitions' in paths"
+            ),
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        timeout=30,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stdout + result.stderr
+
+
+def test_public_transform_api_executes_when_explicitly_requested() -> None:
+    import pandas as pd
+
+    from src.transforms import aggregate_data
+
+    result = aggregate_data(
+        pd.DataFrame({"amount": [10, 20]}),
+        {
+            "contract_version": 1,
+            "group_by": [],
+            "aggregations": [{"field": "amount", "function": "sum", "output": "total"}],
+            "drop_null_groups": False,
+        },
+    )
+
+    assert result.to_dict("records") == [{"total": 30}]
+
+
+def test_workflow_runtime_public_exports_resolve_when_explicitly_requested() -> None:
+    import src.workflow_runtime as workflow_runtime
+    from src.workflow_runtime.dsl.workflow_parser import WorkflowParser
+    from src.workflow_runtime.locking import LockProvider
+
+    assert "WorkflowParser" in dir(workflow_runtime)
+    assert workflow_runtime.WorkflowParser is WorkflowParser
+    assert workflow_runtime.LockProvider is LockProvider
 
 
 def test_runtime_is_executing_a_supported_python_312_interpreter() -> None:

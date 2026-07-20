@@ -16,9 +16,10 @@ EXPECTED_DEPENDENCIES = (
     "fastapi==0.139.2",
     "httpx==0.28.1",
     "pyjwt[crypto]==2.10.1",
-    "pandas==3.0.2",
 )
 PROHIBITED_DEPENDENCIES = (
+    "pandas",
+    "numpy",
     "streamlit",
     "selenium",
     "playwright",
@@ -30,8 +31,7 @@ PROHIBITED_DEPENDENCIES = (
     "openpyxl",
     "uvicorn",
 )
-TRANSITIVE_ONLY_DEPENDENCIES = ("numpy", "python-dateutil", "tzdata")
-REQUIRED_HEALTH_ROUTES = frozenset({"/health", "/api/v1/health"})
+REQUIRED_ROUTES = frozenset({"/health", "/api/v1/health", "/api/v1/workflow-definitions"})
 
 
 def _manifest_dependencies() -> tuple[str, ...]:
@@ -56,8 +56,7 @@ def _guard_startup_io():
 
     def guarded_os_open(path, flags, *args, **kwargs):
         write_flags = os.O_WRONLY | os.O_RDWR | os.O_APPEND | os.O_CREAT | os.O_TRUNC
-        is_null_device = os.path.normcase(os.fspath(path)) == os.path.normcase(os.devnull)
-        if flags & write_flags and not is_null_device:
+        if flags & write_flags:
             raise AssertionError(f"api.index import attempted a filesystem write: {path}")
         return real_os_open(path, flags, *args, **kwargs)
 
@@ -86,10 +85,6 @@ def main() -> int:
     for prohibited in PROHIBITED_DEPENDENCIES:
         if any(line.startswith(prohibited) for line in dependencies):
             raise AssertionError(f"prohibited API runtime dependency: {prohibited}")
-    for transitive in TRANSITIVE_ONLY_DEPENDENCIES:
-        if any(line.startswith(transitive) for line in dependencies):
-            raise AssertionError(f"transitive dependency must not be duplicated: {transitive}")
-
     sys.path.insert(0, str(ROOT))
     sys.dont_write_bytecode = True
     _guard_startup_io()
@@ -97,16 +92,20 @@ def main() -> int:
     from api.index import app
     from fastapi import FastAPI
 
+    for prohibited_module in ("pandas", "numpy"):
+        if prohibited_module in sys.modules:
+            raise AssertionError(f"api.index eagerly imported {prohibited_module}")
     if not isinstance(app, FastAPI):
         raise AssertionError("api.index did not export a FastAPI application")
     paths = set(app.openapi()["paths"])
-    missing_routes = REQUIRED_HEALTH_ROUTES - paths
+    missing_routes = REQUIRED_ROUTES - paths
     if missing_routes:
-        raise AssertionError(f"api.index is missing health routes: {sorted(missing_routes)}")
+        raise AssertionError(f"api.index is missing required routes: {sorted(missing_routes)}")
 
     print("API runtime dependency validation passed")
     print(f"app_type={type(app).__name__}")
-    print(f"health_routes={','.join(sorted(REQUIRED_HEALTH_ROUTES))}")
+    print("tabular_modules_loaded=false")
+    print(f"required_routes={','.join(sorted(REQUIRED_ROUTES))}")
     return 0
 
 
