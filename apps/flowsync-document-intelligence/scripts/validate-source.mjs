@@ -71,6 +71,7 @@ const requiredFiles = [
   "src/components/workflows/ValidationPanel.tsx",
   "src/components/workflows/PreviewPanel.tsx",
   "src/components/workflows/OperationCatalogPanel.tsx",
+  "src/config/deploymentEnvironment.ts",
 ];
 for (const name of requiredFiles) {
   if (!source.some((file) => file.name === name)) failures.push(`missing required source: ${name}`);
@@ -183,6 +184,18 @@ for (const file of source) {
 const clientSource = source.find((file) => file.name === "src/api/client.ts")?.content ?? "";
 if (!clientSource.includes('method: "GET"')) failures.push("GET-only client method is missing");
 if (!clientSource.includes("async mutate<T>") || !clientSource.includes('method: "POST"')) failures.push("centralized guarded mutation client is missing");
+if (!clientSource.includes("configuredBaseUrl || DEFAULT_LOCAL_API_URL")) failures.push("blank API URL safe fallback is missing");
+
+const environmentSource = source.find((file) => file.name === "src/config/deploymentEnvironment.ts")?.content ?? "";
+const headerSource = source.find((file) => file.name === "src/components/Header.tsx")?.content ?? "";
+for (const value of ["Local Development", "UAT / Technical Preview", "resolveDeploymentEnvironmentLabel"]) {
+  if (!environmentSource.includes(value)) failures.push(`missing safe deployment label behavior: ${value}`);
+}
+if (!headerSource.includes("deploymentEnvironmentLabel") || !headerSource.includes("environment-indicator")) failures.push("environment label is not rendered in the header");
+const frontendSource = source.map((file) => file.content).join("\n");
+for (const serverOnlyName of ["SUPABASE_SECRET_KEY", "SUPABASE_SERVICE_ROLE_KEY", "DATABASE_URL", "JWT_JWKS_URL"]) {
+  if (frontendSource.includes(serverOnlyName)) failures.push(`server-only environment name found in frontend source: ${serverOnlyName}`);
+}
 for (const file of source) {
   if (file.name !== "src/api/client.ts" && /method:\s*["'](?:POST|PUT|PATCH|DELETE)["']/i.test(file.content)) {
     failures.push(`unapproved mutation method found in ${file.name}`);

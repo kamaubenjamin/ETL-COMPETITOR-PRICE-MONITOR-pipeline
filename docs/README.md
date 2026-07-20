@@ -7,6 +7,7 @@ Real-time multi-source price tracking with automated ETL pipeline. Monitor compe
 - [Deployment architecture plan](./architecture/ZERO_BUDGET_UAT_DEPLOYMENT_V1_PLAN.md)
 - [Deployment implementation plan](./architecture/ZERO_BUDGET_UAT_DEPLOYMENT_V1_IMPLEMENTATION_PLAN.md)
 - [Phase 1 deployment audit](./implementation/V0_21_PHASE_1_DEPLOYMENT_AUDIT.md)
+- [Phase 2 Supabase UAT foundation](./implementation/V0_21_PHASE_2_SUPABASE_UAT_FOUNDATION.md)
 - [ADR-026](./adr/ADR-026-zero-budget-vercel-supabase-uat.md)
 
 ## v0.20 Business Workflow / Rules Studio Documentation

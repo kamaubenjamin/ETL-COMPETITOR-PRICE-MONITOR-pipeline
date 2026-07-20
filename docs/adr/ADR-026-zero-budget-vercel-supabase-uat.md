@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.21 planning. Phase 1 performs audit and documentation only; no deployment or cloud resource is authorized by this ADR alone.
+Accepted for v0.21. Phase 1 completed the audit; Phase 2 establishes environment templates, ignore/secret policy, configuration parsing, UAT labeling, and manual Supabase preparation without runtime integration. No deployment or cloud resource is authorized by this ADR alone.
 
 ## Context
 
@@ -33,6 +33,8 @@ Use separate Vercel projects rather than combining frontend and API. Project A o
 - Workflow Studio may remain in-memory for early UAT with explicit loss-on-recycle warnings. Durable Workflow Studio persistence is not authorized in Phase 1.
 - Optional local SQLite and `Banks.db` are not serverless UAT persistence.
 - Existing ETL Supabase telemetry tables are outside the Document Intelligence UAT data model and must not be repurposed silently.
+- Phase 2 requires zero application tables. Future tenant/workflow names remain deferred planning vocabulary and do not authorize migrations or RLS.
+- CORS origin parsing may be prepared without enabling middleware; hosted Auth/JWT validation remains a Phase 5 authority boundary.
 
 ## Serverless Decision
 

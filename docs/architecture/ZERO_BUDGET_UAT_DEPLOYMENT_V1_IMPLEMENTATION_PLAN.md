@@ -20,6 +20,17 @@ No Vercel deployment, Supabase resource, migration, API/frontend behavior change
 
 ## Phase 2: Supabase UAT Project And Environment Preparation
 
+**Status:** Complete; owner-operated cloud values remain private and application integration remains disabled.
+
+### Implementation Record
+
+- Added separate browser/server environment examples with no real values and explicit public/server-only classifications.
+- Hardened ignore rules without excluding future Supabase migrations.
+- Added a deterministic no-I/O `APP_ENV` and CORS-origin parsing contract; CORS remains disabled.
+- Added a sanitized environment-driven FlowSync label with `Local Development` fallback and UAT technical-preview rendering.
+- Documented manual dashboard, redirect, private bucket, zero-table/migration, deferred schema/RLS, and no-SDK decisions.
+- Added targeted API configuration and frontend source checks. No Supabase runtime call, dependency, migration, deployment, or production behavior was added.
+
 ### Deliverables
 
 - Owner-created Supabase Free project in a UAT-only organization/project boundary.
@@ -97,7 +108,7 @@ No service-role key in the frontend, wildcard tenant access, production user, cu
 
 ## Verification Matrix
 
-Phase 1 runs only non-mutating checks:
+Phase 2 runs the approved local checks without cloud or Supabase network operations:
 
 ```text
 git status --short --branch
@@ -110,6 +121,8 @@ npm run build
 python -m compileall -q src/api/document_intelligence src/platform_runtime src/security src/workflow_studio
 python -c "from src.api.document_intelligence.app import app; print(app.title)"
 python -m pytest tests/api/document_intelligence/test_app.py tests/api/document_intelligence/test_health.py -q
+python -m pytest tests/api/document_intelligence -q
+python -m pytest tests/workflow_studio -q
 python scripts/verify_boundaries.py
 
 git diff --check

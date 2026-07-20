@@ -4,6 +4,8 @@ Technical debt and missing test fixtures
 
 Phase 1 audits and plans a KSh 0 UAT deployment without creating cloud resources or changing runtime behavior. Current deployment debt is classified in `docs/implementation/V0_21_PHASE_1_DEPLOYMENT_AUDIT.md`.
 
+Phase 2 adds safe environment examples, secret/ignore policy, deterministic API environment/CORS parsing without middleware activation, a bounded UAT label, and manual Supabase Auth/Storage/database preparation. No application table, migration, SDK, runtime call, hosted Auth, storage path, durable repository, or deployment exists. Owner-collected cloud values remain outside Git.
+
 Blocking or required before hosted UAT:
 
 - Owner confirmation that the intended UAT is eligible for Vercel Hobby's personal, non-commercial terms; otherwise the KSh 0 target needs a different host
@@ -12,8 +14,6 @@ Blocking or required before hosted UAT:
 - Strict environment-driven CORS allowlist for the FlowSync UAT origin
 - Vite SPA rewrite for direct-route refreshes
 - Hosted API base URL configuration and explicit UAT banner
-- `.env.*` and `.vercel/` ignore hardening before cloud tooling
-- Supabase UAT project/service/environment inventory without inferred migrations
 - Real Supabase Auth/JWT identity and tenant composition before authenticated UAT
 
 Accepted only for bounded UAT: process-local Workflow Studio/query state, free-tier cold starts/pauses, no SLA, default unavailable preview, no background processing, and synthetic test data only.

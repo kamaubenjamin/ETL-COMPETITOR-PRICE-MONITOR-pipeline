@@ -6,6 +6,12 @@
 
 **Cost ceiling:** KSh 0; free tiers only
 
+## Phase 2 Implementation Record
+
+Phase 2 adds server and browser-safe environment templates, hardened ignore rules, a pure API environment/CORS parsing contract, a bounded visible UAT label, manual Supabase project/Auth/Storage/database setup guidance, and explicit secret classification. It does not create or call Supabase, enable CORS/Auth/storage/persistence, add an SDK/dependency/migration, deploy Vercel, or activate production behavior.
+
+The owner-created Supabase project remains an unconnected UAT foundation. Current application table count is zero, Workflow Studio remains process-local, and the proposed future workflow/tenant table names are non-executable planning vocabulary only.
+
 ## 1. Objective
 
 Provide a controlled path to a hosted, non-production UAT environment using two Vercel projects, one Supabase Free project, and GitHub deployment integration. The environment is for test data and bounded product review only. It is not a production, pilot, bulk-processing, or execution-activation environment.
@@ -36,7 +42,7 @@ Frontend and API remain separate Vercel projects. The API is serverless and stat
 - Default authentication is disabled. Reads use local in-memory data; management mutations fail closed. The browser client omits credentials and sends no bearer token.
 - Optional SQLite Document State exists elsewhere in the platform, but is not composed by the default API. SQLite and tracked `Banks.db` must not be treated as serverless durable storage.
 - No Supabase CLI config or migration directory exists. Existing Supabase code is a separate ETL telemetry REST client for `pipeline_runs`, `ingestion_logs`, and `operational_alerts`; the Document Intelligence API does not consume it.
-- Root `.gitignore` ignores `.env` but not `.env.*` or `.vercel/`; this must be hardened before cloud tooling or environment files are used.
+- Phase 2 hardens `.gitignore` for real environment files, Vercel state, Supabase temporary/branch/cache state, and credential exports while preserving example templates and future migrations.
 
 ## 4. Recommended Vercel Projects
 
@@ -53,7 +59,7 @@ Frontend and API remain separate Vercel projects. The API is serverless and stat
 | Production/UAT branch | `platform/intelligent-document-processing` for this milestone; do not point `main` at UAT implicitly |
 | URL role | Browser-visible UAT application origin |
 
-Required before deployment: add the SPA rewrite, configure the API URL, display an explicit UAT/test-data banner, and retain a strict browser-safe variable allowlist.
+Required before deployment: add the SPA rewrite and configure the hosted API URL. Phase 2 provides the explicit UAT label and strict browser-safe environment template.
 
 ### Project B: Document Intelligence API
 
@@ -103,7 +109,7 @@ Limits are operational assumptions, not repository guarantees. Recheck them imme
 ## 7. Remaining v0.21 Phases
 
 1. **Phase 1 - complete:** repository deployment audit, architecture, ADR, blocker classification, environment inventory, and implementation plan.
-2. **Phase 2:** create/configure the Supabase cloud UAT project; inventory Auth, Storage, and database services; establish environment values and test-data policy. Do not invent schema outside a reviewed migration phase.
+2. **Phase 2 - complete:** prepare the owner-created Supabase Free UAT foundation, Auth/Storage/database inventory, safe environment templates, secret/ignore policy, test-data rules, API configuration parsing, and visible UAT label without runtime integration or migrations.
 3. **Phase 3:** add FastAPI serverless compatibility, minimal dependencies, explicit Python/entrypoint configuration, strict CORS, and deploy Vercel Project B.
 4. **Phase 4:** add SPA rewrites/UAT labeling, wire the hosted API URL, and deploy Vercel Project A.
 5. **Phase 5:** integrate hosted Supabase Auth, trusted API JWT validation, tenant bootstrap, permission mapping, and UAT/environment separation.

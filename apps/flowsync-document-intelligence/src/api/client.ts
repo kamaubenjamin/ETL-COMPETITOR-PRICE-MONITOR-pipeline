@@ -151,7 +151,8 @@ export class DocumentIntelligenceApiClient {
 const DEFAULT_LOCAL_API_URL = "http://127.0.0.1:8001";
 
 export function createApiClient(): DocumentIntelligenceApiClient {
+  const configuredBaseUrl = import.meta.env.VITE_DOCUMENT_INTELLIGENCE_API_BASE_URL?.trim();
   return new DocumentIntelligenceApiClient({
-    baseUrl: import.meta.env.VITE_DOCUMENT_INTELLIGENCE_API_BASE_URL ?? DEFAULT_LOCAL_API_URL,
+    baseUrl: configuredBaseUrl || DEFAULT_LOCAL_API_URL,
   });
 }

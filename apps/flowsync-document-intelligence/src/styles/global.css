@@ -230,6 +230,7 @@ a:focus-visible {
 
 .context-chip,
 .security-indicator,
+.environment-indicator,
 .phase-label,
 .read-only-label {
   display: inline-flex;
@@ -243,6 +244,13 @@ a:focus-visible {
   color: var(--color-text-muted);
   font-size: 11px;
   white-space: nowrap;
+}
+
+.environment-indicator {
+  border-color: #e3ca95;
+  background: var(--color-warning-soft);
+  color: #765714;
+  font-weight: 800;
 }
 
 .security-indicator,
@@ -1334,9 +1342,9 @@ a:focus-visible {
     padding: 10px 16px;
   }
 
-  .header-context {
-    display: none;
-  }
+  .header-context { display: flex; }
+  .header-context .context-chip,
+  .header-context .security-indicator { display: none; }
 
   .main-content {
     padding: 20px 16px;

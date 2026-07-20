@@ -4,7 +4,26 @@ __pycache__/
 
 # Environment
 .env
+.env.*
+!.env.example
+apps/*/.env
+apps/*/.env.*
+!apps/*/.env.example
 .venv/
+
+# Hosted environment and local Supabase state
+.vercel/
+supabase/.temp/
+supabase/.branches/
+supabase/.cache/
+supabase/.local/
+supabase/.env
+supabase/.env.*
+!supabase/.env.example
+supabase/*credentials*.json
+supabase/*.pem
+supabase/*.key
+credentials-export*.json
 
 # Data outputs (optional — depends on your workflow)
 data/
