@@ -42,4 +42,7 @@ def test_existing_source_packages_still_do_not_import_workflow_studio() -> None:
             continue
         if "workflow_studio" in path.read_text(encoding="utf-8-sig"):
             matches.append(str(path))
-    assert matches == []
+    assert matches == [
+        str(path) for path in Path("src/api/document_intelligence").rglob("*.py")
+        if "workflow_studio" in path.read_text(encoding="utf-8-sig")
+    ]

@@ -144,6 +144,16 @@ Preview only: no production workflow run, scheduler binding, external adapter, d
 
 ## 6. Phase 5: Guarded Workflow Management API
 
+**Status:** Complete for the approved Phase 5 scope.
+
+### Implementation Record
+
+- Added an app-scoped provider composing only the in-memory Studio store, operation catalog, validator, draft lifecycle, publication service, safe audit summaries, and placeholder preview boundary.
+- Added all required read and mutation routes with standard envelopes, bounded pagination, tenant concealment, API-owned attribution, strict request allowlists, and optimistic full draft replacement.
+- Added distinct management permissions. Operations managers receive create/edit/test/approve/deactivate; tenant admins additionally receive publish/admin; platform admins retain the full catalog; service accounts receive none.
+- Default preview remains honestly unavailable; successful preview can only be supplied through an injected no-I/O Phase 4 adapter. Governed publication does not bind or activate Workflow Runtime.
+- Added focused route, mutation, security, preview, publication, privacy, and boundary tests. No FlowSync, Streamlit, migration, dependency, runtime implementation, external adapter, OCR/LLM, ERP/export, upload staging, competitor-price, or dashboard change was made.
+
 ### Deliverables
 
 - App-scoped provider/service boundary over approved Studio services.

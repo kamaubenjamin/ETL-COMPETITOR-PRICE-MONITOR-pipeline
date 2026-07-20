@@ -5,6 +5,7 @@ from fastapi import Request
 from ..errors import DocumentIntelligenceAPIError
 from .facade_provider import FacadeDocumentIntelligenceProvider, facade_provider
 from .local_provider import LocalDocumentIntelligenceProvider, local_provider as api_local_provider
+from .workflow_studio_provider import WorkflowStudioAPIProvider
 
 # Routers retain this compatibility name while the facade-backed source becomes preferred.
 local_provider = facade_provider
@@ -32,6 +33,7 @@ def get_document_intelligence_provider(request: Request):
 __all__ = [
     "FacadeDocumentIntelligenceProvider",
     "LocalDocumentIntelligenceProvider",
+    "WorkflowStudioAPIProvider",
     "api_local_provider",
     "facade_provider",
     "get_document_intelligence_provider",

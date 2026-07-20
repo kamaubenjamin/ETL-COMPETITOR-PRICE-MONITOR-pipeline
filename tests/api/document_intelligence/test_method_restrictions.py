@@ -19,10 +19,18 @@ def test_openapi_registers_get_only_for_all_v09_paths():
         "/api/v1/documents/{document_id}/export",
         "/api/v1/documents/upload",
     }
-    assert all(
-        set(operations) == ({"post"} if path in disabled_posts else {"get"})
-        for path, operations in schema["paths"].items()
-    )
+    workflow_posts = {
+        "/api/v1/workflow-definitions/{workflow_id}/versions/{version_id}/validate",
+        "/api/v1/workflow-definitions/{workflow_id}/versions/{version_id}/test",
+        "/api/v1/workflow-definitions/{workflow_id}/versions/{version_id}/submit",
+        "/api/v1/workflow-definitions/{workflow_id}/versions/{version_id}/approve",
+        "/api/v1/workflow-definitions/{workflow_id}/versions/{version_id}/publish",
+        "/api/v1/workflow-definitions/{workflow_id}/deactivate",
+        "/api/v1/workflow-definitions/{workflow_id}/archive",
+    }
+    for path, operations in schema["paths"].items():
+        expected = {"post"} if path in disabled_posts | workflow_posts else {"get", "post"} if path in {"/api/v1/workflow-definitions", "/api/v1/workflow-definitions/{workflow_id}/versions"} else {"get", "patch"} if path == "/api/v1/workflow-definitions/{workflow_id}/versions/{version_id}" else {"get"}
+        assert set(operations) == expected
 
 
 @pytest.mark.parametrize("method", ["post", "put", "patch", "delete"])

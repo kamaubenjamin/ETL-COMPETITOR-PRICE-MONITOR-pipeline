@@ -12,4 +12,6 @@ def test_phase4_has_no_io_execution_or_mutation_imports():
     for filename in PHASE4:
         tree=ast.parse((PACKAGE/filename).read_text(encoding="utf-8")); calls={n.func.id if isinstance(n.func,ast.Name) else n.func.attr for n in ast.walk(tree) if isinstance(n,ast.Call) and isinstance(n.func,(ast.Name,ast.Attribute))}; assert not calls.intersection(forbidden)
 def test_existing_packages_do_not_import_workflow_studio():
-    assert [str(p) for p in Path("src").glob("*/**/*.py") if PACKAGE not in p.parents and "workflow_studio" in p.read_text(encoding="utf-8-sig")]==[]
+    actual = [str(p) for p in Path("src").glob("*/**/*.py") if PACKAGE not in p.parents and "workflow_studio" in p.read_text(encoding="utf-8-sig")]
+    allowed = [str(p) for p in Path("src/api/document_intelligence").rglob("*.py") if "workflow_studio" in p.read_text(encoding="utf-8-sig")]
+    assert actual == allowed

@@ -29,6 +29,11 @@ _REVIEWER = _VIEWER | {Permission.DOCUMENT_REVIEW}
 _OPERATIONS_MANAGER = _REVIEWER | {
     Permission.DOCUMENT_APPROVE,
     Permission.WORKFLOW_RUN,
+    Permission.WORKFLOW_CREATE,
+    Permission.WORKFLOW_EDIT,
+    Permission.WORKFLOW_TEST,
+    Permission.WORKFLOW_APPROVE,
+    Permission.WORKFLOW_DEACTIVATE,
 }
 _TENANT_ADMIN = _OPERATIONS_MANAGER | {
     Permission.DOCUMENT_INGEST,
@@ -36,6 +41,8 @@ _TENANT_ADMIN = _OPERATIONS_MANAGER | {
     Permission.AUDIT_READ,
     Permission.TENANT_ADMIN,
     Permission.USER_ADMIN,
+    Permission.WORKFLOW_PUBLISH,
+    Permission.WORKFLOW_ADMIN,
 }
 
 ROLE_PERMISSIONS = MappingProxyType(

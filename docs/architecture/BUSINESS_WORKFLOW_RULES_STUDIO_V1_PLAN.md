@@ -1,7 +1,7 @@
 # Business Workflow / Rules Studio v1 Plan
 
 **Milestone:** v0.20
-**Status:** Planning complete; Phases 1-4 implemented and focused verification passed
+**Status:** Planning complete; Phases 1-5 implemented
 **Recommended package:** `src/workflow_studio/`
 
 ## Phase 1 Implementation Record
@@ -35,6 +35,12 @@ Phase 4 adds immutable preview commands, fixtures, policies, limits, safe result
 Inline samples and approved fixture references are normalized into immutable scalar-safe mappings/tuples with fixed depth, collection, field, and string bounds. Validation, dependency, preview eligibility, feature, legacy-review, identity, and workflow size gates run before adapter invocation. Adapter exceptions are replaced by fixed issues; results are re-bounded, protected fields are redacted, values are omitted unless explicitly allowed, and trace/audit projections contain no bodies or raw logs.
 
 Duration is a bounded policy/descriptor only because Phase 4 adds no isolated worker or OS-level cancellation. Phase 4 adds 33 tests, bringing the focused Workflow Studio suite to 180 tests. Preview does not publish, persist, mutate repositories/Document State/lifecycle, call ERP/export/alerts/master data, or access files, databases, or networks.
+
+## Phase 5 Implementation Record
+
+Phase 5 adds an app-scoped, process-local Workflow Management API provider and the reviewed definition, version, validation, preview, submit, approval, publication, deactivation, archive, operation-catalog, and audit routes. Responses use the Document Intelligence envelope and bounded safe projections. Reads are tenant-filtered and cross-tenant details are concealed. Mutations fail closed without authenticated authorization and use distinct workflow management permissions; `workflow:read` and `workflow:run` do not grant management authority.
+
+Draft `PATCH` is a complete safe content replacement with `expected_revision`; JSON Patch is not supported. The default preview adapter returns `preview_unavailable`. Publication records governed definition state in app memory only and states: “Published definition governance only; production execution activation is not enabled.” No FlowSync, Streamlit, migration, dependency, Workflow Runtime implementation, production activation, Document State mutation, external service, ERP/export, upload staging, OCR/LLM, competitor-price, or dashboard behavior is changed.
 
 ## 1. Objective
 

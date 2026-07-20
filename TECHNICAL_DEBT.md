@@ -4,7 +4,7 @@ Technical debt and missing test fixtures
 
 ### Current Status
 
-**Planning complete; Phases 1-4 are implemented and focused verification passed. Phases 5-7 have not started.**
+**Planning complete; Phases 1-5 are implemented. Phases 6-7 have not started.**
 
 ADR-025 and the v0.20 plans select a separate `workflow_studio` governance package above the existing Workflow Runtime. The runtime remains execution authority. The Studio is responsible for safe definitions, operation descriptors, validation, drafts, immutable versions, approval/publication policy, bounded preview, legacy migration reports, and audit intents through narrow ports.
 
@@ -21,6 +21,8 @@ Phase 3 verification passes 147 focused Workflow Studio tests and the full pract
 Phase 4 adds bounded immutable preview contracts, safe fixture normalization, fixed limits, an injected runtime port, deterministic no-I/O adapters, validation-gated orchestration, redacted projections, bounded traces, and audit intents. Duration remains a policy descriptor because no isolated worker exists. Preview does not activate production execution or mutate governed repositories/Document State.
 
 Phase 4 verification passes 180 focused Workflow Studio tests and the full practical regression of 1,956 tests with 9 skips. Boundary verification remains compliant.
+
+Phase 5 adds a guarded app-scoped API over process-local Studio services. Definitions, versions, validation/test evidence, publications, and audit intents are ephemeral and disappear on restart. The default preview adapter is unavailable, and publication is definition governance only—not production activation. Before production use, provide reviewed durable repositories/migrations, real identity and audit persistence, idempotency retention, an isolated approved preview adapter, operational rate/size controls, and an explicit compiler/runtime activation phase. FlowSync remains deferred. Permission defaults are split: operations managers have create/edit/test/approve/deactivate, tenant admins add publish/admin, platform admins have the full catalog, and service accounts have none.
 
 Debt and decisions intentionally retained for implementation phases:
 

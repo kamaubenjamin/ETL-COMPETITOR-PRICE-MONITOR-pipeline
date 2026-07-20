@@ -20,6 +20,17 @@ DOMAIN_PATHS = {
     "/api/v1/documents/upload", "/api/v1/uploads", "/api/v1/uploads/{upload_id}",
     "/api/v1/uploads/{upload_id}/progress", "/api/v1/uploads/{upload_id}/timeline",
     "/api/v1/documents/{document_id}/processing-status",
+    "/api/v1/workflow-definitions", "/api/v1/workflow-definitions/{workflow_id}",
+    "/api/v1/workflow-definitions/{workflow_id}/versions",
+    "/api/v1/workflow-definitions/{workflow_id}/versions/{version_id}",
+    "/api/v1/workflow-definitions/{workflow_id}/audit", "/api/v1/workflow-operations",
+    "/api/v1/workflow-definitions/{workflow_id}/versions/{version_id}/validate",
+    "/api/v1/workflow-definitions/{workflow_id}/versions/{version_id}/test",
+    "/api/v1/workflow-definitions/{workflow_id}/versions/{version_id}/submit",
+    "/api/v1/workflow-definitions/{workflow_id}/versions/{version_id}/approve",
+    "/api/v1/workflow-definitions/{workflow_id}/versions/{version_id}/publish",
+    "/api/v1/workflow-definitions/{workflow_id}/deactivate",
+    "/api/v1/workflow-definitions/{workflow_id}/archive",
 }
 EXPECTED_PATHS = {"/health", "/api/v1/health", "/api/v1/status", "/openapi.json", "/docs", "/docs/oauth2-redirect", "/redoc"} | DOMAIN_PATHS
 
@@ -40,18 +51,24 @@ def test_only_expected_routes_are_registered():
     assert built_in_paths | api_paths == EXPECTED_PATHS
 
 
-def test_openapi_contains_only_get_operations_except_disabled_export_contracts():
+def test_openapi_contains_guarded_workflow_management_operations():
     schema = create_document_intelligence_app().openapi()
     assert set(schema["paths"]) == {"/health", "/api/v1/health", "/api/v1/status"} | DOMAIN_PATHS
     post_paths = {
         "/api/v1/documents/{document_id}/export/prepare",
         "/api/v1/documents/{document_id}/export",
         "/api/v1/documents/upload",
+        "/api/v1/workflow-definitions/{workflow_id}/versions/{version_id}/validate",
+        "/api/v1/workflow-definitions/{workflow_id}/versions/{version_id}/test",
+        "/api/v1/workflow-definitions/{workflow_id}/versions/{version_id}/submit",
+        "/api/v1/workflow-definitions/{workflow_id}/versions/{version_id}/approve",
+        "/api/v1/workflow-definitions/{workflow_id}/versions/{version_id}/publish",
+        "/api/v1/workflow-definitions/{workflow_id}/deactivate",
+        "/api/v1/workflow-definitions/{workflow_id}/archive",
     }
-    assert all(
-        set(operations) == ({"post"} if path in post_paths else {"get"})
-        for path, operations in schema["paths"].items()
-    )
+    for path, operations in schema["paths"].items():
+        expected = {"get", "post"} if path in {"/api/v1/workflow-definitions", "/api/v1/workflow-definitions/{workflow_id}/versions"} else {"get", "patch"} if path == "/api/v1/workflow-definitions/{workflow_id}/versions/{version_id}" else {"post"} if path in post_paths else {"get"}
+        assert set(operations) == expected
 
 
 def test_app_package_has_no_forbidden_runtime_or_competitor_imports():

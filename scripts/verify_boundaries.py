@@ -12,7 +12,7 @@ Rules verified (from RUNTIME_BOUNDARY_MAP.md):
   R02 — Entity Runtime must not import Matching or Review runtimes
   R03 — Matching Runtime must not import Document Runtime
   R04 — Review Runtime must not import Document or Entity runtimes
-  R05 — API Runtime may import Workflow Runtime/shared utilities; Document Intelligence API may import Security, Platform composition, and Upload Runtime
+  R05 — API Runtime may import Workflow Runtime/shared utilities; approved Document Intelligence providers may import Security, Platform composition, Upload Runtime, and Workflow Studio
   R12 — Shared utilities must not import runtime-specific modules
 """
 
@@ -284,6 +284,8 @@ def _check_consumer_rule(
             # approves Document Intelligence API -> provider-neutral Security;
             # ADR-021 permits API-owned activation of platform runtime composition;
             # ADR-024 permits the guarded API boundary to consume Upload Runtime contracts.
+            # ADR-025 permits only the Workflow Studio API provider to compose the
+            # isolated governance package; Workflow Studio never imports API.
             if matches_any_prefix(module, ["src.workflow_runtime"]):
                 continue
             normalized_path = rel_path.replace("\\", "/")
@@ -295,6 +297,11 @@ def _check_consumer_rule(
             if (
                 normalized_path.startswith("src/api/document_intelligence/")
                 and matches_any_prefix(module, ["src.upload_runtime"])
+            ):
+                continue
+            if (
+                normalized_path == "src/api/document_intelligence/providers/workflow_studio_provider.py"
+                and matches_any_prefix(module, ["src.workflow_studio"])
             ):
                 continue
             if (
@@ -313,7 +320,7 @@ def _check_consumer_rule(
             if matches_any_prefix(module, SHARED_UTILITY_PACKAGES):
                 continue
             # Anything else starting with src. is forbidden
-            desc = "API Runtime import is outside approved Workflow/shared/Security/composition/upload boundaries"
+            desc = "API Runtime import is outside approved Workflow/shared/Security/composition/upload/Studio boundaries"
             fp = _make_fingerprint(rule_id, rel_path, module)
             if fp not in exemptions:
                 violations.append(Violation(

@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for the v0.20 architecture boundary. Phases 1-4 contracts, validation, repositories/lifecycle/publication policy, safe bounded preview port/orchestration, projections, and audit intents are implemented; production runtime activation, endpoints, permissions, durable persistence/migration, external adapters, dependencies, and UI work remains unauthorized until its reviewed phase.
+Accepted for the v0.20 architecture boundary. Phases 1-5 contracts, validation, repositories/lifecycle/publication policy, safe bounded preview, guarded management API, dedicated permissions, projections, and audit intents are implemented. Production runtime activation, durable persistence/migration, external adapters, dependencies, and UI work remain unauthorized until a reviewed phase.
 
 ## Context
 
@@ -72,13 +72,15 @@ Treat historical templates as source references and migration fixtures. A future
 
 Plan authenticated tenant-scoped management endpoints for definitions, versions, validation, test preview, operation catalog, publication, deactivation, archival, and audit. The API owns identity, permissions, tenant scope, expected version, operation catalog, fixture eligibility, validation, approval, publication, concealment, and errors.
 
-No endpoint is created by this ADR. Mutation design must include bounded payloads, optimistic concurrency, idempotency where applicable, audit intents, and published-version mutation denial.
+Phase 5 implements the reviewed endpoints through an app-scoped provider importing only `workflow_studio`. Mutations use bounded payload allowlists, optimistic revisions, audit intents, and published-version mutation denial. Draft `PATCH` replaces the complete safe rules content rather than accepting JSON Patch. Governed publication never activates production execution.
 
 ## Security Decision
 
 Evaluate dedicated workflow management permissions. Existing `workflow:read` may remain appropriate for reads; `workflow:run` does not imply create, edit, test, approve, publish, deactivate, or admin authority.
 
-Tenant isolation precedes lookup. Cross-tenant platform administration is explicit and audited. Publication requires stronger authority than editing and may require author/reviewer separation. Definitions, samples, previews, and audit exclude credentials, tokens, claims, secrets, raw SQL, internal paths, executable source, unrestricted metadata, raw exceptions, and protected values.
+Tenant isolation precedes lookup. Cross-tenant platform administration is explicit and audited. Publication requires stronger authority than editing and author/reviewer separation is enforced. Definitions, samples, previews, and audit exclude credentials, tokens, claims, secrets, raw SQL, internal paths, executable source, unrestricted metadata, raw exceptions, and protected values.
+
+Phase 5 adds seven distinct management permissions. Operations managers receive create/edit/test/approve/deactivate; tenant admins additionally receive publish/admin; platform admins receive the full fixed catalog; service accounts receive no workflow management permissions. Cross-tenant platform-admin behavior remains disabled by default.
 
 ## FlowSync Decision
 
