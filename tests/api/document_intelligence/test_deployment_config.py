@@ -23,22 +23,37 @@ def test_environment_config_normalizes_uat_and_origins_deterministically() -> No
         {
             "APP_ENV": " Technical_Preview ",
             "DOCUMENT_INTELLIGENCE_CORS_ALLOWED_ORIGINS": (
-                "https://flowsync-uat.vercel.app/, http://127.0.0.1:4174,"
+                "https://flowsync-uat.vercel.app/,"
                 "https://flowsync-uat.vercel.app"
             ),
         }
     )
 
     assert config.app_env == APIDeploymentEnvironment.UAT
-    assert config.cors_allowed_origins == (
-        "https://flowsync-uat.vercel.app",
-        "http://127.0.0.1:4174",
-    )
+    assert config.cors_allowed_origins == ("https://flowsync-uat.vercel.app",)
     assert config.to_safe_dict() == {
         "app_env": "uat",
         "cors_configured": True,
-        "cors_origin_count": 2,
+        "cors_origin_count": 1,
     }
+
+
+def test_environment_config_allows_loopback_http_only_for_local_or_test() -> None:
+    local = APIEnvironmentConfig(
+        app_env="local",
+        cors_allowed_origins="http://127.0.0.1:4174,http://localhost:4174",
+    )
+
+    assert local.cors_allowed_origins == (
+        "http://127.0.0.1:4174",
+        "http://localhost:4174",
+    )
+
+    with pytest.raises(ValueError, match="invalid for APP_ENV"):
+        APIEnvironmentConfig(app_env="uat", cors_allowed_origins="http://localhost:4174")
+
+    with pytest.raises(ValueError, match="invalid for APP_ENV"):
+        APIEnvironmentConfig(app_env="local", cors_allowed_origins="http://example.test")
 
 
 @pytest.mark.parametrize(

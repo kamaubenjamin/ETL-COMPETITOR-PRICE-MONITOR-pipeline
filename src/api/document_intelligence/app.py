@@ -6,12 +6,13 @@ from datetime import datetime, timezone
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from .contracts import API_VERSION
 from .auth import create_auth_composition, create_runtime_auth_composition
-from .config import APIAuthConfig
+from .config import APIAuthConfig, APIDeploymentEnvironment, APIEnvironmentConfig
 from .errors import DocumentIntelligenceAPIError
 from .middleware import request_context_middleware
 from .responses import error_response
@@ -37,6 +38,7 @@ def create_document_intelligence_app(
     identity_provider: IdentityProvider | None = None,
     runtime_config: RuntimeConfig | None = None,
     runtime_composition: RuntimeComposition | None = None,
+    environment_config: APIEnvironmentConfig | None = None,
     snapshot_at: str | None = None,
 ) -> FastAPI:
     if runtime_config is not None and runtime_composition is not None:
@@ -45,6 +47,10 @@ def create_document_intelligence_app(
         auth_config is not None or identity_provider is not None
     ):
         raise RuntimeValidationError(RuntimeErrorCode.INVALID_CONFIG, field="auth")
+
+    deployment = environment_config or APIEnvironmentConfig.from_environment()
+    if not isinstance(deployment, APIEnvironmentConfig):
+        raise RuntimeValidationError(RuntimeErrorCode.INVALID_CONFIG, field="app_env")
 
     composed = runtime_composition
     runtime_auth = None
@@ -63,14 +69,22 @@ def create_document_intelligence_app(
         assert safe_config.auth is not None
         runtime_auth = create_runtime_auth_composition(safe_config.auth)
 
+    hosted_environment = deployment.app_env in {
+        APIDeploymentEnvironment.UAT,
+        APIDeploymentEnvironment.PILOT,
+        APIDeploymentEnvironment.PRODUCTION,
+    }
+    effective_auth = runtime_auth or create_auth_composition(auth_config, identity_provider)
+    if hosted_environment and effective_auth.config.mode.value == "local_demo":
+        raise RuntimeValidationError(RuntimeErrorCode.INVALID_CONFIG, field="auth")
+
     application = FastAPI(
         title="Document Intelligence API",
         version=API_VERSION,
         description="Read-only API foundation for Document Intelligence consumers.",
     )
-    application.state.document_intelligence_auth = (
-        runtime_auth or create_auth_composition(auth_config, identity_provider)
-    )
+    application.state.document_intelligence_auth = effective_auth
+    application.state.document_intelligence_environment = deployment.to_safe_dict()
     application.state.document_intelligence_provider = (
         FacadeDocumentIntelligenceProvider(composed.query_facade)
         if composed is not None
@@ -87,6 +101,17 @@ def create_document_intelligence_app(
     )
     if composed is not None:
         application.router.add_event_handler("shutdown", composed.close)
+
+    if deployment.cors_allowed_origins:
+        application.add_middleware(
+            CORSMiddleware,
+            allow_origins=list(deployment.cors_allowed_origins),
+            allow_credentials=False,
+            allow_methods=["GET", "POST", "PATCH"],
+            allow_headers=["Accept", "Content-Type", "X-Request-ID"],
+            expose_headers=["X-Request-ID"],
+            max_age=600,
+        )
 
     @application.middleware("http")
     async def request_context(request: Request, call_next):

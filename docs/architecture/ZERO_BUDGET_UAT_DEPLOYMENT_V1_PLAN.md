@@ -12,6 +12,10 @@ Phase 2 adds server and browser-safe environment templates, hardened ignore rule
 
 The owner-created Supabase project remains an unconnected UAT foundation. Current application table count is zero, Workflow Studio remains process-local, and the proposed future workflow/tenant table names are non-executable planning vocabulary only.
 
+## Phase 3 Implementation Record
+
+Phase 3 adds `api/index.py`, a Python 3.12 declaration, an exact API-only FastAPI dependency/install boundary, Vercel bundle exclusions, environment-aware exact-origin CORS, hosted local-demo identity rejection, and serverless import/health/statelessness verification. Workflow Studio remains process-local and ephemeral. API docs remain enabled for technical UAT. No Vercel deployment, Supabase integration, migration, production execution, or FlowSync behavior change occurs.
+
 ## 1. Objective
 
 Provide a controlled path to a hosted, non-production UAT environment using two Vercel projects, one Supabase Free project, and GitHub deployment integration. The environment is for test data and bounded product review only. It is not a production, pilot, bulk-processing, or execution-activation environment.
@@ -33,10 +37,10 @@ Frontend and API remain separate Vercel projects. The API is serverless and stat
 - FlowSync root directory is `apps/flowsync-document-intelligence`; it is a Vite 8 SPA with lockfile-controlled dependencies and `dist` output.
 - Hosted frontend builds must set `VITE_DOCUMENT_INTELLIGENCE_API_BASE_URL`; otherwise the browser calls `http://127.0.0.1:8001`.
 - Direct refreshes of React Router paths are not ready: no frontend `vercel.json` SPA rewrite exists.
-- Separate Vercel origins are not ready: API CORS is explicitly disabled.
-- ASGI import path is `src.api.document_intelligence.app:app`. Its nested file is not one of the repository locations Vercel documents for automatic entrypoint discovery, and no `tool.vercel.entrypoint` or wrapper exists.
-- The root `requirements.txt` is the only Python manifest. It includes FastAPI plus the entire Streamlit, browser automation, ETL, PDF, and test toolchain. Vercel does not tree-shake Python bundles, so a minimal API dependency declaration is required before deployment.
-- No Python version file exists. Current CI uses Python 3.11; Phase 1 verification uses Python 3.12.13; current Vercel Python defaults to 3.12 when no supported version is declared.
+- Separate Vercel origins are prepared through an exact environment-driven CORS allowlist; the final Project A HTTPS origin remains a Phase 4 value.
+- `api/index.py` is the supported wrapper and re-exports `src.api.document_intelligence.app:app` without duplicate construction.
+- `requirements-api.txt` and the `vercel.json` install override prevent the broad root ETL/Streamlit/test manifest from being the intentional Project B dependency source.
+- `.python-version` pins Python 3.12 without a competing runtime declaration.
 - Default API composition has no startup I/O, background task, or lifespan hook. It uses in-memory demo/query providers and a process-local Workflow Studio provider. A shutdown hook exists only when an outer runtime composition is injected.
 - `/health`, `/api/v1/health`, `/api/v1/status`, `/docs`, `/redoc`, and `/openapi.json` are available from the default FastAPI app.
 - Default authentication is disabled. Reads use local in-memory data; management mutations fail closed. The browser client omits credentials and sends no bearer token.
@@ -66,16 +70,16 @@ Required before deployment: add the SPA rewrite and configure the hosted API URL
 | Setting | Recommendation |
 |---|---|
 | Root Directory | Repository root (`.`) so `src` imports remain available |
-| Framework Preset | FastAPI / Python auto-detection |
-| Install Command | Automatic from a reviewed minimal API manifest; no custom install command |
+| Framework Preset | FastAPI (native Python auto-detection) |
+| Install Command | `python -m pip install -r requirements-api.txt` (declared in `vercel.json`) |
 | Build Command | None |
 | Output Directory | None |
 | Python | Pin and verify 3.12 |
-| ASGI entrypoint | Explicit `src.api.document_intelligence.app:app` through `tool.vercel.entrypoint`, or a minimal reviewed supported entry file |
+| ASGI entrypoint | `api/index.py`, re-exporting `src.api.document_intelligence.app:app` |
 | Production/UAT branch | `platform/intelligent-document-processing` for this milestone |
 | URL role | HTTPS API origin used only by FlowSync UAT and approved diagnostics |
 
-Required before deployment: explicit entrypoint, minimal dependency set, bundle exclusions, strict CORS, hosted composition, and a verified serverless import/startup test. No `uvicorn` process command is required for a Vercel ASGI function.
+Compatibility prerequisites are implemented. Owner deployment remains gated on Hobby eligibility, exact settings/environment review, acceptance of incomplete Auth and ephemeral state, and the Phase 3 verification record. No `uvicorn` process command is required for a Vercel ASGI function.
 
 ## 5. Free-Tier Safeguards
 
@@ -110,7 +114,7 @@ Limits are operational assumptions, not repository guarantees. Recheck them imme
 
 1. **Phase 1 - complete:** repository deployment audit, architecture, ADR, blocker classification, environment inventory, and implementation plan.
 2. **Phase 2 - complete:** prepare the owner-created Supabase Free UAT foundation, Auth/Storage/database inventory, safe environment templates, secret/ignore policy, test-data rules, API configuration parsing, and visible UAT label without runtime integration or migrations.
-3. **Phase 3:** add FastAPI serverless compatibility, minimal dependencies, explicit Python/entrypoint configuration, strict CORS, and deploy Vercel Project B.
+3. **Phase 3 - compatibility complete, deployment deferred:** add FastAPI serverless compatibility, minimal dependencies, explicit Python/entrypoint configuration, strict CORS, and verified hosted safety without deploying Project B.
 4. **Phase 4:** add SPA rewrites/UAT labeling, wire the hosted API URL, and deploy Vercel Project A.
 5. **Phase 5:** integrate hosted Supabase Auth, trusted API JWT validation, tenant bootstrap, permission mapping, and UAT/environment separation.
 6. **Phase 6:** run hosted smoke tests, CORS/security/privacy verification, free-tier monitoring checks, and UAT handoff.

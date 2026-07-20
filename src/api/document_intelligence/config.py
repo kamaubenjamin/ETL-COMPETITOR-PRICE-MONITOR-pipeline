@@ -86,6 +86,24 @@ def _cors_origins(value: object) -> tuple[str, ...]:
     return tuple(origins)
 
 
+def _validate_cors_for_environment(
+    environment: APIDeploymentEnvironment,
+    origins: tuple[str, ...],
+) -> tuple[str, ...]:
+    for origin in origins:
+        parsed = urlsplit(origin)
+        if parsed.scheme == "https":
+            continue
+        is_loopback = parsed.hostname in {"localhost", "127.0.0.1", "::1"}
+        is_local_environment = environment in {
+            APIDeploymentEnvironment.LOCAL,
+            APIDeploymentEnvironment.TEST,
+        }
+        if not (parsed.scheme == "http" and is_loopback and is_local_environment):
+            raise ValueError("CORS allowed origins are invalid for APP_ENV")
+    return origins
+
+
 @dataclass(frozen=True, slots=True)
 class APIEnvironmentConfig:
     """Server-only environment descriptors; parsing does not enable CORS or auth."""
@@ -94,7 +112,8 @@ class APIEnvironmentConfig:
     cors_allowed_origins: tuple[str, ...] | str = ()
 
     def __post_init__(self) -> None:
-        object.__setattr__(self, "app_env", _deployment_environment(self.app_env))
+        environment = _deployment_environment(self.app_env)
+        object.__setattr__(self, "app_env", environment)
         origins = (
             _cors_origins(self.cors_allowed_origins)
             if isinstance(self.cors_allowed_origins, str)
@@ -102,7 +121,12 @@ class APIEnvironmentConfig:
         )
         if not isinstance(origins, tuple) or any(not isinstance(item, str) for item in origins):
             raise ValueError("CORS allowed origins are invalid")
-        object.__setattr__(self, "cors_allowed_origins", _cors_origins(",".join(origins)))
+        normalized_origins = _cors_origins(",".join(origins))
+        object.__setattr__(
+            self,
+            "cors_allowed_origins",
+            _validate_cors_for_environment(environment, normalized_origins),
+        )
 
     @classmethod
     def from_environment(cls, environment: Mapping[str, str] | None = None) -> "APIEnvironmentConfig":

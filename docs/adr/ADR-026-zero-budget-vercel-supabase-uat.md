@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.21. Phase 1 completed the audit; Phase 2 establishes environment templates, ignore/secret policy, configuration parsing, UAT labeling, and manual Supabase preparation without runtime integration. No deployment or cloud resource is authorized by this ADR alone.
+Accepted for v0.21. Phase 1 completed the audit; Phase 2 established the Supabase/environment foundation; Phase 3 establishes stateless FastAPI/Vercel compatibility, strict CORS, and packaging/runtime controls without deployment. No cloud resource is authorized by this ADR alone.
 
 ## Context
 
@@ -34,13 +34,13 @@ Use separate Vercel projects rather than combining frontend and API. Project A o
 - Optional local SQLite and `Banks.db` are not serverless UAT persistence.
 - Existing ETL Supabase telemetry tables are outside the Document Intelligence UAT data model and must not be repurposed silently.
 - Phase 2 requires zero application tables. Future tenant/workflow names remain deferred planning vocabulary and do not authorize migrations or RLS.
-- CORS origin parsing may be prepared without enabling middleware; hosted Auth/JWT validation remains a Phase 5 authority boundary.
+- Phase 3 enables CORS only for explicitly configured exact origins; hosted origins require HTTPS, credentials remain disabled, and hosted Auth/JWT validation remains a Phase 5 authority boundary.
 
 ## Serverless Decision
 
 Treat the FastAPI deployment as stateless and request-bounded. Do not run schedulers, background workers, browser automation, bulk document processing, or production runtime execution inside Vercel Functions. Cold starts, concurrent instances, and process recycling make in-memory state opportunistic only.
 
-Use a minimal dependency bundle, explicit Python version, and supported ASGI entrypoint. Strictly allow the exact FlowSync UAT origin through CORS. Health remains lightweight; API docs exposure is a later UAT security decision.
+Use `api/index.py` to re-export the existing app, Python 3.12, an API-only FastAPI dependency manifest, and explicit bundle exclusions. Strictly allow the exact FlowSync UAT origin through CORS. Health remains lightweight; API docs remain enabled during bounded UAT technical testing and must be reconsidered before production.
 
 ## Cost Decision
 

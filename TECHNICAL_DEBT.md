@@ -6,12 +6,12 @@ Phase 1 audits and plans a KSh 0 UAT deployment without creating cloud resources
 
 Phase 2 adds safe environment examples, secret/ignore policy, deterministic API environment/CORS parsing without middleware activation, a bounded UAT label, and manual Supabase Auth/Storage/database preparation. No application table, migration, SDK, runtime call, hosted Auth, storage path, durable repository, or deployment exists. Owner-collected cloud values remain outside Git.
 
+Phase 3 adds the explicit Vercel ASGI entrypoint, Python 3.12 pin, minimal API dependency/install boundary, bundle exclusions, strict environment-driven CORS activation, hosted local-demo authority rejection, and serverless startup tests. Deployment remains owner-deferred; Workflow Studio/query state remains ephemeral and API Auth/JWT integration remains incomplete.
+
 Blocking or required before hosted UAT:
 
 - Owner confirmation that the intended UAT is eligible for Vercel Hobby's personal, non-commercial terms; otherwise the KSh 0 target needs a different host
-- Explicit Vercel FastAPI ASGI entrypoint and Python 3.12 declaration
-- Minimal serverless API dependency manifest and bundle exclusions
-- Strict environment-driven CORS allowlist for the FlowSync UAT origin
+- Create and configure Vercel Project B using the reviewed Phase 3 settings; do not deploy until the owner accepts the UAT/Auth/stateless limitations
 - Vite SPA rewrite for direct-route refreshes
 - Hosted API base URL configuration and explicit UAT banner
 - Real Supabase Auth/JWT identity and tenant composition before authenticated UAT

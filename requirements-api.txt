@@ -1,0 +1,2 @@
+# Vercel ASGI runtime only. FastAPI declares its Starlette and Pydantic dependencies.
+fastapi==0.139.2

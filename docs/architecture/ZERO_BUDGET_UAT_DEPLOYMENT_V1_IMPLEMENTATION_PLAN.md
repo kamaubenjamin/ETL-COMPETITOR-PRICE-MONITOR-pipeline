@@ -47,6 +47,17 @@ No Vercel deployment, Supabase resource, migration, API/frontend behavior change
 
 ## Phase 3: FastAPI Serverless Compatibility And API Deployment
 
+**Status:** Compatibility implementation complete; Vercel deployment intentionally not performed.
+
+### Implementation Record
+
+- Added `api/index.py` as a side-effect-free re-export of the existing FastAPI app.
+- Pinned Python 3.12 and added an exact minimal FastAPI-only Vercel install manifest.
+- Added minimal function bundle exclusions without excluding required `src` imports or adding frontend rewrites.
+- Activated strict exact-origin CORS only when configured, with HTTPS required for hosted environments and no credentials.
+- Rejected local-demo identity authority in UAT/pilot/production composition; hosted mutations remain fail-closed pending Phase 5.
+- Verified health/docs routes, startup no-I/O, manifest policy, and process-local ephemeral state.
+
 ### Deliverables
 
 - Pin Python 3.12 and add an explicit supported ASGI entrypoint.
@@ -54,7 +65,7 @@ No Vercel deployment, Supabase resource, migration, API/frontend behavior change
 - Add strict configurable CORS for the exact FlowSync UAT origin.
 - Define server-only environment loading/composition without enabling local demo headers as hosted authority.
 - Preserve `/health`; decide whether `/docs`, `/redoc`, and `/openapi.json` remain exposed in UAT.
-- Deploy Vercel Project B only after local import/startup/package checks pass.
+- Owner may deploy Vercel Project B only in a later authorized action after local import/startup/package checks pass and limitations are accepted.
 
 ### Stop Condition
 
