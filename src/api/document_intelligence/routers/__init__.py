@@ -10,6 +10,7 @@ from .reviews import router as reviews_router
 from .validation import router as validation_router
 from .workflows import router as workflows_router
 from .workflow_studio import router as workflow_studio_router
+from .session import router as session_router
 
 domain_routers = (
     documents_router,
@@ -20,6 +21,7 @@ domain_routers = (
     reviews_router,
     workflows_router,
     workflow_studio_router,
+    session_router,
     audit_router,
 )
 

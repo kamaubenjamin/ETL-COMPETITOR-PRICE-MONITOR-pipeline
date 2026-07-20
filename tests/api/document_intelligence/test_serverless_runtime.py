@@ -14,7 +14,13 @@ from tests.api.document_intelligence.asgi_client import asgi_request
 ROOT = Path(__file__).resolve().parents[3]
 
 
+def _configure_uat_supabase(monkeypatch) -> None:
+    monkeypatch.setenv("SUPABASE_URL", "https://project-ref.supabase.co")
+    monkeypatch.setenv("SUPABASE_PUBLISHABLE_KEY", "sb_publishable_test_fixture")
+
+
 def test_api_startup_requires_no_network_or_filesystem_write(monkeypatch) -> None:
+    _configure_uat_supabase(monkeypatch)
     real_open = builtins.open
 
     def guarded_open(file, mode="r", *args, **kwargs):
@@ -55,7 +61,8 @@ def test_uat_rejects_local_demo_header_authority() -> None:
         raise AssertionError("UAT accepted local demo identity authority")
 
 
-def test_default_uat_app_keeps_mutations_fail_closed_even_with_local_headers() -> None:
+def test_default_uat_app_keeps_mutations_fail_closed_even_with_local_headers(monkeypatch) -> None:
+    _configure_uat_supabase(monkeypatch)
     application = create_document_intelligence_app(
         environment_config=APIEnvironmentConfig(app_env="uat")
     )
@@ -68,11 +75,12 @@ def test_default_uat_app_keeps_mutations_fail_closed_even_with_local_headers() -
         json_body={},
     )
 
-    assert response.status_code == 503
-    assert response.json()["error"]["code"] == "workflow_management_not_enabled"
+    assert response.status_code == 403
+    assert response.json()["error"]["code"] == "authorization_denied"
 
 
-def test_workflow_studio_provider_is_process_local_and_documented_as_ephemeral() -> None:
+def test_workflow_studio_provider_is_process_local_and_documented_as_ephemeral(monkeypatch) -> None:
+    _configure_uat_supabase(monkeypatch)
     first = create_document_intelligence_app(environment_config=APIEnvironmentConfig(app_env="uat"))
     second = create_document_intelligence_app(environment_config=APIEnvironmentConfig(app_env="uat"))
 

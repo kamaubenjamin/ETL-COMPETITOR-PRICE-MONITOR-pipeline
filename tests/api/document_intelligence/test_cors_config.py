@@ -1,8 +1,9 @@
 import pytest
 
 from src.api.document_intelligence.app import create_document_intelligence_app
-from src.api.document_intelligence.config import APIEnvironmentConfig
+from src.api.document_intelligence.config import APIAuthConfig, APIAuthMode, APIEnvironmentConfig
 from tests.api.document_intelligence.asgi_client import asgi_request
+from tests.api.document_intelligence.supabase_auth_helpers import provider
 
 
 ALLOWED_ORIGIN = "https://future-frontend-project.vercel.app"
@@ -10,6 +11,8 @@ ALLOWED_ORIGIN = "https://future-frontend-project.vercel.app"
 
 def _application(origins: str = ""):
     return create_document_intelligence_app(
+        auth_config=APIAuthConfig(APIAuthMode.SUPABASE),
+        identity_provider=provider(),
         environment_config=APIEnvironmentConfig(
             app_env="uat",
             cors_allowed_origins=origins,
@@ -43,12 +46,12 @@ def test_exact_configured_origin_is_allowed_without_credentials() -> None:
     assert response.headers["access-control-max-age"] == "600"
 
 
-def test_unconfigured_origin_and_unneeded_methods_or_headers_are_denied() -> None:
+def test_unconfigured_origin_and_unneeded_methods_are_denied_but_authorization_is_allowed() -> None:
     application = _application(ALLOWED_ORIGIN)
 
     assert _preflight(application, "https://other.example.test").status_code == 400
     assert _preflight(application, ALLOWED_ORIGIN, method="DELETE").status_code == 400
-    assert _preflight(application, ALLOWED_ORIGIN, headers="authorization").status_code == 400
+    assert _preflight(application, ALLOWED_ORIGIN, headers="authorization").status_code == 200
 
 
 @pytest.mark.parametrize(

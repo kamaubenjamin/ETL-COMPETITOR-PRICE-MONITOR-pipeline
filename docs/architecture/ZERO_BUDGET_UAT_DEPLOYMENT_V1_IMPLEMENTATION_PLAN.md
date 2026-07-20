@@ -98,6 +98,15 @@ No browser secret, service-role key, local identity masquerading as hosted authe
 
 ## Phase 5: Hosted Auth, Tenant Bootstrap, And Environment Separation
 
+**Status:** Implementation preparation complete; no cloud user, remote migration, or deployment performed.
+
+### Implementation Record
+
+- Added official Supabase browser Auth for existing users only, protected routing, bounded session restoration, safe sign-in/out, and bearer propagation without custom token storage.
+- Added asymmetric JWT verification with issuer/audience/time checks, bounded JWKS caching/timeouts, RLS-constrained Data API membership lookup, fixed role permissions, and a safe session endpoint.
+- Added the minimal `app_tenants` and `app_tenant_memberships` migration with read-only authenticated RLS and owner-only bootstrap writes.
+- Added deterministic JWT, membership, and migration tests plus the Phase 5 owner runbook. Hosted smoke testing remains Phase 6.
+
 ### Deliverables
 
 - Add Supabase browser Auth using only URL and publishable key.

@@ -114,7 +114,7 @@ const frontendSource = sourceFiles.map((path) => readFileSync(path, "utf8")).joi
 for (const serverOnly of ["SUPABASE_SECRET_KEY", "SUPABASE_SERVICE_ROLE_KEY", "DATABASE_URL", "JWT_JWKS_URL"]) {
   assert(!frontendSource.includes(serverOnly), `server-only environment name found in frontend: ${serverOnly}`);
 }
-for (const authorityToken of ["x-local-identity", "x-tenant-id", "Bearer ", "fake_signed_in"]) {
+for (const authorityToken of ["x-local-identity", "x-tenant-id", "fake_signed_in"]) {
   assert(!frontendSource.includes(authorityToken), `hosted authority token found in frontend: ${authorityToken}`);
 }
 const errorsSource = read("src/api/errors.ts");
@@ -122,6 +122,7 @@ assert(errorsSource.includes('status === 401') && errorsSource.includes('status 
 assert(errorsSource.includes("Document Intelligence API is not configured for this environment."), "safe deployment configuration error is missing");
 assert(read("src/app/AppShell.tsx").includes("hasValidDocumentIntelligenceApiConfiguration"), "app-wide configuration guard is missing");
 assert(read("src/components/Header.tsx").includes("environment-indicator"), "UAT header indicator is missing");
+assert(read("src/auth/RequireAuth.tsx").includes("SignInPage"), "hosted authentication guard is missing");
 assert(read("vite.config.ts").includes("sourcemap: false"), "production source maps must remain disabled");
 
 const deploymentDoc = readFileSync(

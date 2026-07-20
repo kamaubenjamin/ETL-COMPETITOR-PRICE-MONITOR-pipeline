@@ -34,7 +34,7 @@ def test_vercel_runtime_and_minimal_manifest_are_explicit() -> None:
     manifest = (ROOT / "requirements-api.txt").read_text(encoding="utf-8").lower()
     dependencies = [line for line in manifest.splitlines() if line and not line.startswith("#")]
 
-    assert dependencies == ["fastapi==0.139.2"]
+    assert dependencies == ["fastapi==0.139.2", "httpx==0.28.1", "pyjwt[crypto]==2.10.1"]
     for prohibited in (
         "streamlit",
         "selenium",

@@ -531,6 +531,7 @@ Status:
 - Phase 2 complete: safe server/browser environment templates, secret classification, ignore hardening, deterministic API environment/CORS parsing, visible UAT label, and manual Supabase Auth/Storage/database preparation with zero application tables or migrations
 - Phase 3 compatibility complete: explicit ASGI entrypoint, Python 3.12, minimal serverless dependencies, strict CORS, hosted runtime guards, and stateless verification; deployment intentionally deferred
 - Phase 4 compatibility complete: app-local SPA routing, strict hosted API URL enforcement, safe configuration state, UAT labeling, Project A settings, and deployment validation; deployment intentionally deferred
+- Phase 5 implementation preparation complete: official browser Auth, protected routing, asymmetric API JWT verification, RLS-constrained tenant membership, fixed permissions, minimal identity migration, and owner bootstrap procedure; cloud user, migration application, and deployment intentionally deferred
 - No Vercel deployment, migration, Supabase integration, production activation, commit, push, or tag
 - Target: separate Vercel FlowSync and FastAPI projects plus one Supabase Free UAT project
 - Current blockers: Vercel Hobby eligibility confirmation, authorized Project B/Project A deployment, exact hosted URL/CORS coordination, and hosted identity

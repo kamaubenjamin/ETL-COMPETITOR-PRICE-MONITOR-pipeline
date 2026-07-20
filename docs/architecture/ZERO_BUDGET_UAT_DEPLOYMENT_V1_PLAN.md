@@ -20,6 +20,10 @@ Phase 3 adds `api/index.py`, a Python 3.12 declaration, an exact API-only FastAP
 
 Phase 4 adds app-local Vite/Vercel settings and safe SPA routing, strict hosted API URL enforcement with a visible fixed configuration error, retained sanitized UAT labeling, Node/build/output declarations, disabled source maps, dependency-free deployment/dist checks, and manual Project A/API-CORS coordination. No Vercel deployment, hosted Auth, Supabase runtime, persistence, staging, or production behavior is activated.
 
+## Phase 5 Implementation Record
+
+Phase 5 adds existing-user Supabase browser Auth, protected routes and bearer propagation, asymmetric FastAPI JWT verification, RLS-constrained one-membership tenant resolution, fixed server-side UAT permissions, a safe session projection, and the minimal tenant/membership migration. No cloud user, remote migration, service-role key, deployment, document/workflow persistence, storage, processing, or production execution is activated.
+
 ## 1. Objective
 
 Provide a controlled path to a hosted, non-production UAT environment using two Vercel projects, one Supabase Free project, and GitHub deployment integration. The environment is for test data and bounded product review only. It is not a production, pilot, bulk-processing, or execution-activation environment.
@@ -120,7 +124,7 @@ Limits are operational assumptions, not repository guarantees. Recheck them imme
 2. **Phase 2 - complete:** prepare the owner-created Supabase Free UAT foundation, Auth/Storage/database inventory, safe environment templates, secret/ignore policy, test-data rules, API configuration parsing, and visible UAT label without runtime integration or migrations.
 3. **Phase 3 - compatibility complete, deployment deferred:** add FastAPI serverless compatibility, minimal dependencies, explicit Python/entrypoint configuration, strict CORS, and verified hosted safety without deploying Project B.
 4. **Phase 4 - compatibility complete, deployment deferred:** add safe SPA routing/UAT labeling, enforce the hosted API URL, document exact Project A/CORS settings, and verify the static bundle without deploying.
-5. **Phase 5:** integrate hosted Supabase Auth, trusted API JWT validation, tenant bootstrap, permission mapping, and UAT/environment separation.
+5. **Phase 5 - implementation prepared, deployment deferred:** integrate hosted Supabase Auth, trusted asymmetric API JWT validation, RLS-constrained one-membership tenant bootstrap, fixed permission mapping, and UAT/environment separation without a service-role key.
 6. **Phase 6:** run hosted smoke tests, CORS/security/privacy verification, free-tier monitoring checks, and UAT handoff.
 7. **Phase 7:** close the milestone with final documentation, release notes, verification evidence, and owner tag recommendation.
 

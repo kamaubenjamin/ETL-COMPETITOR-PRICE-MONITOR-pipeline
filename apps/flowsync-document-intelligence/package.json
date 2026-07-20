@@ -11,13 +11,15 @@
     "build": "tsc --noEmit -p tsconfig.json && vite build",
     "typecheck": "tsc --noEmit -p tsconfig.json --pretty false",
     "lint": "node -e \"console.log('Linting is not configured for the frontend yet')\"",
-    "validate": "node scripts/validate-source.mjs && node scripts/validate-vercel-deployment.mjs",
+    "validate": "node scripts/validate-source.mjs && node scripts/validate-vercel-deployment.mjs && node scripts/validate-supabase-auth.mjs",
+    "validate:auth": "node scripts/validate-supabase-auth.mjs",
     "validate:vercel": "node scripts/validate-vercel-deployment.mjs",
     "validate:vercel:dist": "node scripts/validate-vercel-deployment.mjs --dist",
     "test": "node scripts/validate-workflow-studio.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@supabase/supabase-js": "2.110.7",
     "lucide-react": "^0.468.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

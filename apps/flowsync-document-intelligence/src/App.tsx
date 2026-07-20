@@ -15,12 +15,14 @@ import { WorkflowStudioPage } from "./pages/WorkflowStudioPage";
 import { WorkflowDetailPage } from "./pages/WorkflowDetailPage";
 import { WorkflowEditorPage } from "./pages/WorkflowEditorPage";
 import { UploadsPage } from "./pages/UploadsPage";
+import { RequireAuth } from "./auth/RequireAuth";
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<AppShell />}>
+        <Route element={<RequireAuth />}>
+          <Route element={<AppShell />}>
           <Route index element={<Navigate to="/documents" replace />} />
           <Route path="documents" element={<DocumentsPage />} />
           <Route path="uploads" element={<UploadsPage />} />
@@ -39,6 +41,7 @@ export default function App() {
           <Route path="unauthorized" element={<UnauthorizedPage />} />
           <Route path="unavailable" element={<UnavailablePage />} />
           <Route path="*" element={<Navigate to="/documents" replace />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

@@ -10,6 +10,7 @@ Real-time multi-source price tracking with automated ETL pipeline. Monitor compe
 - [Phase 2 Supabase UAT foundation](./implementation/V0_21_PHASE_2_SUPABASE_UAT_FOUNDATION.md)
 - [Phase 3 FastAPI Vercel compatibility](./implementation/V0_21_PHASE_3_FASTAPI_VERCEL_COMPATIBILITY.md)
 - [Phase 4 FlowSync Vercel deployment preparation](./implementation/V0_21_PHASE_4_FLOWSYNC_VERCEL_DEPLOYMENT.md)
+- [Phase 5 Supabase Auth and tenant bootstrap](./implementation/V0_21_PHASE_5_SUPABASE_AUTH_TENANT_BOOTSTRAP.md)
 - [ADR-026](./adr/ADR-026-zero-budget-vercel-supabase-uat.md)
 
 ## v0.20 Business Workflow / Rules Studio Documentation

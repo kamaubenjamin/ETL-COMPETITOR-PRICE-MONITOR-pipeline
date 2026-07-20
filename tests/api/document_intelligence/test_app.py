@@ -32,7 +32,7 @@ DOMAIN_PATHS = {
     "/api/v1/workflow-definitions/{workflow_id}/deactivate",
     "/api/v1/workflow-definitions/{workflow_id}/archive",
 }
-EXPECTED_PATHS = {"/health", "/api/v1/health", "/api/v1/status", "/openapi.json", "/docs", "/docs/oauth2-redirect", "/redoc"} | DOMAIN_PATHS
+EXPECTED_PATHS = {"/health", "/api/v1/health", "/api/v1/status", "/api/v1/session", "/openapi.json", "/docs", "/docs/oauth2-redirect", "/redoc"} | DOMAIN_PATHS
 
 
 def test_app_factory_creates_separate_fastapi_application():
@@ -53,7 +53,7 @@ def test_only_expected_routes_are_registered():
 
 def test_openapi_contains_guarded_workflow_management_operations():
     schema = create_document_intelligence_app().openapi()
-    assert set(schema["paths"]) == {"/health", "/api/v1/health", "/api/v1/status"} | DOMAIN_PATHS
+    assert set(schema["paths"]) == {"/health", "/api/v1/health", "/api/v1/status", "/api/v1/session"} | DOMAIN_PATHS
     post_paths = {
         "/api/v1/documents/{document_id}/export/prepare",
         "/api/v1/documents/{document_id}/export",

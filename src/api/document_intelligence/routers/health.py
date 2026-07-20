@@ -6,6 +6,8 @@ from fastapi import APIRouter, Request
 
 from ..contracts import API_VERSION
 from ..responses import success_response
+from ..auth import authorize_read
+from src.security import Permission
 
 
 SERVICE_NAME = "document-intelligence-api"
@@ -50,5 +52,6 @@ def versioned_health(request: Request) -> dict[str, object]:
 
 @versioned_router.get("/status")
 def versioned_status(request: Request) -> dict[str, object]:
+    authorize_read(request, Permission.DOCUMENT_LIST, resource_type="service_status")
     return success_response(_status_data(), request_id=_request_id(request))
 

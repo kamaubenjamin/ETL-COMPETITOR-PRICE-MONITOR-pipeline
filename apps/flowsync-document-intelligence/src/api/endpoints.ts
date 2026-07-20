@@ -19,6 +19,7 @@ function segment(value: string): string {
 export const API_ENDPOINTS = Object.freeze({
   health: endpoint("/api/v1/health"),
   status: endpoint("/api/v1/status"),
+  session: endpoint("/api/v1/session"),
   documents: endpoint("/api/v1/documents"),
   uploads: endpoint("/api/v1/uploads"),
   upload: (uploadId: string) => endpoint(`/api/v1/uploads/${segment(uploadId)}`),

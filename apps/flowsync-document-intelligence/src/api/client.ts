@@ -8,6 +8,7 @@ import {
   documentIntelligenceApiBaseUrl,
   normalizeDocumentIntelligenceApiOrigin,
 } from "../config/deploymentEnvironment";
+import { getSupabaseAccessToken } from "../auth/supabaseClient";
 
 export type QueryValue = string | number | boolean | undefined;
 export type ApiQuery = Readonly<Record<string, QueryValue>>;
@@ -15,6 +16,7 @@ export type ApiQuery = Readonly<Record<string, QueryValue>>;
 export interface ApiClientOptions {
   baseUrl: string;
   fetchImplementation?: typeof fetch;
+  accessTokenProvider?: () => Promise<string>;
 }
 
 function validateBaseUrl(value: string): string {
@@ -40,21 +42,41 @@ function appendQuery(url: URL, query: ApiQuery): void {
 export class DocumentIntelligenceApiClient {
   private readonly baseUrl: string;
   private readonly fetchImplementation: typeof fetch;
+  private readonly accessTokenProvider: () => Promise<string>;
 
   constructor(options: ApiClientOptions) {
     this.baseUrl = validateBaseUrl(options.baseUrl);
     this.fetchImplementation = options.fetchImplementation ?? fetch;
+    this.accessTokenProvider = options.accessTokenProvider ?? getSupabaseAccessToken;
+  }
+
+  private async headers(contentType = false): Promise<Record<string, string>> {
+    let token: string;
+    try {
+      token = await this.accessTokenProvider();
+    } catch {
+      throw ApiClientError.forStatus(401, "authentication_required");
+    }
+    if (!token || token.length > 16384 || /\s/.test(token)) {
+      throw ApiClientError.forStatus(401, "authentication_required");
+    }
+    return {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+      ...(contentType ? { "Content-Type": "application/json" } : {}),
+    };
   }
 
   async get<T>(endpoint: ApiEndpoint, query: ApiQuery = {}): Promise<ApiEnvelope<T>> {
     const url = new URL(`${this.baseUrl}${endpoint}`);
     appendQuery(url, query);
 
+    const headers = await this.headers();
     let response: Response;
     try {
       response = await this.fetchImplementation(url, {
         method: "GET",
-        headers: { Accept: "application/json" },
+        headers,
         cache: "no-store",
         credentials: "omit",
       });
@@ -82,11 +104,12 @@ export class DocumentIntelligenceApiClient {
 
   async mutate<T>(endpoint: ApiEndpoint, method: "POST" | "PATCH", payload?: unknown): Promise<ApiEnvelope<T>> {
     const url = new URL(`${this.baseUrl}${endpoint}`);
+    const headers = await this.headers(true);
     let response: Response;
     try {
       response = await this.fetchImplementation(url, {
         method,
-        headers: { Accept: "application/json", "Content-Type": "application/json" },
+        headers,
         ...(payload === undefined ? {} : { body: JSON.stringify(payload) }),
         cache: "no-store",
         credentials: "omit",
@@ -112,11 +135,12 @@ export class DocumentIntelligenceApiClient {
     payload: UploadMetadataPreviewRequest,
   ): Promise<ApiEnvelope<T>> {
     const url = new URL(`${this.baseUrl}${endpoint}`);
+    const headers = await this.headers(true);
     let response: Response;
     try {
       response = await this.fetchImplementation(url, {
         method: "POST",
-        headers: { Accept: "application/json", "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify(payload),
         cache: "no-store",
         credentials: "omit",

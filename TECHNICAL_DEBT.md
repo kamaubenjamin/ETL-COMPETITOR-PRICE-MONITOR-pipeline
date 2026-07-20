@@ -10,11 +10,13 @@ Phase 3 adds the explicit Vercel ASGI entrypoint, Python 3.12 pin, minimal API d
 
 Phase 4 adds app-local Vite/Vercel SPA routing, exact hosted API origin enforcement with no production-build localhost fallback, a fixed app-wide configuration error, Node/build/output declarations, source-map disablement, and dependency-free deployment/dist validation. Actual Project A/Project B deployment, exact cloud URL/CORS coordination, hosted Auth, and live authenticated smoke testing remain owner-deferred.
 
+Phase 5 adds browser Auth, asymmetric JWT verification, RLS-constrained membership resolution, fixed UAT role mapping, and a minimal identity migration without a service-role key. Owner-operated migration application, one-user bootstrap, signing-key/redirect/CORS verification, rate limiting, MFA, recovery, invitations, urgent JWKS cache purge, and hosted smoke testing remain deferred to later authorization.
+
 Blocking or required before hosted UAT:
 
 - Owner confirmation that the intended UAT is eligible for Vercel Hobby's personal, non-commercial terms; otherwise the KSh 0 target needs a different host
 - Create and configure Vercel Project B using the reviewed Phase 3 settings; do not deploy until the owner accepts the UAT/Auth/stateless limitations
-- Create and configure Vercel Project A using the reviewed Phase 4 settings and coordinate exact API/frontend origins without wildcard CORS
+- Create and configure both Vercel projects using the reviewed settings and coordinate exact API/frontend origins without wildcard CORS
 - Real Supabase Auth/JWT identity and tenant composition before authenticated UAT
 
 Accepted only for bounded UAT: process-local Workflow Studio/query state, free-tier cold starts/pauses, no SLA, default unavailable preview, no background processing, and synthetic test data only.

@@ -26,6 +26,8 @@ export function SafeErrorState({ error, onRetry }: SafeErrorStateProps) {
             ? "Contact the environment owner to review access configuration."
             : error.kind === "configuration"
               ? "The environment owner must configure the exact HTTPS API origin before this hosted preview can load data."
+            : error.kind === "auth_configuration"
+              ? "The environment owner must configure the public Supabase URL and publishable key. No protected content was loaded."
             : error.kind === "runtime_unavailable"
               ? "The application remains read-only while runtime services are unavailable."
               : "No protected data was loaded.";

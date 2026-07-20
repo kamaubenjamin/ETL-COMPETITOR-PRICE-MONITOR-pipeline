@@ -11,8 +11,8 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from .contracts import API_VERSION
-from .auth import create_auth_composition, create_runtime_auth_composition
-from .config import APIAuthConfig, APIDeploymentEnvironment, APIEnvironmentConfig
+from .auth import create_auth_composition, create_runtime_auth_composition, create_supabase_auth_composition
+from .config import APIAuthConfig, APIAuthMode, APIDeploymentEnvironment, APIEnvironmentConfig, SupabaseAuthConfig
 from .errors import DocumentIntelligenceAPIError
 from .middleware import request_context_middleware
 from .responses import error_response
@@ -74,8 +74,14 @@ def create_document_intelligence_app(
         APIDeploymentEnvironment.PILOT,
         APIDeploymentEnvironment.PRODUCTION,
     }
-    effective_auth = runtime_auth or create_auth_composition(auth_config, identity_provider)
-    if hosted_environment and effective_auth.config.mode.value == "local_demo":
+    if hosted_environment and runtime_auth is None and auth_config is None and identity_provider is None:
+        try:
+            effective_auth = create_supabase_auth_composition(SupabaseAuthConfig.from_environment())
+        except (TypeError, ValueError):
+            raise RuntimeValidationError(RuntimeErrorCode.INVALID_CONFIG, field="supabase_auth") from None
+    else:
+        effective_auth = runtime_auth or create_auth_composition(auth_config, identity_provider)
+    if hosted_environment and effective_auth.config.mode != APIAuthMode.SUPABASE:
         raise RuntimeValidationError(RuntimeErrorCode.INVALID_CONFIG, field="auth")
 
     application = FastAPI(
@@ -108,7 +114,7 @@ def create_document_intelligence_app(
             allow_origins=list(deployment.cors_allowed_origins),
             allow_credentials=False,
             allow_methods=["GET", "POST", "PATCH"],
-            allow_headers=["Accept", "Content-Type", "X-Request-ID"],
+            allow_headers=["Accept", "Authorization", "Content-Type", "X-Request-ID"],
             expose_headers=["X-Request-ID"],
             max_age=600,
         )

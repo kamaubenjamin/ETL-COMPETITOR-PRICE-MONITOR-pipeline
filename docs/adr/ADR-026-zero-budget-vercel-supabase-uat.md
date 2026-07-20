@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.21. Phase 1 completed the audit; Phase 2 established the Supabase/environment foundation; Phase 3 established stateless FastAPI compatibility; Phase 4 establishes app-local FlowSync Vercel routing and hosted API configuration safety without deployment. No cloud resource is authorized by this ADR alone.
+Accepted for v0.21. Phases 1-4 established the deployment, Supabase, API, and frontend compatibility foundations. Phase 5 prepares browser Auth, trusted JWT verification, and RLS tenant membership without deployment, remote migration, or cloud-user creation. No cloud action is authorized by this ADR alone.
 
 ## Context
 
@@ -36,6 +36,7 @@ Use separate Vercel projects rather than combining frontend and API. Project A o
 - Phase 2 requires zero application tables. Future tenant/workflow names remain deferred planning vocabulary and do not authorize migrations or RLS.
 - Phase 3 enables CORS only for explicitly configured exact origins; hosted origins require HTTPS, credentials remain disabled, and hosted Auth/JWT validation remains a Phase 5 authority boundary.
 - Phase 4 rewrites only frontend SPA routes, requires an exact hosted HTTPS API origin, displays a safe configuration failure instead of using localhost in hosted builds, and keeps permission hints non-authoritative.
+- Phase 5 uses the official Supabase browser client for existing-user email/password Auth, verifies asymmetric access tokens locally through JWKS, and resolves authority through RLS-constrained membership reads using the user token and publishable key. No service-role key, shared JWT secret, browser tenant selector, or direct PostgreSQL connection is required.
 
 ## Serverless Decision
 

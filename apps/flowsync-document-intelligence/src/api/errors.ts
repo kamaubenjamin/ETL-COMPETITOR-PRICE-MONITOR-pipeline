@@ -8,6 +8,7 @@ export type SafeClientErrorKind =
   | "runtime_unavailable"
   | "auth_mismatch"
   | "configuration"
+  | "auth_configuration"
   | "invalid_response";
 
 export interface SafeClientError {
@@ -27,6 +28,7 @@ const FIXED_MESSAGES: Record<SafeClientErrorKind, string> = {
   runtime_unavailable: "The Document Intelligence runtime is currently unavailable.",
   auth_mismatch: "Document Intelligence access is not configured for this environment.",
   configuration: "Document Intelligence API is not configured for this environment.",
+  auth_configuration: "Supabase authentication is not configured for this environment.",
   invalid_response: "Document Intelligence returned an invalid response.",
 };
 
@@ -40,6 +42,7 @@ const FIXED_CODES: Record<SafeClientErrorKind, string> = {
   runtime_unavailable: "runtime_unavailable",
   auth_mismatch: "auth_configuration_mismatch",
   configuration: "deployment_configuration_error",
+  auth_configuration: "authentication_configuration_error",
   invalid_response: "invalid_response",
 };
 

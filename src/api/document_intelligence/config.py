@@ -21,6 +21,7 @@ class APIAuthMode(str, Enum):
     LOCAL_DEMO = "local_demo"
     AUTHENTICATED = "authenticated"
     PRODUCTION = "production"
+    SUPABASE = "supabase"
 
 
 class APIDeploymentEnvironment(str, Enum):
@@ -142,6 +143,92 @@ class APIEnvironmentConfig:
             "cors_configured": bool(self.cors_allowed_origins),
             "cors_origin_count": len(self.cors_allowed_origins),
         }
+
+
+def _https_origin(value: object, field_name: str) -> str:
+    if not isinstance(value, str) or not value or len(value) > 2048:
+        raise ValueError(f"{field_name} is invalid")
+    parsed = urlsplit(value.strip())
+    if (
+        parsed.scheme != "https"
+        or not parsed.hostname
+        or parsed.username is not None
+        or parsed.password is not None
+        or parsed.path not in {"", "/"}
+        or parsed.query
+        or parsed.fragment
+    ):
+        raise ValueError(f"{field_name} is invalid")
+    return f"https://{parsed.netloc.lower()}"
+
+
+def _https_url(value: object, field_name: str) -> str:
+    if not isinstance(value, str) or not value or len(value) > 2048:
+        raise ValueError(f"{field_name} is invalid")
+    parsed = urlsplit(value.strip())
+    if (
+        parsed.scheme != "https"
+        or not parsed.hostname
+        or parsed.username is not None
+        or parsed.password is not None
+        or parsed.query
+        or parsed.fragment
+    ):
+        raise ValueError(f"{field_name} is invalid")
+    return value.strip().rstrip("/")
+
+
+@dataclass(frozen=True, slots=True)
+class SupabaseAuthConfig:
+    """Public Supabase verification/Data API settings; never contains a secret key."""
+
+    url: str
+    publishable_key: str
+    jwks_url: str | None = None
+    issuer: str | None = None
+    audience: str = "authenticated"
+    network_timeout_seconds: float = 5.0
+    jwks_cache_seconds: int = 300
+    jwks_max_keys: int = 8
+
+    def __post_init__(self) -> None:
+        origin = _https_origin(self.url, "SUPABASE_URL")
+        key = self.publishable_key.strip() if isinstance(self.publishable_key, str) else ""
+        if not key or len(key) > 2048 or any(character.isspace() for character in key):
+            raise ValueError("SUPABASE_PUBLISHABLE_KEY is invalid")
+        issuer = _https_url(self.issuer or f"{origin}/auth/v1", "SUPABASE_JWT_ISSUER")
+        jwks_url = _https_url(
+            self.jwks_url or f"{issuer}/.well-known/jwks.json",
+            "SUPABASE_JWKS_URL",
+        )
+        if not jwks_url.startswith(f"{origin}/auth/v1/") or issuer != f"{origin}/auth/v1":
+            raise ValueError("Supabase JWT endpoints must belong to SUPABASE_URL")
+        if not isinstance(self.audience, str) or not self.audience or len(self.audience) > 128:
+            raise ValueError("SUPABASE_JWT_AUDIENCE is invalid")
+        if not 0.5 <= self.network_timeout_seconds <= 15:
+            raise ValueError("SUPABASE_NETWORK_TIMEOUT_SECONDS is invalid")
+        if not 30 <= self.jwks_cache_seconds <= 600:
+            raise ValueError("SUPABASE_JWKS_CACHE_SECONDS is invalid")
+        if not 1 <= self.jwks_max_keys <= 16:
+            raise ValueError("SUPABASE_JWKS_MAX_KEYS is invalid")
+        object.__setattr__(self, "url", origin)
+        object.__setattr__(self, "publishable_key", key)
+        object.__setattr__(self, "issuer", issuer)
+        object.__setattr__(self, "jwks_url", jwks_url)
+
+    @classmethod
+    def from_environment(cls, environment: Mapping[str, str] | None = None) -> "SupabaseAuthConfig":
+        source = process_environment if environment is None else environment
+        return cls(
+            url=source.get("SUPABASE_URL", ""),
+            publishable_key=source.get("SUPABASE_PUBLISHABLE_KEY", ""),
+            jwks_url=source.get("SUPABASE_JWKS_URL") or None,
+            issuer=source.get("SUPABASE_JWT_ISSUER") or None,
+            audience=source.get("SUPABASE_JWT_AUDIENCE", "authenticated"),
+            network_timeout_seconds=float(source.get("SUPABASE_NETWORK_TIMEOUT_SECONDS", "5")),
+            jwks_cache_seconds=int(source.get("SUPABASE_JWKS_CACHE_SECONDS", "300")),
+            jwks_max_keys=int(source.get("SUPABASE_JWKS_MAX_KEYS", "8")),
+        )
 
 
 @dataclass(frozen=True, slots=True)
