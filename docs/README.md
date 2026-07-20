@@ -2,6 +2,13 @@
 
 Real-time multi-source price tracking with automated ETL pipeline. Monitor competitor pricing across platforms with intelligent alerts and historical price tracking.
 
+## v0.21 Zero-Budget UAT Deployment Documentation
+
+- [Deployment architecture plan](./architecture/ZERO_BUDGET_UAT_DEPLOYMENT_V1_PLAN.md)
+- [Deployment implementation plan](./architecture/ZERO_BUDGET_UAT_DEPLOYMENT_V1_IMPLEMENTATION_PLAN.md)
+- [Phase 1 deployment audit](./implementation/V0_21_PHASE_1_DEPLOYMENT_AUDIT.md)
+- [ADR-026](./adr/ADR-026-zero-budget-vercel-supabase-uat.md)
+
 ## v0.20 Business Workflow / Rules Studio Documentation
 
 - [Closeout](./implementation/V0_20_BUSINESS_WORKFLOW_RULES_STUDIO_CLOSEOUT.md)

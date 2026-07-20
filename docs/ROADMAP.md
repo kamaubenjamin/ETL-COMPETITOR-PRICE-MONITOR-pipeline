@@ -494,7 +494,7 @@ Status:
 - Phase 5 implemented: app-scoped in-memory Workflow Management API composition, required guarded routes, strict tenant/permission enforcement, optimistic full draft replacement, safe validation/preview/audit projections, and governance-only publication/deactivation/archive
 - Phase 6 implemented: FlowSync Business Workflows navigation, definition list/create/detail, version/audit/catalog visibility, structured draft editor, validation and bounded preview panels, permission-aware lifecycle controls, safe conflict/access states, and governance-only messaging
 - Phase 7 complete: final architecture/security summaries, implementation closeout, release notes, handoff, aligned ADR/roadmap/debt/changelog, and release verification evidence
-- v0.20 implemented and closed pending owner commit and tag `v0.20-business-workflow-rules-studio`
+- v0.20 implemented, closed, and tagged as `v0.20-business-workflow-rules-studio`
 - Existing Workflow Runtime remains the sole execution authority
 - Recommended independent `workflow_studio` governance package above the runtime
 - No durable repository, runtime publication activation, migration, dependency, OCR/LLM, ERP/export, upload-staging, or production execution change added
@@ -523,6 +523,29 @@ References:
 - `docs/architecture/BUSINESS_WORKFLOW_RULES_STUDIO_V1_PLAN.md`
 - `docs/architecture/BUSINESS_WORKFLOW_RULES_STUDIO_V1_IMPLEMENTATION_PLAN.md`
 - `docs/adr/ADR-025-business-workflow-rules-studio-boundary.md`
+
+### v0.21 Zero-Budget Vercel + Supabase UAT
+
+Status:
+- Phase 1 complete: narrow repository deployment audit, zero-budget architecture, ADR-026, environment inventory, Vercel project settings, blocker classification, safeguards, and seven-phase implementation plan
+- Audit/plan only; no deployment, Supabase cloud resource, migration, dependency, product behavior, production activation, commit, push, or tag
+- Target: separate Vercel FlowSync and FastAPI projects plus one Supabase Free UAT project
+- Current blockers: Vercel Hobby eligibility confirmation, SPA rewrite, CORS, explicit ASGI entrypoint, minimal API dependency bundle, hosted identity, and environment/secret hygiene
+
+Phases:
+1. Deployment audit and plan - complete
+2. Supabase UAT project, service inventory, and environment preparation
+3. FastAPI serverless compatibility and API deployment
+4. FlowSync deployment and hosted API URL wiring
+5. Hosted Auth, tenant bootstrap, and environment separation
+6. Smoke, CORS/security/privacy verification, and UAT handoff
+7. Closure, release notes, and tag recommendation
+
+References:
+- `docs/architecture/ZERO_BUDGET_UAT_DEPLOYMENT_V1_PLAN.md`
+- `docs/architecture/ZERO_BUDGET_UAT_DEPLOYMENT_V1_IMPLEMENTATION_PLAN.md`
+- `docs/adr/ADR-026-zero-budget-vercel-supabase-uat.md`
+- `docs/implementation/V0_21_PHASE_1_DEPLOYMENT_AUDIT.md`
 
 ## Prior Milestone Context
 

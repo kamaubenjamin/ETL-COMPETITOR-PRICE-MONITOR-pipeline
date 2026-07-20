@@ -1,10 +1,30 @@
 Technical debt and missing test fixtures
 
+## v0.21 Zero-Budget Vercel + Supabase UAT
+
+Phase 1 audits and plans a KSh 0 UAT deployment without creating cloud resources or changing runtime behavior. Current deployment debt is classified in `docs/implementation/V0_21_PHASE_1_DEPLOYMENT_AUDIT.md`.
+
+Blocking or required before hosted UAT:
+
+- Owner confirmation that the intended UAT is eligible for Vercel Hobby's personal, non-commercial terms; otherwise the KSh 0 target needs a different host
+- Explicit Vercel FastAPI ASGI entrypoint and Python 3.12 declaration
+- Minimal serverless API dependency manifest and bundle exclusions
+- Strict environment-driven CORS allowlist for the FlowSync UAT origin
+- Vite SPA rewrite for direct-route refreshes
+- Hosted API base URL configuration and explicit UAT banner
+- `.env.*` and `.vercel/` ignore hardening before cloud tooling
+- Supabase UAT project/service/environment inventory without inferred migrations
+- Real Supabase Auth/JWT identity and tenant composition before authenticated UAT
+
+Accepted only for bounded UAT: process-local Workflow Studio/query state, free-tier cold starts/pauses, no SLA, default unavailable preview, no background processing, and synthetic test data only.
+
+Required before pilot/production: PostgreSQL/Supabase repositories and migrations, RLS, transactional publication/audit persistence, private storage/retention, capability discovery, rate limiting, operational monitoring/recovery, backups/SLA, queue/workers for long jobs, and separately approved production execution/integrations.
+
 ## v0.20 Business Workflow / Rules Studio
 
 ### Current Status
 
-**v0.20 is implemented and closed through Phase 7, pending owner commit and tag.**
+**v0.20 is implemented, closed through Phase 7, and tagged as `v0.20-business-workflow-rules-studio`.**
 
 ADR-025 and the v0.20 plans select a separate `workflow_studio` governance package above the existing Workflow Runtime. The runtime remains execution authority. The Studio is responsible for safe definitions, operation descriptors, validation, drafts, immutable versions, approval/publication policy, bounded preview, legacy migration reports, and audit intents through narrow ports.
 
