@@ -20,6 +20,13 @@ EXPECTED_PERMISSIONS = (
     "document:admin",
     "workflow:read",
     "workflow:run",
+    "workflow:create",
+    "workflow:edit",
+    "workflow:test",
+    "workflow:approve",
+    "workflow:publish",
+    "workflow:deactivate",
+    "workflow:admin",
     "audit:read",
     "tenant:admin",
     "user:admin",
@@ -35,13 +42,19 @@ def test_viewer_reviewer_manager_and_tenant_admin_resolve_exactly():
     assert viewer == {Permission.DOCUMENT_READ, Permission.DOCUMENT_LIST, Permission.WORKFLOW_READ}
     assert set(permissions_for_role(Role.REVIEWER)) == viewer | {Permission.DOCUMENT_REVIEW}
     manager = set(permissions_for_role(Role.OPERATIONS_MANAGER))
-    assert manager == viewer | {Permission.DOCUMENT_REVIEW, Permission.DOCUMENT_APPROVE, Permission.WORKFLOW_RUN}
+    assert manager == viewer | {
+        Permission.DOCUMENT_REVIEW, Permission.DOCUMENT_APPROVE, Permission.WORKFLOW_RUN,
+        Permission.WORKFLOW_CREATE, Permission.WORKFLOW_EDIT, Permission.WORKFLOW_TEST,
+        Permission.WORKFLOW_APPROVE, Permission.WORKFLOW_DEACTIVATE,
+    }
     assert set(permissions_for_role(Role.TENANT_ADMIN)) == manager | {
         Permission.DOCUMENT_INGEST,
         Permission.DOCUMENT_EXPORT,
         Permission.AUDIT_READ,
         Permission.TENANT_ADMIN,
         Permission.USER_ADMIN,
+        Permission.WORKFLOW_PUBLISH,
+        Permission.WORKFLOW_ADMIN,
     }
 
 
