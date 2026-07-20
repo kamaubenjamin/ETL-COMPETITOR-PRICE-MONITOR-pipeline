@@ -24,6 +24,8 @@ export function SafeErrorState({ error, onRetry }: SafeErrorStateProps) {
           ? "No data was displayed because the response could not be safely validated."
           : error.kind === "auth_mismatch"
             ? "Contact the environment owner to review access configuration."
+            : error.kind === "configuration"
+              ? "The environment owner must configure the exact HTTPS API origin before this hosted preview can load data."
             : error.kind === "runtime_unavailable"
               ? "The application remains read-only while runtime services are unavailable."
               : "No protected data was loaded.";

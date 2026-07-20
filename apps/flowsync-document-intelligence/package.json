@@ -3,12 +3,17 @@
   "private": true,
   "version": "0.20.0-phase.6",
   "type": "module",
+  "engines": {
+    "node": ">=22.12 <23"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit -p tsconfig.json && vite build",
     "typecheck": "tsc --noEmit -p tsconfig.json --pretty false",
     "lint": "node -e \"console.log('Linting is not configured for the frontend yet')\"",
-    "validate": "node scripts/validate-source.mjs",
+    "validate": "node scripts/validate-source.mjs && node scripts/validate-vercel-deployment.mjs",
+    "validate:vercel": "node scripts/validate-vercel-deployment.mjs",
+    "validate:vercel:dist": "node scripts/validate-vercel-deployment.mjs --dist",
     "test": "node scripts/validate-workflow-studio.mjs",
     "preview": "vite preview"
   },

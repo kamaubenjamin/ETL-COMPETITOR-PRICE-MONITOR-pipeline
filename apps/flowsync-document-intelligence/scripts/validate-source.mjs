@@ -29,7 +29,7 @@ function walk(directory) {
   });
 }
 
-const sourceFiles = walk(sourceRoot).filter((path) => /\.(ts|tsx)$/.test(path));
+const sourceFiles = walk(sourceRoot).filter((path) => /\.(?:ts|tsx|mjs)$/.test(path));
 const source = sourceFiles.map((path) => ({
   path,
   name: relative(root, path).replaceAll("\\", "/"),
@@ -72,6 +72,7 @@ const requiredFiles = [
   "src/components/workflows/PreviewPanel.tsx",
   "src/components/workflows/OperationCatalogPanel.tsx",
   "src/config/deploymentEnvironment.ts",
+  "src/config/deploymentEnvironmentCore.mjs",
 ];
 for (const name of requiredFiles) {
   if (!source.some((file) => file.name === name)) failures.push(`missing required source: ${name}`);
@@ -89,6 +90,7 @@ for (const route of [
   "/workflows/new",
   "/workflows/:workflowId",
   "/workflows/:workflowId/versions/:versionId/edit",
+  "/workflow-runs",
   "/audit",
   "/uploads",
 ]) {
@@ -184,14 +186,18 @@ for (const file of source) {
 const clientSource = source.find((file) => file.name === "src/api/client.ts")?.content ?? "";
 if (!clientSource.includes('method: "GET"')) failures.push("GET-only client method is missing");
 if (!clientSource.includes("async mutate<T>") || !clientSource.includes('method: "POST"')) failures.push("centralized guarded mutation client is missing");
-if (!clientSource.includes("configuredBaseUrl || DEFAULT_LOCAL_API_URL")) failures.push("blank API URL safe fallback is missing");
+if (!clientSource.includes("documentIntelligenceApiBaseUrl") || !clientSource.includes("ApiClientError.configuration")) failures.push("environment-safe API URL composition is missing");
 
 const environmentSource = source.find((file) => file.name === "src/config/deploymentEnvironment.ts")?.content ?? "";
+const environmentCoreSource = source.find((file) => file.name === "src/config/deploymentEnvironmentCore.mjs")?.content ?? "";
 const headerSource = source.find((file) => file.name === "src/components/Header.tsx")?.content ?? "";
 for (const value of ["Local Development", "UAT / Technical Preview", "resolveDeploymentEnvironmentLabel"]) {
-  if (!environmentSource.includes(value)) failures.push(`missing safe deployment label behavior: ${value}`);
+  if (![environmentSource, environmentCoreSource].join("\n").includes(value)) failures.push(`missing safe deployment label behavior: ${value}`);
 }
 if (!headerSource.includes("deploymentEnvironmentLabel") || !headerSource.includes("environment-indicator")) failures.push("environment label is not rendered in the header");
+for (const value of ["resolveDocumentIntelligenceApiBaseUrl", "hasValidDocumentIntelligenceApiConfiguration", "import.meta.env.DEV"]) {
+  if (!environmentSource.includes(value) && !environmentCoreSource.includes(value)) failures.push(`missing hosted API configuration guard: ${value}`);
+}
 const frontendSource = source.map((file) => file.content).join("\n");
 for (const serverOnlyName of ["SUPABASE_SECRET_KEY", "SUPABASE_SERVICE_ROLE_KEY", "DATABASE_URL", "JWT_JWKS_URL"]) {
   if (frontendSource.includes(serverOnlyName)) failures.push(`server-only environment name found in frontend source: ${serverOnlyName}`);

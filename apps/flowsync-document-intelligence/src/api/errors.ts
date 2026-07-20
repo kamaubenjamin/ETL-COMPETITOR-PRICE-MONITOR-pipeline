@@ -7,6 +7,7 @@ export type SafeClientErrorKind =
   | "unavailable"
   | "runtime_unavailable"
   | "auth_mismatch"
+  | "configuration"
   | "invalid_response";
 
 export interface SafeClientError {
@@ -25,6 +26,7 @@ const FIXED_MESSAGES: Record<SafeClientErrorKind, string> = {
   unavailable: "Document Intelligence is temporarily unavailable.",
   runtime_unavailable: "The Document Intelligence runtime is currently unavailable.",
   auth_mismatch: "Document Intelligence access is not configured for this environment.",
+  configuration: "Document Intelligence API is not configured for this environment.",
   invalid_response: "Document Intelligence returned an invalid response.",
 };
 
@@ -37,6 +39,7 @@ const FIXED_CODES: Record<SafeClientErrorKind, string> = {
   unavailable: "api_unavailable",
   runtime_unavailable: "runtime_unavailable",
   auth_mismatch: "auth_configuration_mismatch",
+  configuration: "deployment_configuration_error",
   invalid_response: "invalid_response",
 };
 
@@ -82,6 +85,14 @@ export class ApiClientError extends Error {
       kind: "unavailable",
       code: "api_unavailable",
       message: FIXED_MESSAGES.unavailable,
+    });
+  }
+
+  static configuration(): ApiClientError {
+    return new ApiClientError({
+      kind: "configuration",
+      code: FIXED_CODES.configuration,
+      message: FIXED_MESSAGES.configuration,
     });
   }
 

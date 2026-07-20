@@ -1,30 +1,43 @@
-const DEFAULT_LABEL = "Local Development";
-const UAT_LABEL = "UAT / Technical Preview";
-const SAFE_LABEL = /^[A-Za-z0-9][A-Za-z0-9 /._-]{0,47}$/;
+import {
+  DeploymentConfigurationError,
+  normalizeDocumentIntelligenceApiOrigin,
+  resolveDeploymentEnvironment,
+  resolveDeploymentEnvironmentLabel,
+  resolveDocumentIntelligenceApiBaseUrl,
+} from "./deploymentEnvironmentCore.mjs";
 
-function normalized(value: unknown): string | undefined {
-  if (typeof value !== "string") return undefined;
-  const candidate = value.trim();
-  return candidate && SAFE_LABEL.test(candidate) ? candidate : undefined;
-}
+export {
+  DeploymentConfigurationError,
+  normalizeDocumentIntelligenceApiOrigin,
+  resolveDeploymentEnvironment,
+  resolveDeploymentEnvironmentLabel,
+  resolveDocumentIntelligenceApiBaseUrl,
+};
 
-export function resolveDeploymentEnvironmentLabel(
-  configuredLabel: unknown,
-  configuredEnvironment: unknown,
-): string {
-  const label = normalized(configuredLabel);
-  if (label) return label;
-
-  const environment = normalized(configuredEnvironment)?.toLowerCase();
-  if (environment === "uat" || environment === "technical-preview" || environment === "technical_preview") {
-    return UAT_LABEL;
-  }
-  return DEFAULT_LABEL;
-}
+const DEFAULT_LOCAL_API_URL = "http://127.0.0.1:8001";
 
 export function deploymentEnvironmentLabel(): string {
   return resolveDeploymentEnvironmentLabel(
     import.meta.env.VITE_UAT_LABEL,
     import.meta.env.VITE_DEPLOYMENT_ENVIRONMENT,
   );
+}
+
+export function documentIntelligenceApiBaseUrl(): string {
+  return resolveDocumentIntelligenceApiBaseUrl(
+    import.meta.env.VITE_DOCUMENT_INTELLIGENCE_API_BASE_URL,
+    import.meta.env.VITE_DEPLOYMENT_ENVIRONMENT,
+    import.meta.env.DEV,
+    import.meta.env.DEV ? DEFAULT_LOCAL_API_URL : undefined,
+  );
+}
+
+export function hasValidDocumentIntelligenceApiConfiguration(): boolean {
+  try {
+    documentIntelligenceApiBaseUrl();
+    return true;
+  } catch (error) {
+    if (error instanceof DeploymentConfigurationError) return false;
+    return false;
+  }
 }

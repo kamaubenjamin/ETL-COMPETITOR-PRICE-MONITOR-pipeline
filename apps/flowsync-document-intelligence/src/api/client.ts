@@ -3,6 +3,11 @@ import { ApiClientError } from "./errors";
 import { parseApiEnvelope } from "./envelope";
 import type { ApiEnvelope } from "../types/api";
 import type { UploadMetadataPreviewRequest } from "../types/upload";
+import {
+  DeploymentConfigurationError,
+  documentIntelligenceApiBaseUrl,
+  normalizeDocumentIntelligenceApiOrigin,
+} from "../config/deploymentEnvironment";
 
 export type QueryValue = string | number | boolean | undefined;
 export type ApiQuery = Readonly<Record<string, QueryValue>>;
@@ -13,16 +18,14 @@ export interface ApiClientOptions {
 }
 
 function validateBaseUrl(value: string): string {
-  let url: URL;
   try {
-    url = new URL(value);
-  } catch {
+    return normalizeDocumentIntelligenceApiOrigin(value, true);
+  } catch (error) {
+    if (error instanceof DeploymentConfigurationError) {
+      throw ApiClientError.configuration();
+    }
     throw new Error("API base URL is invalid");
   }
-  if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.search || url.hash) {
-    throw new Error("API base URL is invalid");
-  }
-  return url.toString().replace(/\/$/, "");
 }
 
 function appendQuery(url: URL, query: ApiQuery): void {
@@ -148,11 +151,13 @@ export class DocumentIntelligenceApiClient {
   }
 }
 
-const DEFAULT_LOCAL_API_URL = "http://127.0.0.1:8001";
-
 export function createApiClient(): DocumentIntelligenceApiClient {
-  const configuredBaseUrl = import.meta.env.VITE_DOCUMENT_INTELLIGENCE_API_BASE_URL?.trim();
-  return new DocumentIntelligenceApiClient({
-    baseUrl: configuredBaseUrl || DEFAULT_LOCAL_API_URL,
-  });
+  try {
+    return new DocumentIntelligenceApiClient({ baseUrl: documentIntelligenceApiBaseUrl() });
+  } catch (error) {
+    if (error instanceof DeploymentConfigurationError || error instanceof ApiClientError) {
+      throw ApiClientError.configuration();
+    }
+    throw ApiClientError.configuration();
+  }
 }

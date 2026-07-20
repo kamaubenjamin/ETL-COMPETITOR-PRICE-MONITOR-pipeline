@@ -530,15 +530,16 @@ Status:
 - Phase 1 complete: narrow repository deployment audit, zero-budget architecture, ADR-026, environment inventory, Vercel project settings, blocker classification, safeguards, and seven-phase implementation plan
 - Phase 2 complete: safe server/browser environment templates, secret classification, ignore hardening, deterministic API environment/CORS parsing, visible UAT label, and manual Supabase Auth/Storage/database preparation with zero application tables or migrations
 - Phase 3 compatibility complete: explicit ASGI entrypoint, Python 3.12, minimal serverless dependencies, strict CORS, hosted runtime guards, and stateless verification; deployment intentionally deferred
+- Phase 4 compatibility complete: app-local SPA routing, strict hosted API URL enforcement, safe configuration state, UAT labeling, Project A settings, and deployment validation; deployment intentionally deferred
 - No Vercel deployment, migration, Supabase integration, production activation, commit, push, or tag
 - Target: separate Vercel FlowSync and FastAPI projects plus one Supabase Free UAT project
-- Current blockers: Vercel Hobby eligibility confirmation, actual Project B creation/deployment, SPA rewrite/Project A deployment, exact hosted origin configuration, and hosted identity
+- Current blockers: Vercel Hobby eligibility confirmation, authorized Project B/Project A deployment, exact hosted URL/CORS coordination, and hosted identity
 
 Phases:
 1. Deployment audit and plan - complete
 2. Supabase UAT project, service inventory, and environment preparation - complete
 3. FastAPI serverless compatibility - complete; API deployment deferred to owner action
-4. FlowSync deployment and hosted API URL wiring
+4. FlowSync Vercel compatibility and hosted API URL safety - complete; deployment deferred to owner action
 5. Hosted Auth, tenant bootstrap, and environment separation
 6. Smoke, CORS/security/privacy verification, and UAT handoff
 7. Closure, release notes, and tag recommendation

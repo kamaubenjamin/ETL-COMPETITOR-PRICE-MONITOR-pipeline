@@ -3,6 +3,9 @@ import { Outlet, useLocation, matchPath } from "react-router-dom";
 import { Header } from "../components/Header";
 import { Sidebar } from "../components/Sidebar";
 import { APP_ROUTES } from "./routes";
+import { hasValidDocumentIntelligenceApiConfiguration } from "../config/deploymentEnvironment";
+import { fixedSafeClientError } from "../api/errors";
+import { SafeErrorState } from "../components/SafeErrorState";
 
 export function AppShell() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -10,6 +13,7 @@ export function AppShell() {
   const currentRoute = APP_ROUTES.find((route) =>
     matchPath({ path: route.path, end: true }, location.pathname),
   );
+  const apiConfigurationValid = hasValidDocumentIntelligenceApiConfiguration();
 
   useEffect(() => {
     if (!sidebarOpen) return undefined;
@@ -32,7 +36,9 @@ export function AppShell() {
           menuOpen={sidebarOpen}
         />
         <main className="main-content" id="main-content">
-          <Outlet />
+          {apiConfigurationValid
+            ? <Outlet />
+            : <SafeErrorState error={fixedSafeClientError("configuration")} />}
         </main>
       </div>
     </div>

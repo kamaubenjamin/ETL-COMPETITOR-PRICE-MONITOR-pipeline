@@ -73,13 +73,24 @@ No database migration, Supabase Auth integration, durable Workflow Studio store,
 
 ## Phase 4: FlowSync Deployment And API Wiring
 
+**Status:** Deployment compatibility preparation complete; Project A and Project B deployment intentionally not performed.
+
+### Implementation Record
+
+- Added app-local Vercel Vite/install/build/output settings and an SPA rewrite excluding `/api`, assets, and file requests.
+- Added a shared dependency-free API-origin resolver: local Vite development may use loopback HTTP, while hosted builds require a recognized environment and exact HTTPS API origin.
+- Added an app-shell configuration guard with fixed safe copy so route content cannot issue requests under invalid hosted configuration.
+- Retained the sanitized environment-driven UAT label on every route and prohibited a UAT production claim.
+- Added Node 22 compatibility metadata, disabled production source maps, hardened the public environment template, and added source/deployment/hosted-dist validators.
+- Documented Project A settings, Production/Preview branch behavior, exact API/CORS deployment order, fail-closed hosted mutations, and manual owner steps.
+
 ### Deliverables
 
 - Add Vercel SPA rewrite so direct refreshes of all React Router routes load `index.html`.
 - Set `VITE_DOCUMENT_INTELLIGENCE_API_BASE_URL` to the Project B HTTPS origin.
 - Add an explicit UAT/environment banner using a browser-safe variable.
 - Keep permission hints non-authoritative and default to read-only until hosted identity exists.
-- Deploy Vercel Project A and verify all direct routes, unavailable states, and API envelope handling.
+- Owner may deploy Vercel Project A only in a later authorized action, then verify all direct routes, unavailable states, and API envelope handling.
 
 ### Stop Condition
 

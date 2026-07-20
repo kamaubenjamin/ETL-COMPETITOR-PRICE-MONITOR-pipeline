@@ -16,6 +16,10 @@ The owner-created Supabase project remains an unconnected UAT foundation. Curren
 
 Phase 3 adds `api/index.py`, a Python 3.12 declaration, an exact API-only FastAPI dependency/install boundary, Vercel bundle exclusions, environment-aware exact-origin CORS, hosted local-demo identity rejection, and serverless import/health/statelessness verification. Workflow Studio remains process-local and ephemeral. API docs remain enabled for technical UAT. No Vercel deployment, Supabase integration, migration, production execution, or FlowSync behavior change occurs.
 
+## Phase 4 Implementation Record
+
+Phase 4 adds app-local Vite/Vercel settings and safe SPA routing, strict hosted API URL enforcement with a visible fixed configuration error, retained sanitized UAT labeling, Node/build/output declarations, disabled source maps, dependency-free deployment/dist checks, and manual Project A/API-CORS coordination. No Vercel deployment, hosted Auth, Supabase runtime, persistence, staging, or production behavior is activated.
+
 ## 1. Objective
 
 Provide a controlled path to a hosted, non-production UAT environment using two Vercel projects, one Supabase Free project, and GitHub deployment integration. The environment is for test data and bounded product review only. It is not a production, pilot, bulk-processing, or execution-activation environment.
@@ -35,8 +39,8 @@ Frontend and API remain separate Vercel projects. The API is serverless and stat
 ## 3. Current Repository Findings
 
 - FlowSync root directory is `apps/flowsync-document-intelligence`; it is a Vite 8 SPA with lockfile-controlled dependencies and `dist` output.
-- Hosted frontend builds must set `VITE_DOCUMENT_INTELLIGENCE_API_BASE_URL`; otherwise the browser calls `http://127.0.0.1:8001`.
-- Direct refreshes of React Router paths are not ready: no frontend `vercel.json` SPA rewrite exists.
+- Hosted frontend builds must set an exact HTTPS `VITE_DOCUMENT_INTELLIGENCE_API_BASE_URL`; invalid/missing configuration displays a fixed safe error and issues no route API calls. Only Vite development mode may use the loopback fallback.
+- App-local `vercel.json` provides the SPA deep-link rewrite while excluding API, generated assets, and file-extension requests.
 - Separate Vercel origins are prepared through an exact environment-driven CORS allowlist; the final Project A HTTPS origin remains a Phase 4 value.
 - `api/index.py` is the supported wrapper and re-exports `src.api.document_intelligence.app:app` without duplicate construction.
 - `requirements-api.txt` and the `vercel.json` install override prevent the broad root ETL/Streamlit/test manifest from being the intentional Project B dependency source.
@@ -63,7 +67,7 @@ Frontend and API remain separate Vercel projects. The API is serverless and stat
 | Production/UAT branch | `platform/intelligent-document-processing` for this milestone; do not point `main` at UAT implicitly |
 | URL role | Browser-visible UAT application origin |
 
-Required before deployment: add the SPA rewrite and configure the hosted API URL. Phase 2 provides the explicit UAT label and strict browser-safe environment template.
+Compatibility preparation is complete. Owner deployment remains gated on Hobby eligibility, exact API/frontend URLs, deliberate Production/Preview environment scopes, CORS coordination, and acceptance of incomplete Auth/read-only behavior.
 
 ### Project B: Document Intelligence API
 
@@ -115,7 +119,7 @@ Limits are operational assumptions, not repository guarantees. Recheck them imme
 1. **Phase 1 - complete:** repository deployment audit, architecture, ADR, blocker classification, environment inventory, and implementation plan.
 2. **Phase 2 - complete:** prepare the owner-created Supabase Free UAT foundation, Auth/Storage/database inventory, safe environment templates, secret/ignore policy, test-data rules, API configuration parsing, and visible UAT label without runtime integration or migrations.
 3. **Phase 3 - compatibility complete, deployment deferred:** add FastAPI serverless compatibility, minimal dependencies, explicit Python/entrypoint configuration, strict CORS, and verified hosted safety without deploying Project B.
-4. **Phase 4:** add SPA rewrites/UAT labeling, wire the hosted API URL, and deploy Vercel Project A.
+4. **Phase 4 - compatibility complete, deployment deferred:** add safe SPA routing/UAT labeling, enforce the hosted API URL, document exact Project A/CORS settings, and verify the static bundle without deploying.
 5. **Phase 5:** integrate hosted Supabase Auth, trusted API JWT validation, tenant bootstrap, permission mapping, and UAT/environment separation.
 6. **Phase 6:** run hosted smoke tests, CORS/security/privacy verification, free-tier monitoring checks, and UAT handoff.
 7. **Phase 7:** close the milestone with final documentation, release notes, verification evidence, and owner tag recommendation.
