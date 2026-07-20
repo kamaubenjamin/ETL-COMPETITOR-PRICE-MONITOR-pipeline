@@ -17,7 +17,7 @@ The entrypoint only imports and re-exports the existing FastAPI instance. It con
 
 ## Minimal Dependency Strategy
 
-`requirements-api.txt` contains only `fastapi==0.139.2`, the exact version proven in the Phase 3 Python 3.12 verification environment. FastAPI supplies its declared Starlette and Pydantic dependencies. Vercel does not need `uvicorn` for an ASGI function.
+`requirements-api.txt` is the reviewed API-only install manifest. Phase 6 hosted deployment exposed an incomplete Phase 3 packaging assumption: importing the existing app also traverses `platform_runtime`, `workflow_runtime`, and the eager `src.transforms` package exports, which require pandas during module import. The manifest therefore directly pins `fastapi==0.139.2`, `httpx==0.28.1`, `PyJWT[crypto]==2.10.1`, and `pandas==3.0.2`. Their declared dependencies remain transitive. Vercel does not need `uvicorn` for an ASGI function.
 
 The root `requirements.txt` remains the broad local ETL/Streamlit/test manifest and is intentionally not the Project B install source. `vercel.json` sets the exact install command:
 
@@ -25,7 +25,7 @@ The root `requirements.txt` remains the broad local ETL/Streamlit/test manifest 
 python -m pip install -r requirements-api.txt
 ```
 
-This prevents Streamlit, pandas, NumPy, Selenium, Playwright, ETL scraping/PDF packages, pytest, development tools, and unrelated competitor-price dependencies from being intentionally installed into the API function.
+This prevents Streamlit, Selenium, Playwright, ETL scraping/PDF packages, pytest, development tools, and unrelated competitor-price dependencies from being intentionally installed into the API function. NumPy, python-dateutil, and tzdata are installed transitively by pandas and are not duplicated as direct pins.
 
 ## Python Runtime
 

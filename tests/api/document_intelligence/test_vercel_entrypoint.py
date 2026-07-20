@@ -1,4 +1,6 @@
 import json
+import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -34,14 +36,17 @@ def test_vercel_runtime_and_minimal_manifest_are_explicit() -> None:
     manifest = (ROOT / "requirements-api.txt").read_text(encoding="utf-8").lower()
     dependencies = [line for line in manifest.splitlines() if line and not line.startswith("#")]
 
-    assert dependencies == ["fastapi==0.139.2", "httpx==0.28.1", "pyjwt[crypto]==2.10.1"]
+    assert dependencies == [
+        "fastapi==0.139.2",
+        "httpx==0.28.1",
+        "pyjwt[crypto]==2.10.1",
+        "pandas==3.0.2",
+    ]
     for prohibited in (
         "streamlit",
         "selenium",
         "playwright",
         "pytest",
-        "pandas",
-        "numpy",
         "reportlab",
         "rapidfuzz",
         "beautifulsoup",
@@ -49,11 +54,30 @@ def test_vercel_runtime_and_minimal_manifest_are_explicit() -> None:
         "uvicorn",
     ):
         assert prohibited not in manifest
+    for transitive_only in ("numpy", "python-dateutil", "tzdata"):
+        assert transitive_only not in manifest
 
     config = json.loads((ROOT / "vercel.json").read_text(encoding="utf-8"))
     assert config["installCommand"] == "python -m pip install -r requirements-api.txt"
     assert "api/index.py" in config["functions"]
     assert "rewrites" not in config
+
+
+def test_api_runtime_dependency_validator_passes_for_the_active_interpreter() -> None:
+    environment = os.environ.copy()
+    environment["PYTHONDONTWRITEBYTECODE"] = "1"
+    result = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "validate_api_runtime_dependencies.py")],
+        cwd=ROOT,
+        env=environment,
+        capture_output=True,
+        text=True,
+        timeout=30,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert "api runtime dependency validation passed" in result.stdout.lower()
 
 
 def test_runtime_is_executing_a_supported_python_312_interpreter() -> None:
