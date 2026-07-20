@@ -493,10 +493,11 @@ Status:
 - Phase 4 implemented: bounded preview contracts, fixture/sample normalization, fixed limits, injected runtime port, no-I/O adapters, deterministic orchestration, safe rule/stage/trace/output projections, redaction, and preview audit intents
 - Phase 5 implemented: app-scoped in-memory Workflow Management API composition, required guarded routes, strict tenant/permission enforcement, optimistic full draft replacement, safe validation/preview/audit projections, and governance-only publication/deactivation/archive
 - Phase 6 implemented: FlowSync Business Workflows navigation, definition list/create/detail, version/audit/catalog visibility, structured draft editor, validation and bounded preview panels, permission-aware lifecycle controls, safe conflict/access states, and governance-only messaging
-- Phases 1-6 implemented; Phase 7 has not started
+- Phase 7 complete: final architecture/security summaries, implementation closeout, release notes, handoff, aligned ADR/roadmap/debt/changelog, and release verification evidence
+- v0.20 implemented and closed pending owner commit and tag `v0.20-business-workflow-rules-studio`
 - Existing Workflow Runtime remains the sole execution authority
 - Recommended independent `workflow_studio` governance package above the runtime
-- No durable repository, runtime publication activation, UI behavior, migration, dependency, OCR/LLM, ERP/export, upload-staging, or production execution change added
+- No durable repository, runtime publication activation, migration, dependency, OCR/LLM, ERP/export, upload-staging, or production execution change added
 
 Planned capabilities:
 - Immutable tenant-scoped workflow, rule, condition, action, version, validation, preview, publication, and audit contracts
@@ -514,9 +515,9 @@ Phases:
 2. Validation engine, dependency checks, and legacy compatibility report - implemented and focused verification passed
 3. Versioned repository, draft lifecycle, and publication policy - implemented and focused verification passed
 4. Safe dry-run/test boundary and audit intents - implemented and focused verification passed
-5. Guarded Workflow Management API
-6. FlowSync Rules Studio UI foundation
-7. Verification, closure, handoff, and tag recommendation
+5. Guarded Workflow Management API - implemented and focused verification passed
+6. FlowSync Rules Studio UI foundation - implemented and frontend verification passed
+7. Verification, closure, handoff, and tag recommendation - complete pending owner commit and tag
 
 References:
 - `docs/architecture/BUSINESS_WORKFLOW_RULES_STUDIO_V1_PLAN.md`

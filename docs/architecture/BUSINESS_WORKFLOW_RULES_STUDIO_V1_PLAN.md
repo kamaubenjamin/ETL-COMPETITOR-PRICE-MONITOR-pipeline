@@ -1,7 +1,7 @@
 # Business Workflow / Rules Studio v1 Plan
 
 **Milestone:** v0.20
-**Status:** Planning complete; Phases 1-6 implemented
+**Status:** Implemented and closed through Phase 7; pending owner commit and tag
 **Recommended package:** `src/workflow_studio/`
 
 ## Phase 1 Implementation Record
@@ -47,6 +47,12 @@ Draft `PATCH` is a complete safe content replacement with `expected_revision`; J
 Phase 6 adds the FlowSync Business Workflows workspace at `/workflows`, with definition browsing and bounded pagination, guarded creation, definition details, version and audit history, catalog visibility, structured draft rules/conditions/actions, full-replacement optimistic saves, validation, bounded key/value preview, and permission-aware lifecycle controls. The prior runtime activity page remains intact at `/workflow-runs`.
 
 The UI consumes only Phase 5 API routes through a centralized typed service. Known permission labels are optional usability hints and never grant authority. Unavailable operations remain visible but cannot be selected. Immutable versions expose no editor link. Preview-unavailable, revision conflict, access, empty, and API-unavailable states use fixed copy. Publication and deactivation messaging explicitly preserve governance-only and no-fallback semantics. No backend module, direct repository, runtime execution, FlowSync competitor-price surface, Streamlit, dashboard, migration, dependency, OCR/LLM, ERP/export, staging, or external service was added.
+
+## Phase 7 Closure Record
+
+Phase 7 closes v0.20 with implementation, runtime-boundary, security/governance, handoff, release, roadmap, debt, ADR, and changelog documentation plus the complete focused/full verification matrix. The closure is documentation-only and adds no runtime behavior, API route, migration, dependency, adapter, production execution activation, staging, ERP/export connection, OCR/LLM, competitor-price, Streamlit, or dashboard change.
+
+The authoritative closure statement is: **Published definition governance only; production execution activation is not enabled.** Durable persistence, a real isolated preview/runtime adapter, capability discovery, environment promotion, runtime binding/scheduling, and production activation remain explicit future tracks.
 
 ## 1. Objective
 

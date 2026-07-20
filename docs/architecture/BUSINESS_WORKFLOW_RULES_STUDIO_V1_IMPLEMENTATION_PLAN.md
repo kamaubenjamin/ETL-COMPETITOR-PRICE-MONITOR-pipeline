@@ -214,6 +214,15 @@ No production execution activation, LLM assistance, collaborative editing, exter
 
 ## 8. Phase 7: Verification, Closure, Handoff, And Tag
 
+**Status:** Complete pending owner commit and tag.
+
+### Implementation Record
+
+- Added final closeout, implementation summary, handoff, release notes, runtime-boundary, and security/governance documents.
+- Aligned ADR-025, roadmap, technical debt, changelog, plan status, API/UI inventories, lifecycle semantics, limitations, and activation language.
+- Ran the required focused and full backend, FlowSync, boundary, diff, status, log, and tag-readiness checks.
+- Added documentation only; no feature, behavior, route, migration, dependency, adapter, production activation, competitor-price, Streamlit, or dashboard change.
+
 ### Deliverables
 
 - Architecture summary, handoff, release notes, roadmap/debt/ADR/plan/changelog closure.
@@ -235,20 +244,24 @@ python -m pytest tests/api/document_intelligence -q
 python -m pytest tests/security -q
 python -m pytest tests/platform_runtime -q
 python -m pytest tests/document_state -q
-python -m pytest tests/export_runtime tests/upload_runtime -q
+python -m pytest tests/upload_runtime -q
+python -m pytest tests/export_runtime -q
 python -m pytest tests/ui/streamlit -q
 python scripts/verify_boundaries.py
+python -m pytest -q
 
 cd apps/flowsync-document-intelligence
 npm run validate
 npm run typecheck
 npm run build
+npm run lint
+npm test
 
 git diff --check
 git status --short --branch
 ```
 
-Run `python -m pytest -q` at closure when practical. Exact paths may be refined only after Phase 1 creates the package/tests.
+The Phase 7 closure ran the full matrix. Exact counts and environment notes are recorded in `docs/implementation/V0_20_BUSINESS_WORKFLOW_RULES_STUDIO_CLOSEOUT.md`.
 
 ## 10. Dependency, Migration, And Activation Gates
 

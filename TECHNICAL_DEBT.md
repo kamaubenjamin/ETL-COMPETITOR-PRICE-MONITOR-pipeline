@@ -4,7 +4,7 @@ Technical debt and missing test fixtures
 
 ### Current Status
 
-**Planning complete; Phases 1-6 are implemented. Phase 7 has not started.**
+**v0.20 is implemented and closed through Phase 7, pending owner commit and tag.**
 
 ADR-025 and the v0.20 plans select a separate `workflow_studio` governance package above the existing Workflow Runtime. The runtime remains execution authority. The Studio is responsible for safe definitions, operation descriptors, validation, drafts, immutable versions, approval/publication policy, bounded preview, legacy migration reports, and audit intents through narrow ports.
 
@@ -26,6 +26,27 @@ Phase 5 adds a guarded app-scoped API over process-local Studio services. Defini
 
 Phase 6 provides the FlowSync structured governance UI without adding authority. `VITE_WORKFLOW_STUDIO_PERMISSIONS` is only a build-time usability hint because no current-principal capability endpoint exists; absent mutation labels keep controls disabled, while the API remains authoritative. Live authenticated mutation smoke, session-aware permission discovery, richer condition groups and operation argument editors, durable unsaved-draft recovery, and automated rendered accessibility/visual regression remain debt. Deactivation currently uses the Phase 5 invariant that a newly active publication has revision `1`; a future definition/publication read contract should expose the active publication concurrency revision explicitly.
 
+Phase 7 closes the milestone with documentation and verification only. Existing Workflow Runtime remains execution authority, publication remains governed-definition state rather than production activation, and all state remains process-local.
+
+### Carried Forward After v0.20
+
+- Durable Workflow Studio store
+- Transactional publication persistence
+- Real Workflow Runtime preview adapter
+- Isolated preview worker and timeout enforcement
+- Capability discovery endpoint
+- Component testing framework
+- UAT and environment promotion policy
+- Production execution activation policy
+- Runtime binding and scheduler integration
+- Production audit persistence
+- Real tenant-aware durable repositories
+- Active publication revision projection
+- Legacy semantic conversion strategy
+- Workflow migration tooling
+
+Additional retained limits include distributed locking/transactions, client permission discovery beyond build-time hints, enforced cancellation, durable test/approval facts, conservative operation availability, compiler/regex equivalence, and operational monitoring/recovery.
+
 Debt and decisions intentionally retained for implementation phases:
 
 - Exact compiler/mapping contract from fine-grained Studio actions to existing coarse runtime operations
@@ -46,13 +67,17 @@ Debt and decisions intentionally retained for implementation phases:
 
 Planning explicitly prohibits arbitrary code, eval/exec, shell, imports, raw SQL, unrestricted HTTP, filesystem access, direct database writes, arbitrary JavaScript, secrets, direct ERP/export, upload staging, OCR/LLM execution, automatic production publication, unbounded execution, plugins/marketplace, and silent legacy conversion.
 
-Recommended implementation begins with immutable contracts and an explicit operation catalog, then validation/legacy reporting, version/publication policy, bounded preview, API, FlowSync, and closure. Do not start with a visual canvas or production execution binding.
+Any follow-on implementation should preserve the separate governance/runtime boundary and require explicit design and security review. Do not treat the v0.20 governed publication state as permission to add a visual execution canvas or production execution binding.
 
 ### References
 
 - `docs/architecture/BUSINESS_WORKFLOW_RULES_STUDIO_V1_PLAN.md`
 - `docs/architecture/BUSINESS_WORKFLOW_RULES_STUDIO_V1_IMPLEMENTATION_PLAN.md`
 - `docs/adr/ADR-025-business-workflow-rules-studio-boundary.md`
+- `docs/implementation/V0_20_BUSINESS_WORKFLOW_RULES_STUDIO_CLOSEOUT.md`
+- `docs/implementation/V0_20_BUSINESS_WORKFLOW_RULES_STUDIO_HANDOFF.md`
+- `docs/architecture/WORKFLOW_STUDIO_RUNTIME_BOUNDARY.md`
+- `docs/architecture/WORKFLOW_STUDIO_SECURITY_AND_GOVERNANCE_SUMMARY.md`
 
 ## v0.19 Upload + Processing Activation
 

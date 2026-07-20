@@ -2,6 +2,18 @@
 
 Real-time multi-source price tracking with automated ETL pipeline. Monitor competitor pricing across platforms with intelligent alerts and historical price tracking.
 
+## v0.20 Business Workflow / Rules Studio Documentation
+
+- [Closeout](./implementation/V0_20_BUSINESS_WORKFLOW_RULES_STUDIO_CLOSEOUT.md)
+- [Implementation summary](./implementation/V0_20_BUSINESS_WORKFLOW_RULES_STUDIO_IMPLEMENTATION_SUMMARY.md)
+- [Handoff](./implementation/V0_20_BUSINESS_WORKFLOW_RULES_STUDIO_HANDOFF.md)
+- [Release notes](./releases/V0_20_BUSINESS_WORKFLOW_RULES_STUDIO_RELEASE_NOTES.md)
+- [Runtime boundary](./architecture/WORKFLOW_STUDIO_RUNTIME_BOUNDARY.md)
+- [Security and governance](./architecture/WORKFLOW_STUDIO_SECURITY_AND_GOVERNANCE_SUMMARY.md)
+- [Architecture plan](./architecture/BUSINESS_WORKFLOW_RULES_STUDIO_V1_PLAN.md)
+- [Implementation plan](./architecture/BUSINESS_WORKFLOW_RULES_STUDIO_V1_IMPLEMENTATION_PLAN.md)
+- [ADR-025](./adr/ADR-025-business-workflow-rules-studio-boundary.md)
+
 ## 🎯 Features
 
 - **Multi-Source Extraction**: Web scraping, API integration, CSV import, and dynamic page loading (Selenium/Playwright)

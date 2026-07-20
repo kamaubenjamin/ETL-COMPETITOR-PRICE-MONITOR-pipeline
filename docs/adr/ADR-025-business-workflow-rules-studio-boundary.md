@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for the v0.20 architecture boundary. Phases 1-6 contracts, validation, repositories/lifecycle/publication policy, safe bounded preview, guarded management API, dedicated permissions, FlowSync Studio UI, projections, and audit intents are implemented. Production runtime activation, durable persistence/migration, external adapters, dependencies, and closure work remain unauthorized until a reviewed phase.
+Accepted and implemented for v0.20. Phases 1-7 delivered contracts, validation, repositories/lifecycle/publication policy, safe bounded preview, guarded management API, dedicated permissions, FlowSync Studio UI, projections, audit intents, and closure documentation. Production runtime activation, durable persistence/migration, real runtime adapters, environment promotion, and new dependencies remain outside this decision and require separate review.
 
 ## Context
 
@@ -16,14 +16,15 @@ Create a separate `src/workflow_studio/` governance and policy package above the
 
 ```text
 FlowSync Rules Studio
-  -> Authenticated Workflow Management API
-  -> Workflow Definition Service
-  -> Workflow DSL validation
-  -> Operation / function allowlist
-  -> Versioned workflow repository
-  -> Dry-run / test execution boundary
-  -> Existing Workflow Runtime
-  -> Safe execution preview, audit, and publication state
+  -> Guarded Workflow Management API
+  -> API-owned tenant and actor authority
+  -> Workflow Studio provider
+  -> Workflow definition/version repository
+  -> Validation engine
+  -> Draft lifecycle/versioning
+  -> Preview boundary
+  -> Approval/publication policy
+  -> Immutable governed publication
 ```
 
 Workflow Runtime remains execution authority. Workflow Studio owns definition contracts, operation descriptors, validation orchestration, drafts, immutable versions, approval/publication policy, legacy translation reports, preview policy, and safe audit intents. An outer adapter compiles a validated immutable Studio version to existing runtime contracts; the Studio does not implement a second scheduler or operation executor.
@@ -58,7 +59,7 @@ The dependency validator rejects missing rules and cycles and derives stable top
 
 Provide a bounded dry-run port over approved fixtures or bounded privacy-checked inline samples. Preview uses the existing runtime through an isolated adapter and produces safe rule/stage summaries and redacted outputs.
 
-Preview may not mutate Document State/lifecycle, export, ERP, production master data, schedules, alerts/email, external services, or workflow publication. It enforces sample, collection, rule/action/step, depth, duration, trace, and output limits. Raw exceptions, protected fields, secrets, paths, and unrestricted traces are excluded.
+Preview may not mutate Document State/lifecycle, export, ERP, production master data, schedules, alerts/email, external services, or workflow publication. It enforces sample, collection, rule/action/step, depth, trace, and output limits. Raw exceptions, protected fields, secrets, paths, and unrestricted traces are excluded. Duration, timeout, and cancellation remain policy descriptors because no isolated worker or enforcement mechanism is connected in v0.20. The default adapter may return `preview_unavailable`.
 
 ## Repository Decision
 
@@ -72,7 +73,7 @@ Treat historical templates as source references and migration fixtures. A future
 
 Plan authenticated tenant-scoped management endpoints for definitions, versions, validation, test preview, operation catalog, publication, deactivation, archival, and audit. The API owns identity, permissions, tenant scope, expected version, operation catalog, fixture eligibility, validation, approval, publication, concealment, and errors.
 
-Phase 5 implements the reviewed endpoints through an app-scoped provider importing only `workflow_studio`. Mutations use bounded payload allowlists, optimistic revisions, audit intents, and published-version mutation denial. Draft `PATCH` replaces the complete safe rules content rather than accepting JSON Patch. Governed publication never activates production execution.
+Phase 5 implements the reviewed endpoints through an app-scoped provider importing only `workflow_studio`. Mutations use bounded payload allowlists, optimistic revisions, audit intents, and published-version mutation denial. Draft `PATCH` replaces the complete safe rules content rather than accepting JSON Patch. Governed publication never activates production execution. Published definition governance only; production execution activation is not enabled.
 
 ## Security Decision
 
@@ -119,9 +120,11 @@ LLM execution is outside v0.20 v1 scope. Future LLM output is an untrusted sugge
 - **Start with a drag-and-drop canvas:** adds complexity before contract, accessibility, and dependency semantics are proven.
 - **Use an LLM as rule authority:** non-deterministic and bypasses review/publication governance.
 
-## Deferred Decisions
+## Closure And Deferred Decisions
 
-Durable backend/schema, environment promotion, production execution binding, scheduler/events, live master-data adapters, queue/workers, retry/recovery, collaborative editing, visual canvas, reusable subworkflows, semantic/LLM suggestions, plugins/marketplace, ERP/export integration, and production operations.
+v0.20 is closed as a process-local governance and authoring foundation. Existing Workflow Runtime remains execution authority; the API and FlowSync do not bypass the policy boundary. Phase 7 adds documentation and release evidence only.
+
+Durable backend/schema, transactional publication and audit persistence, active-publication revision projection, capability discovery, real isolated preview/runtime adapter and timeout enforcement, environment/UAT promotion, production execution binding, scheduler/events, live master-data adapters, queue/workers, retry/recovery, collaborative editing, visual canvas, reusable subworkflows, semantic/LLM suggestions, plugins/marketplace, ERP/export integration, legacy migration tooling, and production operations.
 
 ## Acceptance
 
