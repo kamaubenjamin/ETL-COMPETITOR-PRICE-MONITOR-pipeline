@@ -178,6 +178,17 @@ No FlowSync changes, production scheduler activation, external service, automati
 
 ## 7. Phase 6: FlowSync Rules Studio UI Foundation
 
+**Status:** Complete for the approved Phase 6 scope.
+
+### Implementation Record
+
+- Added `/workflows`, `/workflows/new`, `/workflows/:workflowId`, and `/workflows/:workflowId/versions/:versionId/edit`; retained the existing runtime activity page at contextual `/workflow-runs`.
+- Added explicit Studio types and a centralized API service for every approved Phase 5 route. Requests never include client tenant or actor authority.
+- Added definition list/create, detail/version/audit/catalog views, structured draft rules/conditions/actions, full replacement with expected revision, validation severity grouping, bounded scalar preview inputs, and safe redacted/structured output summaries.
+- Added permission-aware create/edit/test/approve/publish/deactivate/admin controls using exact permission labels as usability hints only. Fixed 401/403/404/conflict/unavailable handling preserves API authority.
+- Added dependency-free focused Workflow Studio source tests and expanded the existing source validator; strict typecheck, lint placeholder, and production build pass. Rendered browser inspection was unavailable in the implementation session and remains a verification limitation rather than an inferred pass.
+- No frontend dependency, backend/runtime execution, repository access, competitor-price change, Streamlit/dashboard change, migration, OCR/LLM, ERP/export mutation, upload staging, or external connection was added.
+
 ### Deliverables
 
 - Preserve v0.17 visual identity and current shell/access/error patterns.

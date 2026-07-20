@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for the v0.20 architecture boundary. Phases 1-5 contracts, validation, repositories/lifecycle/publication policy, safe bounded preview, guarded management API, dedicated permissions, projections, and audit intents are implemented. Production runtime activation, durable persistence/migration, external adapters, dependencies, and UI work remain unauthorized until a reviewed phase.
+Accepted for the v0.20 architecture boundary. Phases 1-6 contracts, validation, repositories/lifecycle/publication policy, safe bounded preview, guarded management API, dedicated permissions, FlowSync Studio UI, projections, and audit intents are implemented. Production runtime activation, durable persistence/migration, external adapters, dependencies, and closure work remain unauthorized until a reviewed phase.
 
 ## Context
 
@@ -84,7 +84,7 @@ Phase 5 adds seven distinct management permissions. Operations managers receive 
 
 ## FlowSync Decision
 
-Preserve the approved visual identity and API-authoritative request states. Start with structured forms and ordered rule cards, not a mandatory drag-and-drop programming canvas. FlowSync consumes the operation catalog and safe validation/preview/publication projections; it does not execute workflows, generate code, decide permissions, publish locally, mutate runtime registries, or call ERP/export/external services.
+Phase 6 preserves the approved visual identity and API-authoritative request states through structured forms and ordered rule cards rather than a drag-and-drop canvas. FlowSync consumes only the guarded API operation catalog and safe definition/validation/preview/publication projections. Exact permission labels may hide or disable controls for usability, but the API remains authoritative. FlowSync does not execute workflows, generate code, publish locally, mutate runtime registries, access repositories, or call ERP/export/external services.
 
 ## LLM Decision
 

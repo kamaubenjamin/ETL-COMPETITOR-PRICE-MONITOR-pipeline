@@ -492,7 +492,8 @@ Status:
 - Phase 3 implemented: tenant-scoped process-local repositories, optimistic revisions, explicit draft/version transitions, immutable history, governed-definition publication/deactivation/archive policy, and safe audit intents
 - Phase 4 implemented: bounded preview contracts, fixture/sample normalization, fixed limits, injected runtime port, no-I/O adapters, deterministic orchestration, safe rule/stage/trace/output projections, redaction, and preview audit intents
 - Phase 5 implemented: app-scoped in-memory Workflow Management API composition, required guarded routes, strict tenant/permission enforcement, optimistic full draft replacement, safe validation/preview/audit projections, and governance-only publication/deactivation/archive
-- Phases 1-5 implemented; Phases 6-7 have not started
+- Phase 6 implemented: FlowSync Business Workflows navigation, definition list/create/detail, version/audit/catalog visibility, structured draft editor, validation and bounded preview panels, permission-aware lifecycle controls, safe conflict/access states, and governance-only messaging
+- Phases 1-6 implemented; Phase 7 has not started
 - Existing Workflow Runtime remains the sole execution authority
 - Recommended independent `workflow_studio` governance package above the runtime
 - No durable repository, runtime publication activation, UI behavior, migration, dependency, OCR/LLM, ERP/export, upload-staging, or production execution change added

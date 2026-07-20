@@ -23,7 +23,7 @@ v0.17 is implemented, verified, and tagged. v0.18 and v0.19 are implemented, ver
 - dependency-locked Vite/React/TypeScript builds with zero known npm advisories
 - desktop/mobile rendered smoke verification and keyboard-accessible shell navigation
 
-Raw preview, file transfer/staging, correction, review decision, reprocess, workflow execution, and enabled export actions are not implemented. v0.18 Phase 5 adds a read-only document export-readiness panel and safe GET-only attempt-history projection. v0.19 Phase 5 adds `/uploads`, an explicit JSON metadata validation preview, browser-local file metadata inspection, recent upload reads, supplied-event processing timelines, manual refresh, and document processing-status projection. The preview treats staging-disabled as the expected governed state and never transmits document content. Export remains disabled, mutation activation is deferred, and no ERP adapter is connected.
+Raw document preview, file transfer/staging, correction, review decision, reprocess, workflow runtime execution, and enabled export actions are not implemented. v0.20 Phase 6 adds `/workflows` definition browsing, structured draft authoring, validation, bounded preview requests, version/audit visibility, and governed lifecycle controls over the guarded API. Publication remains definition governance only and does not activate production execution. Export remains disabled and no ERP adapter is connected.
 
 ## Commands
 
@@ -44,5 +44,7 @@ Use `npm install` only when intentionally refreshing dependencies; review `packa
 ## Configuration
 
 The API base URL is read from `VITE_DOCUMENT_INTELLIGENCE_API_BASE_URL`. When omitted, the client uses `http://127.0.0.1:8001` for explicit local development. The application starts without a live API and displays fixed safe unavailable states when reads cannot complete.
+
+Known Workflow Studio permissions may be supplied as a comma-separated `VITE_WORKFLOW_STUDIO_PERMISSIONS` build-time usability hint. Unknown or absent mutation permissions keep controls disabled. This hint never grants authority; every request is authorized and tenant-scoped by the API.
 
 Do not place credentials, tokens, tenant IDs, raw claims, storage paths, or backend configuration in Vite environment variables or browser-visible code.

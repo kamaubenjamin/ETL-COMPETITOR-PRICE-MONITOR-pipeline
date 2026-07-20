@@ -11,6 +11,9 @@ import { RuntimePreviewPage } from "./pages/RuntimePreviewPage";
 import { UnauthorizedPage } from "./pages/UnauthorizedPage";
 import { UnavailablePage } from "./pages/UnavailablePage";
 import { WorkflowsPage } from "./pages/WorkflowsPage";
+import { WorkflowStudioPage } from "./pages/WorkflowStudioPage";
+import { WorkflowDetailPage } from "./pages/WorkflowDetailPage";
+import { WorkflowEditorPage } from "./pages/WorkflowEditorPage";
 import { UploadsPage } from "./pages/UploadsPage";
 
 export default function App() {
@@ -26,7 +29,11 @@ export default function App() {
           <Route path="documents/:documentId/matching" element={<DocumentMatchingPage />} />
           <Route path="review" element={<ReviewCasesPage />} />
           <Route path="review/:reviewCaseId" element={<ReviewCaseDetailPage />} />
-          <Route path="workflows" element={<WorkflowsPage />} />
+          <Route path="workflows" element={<WorkflowStudioPage />} />
+          <Route path="workflows/new" element={<WorkflowStudioPage />} />
+          <Route path="workflows/:workflowId" element={<WorkflowDetailPage />} />
+          <Route path="workflows/:workflowId/versions/:versionId/edit" element={<WorkflowEditorPage />} />
+          <Route path="workflow-runs" element={<WorkflowsPage />} />
           <Route path="audit" element={<AuditPage />} />
           <Route path="settings/runtime-preview" element={<RuntimePreviewPage />} />
           <Route path="unauthorized" element={<UnauthorizedPage />} />

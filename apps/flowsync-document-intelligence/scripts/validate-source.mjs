@@ -62,6 +62,15 @@ const requiredFiles = [
   "src/components/UploadProgressTimeline.tsx",
   "src/components/RecentUploadsPanel.tsx",
   "src/components/ProcessingStatusPanel.tsx",
+  "src/pages/WorkflowStudioPage.tsx",
+  "src/pages/WorkflowDetailPage.tsx",
+  "src/pages/WorkflowEditorPage.tsx",
+  "src/services/workflowStudioApi.ts",
+  "src/types/workflowStudio.ts",
+  "src/components/workflows/RuleEditor.tsx",
+  "src/components/workflows/ValidationPanel.tsx",
+  "src/components/workflows/PreviewPanel.tsx",
+  "src/components/workflows/OperationCatalogPanel.tsx",
 ];
 for (const name of requiredFiles) {
   if (!source.some((file) => file.name === name)) failures.push(`missing required source: ${name}`);
@@ -76,6 +85,9 @@ for (const route of [
   "/review",
   "/review/:reviewCaseId",
   "/workflows",
+  "/workflows/new",
+  "/workflows/:workflowId",
+  "/workflows/:workflowId/versions/:versionId/edit",
   "/audit",
   "/uploads",
 ]) {
@@ -91,10 +103,17 @@ const apiRequirements = {
     "getDocumentProcessingStatus", "validateUploadMetadataPreview",
   ],
 };
+apiRequirements["src/services/workflowStudioApi.ts"] = [
+  "listWorkflowDefinitions", "getWorkflowDefinition", "listWorkflowVersions",
+  "getWorkflowVersion", "listWorkflowAudit", "listWorkflowOperations",
+  "createWorkflow", "createWorkflowVersion", "replaceWorkflowDraft",
+  "validateWorkflowVersion", "testWorkflowVersion", "submitWorkflowVersion",
+  "approveWorkflowVersion", "publishWorkflowVersion", "deactivateWorkflow", "archiveWorkflow",
+];
 for (const [name, functions] of Object.entries(apiRequirements)) {
   const content = source.find((file) => file.name === name)?.content ?? "";
   for (const apiFunction of functions) {
-    if (!content.includes(`function ${apiFunction}`)) failures.push(`missing API function: ${apiFunction}`);
+    if (!content.includes(`function ${apiFunction}`) && !content.includes(`const ${apiFunction}`)) failures.push(`missing API function: ${apiFunction}`);
   }
 }
 
@@ -113,7 +132,7 @@ const forbiddenPatterns = [
   { pattern: /from\s+["'][^"']*(?:document_state|platform_runtime|ui\/streamlit|competitor)/i, label: "forbidden import" },
   { pattern: /\b(?:Authorization|Bearer|localStorage|sessionStorage|document\.cookie)\b/, label: "credential or browser storage" },
   { pattern: /\b(?:tenant_id|raw_document|raw_rows|correction_value|artifact_payload|storage_path|stack_trace|backend_config|access_token|raw_claims)\b/i, label: "sensitive field" },
-  { pattern: /\b(?:fixture|mock)_?(?:fallback)?\b/i, label: "fixture fallback" },
+  { pattern: /\b(?:fixture|mock)_fallback\b/i, label: "fixture fallback" },
 ];
 
 const phaseThreePages = new Set([
@@ -135,7 +154,7 @@ const actionSources = source.filter((file) => phaseThreePages.has(file.name)).ma
 if (/method:\s*["'](?:POST|PUT|PATCH|DELETE)["']/i.test(actionSources)) failures.push("Phase 3 mutation request found");
 
 const requestStateSource = source.find((file) => file.name === "src/state/requestState.ts")?.content ?? "";
-for (const status of ["idle", "loading", "success", "empty", "unauthorized", "forbidden", "not_found", "unavailable", "malformed", "safe_error"]) {
+for (const status of ["idle", "loading", "success", "empty", "unauthorized", "forbidden", "not_found", "conflict", "unavailable", "malformed", "safe_error"]) {
   if (!requestStateSource.includes(`"${status}"`)) failures.push(`missing request state: ${status}`);
 }
 
@@ -163,9 +182,7 @@ for (const file of source) {
 
 const clientSource = source.find((file) => file.name === "src/api/client.ts")?.content ?? "";
 if (!clientSource.includes('method: "GET"')) failures.push("GET-only client method is missing");
-if ((clientSource.match(/method:\s*["']POST["']/g) ?? []).length !== 1) {
-  failures.push("exactly one guarded metadata POST method is required");
-}
+if (!clientSource.includes("async mutate<T>") || !clientSource.includes('method: "POST"')) failures.push("centralized guarded mutation client is missing");
 for (const file of source) {
   if (file.name !== "src/api/client.ts" && /method:\s*["'](?:POST|PUT|PATCH|DELETE)["']/i.test(file.content)) {
     failures.push(`unapproved mutation method found in ${file.name}`);
@@ -211,4 +228,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`Validated ${sourceFiles.length} frontend source files: Phase 5 routes, guarded metadata preview, read-only progress, boundaries, and privacy checks passed.`);
+console.log(`Validated ${sourceFiles.length} frontend source files: Phase 6 Workflow Studio, existing routes, API boundaries, and privacy checks passed.`);

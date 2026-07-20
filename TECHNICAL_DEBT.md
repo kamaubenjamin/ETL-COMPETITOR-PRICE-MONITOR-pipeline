@@ -4,7 +4,7 @@ Technical debt and missing test fixtures
 
 ### Current Status
 
-**Planning complete; Phases 1-5 are implemented. Phases 6-7 have not started.**
+**Planning complete; Phases 1-6 are implemented. Phase 7 has not started.**
 
 ADR-025 and the v0.20 plans select a separate `workflow_studio` governance package above the existing Workflow Runtime. The runtime remains execution authority. The Studio is responsible for safe definitions, operation descriptors, validation, drafts, immutable versions, approval/publication policy, bounded preview, legacy migration reports, and audit intents through narrow ports.
 
@@ -23,6 +23,8 @@ Phase 4 adds bounded immutable preview contracts, safe fixture normalization, fi
 Phase 4 verification passes 180 focused Workflow Studio tests and the full practical regression of 1,956 tests with 9 skips. Boundary verification remains compliant.
 
 Phase 5 adds a guarded app-scoped API over process-local Studio services. Definitions, versions, validation/test evidence, publications, and audit intents are ephemeral and disappear on restart. The default preview adapter is unavailable, and publication is definition governance only—not production activation. Before production use, provide reviewed durable repositories/migrations, real identity and audit persistence, idempotency retention, an isolated approved preview adapter, operational rate/size controls, and an explicit compiler/runtime activation phase. FlowSync remains deferred. Permission defaults are split: operations managers have create/edit/test/approve/deactivate, tenant admins add publish/admin, platform admins have the full catalog, and service accounts have none.
+
+Phase 6 provides the FlowSync structured governance UI without adding authority. `VITE_WORKFLOW_STUDIO_PERMISSIONS` is only a build-time usability hint because no current-principal capability endpoint exists; absent mutation labels keep controls disabled, while the API remains authoritative. Live authenticated mutation smoke, session-aware permission discovery, richer condition groups and operation argument editors, durable unsaved-draft recovery, and automated rendered accessibility/visual regression remain debt. Deactivation currently uses the Phase 5 invariant that a newly active publication has revision `1`; a future definition/publication read contract should expose the active publication concurrency revision explicitly.
 
 Debt and decisions intentionally retained for implementation phases:
 

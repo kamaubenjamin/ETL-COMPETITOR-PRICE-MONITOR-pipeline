@@ -18,6 +18,8 @@ export function SafeErrorState({ error, onRetry }: SafeErrorStateProps) {
       ? "Access is enforced by the Document Intelligence API."
       : error.kind === "not_found"
         ? "The resource may not exist or may be outside your current access scope."
+        : error.kind === "conflict"
+          ? "Review the latest API version before applying your changes. Nothing was overwritten."
         : error.kind === "invalid_response"
           ? "No data was displayed because the response could not be safely validated."
           : error.kind === "auth_mismatch"

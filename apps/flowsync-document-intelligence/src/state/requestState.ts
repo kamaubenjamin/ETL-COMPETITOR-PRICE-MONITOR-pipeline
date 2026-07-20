@@ -5,6 +5,7 @@ export type RequestFailureStatus =
   | "unauthorized"
   | "forbidden"
   | "not_found"
+  | "conflict"
   | "unavailable"
   | "malformed"
   | "safe_error";
@@ -26,6 +27,8 @@ export function toRequestFailure(error: unknown): RequestFailureState {
       ? "forbidden"
       : safe.kind === "not_found"
         ? "not_found"
+        : safe.kind === "conflict"
+          ? "conflict"
         : safe.kind === "invalid_response"
           ? "malformed"
           : safe.kind === "invalid_request"
@@ -43,5 +46,5 @@ export function notFoundRequestState(): RequestFailureState {
 }
 
 export function isRequestFailure<T>(state: RequestState<T>): state is RequestFailureState {
-  return ["unauthorized", "forbidden", "not_found", "unavailable", "malformed", "safe_error"].includes(state.status);
+  return ["unauthorized", "forbidden", "not_found", "conflict", "unavailable", "malformed", "safe_error"].includes(state.status);
 }

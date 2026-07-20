@@ -3,6 +3,7 @@ export type SafeClientErrorKind =
   | "unauthorized"
   | "forbidden"
   | "not_found"
+  | "conflict"
   | "unavailable"
   | "runtime_unavailable"
   | "auth_mismatch"
@@ -20,6 +21,7 @@ const FIXED_MESSAGES: Record<SafeClientErrorKind, string> = {
   unauthorized: "Sign in is required to continue.",
   forbidden: "You do not have access to this view.",
   not_found: "The requested resource was not found or is unavailable to your access scope.",
+  conflict: "The draft changed elsewhere. Reload it before making further changes.",
   unavailable: "Document Intelligence is temporarily unavailable.",
   runtime_unavailable: "The Document Intelligence runtime is currently unavailable.",
   auth_mismatch: "Document Intelligence access is not configured for this environment.",
@@ -31,6 +33,7 @@ const FIXED_CODES: Record<SafeClientErrorKind, string> = {
   unauthorized: "authentication_required",
   forbidden: "access_forbidden",
   not_found: "resource_unavailable",
+  conflict: "revision_conflict",
   unavailable: "api_unavailable",
   runtime_unavailable: "runtime_unavailable",
   auth_mismatch: "auth_configuration_mismatch",
@@ -44,6 +47,7 @@ function kindForStatus(status: number, code: string): SafeClientErrorKind {
   if (status === 401) return "unauthorized";
   if (status === 403) return "forbidden";
   if (status === 404) return "not_found";
+  if (status === 409) return "conflict";
   return "unavailable";
 }
 

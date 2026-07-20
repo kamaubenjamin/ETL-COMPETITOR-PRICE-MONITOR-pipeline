@@ -1,7 +1,7 @@
 {
   "name": "@flowsync/document-intelligence-ui",
   "private": true,
-  "version": "0.17.0-phase.5",
+  "version": "0.20.0-phase.6",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.json --pretty false",
     "lint": "node -e \"console.log('Linting is not configured for the frontend yet')\"",
     "validate": "node scripts/validate-source.mjs",
+    "test": "node scripts/validate-workflow-studio.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

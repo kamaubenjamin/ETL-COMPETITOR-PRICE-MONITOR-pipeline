@@ -77,6 +77,33 @@ export class DocumentIntelligenceApiClient {
     return envelope;
   }
 
+  async mutate<T>(endpoint: ApiEndpoint, method: "POST" | "PATCH", payload?: unknown): Promise<ApiEnvelope<T>> {
+    const url = new URL(`${this.baseUrl}${endpoint}`);
+    let response: Response;
+    try {
+      response = await this.fetchImplementation(url, {
+        method,
+        headers: { Accept: "application/json", "Content-Type": "application/json" },
+        ...(payload === undefined ? {} : { body: JSON.stringify(payload) }),
+        cache: "no-store",
+        credentials: "omit",
+      });
+    } catch {
+      throw ApiClientError.unavailable();
+    }
+    let responsePayload: unknown;
+    try {
+      responsePayload = await response.json();
+    } catch {
+      throw ApiClientError.invalidResponse(response.headers.get("X-Request-ID") ?? undefined);
+    }
+    const envelope = parseApiEnvelope<T>(responsePayload);
+    if (!response.ok || !envelope.success) {
+      throw ApiClientError.forStatus(response.status, envelope.error?.code ?? `http_${response.status}`, envelope.request_id);
+    }
+    return envelope;
+  }
+
   async validateUploadMetadata<T>(
     endpoint: ApiEndpoint,
     payload: UploadMetadataPreviewRequest,
