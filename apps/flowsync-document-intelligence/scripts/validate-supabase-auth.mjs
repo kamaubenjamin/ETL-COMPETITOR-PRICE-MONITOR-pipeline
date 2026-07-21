@@ -24,6 +24,9 @@ assert(client.includes("persistSession: true") && client.includes("autoRefreshTo
 assert(provider.includes("auth.getSession()") && provider.includes("onAuthStateChange"), "session restoration is incomplete");
 assert(authCore.includes("signInWithPassword") && provider.includes("auth.signOut()"), "email/password sign-in or sign-out is missing");
 assert(provider.includes("accessTokenProviderForSession(session)"), "confirmed sessions must not re-enter getSession during profile resolution");
+assert(provider.includes("resolveSessionProfile(loadProfile)"), "transient protected-session resolution retry is missing");
+assert(provider.includes("sessionFailureStatus(error)"), "session failures are not mapped to distinct safe auth states");
+assert(guard.includes('status === "unavailable"'), "protected routing does not distinguish service failure from forbidden access");
 assert(provider.includes("window.setTimeout") && provider.includes("onAuthStateChange"), "auth-state processing must be deferred outside the Supabase callback");
 assert(signIn.includes("signIn(email, password)") && !signIn.includes("email.trim()"), "entered credentials must be passed without mutation");
 assert(signIn.includes("Diagnostic:") && signIn.includes("diagnosticCode"), "safe UAT auth diagnostics are missing");

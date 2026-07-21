@@ -10,6 +10,10 @@ export const AUTH_DIAGNOSTIC_CODES: Readonly<{
   configuration: string;
   unavailable: string;
 }>;
+export type SessionFailureStatus = "unauthenticated" | "unauthorized" | "configuration_error" | "unavailable";
+export function sessionFailureStatus(error: unknown): SessionFailureStatus;
+export function isRetryableSessionFailure(error: unknown): boolean;
+export function resolveSessionProfile<T>(operation: () => Promise<T>): Promise<T>;
 export function resolveSupabasePublicConfiguration(
   rawUrl: unknown,
   rawKey: unknown,

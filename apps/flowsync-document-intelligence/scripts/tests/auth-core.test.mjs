@@ -8,6 +8,8 @@ import {
   mapSupabaseSignInError,
   performPasswordSignIn,
   resolveSupabasePublicConfiguration,
+  resolveSessionProfile,
+  sessionFailureStatus,
   staleAuthFragmentReplacement,
   SupabaseBrowserConfigurationError,
 } from "../../src/auth/authCore.mjs";
@@ -85,4 +87,37 @@ test("confirmed session composition calls the protected API with the correct VIT
   assert.match(client, /import\.meta\.env\.VITE_SUPABASE_PUBLISHABLE_KEY/);
   assert.match(provider, /createApiClient\(accessTokenProviderForSession\(session\)\)\.get<SafeSessionProfile>\(API_ENDPOINTS\.session\)/);
   assert.doesNotMatch(provider, /createApiClient\(\)\.get<SafeSessionProfile>\(API_ENDPOINTS\.session\)/);
+});
+
+test("authenticated owner session survives one transient protected-route failure", async () => {
+  const owner = {
+    authenticated: true,
+    role: "owner",
+    tenant_name: "FlowSync UAT",
+    permissions: ["workflow:read", "workflow:admin"],
+  };
+  let attempts = 0;
+  const resolved = await resolveSessionProfile(async () => {
+    attempts += 1;
+    if (attempts === 1) throw new Error("transient session request failure");
+    return { data: owner };
+  });
+  assert.equal(attempts, 2);
+  assert.equal(resolved.data, owner);
+  assert.equal(resolved.data.authenticated, true);
+  assert.equal(resolved.data.role, "owner");
+});
+
+test("only a genuine API forbidden result becomes the protected-route unauthorized state", async () => {
+  assert.equal(sessionFailureStatus({ safe: { kind: "forbidden" } }), "unauthorized");
+  assert.equal(sessionFailureStatus({ safe: { kind: "unauthorized" } }), "unauthenticated");
+  assert.equal(sessionFailureStatus({ safe: { kind: "unavailable" } }), "unavailable");
+  assert.equal(sessionFailureStatus(new Error("timeout")), "unavailable");
+  const forbidden = { safe: { kind: "forbidden" } };
+  let attempts = 0;
+  await assert.rejects(resolveSessionProfile(async () => {
+    attempts += 1;
+    throw forbidden;
+  }), (error) => error === forbidden);
+  assert.equal(attempts, 1);
 });

@@ -8,6 +8,8 @@ import {
   accessTokenProviderForSession,
   AUTH_DIAGNOSTIC_CODES,
   performPasswordSignIn,
+  resolveSessionProfile,
+  sessionFailureStatus,
 } from "./authCore.mjs";
 
 export interface SafeSessionProfile {
@@ -18,7 +20,7 @@ export interface SafeSessionProfile {
   permissions: string[];
 }
 
-export type AuthStatus = "loading" | "unauthenticated" | "authenticated" | "unauthorized" | "configuration_error";
+export type AuthStatus = "loading" | "unauthenticated" | "authenticated" | "unauthorized" | "configuration_error" | "unavailable";
 
 export interface AuthContextValue {
   status: AuthStatus;
@@ -50,24 +52,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
     setStatus("loading");
+    const loadProfile = () => bounded(
+      createApiClient(accessTokenProviderForSession(session)).get<SafeSessionProfile>(API_ENDPOINTS.session),
+    );
     try {
-      const result = await bounded(
-        createApiClient(accessTokenProviderForSession(session)).get<SafeSessionProfile>(API_ENDPOINTS.session),
-      );
+      const result = await resolveSessionProfile(loadProfile);
       if (!result.data?.authenticated) throw new Error("Session unavailable");
       configureWorkflowPermissionHints(result.data.permissions);
       setProfile(result.data);
       setStatus("authenticated");
     } catch (error) {
-      const kind = typeof error === "object" && error && "safe" in error
-        ? (error as { safe?: { kind?: string } }).safe?.kind
-        : undefined;
-      if (kind === "unauthorized") {
+      const failureStatus = sessionFailureStatus(error);
+      if (failureStatus === "unauthenticated") {
         try { await getSupabaseBrowserClient().auth.signOut({ scope: "local" }); } catch { /* fixed safe state below */ }
-        setStatus("unauthenticated");
-      } else {
-        setStatus("unauthorized");
       }
+      setStatus(failureStatus);
     }
   }, [clearAccess]);
 

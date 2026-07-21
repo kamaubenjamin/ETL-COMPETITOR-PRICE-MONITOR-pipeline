@@ -12,6 +12,9 @@ export function RequireAuth() {
   if (status === "configuration_error") {
     return <div className="auth-status">{label}<SafeErrorState error={fixedSafeClientError("auth_configuration")} /></div>;
   }
+  if (status === "unavailable") {
+    return <div className="auth-status">{label}<SafeErrorState error={fixedSafeClientError("unavailable")} /></div>;
+  }
   if (status === "unauthorized") {
     return <div className="auth-status">{label}<SafeErrorState error={fixedSafeClientError("forbidden")} /><button type="button" className="secondary-button" onClick={() => void signOut()}>Sign out</button></div>;
   }

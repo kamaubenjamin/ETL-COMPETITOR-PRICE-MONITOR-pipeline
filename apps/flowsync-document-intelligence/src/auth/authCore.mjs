@@ -58,6 +58,34 @@ export const AUTH_DIAGNOSTIC_CODES = Object.freeze({
   unavailable: "AUTH_UNAVAILABLE",
 });
 
+export function sessionFailureStatus(error) {
+  const kind = typeof error === "object" && error && typeof error.safe?.kind === "string"
+    ? error.safe.kind
+    : undefined;
+  if (kind === "unauthorized") return "unauthenticated";
+  if (kind === "forbidden") return "unauthorized";
+  if (kind === "configuration" || kind === "auth_configuration" || kind === "auth_mismatch") {
+    return "configuration_error";
+  }
+  return "unavailable";
+}
+
+export function isRetryableSessionFailure(error) {
+  const kind = typeof error === "object" && error && typeof error.safe?.kind === "string"
+    ? error.safe.kind
+    : undefined;
+  return kind === undefined || kind === "unavailable";
+}
+
+export async function resolveSessionProfile(operation) {
+  try {
+    return await operation();
+  } catch (error) {
+    if (!isRetryableSessionFailure(error)) throw error;
+    return operation();
+  }
+}
+
 export function mapSupabaseSignInError(error) {
   const code = typeof error?.code === "string" ? error.code.toLowerCase() : "";
   if (code === "invalid_credentials" || code === "invalid_grant") {
