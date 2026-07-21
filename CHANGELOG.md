@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- **Added:** Completed the v0.22 deterministic purchase-order demonstration with a canonical safe schema, machine-readable deterministic extraction, exact `Decimal` validation, a fictional tenant-scoped `doc-002` fixture, GET-only purchase-order API result, and FlowSync list/filter/detail presentation.
+- **Fixed:** Resolved the synthetic fixture tenant namespace through the authoritative Supabase tenant slug while retaining UUID authorization, and changed the authorized optional upload-processing `404` presentation to a neutral technical-preview state without weakening protected-resource concealment.
+- **Verified:** Owner-hosted UAT verification at `ccca2af` confirms session, list, `purchase_order` filter, normal detail, canonical PO panel, fictional fields/totals/two line items, valid validation, and tenant isolation. The final optional-status presentation remains local pending owner review and deployment.
+- **Security:** Kept the controlled real PDF ignored and untracked; hosted data remains fictional, synthetic, non-confidential, and read-only. No Supabase identity/RLS/key, CORS, Vercel variable, upload, persistence, storage, OCR, LLM, queue, worker, approval, export, or write capability was added.
+- **Known limitations:** Machine-readable PDFs and deterministic supported layouts only; no hosted ingestion or durable document state; free-tier UAT constraints, missing favicon, frontend bundle-size warning, and no production SLA remain.
+
 - **Added:** Prepared v0.21 Zero-Budget Hosted UAT release closure with final release notes and owner handoff covering the verified Vercel frontend/FastAPI split, Supabase identity and tenant foundation, protected read-only Documents workspace, validation evidence, rollback guidance, and the proposed `v0.21-zero-budget-hosted-uat` tag.
 - **Changed:** Marked Phase 6 complete and Phase 7 release closure in progress across the roadmap, implementation plan, ADR status, documentation indexes, and technical-debt register. The hosted surface remains UAT / Technical Preview, synthetic/non-confidential-data-only, and read-only.
 - **Fixed:** Recorded the resolved literal `VITE_SUPABASE_PUBLISHABLE_KEY` deployment, transient-as-forbidden classification, overlapping session bootstrap, detached Firefox fetch receiver, FastAPI import-chain/bundle overflow, and frontend lockfile synchronization incidents.

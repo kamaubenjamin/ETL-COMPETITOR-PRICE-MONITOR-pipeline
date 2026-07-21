@@ -1,7 +1,7 @@
 # v0.22 Purchase-Order Demonstration Plan
 
-**Milestone:** v0.22 Controlled Purchase-Order Demonstration  
-**Status:** In progress  
+**Milestone:** v0.22 Controlled Purchase-Order Demonstration
+**Status:** Complete; owner closeout commit and tag pending
 **Prepared:** 2026-07-21
 
 ## Goal
@@ -104,3 +104,5 @@ The extracted text did not provide a safely recognizable currency, buyer, or shi
 ## Next Milestone Recommendations
 
 After owner review, broaden deterministic layout coverage using additional synthetic fixtures and establish a governed accuracy corpus. OCR, persistence, hosted uploads, and probabilistic extraction should remain separately approved milestones.
+
+Closeout: `docs/implementation/V0_22_PURCHASE_ORDER_DEMONSTRATION_CLOSEOUT.md`.

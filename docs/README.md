@@ -2,6 +2,12 @@
 
 Real-time multi-source price tracking with automated ETL pipeline. Monitor competitor pricing across platforms with intelligent alerts and historical price tracking.
 
+## v0.22 Deterministic Purchase-Order Demonstration
+
+- [Demonstration plan](./implementation/V0_22_PURCHASE_ORDER_DEMONSTRATION_PLAN.md)
+- [Closeout](./implementation/V0_22_PURCHASE_ORDER_DEMONSTRATION_CLOSEOUT.md)
+- [Release notes](./releases/v0.22-deterministic-purchase-order-demonstration.md)
+
 ## v0.21 Zero-Budget UAT Deployment Documentation
 
 - [Deployment architecture plan](./architecture/ZERO_BUDGET_UAT_DEPLOYMENT_V1_PLAN.md)

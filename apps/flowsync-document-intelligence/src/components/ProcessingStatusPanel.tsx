@@ -18,7 +18,11 @@ export function ProcessingStatusPanel({ documentId }: { documentId: string }) {
     setState({ status: "loading" });
     getDocumentProcessingStatus(createApiClient(), documentId)
       .then((envelope) => { if (active) setState(envelope.data ? { status: "success", data: envelope.data } : { status: "empty" }); })
-      .catch((error) => { if (active) setState(toRequestFailure(error)); });
+      .catch((error) => {
+        if (!active) return;
+        const failure = toRequestFailure(error);
+        setState(failure.status === "not_found" ? { status: "empty" } : failure);
+      });
     return () => { active = false; };
   }, [documentId, reloadKey]);
 
@@ -29,7 +33,7 @@ export function ProcessingStatusPanel({ documentId }: { documentId: string }) {
         <button className="secondary-button compact-button" type="button" onClick={() => setReloadKey((value) => value + 1)}><RefreshCw size={15} aria-hidden="true" /> Refresh</button>
       </div>
       {state.status === "loading" ? <LoadingState label="Loading processing status" /> : null}
-      {state.status === "empty" || state.status === "idle" ? <EmptyState title="Processing status unavailable" message="No upload-linked processing status was supplied." /> : null}
+      {state.status === "empty" || state.status === "idle" ? <EmptyState title="Processing status unavailable" message="Processing status is not available in this technical preview." /> : null}
       {isRequestFailure(state) ? <div className="embedded-safe-state"><SafeErrorState error={state.error} onRetry={() => setReloadKey((value) => value + 1)} /></div> : null}
       {state.status === "success" ? (
         <div className="document-processing-summary">

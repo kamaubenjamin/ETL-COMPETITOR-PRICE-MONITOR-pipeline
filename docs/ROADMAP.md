@@ -533,8 +533,8 @@ Status:
 - Phase 4 compatibility complete: app-local SPA routing, strict hosted API URL enforcement, safe configuration state, UAT labeling, Project A settings, and deployment validation; deployment was intentionally deferred to the hosted-verification phase
 - Phase 5 implementation preparation complete: official browser Auth, protected routing, asymmetric API JWT verification, RLS-constrained tenant membership, fixed permissions, minimal identity migration, and owner bootstrap procedure; remote activation was intentionally deferred and was subsequently verified in Phase 6
 - Phase 6 complete: stable Vercel frontend and API deployments, Supabase Auth, active owner membership, asymmetric JWT verification, fixed permissions, exact-origin CORS, protected read-only document access, Firefox compatibility, hosted smoke verification, and UAT closeout
-- Phase 7 in progress: closure alignment, release notes, final security handoff, and owner tag recommendation are prepared locally pending owner approval
-- No production activation or v0.21 tag
+- Phase 7 complete: closure alignment, release notes, final security handoff, and owner tag were completed
+- Closed and tagged as `v0.21-zero-budget-hosted-uat`; no production activation
 - Target: separate Vercel FlowSync and FastAPI projects plus one Supabase Free UAT project
 - Current constraints: UAT / Technical Preview, synthetic non-confidential data, read-only behavior, free-tier limits, and no production SLA
 
@@ -545,7 +545,7 @@ Phases:
 4. FlowSync Vercel compatibility and hosted API URL safety - complete; frontend deployment subsequently verified in Phase 6
 5. Hosted Auth, tenant bootstrap, and environment separation - complete
 6. Smoke, CORS/security/privacy verification, and UAT handoff - complete
-7. Closure, release notes, and tag recommendation - in progress
+7. Closure, release notes, and tag recommendation - complete
 
 References:
 - `docs/architecture/ZERO_BUDGET_UAT_DEPLOYMENT_V1_PLAN.md`
@@ -555,6 +555,23 @@ References:
 - `docs/implementation/V0_21_PHASE_6_HOSTED_UAT_CLOSEOUT.md`
 - `docs/releases/v0.21-zero-budget-hosted-uat.md`
 - `docs/implementation/V0_21_PHASE_7_RELEASE_HANDOFF.md`
+
+### v0.22 Deterministic Purchase-Order Demonstration
+
+Status:
+- Deterministic machine-readable purchase-order classification, extraction, canonicalization, and exact-decimal validation implemented
+- Fictional `doc-002` fixture exposed through tenant-scoped list, filter, detail, purchase-order, validation, matching, and lifecycle reads
+- FlowSync canonical purchase-order panel implemented and owner-verified in hosted UAT at `ccca2af`
+- Supabase tenant UUID remains authorization authority; authoritative slug mapping is bounded to the UAT read-only synthetic fixture provider
+- Optional upload-linked processing status remains unavailable and is presented neutrally; required protected-resource concealment is unchanged
+- Closeout documentation and tag recommendation prepared locally pending owner review
+
+References:
+- `docs/implementation/V0_22_PURCHASE_ORDER_DEMONSTRATION_PLAN.md`
+- `docs/implementation/V0_22_PURCHASE_ORDER_DEMONSTRATION_CLOSEOUT.md`
+- `docs/releases/v0.22-deterministic-purchase-order-demonstration.md`
+
+Recommended next milestone: v0.23 governed deterministic purchase-order layout coverage and accuracy corpus. OCR, probabilistic extraction, persistence, hosted upload, workers, and production activation remain separately gated.
 
 ## Prior Milestone Context
 

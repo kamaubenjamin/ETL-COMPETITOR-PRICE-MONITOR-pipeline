@@ -95,12 +95,20 @@ def test_exact_hosted_uat_supabase_configuration_exposes_all_purchase_order_read
     filtered = client.get("/api/v1/documents?document_type=purchase_order", headers=headers)
     detail = client.get("/api/v1/documents/doc-002", headers=headers)
     purchase_order = client.get("/api/v1/documents/doc-002/purchase-order", headers=headers)
+    optional_processing_status = client.get(
+        "/api/v1/documents/doc-002/processing-status", headers=headers
+    )
+    lifecycle_history = client.get("/api/v1/documents/doc-002/processing", headers=headers)
 
     assert listed.status_code == filtered.status_code == detail.status_code == purchase_order.status_code == 200
     assert [(item["document_id"], item["document_type"]) for item in listed.json()["data"]] == [("doc-002", "purchase_order")]
     assert [(item["document_id"], item["document_type"]) for item in filtered.json()["data"]] == [("doc-002", "purchase_order")]
     assert (detail.json()["data"]["document_id"], detail.json()["data"]["document_type"]) == ("doc-002", "purchase_order")
     assert purchase_order.json()["data"]["document_type"] == "purchase_order"
+    assert optional_processing_status.status_code == 404
+    assert optional_processing_status.json()["error"]["code"] == "document_processing_status_not_found"
+    assert lifecycle_history.status_code == 200
+    assert len(lifecycle_history.json()["data"]) == 2
     for suffix in ("processing", "validation", "matching"):
         assert client.get(f"/api/v1/documents/doc-002/{suffix}", headers=headers).status_code == 200
 

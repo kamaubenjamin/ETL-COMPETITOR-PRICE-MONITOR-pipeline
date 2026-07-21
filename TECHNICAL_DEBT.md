@@ -1,8 +1,27 @@
 Technical debt and missing test fixtures
 
+## v0.22 Deterministic Purchase-Order Demonstration
+
+**Current status:** The deterministic purchase-order demonstration is implemented and owner-verified in hosted UAT at `ccca2af`; final closeout documentation and the neutral optional processing-status presentation are local pending owner commit, deployment, and tag.
+
+Retained debt and intentional exclusions:
+
+- Extraction supports machine-readable PDFs and bounded deterministic layouts only. A governed synthetic accuracy corpus and additional layout fixtures are the recommended next milestone.
+- The controlled real acceptance PDF remains private, ignored, and untracked; it is not a regression fixture and must not become one.
+- Hosted UAT exposes only the fictional `doc-002` fixture. There is no hosted upload, document persistence, object storage, OCR, LLM extraction, queue, worker, approval, export, or document mutation.
+- Upload-linked processing status is intentionally absent. FlowSync presents a neutral technical-preview state while the separate fictional lifecycle history remains available.
+- The tenant-fixture translation is intentionally limited to the authoritative `flowsync-uat` slug in UAT read-only composition. Durable providers must use real tenant UUID ownership and must not reuse the synthetic namespace alias.
+- The missing favicon, frontend bundle-size advisory, free-tier constraints, TestClient/httpx deprecation warning, and lack of production SLA remain non-blocking closeout debt.
+
+References:
+
+- `docs/implementation/V0_22_PURCHASE_ORDER_DEMONSTRATION_PLAN.md`
+- `docs/implementation/V0_22_PURCHASE_ORDER_DEMONSTRATION_CLOSEOUT.md`
+- `docs/releases/v0.22-deterministic-purchase-order-demonstration.md`
+
 ## v0.21 Zero-Budget Vercel + Supabase UAT
 
-**Current status:** Phase 6 hosted verification is complete at commit `28dea72`; Phase 7 release closure is in progress. The stable frontend and API are deployed as a UAT / Technical Preview with synthetic, non-confidential data and a read-only protected Documents workspace.
+**Current status:** v0.21 is closed and tagged as `v0.21-zero-budget-hosted-uat`. Its stable frontend/API foundation remains the read-only UAT / Technical Preview base for the v0.22 synthetic demonstration.
 
 The hosted foundation now includes Supabase email/password identity, one active RLS-constrained tenant membership, asymmetric JWT/JWKS verification, fixed server-side owner permissions, strict exact-origin CORS, safe public configuration validation, serialized session bootstrap, bound native browser fetch, and hosted bundle/secret/smoke verification.
 
@@ -12,7 +31,7 @@ Retained v0.21 debt and intentional scope exclusions:
 - The hosted frontend has no favicon. Its 404 is cosmetic and non-blocking.
 - Vercel may report a Node project-setting mismatch/override warning. The committed package and lockfile engines correctly require Node `>=22.12 <23`; keep the Vercel project on Node 22.x and reconcile the dashboard warning before a later platform upgrade.
 - The hosted application is intentionally read-only. Upload and other write operations are not activated.
-- There is no persistent hosted document store or object-storage workflow. The protected document listing is currently empty by design.
+- There is no persistent hosted document store or object-storage workflow. v0.22 adds one fictional in-memory purchase-order demonstration record; it is not persisted or uploaded.
 - There is no asynchronous queue, worker, scheduled-job, or background-processing runtime suitable for serverless document work.
 - OCR and LLM extraction are not implemented or activated.
 - Vercel/Supabase free-tier cold starts, pauses, quotas, log retention, provider availability, and plan terms constrain UAT operation.
