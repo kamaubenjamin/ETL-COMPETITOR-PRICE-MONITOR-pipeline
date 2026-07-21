@@ -7,15 +7,15 @@ export function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [failed, setFailed] = useState(false);
+  const [diagnosticCode, setDiagnosticCode] = useState<string>();
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
-    setFailed(false);
+    setDiagnosticCode(undefined);
     setSubmitting(true);
-    const success = await signIn(email.trim(), password);
+    const result = await signIn(email, password);
     setSubmitting(false);
-    if (!success) setFailed(true);
+    if (!result.success) setDiagnosticCode(result.code);
   };
 
   return (
@@ -25,7 +25,12 @@ export function SignInPage() {
         <p className="eyebrow">FlowSync Document Intelligence</p>
         <h1 id="sign-in-title">Sign in to continue</h1>
         <p>Use the existing UAT account created by the environment owner.</p>
-        {failed ? <div className="sign-in-error" role="alert">Sign-in could not be completed. Check your credentials and try again.</div> : null}
+        {diagnosticCode ? (
+          <div className="sign-in-error" role="alert">
+            Sign-in could not be completed. Check your credentials and try again.
+            <small>Diagnostic: {diagnosticCode}</small>
+          </div>
+        ) : null}
         <form onSubmit={(event) => void submit(event)}>
           <label>Email<input type="email" autoComplete="username" required maxLength={254} value={email} onChange={(event) => setEmail(event.target.value)} /></label>
           <label>Password<input type="password" autoComplete="current-password" required maxLength={256} value={password} onChange={(event) => setPassword(event.target.value)} /></label>

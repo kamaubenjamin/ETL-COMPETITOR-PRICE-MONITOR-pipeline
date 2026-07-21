@@ -1,49 +1,29 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { resolveDeploymentEnvironment } from "../config/deploymentEnvironment";
+import {
+  resolveSupabasePublicConfiguration,
+  staleAuthFragmentReplacement,
+  SupabaseBrowserConfigurationError,
+} from "./authCore.mjs";
 
-export class SupabaseBrowserConfigurationError extends Error {
-  constructor() {
-    super("Supabase browser authentication is not configured");
-    this.name = "SupabaseBrowserConfigurationError";
-  }
-}
+export { SupabaseBrowserConfigurationError } from "./authCore.mjs";
 
 let browserClient: SupabaseClient | undefined;
 
 function configuration(): { url: string; publishableKey: string } {
-  const rawUrl = import.meta.env.VITE_SUPABASE_URL?.trim() ?? "";
-  const publishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim() ?? "";
-  const environment = resolveDeploymentEnvironment(import.meta.env.VITE_DEPLOYMENT_ENVIRONMENT);
-  if (!rawUrl || !publishableKey || publishableKey.length > 2048 || /\s/.test(publishableKey)) {
-    throw new SupabaseBrowserConfigurationError();
-  }
-  if (/service[_-]?role|secret/i.test(publishableKey)) {
-    throw new SupabaseBrowserConfigurationError();
-  }
-  let url: URL;
-  try {
-    url = new URL(rawUrl);
-  } catch {
-    throw new SupabaseBrowserConfigurationError();
-  }
-  const loopback = ["localhost", "127.0.0.1", "::1"].includes(url.hostname);
-  const localDevelopment = import.meta.env.DEV && (!environment || environment === "local" || environment === "test");
-  if (
-    (url.protocol !== "https:" && !(localDevelopment && loopback && url.protocol === "http:"))
-    || url.username
-    || url.password
-    || url.pathname !== "/"
-    || url.search
-    || url.hash
-  ) {
-    throw new SupabaseBrowserConfigurationError();
-  }
-  return { url: url.origin, publishableKey };
+  return resolveSupabasePublicConfiguration(
+    import.meta.env.VITE_SUPABASE_URL,
+    import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+    resolveDeploymentEnvironment(import.meta.env.VITE_DEPLOYMENT_ENVIRONMENT),
+    import.meta.env.DEV,
+  );
 }
 
 export function getSupabaseBrowserClient(): SupabaseClient {
   if (!browserClient) {
     const { url, publishableKey } = configuration();
+    const replacement = staleAuthFragmentReplacement(window.location);
+    if (replacement) window.history.replaceState(null, "", replacement);
     browserClient = createClient(url, publishableKey, {
       auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false },
     });

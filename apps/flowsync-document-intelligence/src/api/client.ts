@@ -175,9 +175,12 @@ export class DocumentIntelligenceApiClient {
   }
 }
 
-export function createApiClient(): DocumentIntelligenceApiClient {
+export function createApiClient(accessTokenProvider?: () => Promise<string>): DocumentIntelligenceApiClient {
   try {
-    return new DocumentIntelligenceApiClient({ baseUrl: documentIntelligenceApiBaseUrl() });
+    return new DocumentIntelligenceApiClient({
+      baseUrl: documentIntelligenceApiBaseUrl(),
+      ...(accessTokenProvider ? { accessTokenProvider } : {}),
+    });
   } catch (error) {
     if (error instanceof DeploymentConfigurationError || error instanceof ApiClientError) {
       throw ApiClientError.configuration();

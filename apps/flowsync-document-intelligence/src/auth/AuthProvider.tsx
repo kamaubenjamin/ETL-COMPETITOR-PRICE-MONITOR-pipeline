@@ -4,6 +4,11 @@ import { createApiClient } from "../api/client";
 import { API_ENDPOINTS } from "../api/endpoints";
 import { configureWorkflowPermissionHints } from "../state/workflowPermissions";
 import { getSupabaseBrowserClient, SupabaseBrowserConfigurationError } from "./supabaseClient";
+import {
+  accessTokenProviderForSession,
+  AUTH_DIAGNOSTIC_CODES,
+  performPasswordSignIn,
+} from "./authCore.mjs";
 
 export interface SafeSessionProfile {
   authenticated: true;
@@ -18,7 +23,7 @@ export type AuthStatus = "loading" | "unauthenticated" | "authenticated" | "unau
 export interface AuthContextValue {
   status: AuthStatus;
   profile?: SafeSessionProfile;
-  signIn(email: string, password: string): Promise<boolean>;
+  signIn(email: string, password: string): Promise<Readonly<{ success: boolean; code: string }>>;
   signOut(): Promise<void>;
 }
 
@@ -46,7 +51,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     setStatus("loading");
     try {
-      const result = await bounded(createApiClient().get<SafeSessionProfile>(API_ENDPOINTS.session));
+      const result = await bounded(
+        createApiClient(accessTokenProviderForSession(session)).get<SafeSessionProfile>(API_ENDPOINTS.session),
+      );
       if (!result.data?.authenticated) throw new Error("Session unavailable");
       configureWorkflowPermissionHints(result.data.permissions);
       setProfile(result.data);
@@ -76,7 +83,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         })
         .catch(() => { if (active) setStatus("unauthenticated"); });
       const { data: listener } = client.auth.onAuthStateChange((_event, session) => {
-        if (active) void resolveSession(session);
+        // Supabase Auth callbacks must return before another auth-dependent operation begins.
+        // Deferring also prevents the protected API token provider from re-entering the auth lock.
+        if (active) window.setTimeout(() => { if (active) void resolveSession(session); }, 0);
       });
       return () => { active = false; listener.subscription.unsubscribe(); };
     } catch (error) {
@@ -87,14 +96,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = useCallback(async (email: string, password: string) => {
     try {
-      const { data, error } = await bounded(
-        getSupabaseBrowserClient().auth.signInWithPassword({ email, password }),
-      );
-      if (error || !data.session) return false;
-      await resolveSession(data.session);
-      return true;
-    } catch {
-      return false;
+      const result = await bounded(performPasswordSignIn(getSupabaseBrowserClient().auth, email, password));
+      if (!result.success || !result.session) return { success: false, code: result.code };
+      await resolveSession(result.session);
+      return { success: true, code: result.code };
+    } catch (error) {
+      return {
+        success: false,
+        code: error instanceof SupabaseBrowserConfigurationError
+          ? AUTH_DIAGNOSTIC_CODES.configuration
+          : AUTH_DIAGNOSTIC_CODES.unavailable,
+      };
     }
   }, [resolveSession]);
 

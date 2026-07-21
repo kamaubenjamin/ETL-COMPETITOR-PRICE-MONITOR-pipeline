@@ -151,7 +151,8 @@ const phaseThreePages = new Set([
 for (const file of source) {
   for (const { pattern, label } of forbiddenPatterns) {
     const approvedBearerBoundary = label === "credential or browser storage" && ["src/api/client.ts", "src/auth/supabaseClient.ts"].includes(file.name);
-    const approvedSessionBoundary = label === "sensitive field" && file.name === "src/auth/supabaseClient.ts";
+    const approvedSessionBoundary = label === "sensitive field"
+      && ["src/auth/supabaseClient.ts", "src/auth/authCore.mjs"].includes(file.name);
     if (!approvedBearerBoundary && !approvedSessionBoundary && pattern.test(file.content)) failures.push(`${label} found in ${file.name}`);
   }
   if (phaseThreePages.has(file.name) && /onClick=|<form|type=["']submit["']/.test(file.content)) {
