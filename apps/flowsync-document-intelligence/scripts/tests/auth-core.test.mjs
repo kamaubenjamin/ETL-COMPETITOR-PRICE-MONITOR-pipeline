@@ -16,6 +16,7 @@ import {
   SupabaseBrowserConfigurationError,
 } from "../../src/auth/authCore.mjs";
 import { containsPrivilegedKeyPattern } from "../auth-bundle-scan.mjs";
+import { resolveFetchImplementation } from "../../src/api/fetchCore.mjs";
 
 test("successful password sign-in preserves entered credentials and retains the confirmed session", async () => {
   const session = { access_token: "synthetic-access-token" };
@@ -173,4 +174,49 @@ test("single-flight session bootstrap coalesces duplicate requests", async () =>
   assert.equal(first, second);
   release();
   await Promise.all([first, second]);
+});
+
+test("Firefox-style branded fetch is bound before the protected session request starts", async () => {
+  let requestsStarted = 0;
+  const browserGlobal = {
+    async fetch() {
+      if (this !== browserGlobal) throw new TypeError("Illegal invocation");
+      requestsStarted += 1;
+      return { ok: true };
+    },
+  };
+  const unboundFetch = browserGlobal.fetch;
+  await assert.rejects(() => unboundFetch.call({}, "/api/v1/session"), TypeError);
+  assert.equal(requestsStarted, 0);
+  const browserFetch = resolveFetchImplementation(undefined, browserGlobal);
+  const response = await browserFetch("/api/v1/session");
+  assert.equal(response.ok, true);
+  assert.equal(requestsStarted, 1);
+
+  const root = resolve(import.meta.dirname, "../..");
+  const client = readFileSync(resolve(root, "src/api/client.ts"), "utf8");
+  assert.match(client, /resolveFetchImplementation\(options\.fetchImplementation\)/);
+});
+
+test("initial session, clean sign-in, hard refresh, and StrictMode duplicates each start one profile request", async () => {
+  const exerciseMount = async (events) => {
+    let requests = 0;
+    const load = createKeyedSingleFlight(async () => {
+      requests += 1;
+      await Promise.resolve();
+      return { authenticated: true };
+    });
+    await Promise.all(events.map((event) => load(event.sessionKey)));
+    return requests;
+  };
+  assert.equal(await exerciseMount([{ type: "INITIAL_SESSION", sessionKey: "existing" }]), 1);
+  assert.equal(await exerciseMount([
+    { type: "INITIAL_SESSION", sessionKey: "existing" },
+    { type: "INITIAL_SESSION", sessionKey: "existing" },
+  ]), 1);
+  assert.equal(await exerciseMount([
+    { type: "SIGNED_IN", sessionKey: "new-session" },
+    { type: "SIGNED_IN", sessionKey: "new-session" },
+  ]), 1);
+  assert.equal(await exerciseMount([{ type: "INITIAL_SESSION", sessionKey: "hard-refresh" }]), 1);
 });

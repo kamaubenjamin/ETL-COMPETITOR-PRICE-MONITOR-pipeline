@@ -9,6 +9,7 @@ import {
   normalizeDocumentIntelligenceApiOrigin,
 } from "../config/deploymentEnvironment";
 import { getSupabaseAccessToken } from "../auth/supabaseClient";
+import { resolveFetchImplementation } from "./fetchCore.mjs";
 
 export type QueryValue = string | number | boolean | undefined;
 export type ApiQuery = Readonly<Record<string, QueryValue>>;
@@ -46,7 +47,7 @@ export class DocumentIntelligenceApiClient {
 
   constructor(options: ApiClientOptions) {
     this.baseUrl = validateBaseUrl(options.baseUrl);
-    this.fetchImplementation = options.fetchImplementation ?? fetch;
+    this.fetchImplementation = resolveFetchImplementation(options.fetchImplementation);
     this.accessTokenProvider = options.accessTokenProvider ?? getSupabaseAccessToken;
   }
 

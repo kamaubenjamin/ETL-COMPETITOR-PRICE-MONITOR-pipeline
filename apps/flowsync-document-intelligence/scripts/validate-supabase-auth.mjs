@@ -13,6 +13,7 @@ const guard = read("src/auth/RequireAuth.tsx");
 const signIn = read("src/pages/SignInPage.tsx");
 const authCore = read("src/auth/authCore.mjs");
 const apiClient = read("src/api/client.ts");
+const fetchCore = read("src/api/fetchCore.mjs");
 const app = read("src/App.tsx");
 const header = read("src/components/Header.tsx");
 const env = read(".env.example");
@@ -35,6 +36,8 @@ assert(signIn.includes("Diagnostic:") && signIn.includes("diagnosticCode"), "saf
 assert(guard.includes('status === "loading"') && guard.includes("<Outlet"), "protected content loading guard is missing");
 assert(app.includes("<RequireAuth"), "application routes are not protected");
 assert(apiClient.includes("Authorization: `Bearer ${token}`"), "API bearer propagation is missing");
+assert(apiClient.includes("resolveFetchImplementation(options.fetchImplementation)"), "browser fetch receiver is not safely bound");
+assert(fetchCore.includes("nativeFetch.bind(browserGlobal)"), "native browser fetch must retain its global receiver");
 assert(header.includes("signOut") && header.includes("UAT") === false, "header auth control must use safe runtime state");
 for (const forbidden of ["signUp(", "signInWithOAuth", "signInAnonymously", "resetPassword", "localStorage", "sessionStorage", "console.log", "console.error"]) {
   assert(!authSource.includes(forbidden), `unsupported or unsafe auth behavior found: ${forbidden}`);
