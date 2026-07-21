@@ -1,7 +1,21 @@
+from fastapi.testclient import TestClient
 from src.api.document_intelligence.providers.facade_provider import facade_provider, synthetic_purchase_order
 from starlette.requests import Request
 
+from src.api.document_intelligence.app import create_document_intelligence_app
+from src.api.document_intelligence.config import APIAuthConfig, APIAuthMode
 from src.api.document_intelligence.routers.documents import get_purchase_order
+from src.security.providers import create_local_demo_provider
+
+
+def _client(tenant_id: str) -> TestClient:
+    return TestClient(create_document_intelligence_app(
+        auth_config=APIAuthConfig(APIAuthMode.LOCAL_DEMO),
+        identity_provider=create_local_demo_provider(tenant_id),
+    ))
+
+
+OWNER_HEADERS = {"x-local-identity": "tenant-admin"}
 
 
 def test_synthetic_purchase_order_schema_is_safe_and_exact():
@@ -34,3 +48,28 @@ def test_read_only_route_returns_canonical_safe_schema():
         "delivery_date", "currency", "subtotal", "tax", "total", "line_items", "terms",
         "source_lineage", "validation", "extraction_warnings",
     }
+
+
+def test_flowsync_uat_owner_scope_lists_filters_and_opens_purchase_order():
+    client = _client("flowsync-uat")
+    listed = client.get("/api/v1/documents", headers=OWNER_HEADERS)
+    filtered = client.get("/api/v1/documents?document_type=purchase_order", headers=OWNER_HEADERS)
+    detail = client.get("/api/v1/documents/doc-002", headers=OWNER_HEADERS)
+    purchase_order = client.get("/api/v1/documents/doc-002/purchase-order", headers=OWNER_HEADERS)
+
+    assert listed.status_code == filtered.status_code == detail.status_code == purchase_order.status_code == 200
+    assert [item["document_id"] for item in listed.json()["data"]] == ["doc-002"]
+    assert [(item["document_id"], item["document_type"]) for item in filtered.json()["data"]] == [("doc-002", "purchase_order")]
+    assert (detail.json()["data"]["document_id"], detail.json()["data"]["document_type"]) == ("doc-002", "purchase_order")
+    assert purchase_order.json()["data"]["document_type"] == "purchase_order"
+
+
+def test_wrong_tenant_and_nonexistent_documents_remain_concealed():
+    wrong_tenant = _client("tenant-demo")
+    filtered = wrong_tenant.get("/api/v1/documents?document_type=purchase_order", headers=OWNER_HEADERS)
+    assert filtered.status_code == 200
+    assert filtered.json()["data"] == []
+    for path in ("/api/v1/documents/doc-002", "/api/v1/documents/doc-002/purchase-order", "/api/v1/documents/not-present", "/api/v1/documents/not-present/purchase-order"):
+        response = wrong_tenant.get(path, headers=OWNER_HEADERS)
+        assert response.status_code == 404
+        assert response.json()["error"]["code"] in {"resource_not_found", "document_not_found"}

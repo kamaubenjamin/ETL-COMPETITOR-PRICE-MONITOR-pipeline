@@ -31,7 +31,7 @@ def _documents(request):
 
 def test_viewer_list_is_narrowed_to_authorized_tenant_without_public_tenant_fields():
     response = _documents(_request(_app(), "viewer"))
-    assert [item["document_id"] for item in response["data"]] == ["doc-001", "doc-002"]
+    assert [item["document_id"] for item in response["data"]] == ["doc-001"]
     assert all("tenant_id" not in item and "owner_principal_id" not in item for item in response["data"])
 
 
@@ -67,7 +67,7 @@ def test_service_account_requires_explicit_list_permission_and_tenant_scope():
         mode=LocalProviderMode.TEST,
     )
     allowed = _documents(_request(_app(provider=provider), "svc-list"))
-    assert [item["document_id"] for item in allowed["data"]] == ["doc-001", "doc-002"]
+    assert [item["document_id"] for item in allowed["data"]] == ["doc-001"]
 
 
 def test_authenticated_cross_tenant_detail_is_concealed_as_not_found():

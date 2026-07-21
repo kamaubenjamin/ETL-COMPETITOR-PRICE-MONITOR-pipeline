@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
+import { resolve } from "node:path";
 import { purchaseOrderAmount, purchaseOrderNotices } from "../../src/state/purchaseOrderCore.mjs";
 
 test("valid synthetic purchase order renders exact display amounts without notices", () => {
@@ -13,4 +15,18 @@ test("validation and extraction warnings are both rendered", () => {
   const warning = { severity: "warning", code: "not_determined", field: "terms", message: "Terms were not determined." };
   assert.deepEqual(purchaseOrderNotices({ validation: { findings: [validation] }, extraction_warnings: [warning] }), [validation, warning]);
   assert.equal(purchaseOrderAmount({ currency: "KES" }, null), "-");
+});
+
+test("purchase-order filter and normal detail route accept the synthetic record", () => {
+  const root = resolve(import.meta.dirname, "../..");
+  const types = readFileSync(resolve(root, "src/types/document.ts"), "utf8");
+  const documents = readFileSync(resolve(root, "src/pages/DocumentsPage.tsx"), "utf8");
+  const detail = readFileSync(resolve(root, "src/pages/DocumentDetailPage.tsx"), "utf8");
+  const app = readFileSync(resolve(root, "src/App.tsx"), "utf8");
+  assert.match(types, /DocumentType\s*=\s*"invoice"\s*\|\s*"purchase_order"/);
+  assert.match(documents, /value:\s*"purchase_order"/);
+  assert.match(documents, /to=\{`\/documents\/\$\{encodeURIComponent\(row\.id\)\}`\}/);
+  assert.match(app, /path="documents\/:documentId"/);
+  assert.match(detail, /document\.data\.document_type === "purchase_order"/);
+  assert.match(detail, /getPurchaseOrder\(client, documentId\)/);
 });

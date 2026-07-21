@@ -26,13 +26,13 @@ SNAPSHOT_AT = "2026-07-01T09:00:00+00:00"
 
 _DOCUMENTS = (
     DocumentInboxItem("doc-001", "invoice_001.pdf", "invoice", "validated", 0.98, "validate_data", "2026-07-01T08:00:00+00:00", "tenant-demo"),
-    DocumentInboxItem("doc-002", "purchase_order_002.pdf", "purchase_order", "review_required", 0.72, "matching", "2026-07-01T08:05:00+00:00", "tenant-demo"),
+    DocumentInboxItem("doc-002", "purchase_order_002.pdf", "purchase_order", "review_required", 0.72, "matching", "2026-07-01T08:05:00+00:00", "flowsync-uat"),
     DocumentInboxItem("doc-003", "receipt_003.pdf", "receipt", "export_ready", 0.94, "export", "2026-07-01T08:10:00+00:00", "tenant-alt"),
 )
 
 _DOCUMENT_DETAILS = {
     "doc-001": DocumentDetail("doc-001", "invoice_001.pdf", "invoice", "validated", 0.98, "validate_data", "2026-07-01T08:00:00+00:00", "2026-07-01T08:00:04+00:00", "invoice_processing", "tenant-demo"),
-    "doc-002": DocumentDetail("doc-002", "purchase_order_002.pdf", "purchase_order", "review_required", 0.72, "matching", "2026-07-01T08:05:00+00:00", "2026-07-01T08:05:05+00:00", "purchase_order_processing", "tenant-demo"),
+    "doc-002": DocumentDetail("doc-002", "purchase_order_002.pdf", "purchase_order", "review_required", 0.72, "matching", "2026-07-01T08:05:00+00:00", "2026-07-01T08:05:05+00:00", "purchase_order_processing", "flowsync-uat"),
     "doc-003": DocumentDetail("doc-003", "receipt_003.pdf", "receipt", "export_ready", 0.94, "export", "2026-07-01T08:10:00+00:00", "2026-07-01T08:10:06+00:00", "receipt_processing", "tenant-alt"),
 }
 

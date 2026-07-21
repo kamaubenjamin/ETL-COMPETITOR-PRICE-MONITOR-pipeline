@@ -52,7 +52,7 @@ def test_endpoint_permission_map_for_review_workflow_and_audit_reads():
 
     reviews = list_review_cases(_request(app, "reviewer"), status=None, priority=None, limit=50, offset=0)
     workflows = list_workflow_runs(_request(app, "viewer"), status=None, limit=50, offset=0)
-    assert [item["review_case_id"] for item in reviews["data"]] == ["review-001", "review-003"]
+    assert [item["review_case_id"] for item in reviews["data"]] == ["review-003"]
     assert [item["run_id"] for item in workflows["data"]] == ["run-002", "run-001"]
 
     with pytest.raises(DocumentIntelligenceAPIError) as audit_denied:
