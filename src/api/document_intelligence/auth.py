@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from re import fullmatch
 
 from fastapi import Request
 
@@ -36,6 +37,7 @@ class AuthorizedReadScope:
     tenant_id: str | None = None
     principal_id: str | None = None
     tenant_name: str | None = None
+    tenant_slug: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -203,7 +205,13 @@ def _authorized_scope(
     tenant_name = principal.metadata.get("tenant_name")
     if not isinstance(tenant_name, str) or not tenant_name or len(tenant_name) > 128:
         tenant_name = None
-    return AuthorizedReadScope(True, requested_tenant, principal.principal_id, tenant_name)
+    tenant_slug = principal.metadata.get("tenant_slug")
+    if (
+        not isinstance(tenant_slug, str)
+        or fullmatch(r"[a-z0-9][a-z0-9-]{0,62}", tenant_slug) is None
+    ):
+        tenant_slug = None
+    return AuthorizedReadScope(True, requested_tenant, principal.principal_id, tenant_name, tenant_slug)
 
 
 def authorize_read(

@@ -15,5 +15,5 @@ router = APIRouter(prefix="/api/v1")
 @router.get("/documents/{document_id}/validation")
 def get_validation(document_id: str, request: Request, limit: int = Query(DEFAULT_PAGE_SIZE, ge=1, le=MAX_PAGE_SIZE), offset: int = Query(0, ge=0)) -> dict[str, object]:
     scope = authorize_read(request, Permission.DOCUMENT_READ, resource_type="document", resource_id=document_id, conceal_unauthorized_resource=True)
-    _require_document(document_id, request, tenant_id=scope.tenant_id, tenant_name=scope.tenant_name)
-    return paginated_response(get_document_intelligence_provider(request).list_validation(document_id, tenant_id=scope.tenant_id, tenant_name=scope.tenant_name), request_id=request.state.request_id, limit=limit, offset=offset)
+    _require_document(document_id, request, tenant_id=scope.tenant_id, tenant_slug=scope.tenant_slug)
+    return paginated_response(get_document_intelligence_provider(request).list_validation(document_id, tenant_id=scope.tenant_id, tenant_slug=scope.tenant_slug), request_id=request.state.request_id, limit=limit, offset=offset)

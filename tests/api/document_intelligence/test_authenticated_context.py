@@ -20,10 +20,29 @@ def test_valid_token_builds_safe_authenticated_session_context():
     data = response.json()["data"]
     assert data["authenticated"] is True
     assert data["tenant_name"] == "FlowSync UAT"
+    assert data["tenant_slug"] == "flowsync-uat"
     assert data["role"] == "owner"
     assert "workflow:publish" in data["permissions"]
     assert "tenant_id" not in data
     assert "user_id" not in data
+
+
+def test_membership_resolution_reads_authoritative_tenant_slug():
+    captured = []
+    response = asgi_request(
+        application(capture=captured),
+        "GET",
+        "/api/v1/session",
+        headers={"Authorization": f"Bearer {token()}"},
+    )
+    membership_request = next(
+        request for request in captured if request.url.path.endswith("/app_tenant_memberships")
+    )
+
+    assert response.status_code == 200
+    assert membership_request.url.params["select"] == (
+        "tenant_id,role,status,app_tenants!inner(name,slug,status)"
+    )
 
 
 def test_health_routes_remain_public_without_external_calls():

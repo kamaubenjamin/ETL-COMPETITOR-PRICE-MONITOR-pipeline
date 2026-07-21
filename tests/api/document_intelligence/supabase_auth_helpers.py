@@ -50,12 +50,19 @@ def token(**overrides) -> str:
     return jwt.encode(claims, PRIVATE_KEY, algorithm="RS256", headers={"kid": KID})
 
 
-def membership(role="owner", *, status="active", tenant_status="active"):
+def membership(
+    role="owner",
+    *,
+    status="active",
+    tenant_status="active",
+    tenant_name="FlowSync UAT",
+    tenant_slug="flowsync-uat",
+):
     return [{
         "tenant_id": TENANT_ID,
         "role": role,
         "status": status,
-        "app_tenants": {"name": "FlowSync UAT", "status": tenant_status},
+        "app_tenants": {"name": tenant_name, "slug": tenant_slug, "status": tenant_status},
     }]
 
 

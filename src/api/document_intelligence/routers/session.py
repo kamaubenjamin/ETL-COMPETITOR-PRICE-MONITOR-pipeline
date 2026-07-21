@@ -15,6 +15,7 @@ def get_session(request: Request) -> dict[str, object]:
     data: dict[str, object] = {
         "authenticated": True,
         "tenant_name": principal.metadata.get("tenant_name"),
+        "tenant_slug": principal.metadata.get("tenant_slug"),
         "role": principal.metadata.get("membership_role"),
         "permissions": [permission.value for permission in principal.effective_permissions],
     }

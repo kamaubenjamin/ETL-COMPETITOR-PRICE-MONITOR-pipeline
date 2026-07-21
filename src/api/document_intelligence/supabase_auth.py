@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from re import fullmatch
 from threading import RLock
 from time import monotonic
 from types import MappingProxyType
@@ -81,6 +82,7 @@ class VerifiedSupabaseIdentity:
 class TenantMembership:
     tenant_id: str
     tenant_name: str
+    tenant_slug: str
     role: str
 
 
@@ -190,7 +192,7 @@ class SupabaseMembershipResolver:
             response = self._client.get(
                 f"{self._config.url}/rest/v1/app_tenant_memberships",
                 params={
-                    "select": "tenant_id,role,status,app_tenants!inner(name,status)",
+                    "select": "tenant_id,role,status,app_tenants!inner(name,slug,status)",
                     "status": "eq.active",
                     "limit": "2",
                 },
@@ -216,9 +218,10 @@ class SupabaseMembershipResolver:
         tenant = row.get("app_tenants") if isinstance(row, dict) else None
         if not isinstance(tenant, dict):
             raise SupabaseAuthorizationError()
-        tenant_id, tenant_name, tenant_status, role, membership_status = (
+        tenant_id, tenant_name, tenant_slug, tenant_status, role, membership_status = (
             row.get("tenant_id"),
             tenant.get("name"),
+            tenant.get("slug"),
             tenant.get("status"),
             row.get("role"),
             row.get("status"),
@@ -235,11 +238,18 @@ class SupabaseMembershipResolver:
             or not tenant_name
             or len(tenant_name) > 128
             or any(ord(char) < 32 for char in tenant_name)
+            or not isinstance(tenant_slug, str)
+            or fullmatch(r"[a-z0-9][a-z0-9-]{0,62}", tenant_slug) is None
         ):
             raise SupabaseAuthorizationError()
         if str(UUID(verified_user_id)) != verified_user_id:
             raise SupabaseAuthorizationError()
-        return TenantMembership(tenant_id=tenant_id, tenant_name=tenant_name, role=role)
+        return TenantMembership(
+            tenant_id=tenant_id,
+            tenant_name=tenant_name,
+            tenant_slug=tenant_slug,
+            role=role,
+        )
 
 
 class SupabaseIdentityProvider:
@@ -262,7 +272,11 @@ class SupabaseIdentityProvider:
             explicit_permissions=tuple(UAT_ROLE_PERMISSIONS[membership.role]),
             display_name=identity.email,
             authentication_method="supabase_jwt",
-            metadata={"membership_role": membership.role, "tenant_name": membership.tenant_name},
+            metadata={
+                "membership_role": membership.role,
+                "tenant_name": membership.tenant_name,
+                "tenant_slug": membership.tenant_slug,
+            },
         )
         return IdentityProviderResult(
             IdentityResolutionStatus.RESOLVED,

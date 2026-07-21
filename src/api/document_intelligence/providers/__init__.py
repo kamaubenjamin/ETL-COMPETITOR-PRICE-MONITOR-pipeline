@@ -3,7 +3,7 @@
 from fastapi import Request
 
 from ..errors import DocumentIntelligenceAPIError
-from .facade_provider import FacadeDocumentIntelligenceProvider, facade_provider
+from .facade_provider import FacadeDocumentIntelligenceProvider, facade_provider, uat_read_only_facade_provider
 from .local_provider import LocalDocumentIntelligenceProvider, local_provider as api_local_provider
 from .workflow_studio_provider import WorkflowStudioAPIProvider
 
@@ -36,6 +36,7 @@ __all__ = [
     "WorkflowStudioAPIProvider",
     "api_local_provider",
     "facade_provider",
+    "uat_read_only_facade_provider",
     "get_document_intelligence_provider",
     "local_provider",
 ]

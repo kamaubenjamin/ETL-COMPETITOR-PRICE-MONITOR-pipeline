@@ -1,5 +1,9 @@
 from fastapi.testclient import TestClient
-from src.api.document_intelligence.providers.facade_provider import facade_provider, synthetic_purchase_order
+from src.api.document_intelligence.providers.facade_provider import (
+    facade_provider,
+    synthetic_purchase_order,
+    uat_read_only_facade_provider,
+)
 from starlette.requests import Request
 
 from src.api.document_intelligence.app import create_document_intelligence_app
@@ -83,7 +87,7 @@ def test_exact_hosted_uat_supabase_configuration_exposes_all_purchase_order_read
     application = uat_application()
     client = TestClient(application)
     headers = {"Authorization": f"Bearer {uat_token()}"}
-    assert application.state.document_intelligence_provider is facade_provider
+    assert application.state.document_intelligence_provider is uat_read_only_facade_provider
     assert application.state.document_intelligence_environment["app_env"] == "uat"
     assert application.state.platform_runtime_summary == {"mode": "compatibility_default", "composed": False}
 
@@ -101,12 +105,12 @@ def test_exact_hosted_uat_supabase_configuration_exposes_all_purchase_order_read
         assert client.get(f"/api/v1/documents/doc-002/{suffix}", headers=headers).status_code == 200
 
 
-def test_hosted_uat_tenant_name_alias_is_authoritative_and_bounded():
+def test_hosted_uat_tenant_slug_alias_is_authoritative_and_bounded():
     other_membership = [{
         "tenant_id": "33333333-3333-4333-8333-333333333333",
         "role": "owner",
         "status": "active",
-        "app_tenants": {"name": "Other UAT", "status": "active"},
+        "app_tenants": {"name": "Other UAT", "slug": "other-uat", "status": "active"},
     }]
     application = uat_application(rows=other_membership)
     client = TestClient(application)
@@ -119,6 +123,33 @@ def test_hosted_uat_tenant_name_alias_is_authoritative_and_bounded():
     assert detail.status_code == purchase_order.status_code == 404
 
 
-def test_tenant_name_aliases_are_disabled_for_ordinary_composed_providers():
+def test_tenant_slug_aliases_are_disabled_for_ordinary_composed_providers():
     provider = facade_provider.__class__(InMemoryWorkflowQueryFacade())
-    assert provider.list_documents(tenant_id=TENANT_ID, tenant_name="FlowSync UAT") == []
+    assert provider.list_documents(tenant_id=TENANT_ID, tenant_slug="flowsync-uat") == []
+
+
+def test_hosted_uat_uses_authoritative_slug_when_display_name_does_not_match_fixture_scope():
+    hosted_membership_shape = [{
+        "tenant_id": TENANT_ID,
+        "role": "owner",
+        "status": "active",
+        "app_tenants": {
+            "name": "FlowSync Document Intelligence UAT",
+            "slug": "flowsync-uat",
+            "status": "active",
+        },
+    }]
+    client = TestClient(uat_application(rows=hosted_membership_shape))
+    headers = {"Authorization": f"Bearer {uat_token()}"}
+
+    session = client.get("/api/v1/session", headers=headers)
+    listed = client.get("/api/v1/documents", headers=headers)
+    filtered = client.get("/api/v1/documents?document_type=purchase_order", headers=headers)
+    detail = client.get("/api/v1/documents/doc-002", headers=headers)
+    purchase_order = client.get("/api/v1/documents/doc-002/purchase-order", headers=headers)
+
+    assert session.status_code == 200
+    assert session.json()["data"]["tenant_slug"] == "flowsync-uat"
+    assert listed.status_code == filtered.status_code == detail.status_code == purchase_order.status_code == 200
+    assert [(item["document_id"], item["document_type"]) for item in listed.json()["data"]] == [("doc-002", "purchase_order")]
+    assert [(item["document_id"], item["document_type"]) for item in filtered.json()["data"]] == [("doc-002", "purchase_order")]
