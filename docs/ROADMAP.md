@@ -529,11 +529,11 @@ References:
 Status:
 - Phase 1 complete: narrow repository deployment audit, zero-budget architecture, ADR-026, environment inventory, Vercel project settings, blocker classification, safeguards, and seven-phase implementation plan
 - Phase 2 complete: safe server/browser environment templates, secret classification, ignore hardening, deterministic API environment/CORS parsing, visible UAT label, and manual Supabase Auth/Storage/database preparation with zero application tables or migrations
-- Phase 3 compatibility complete: explicit ASGI entrypoint, Python 3.12, minimal serverless dependencies, strict CORS, hosted runtime guards, and stateless verification; deployment intentionally deferred
-- Phase 4 compatibility complete: app-local SPA routing, strict hosted API URL enforcement, safe configuration state, UAT labeling, Project A settings, and deployment validation; deployment intentionally deferred
-- Phase 5 implementation preparation complete: official browser Auth, protected routing, asymmetric API JWT verification, RLS-constrained tenant membership, fixed permissions, minimal identity migration, and owner bootstrap procedure; cloud user, migration application, and deployment intentionally deferred
+- Phase 3 compatibility complete: explicit ASGI entrypoint, Python 3.12, minimal serverless dependencies, strict CORS, hosted runtime guards, and stateless verification; deployment was intentionally deferred to the hosted-verification phase
+- Phase 4 compatibility complete: app-local SPA routing, strict hosted API URL enforcement, safe configuration state, UAT labeling, Project A settings, and deployment validation; deployment was intentionally deferred to the hosted-verification phase
+- Phase 5 implementation preparation complete: official browser Auth, protected routing, asymmetric API JWT verification, RLS-constrained tenant membership, fixed permissions, minimal identity migration, and owner bootstrap procedure; remote activation was intentionally deferred and was subsequently verified in Phase 6
 - Phase 6 complete: stable Vercel frontend and API deployments, Supabase Auth, active owner membership, asymmetric JWT verification, fixed permissions, exact-origin CORS, protected read-only document access, Firefox compatibility, hosted smoke verification, and UAT closeout
-- Phase 7 next: closure alignment, release notes, final security handoff, and owner tag recommendation
+- Phase 7 in progress: closure alignment, release notes, final security handoff, and owner tag recommendation are prepared locally pending owner approval
 - No production activation or v0.21 tag
 - Target: separate Vercel FlowSync and FastAPI projects plus one Supabase Free UAT project
 - Current constraints: UAT / Technical Preview, synthetic non-confidential data, read-only behavior, free-tier limits, and no production SLA
@@ -541,11 +541,11 @@ Status:
 Phases:
 1. Deployment audit and plan - complete
 2. Supabase UAT project, service inventory, and environment preparation - complete
-3. FastAPI serverless compatibility - complete; API deployment deferred to owner action
-4. FlowSync Vercel compatibility and hosted API URL safety - complete; deployment deferred to owner action
+3. FastAPI serverless compatibility - complete; API deployment subsequently verified in Phase 6
+4. FlowSync Vercel compatibility and hosted API URL safety - complete; frontend deployment subsequently verified in Phase 6
 5. Hosted Auth, tenant bootstrap, and environment separation - complete
 6. Smoke, CORS/security/privacy verification, and UAT handoff - complete
-7. Closure, release notes, and tag recommendation - next
+7. Closure, release notes, and tag recommendation - in progress
 
 References:
 - `docs/architecture/ZERO_BUDGET_UAT_DEPLOYMENT_V1_PLAN.md`
@@ -553,6 +553,8 @@ References:
 - `docs/adr/ADR-026-zero-budget-vercel-supabase-uat.md`
 - `docs/implementation/V0_21_PHASE_1_DEPLOYMENT_AUDIT.md`
 - `docs/implementation/V0_21_PHASE_6_HOSTED_UAT_CLOSEOUT.md`
+- `docs/releases/v0.21-zero-budget-hosted-uat.md`
+- `docs/implementation/V0_21_PHASE_7_RELEASE_HANDOFF.md`
 
 ## Prior Milestone Context
 

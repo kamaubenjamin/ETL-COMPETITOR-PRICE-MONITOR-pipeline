@@ -12,6 +12,9 @@ Real-time multi-source price tracking with automated ETL pipeline. Monitor compe
 - [Phase 4 FlowSync Vercel deployment preparation](./implementation/V0_21_PHASE_4_FLOWSYNC_VERCEL_DEPLOYMENT.md)
 - [Phase 5 Supabase Auth and tenant bootstrap](./implementation/V0_21_PHASE_5_SUPABASE_AUTH_TENANT_BOOTSTRAP.md)
 - [Phase 6 API runtime dependency hotfix](./implementation/V0_21_PHASE_6_API_RUNTIME_DEPENDENCY_HOTFIX.md)
+- [Phase 6 hosted UAT closeout](./implementation/V0_21_PHASE_6_HOSTED_UAT_CLOSEOUT.md)
+- [Phase 7 release handoff](./implementation/V0_21_PHASE_7_RELEASE_HANDOFF.md)
+- [v0.21 release notes](./releases/v0.21-zero-budget-hosted-uat.md)
 - [ADR-026](./adr/ADR-026-zero-budget-vercel-supabase-uat.md)
 
 ## v0.20 Business Workflow / Rules Studio Documentation

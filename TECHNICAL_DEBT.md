@@ -2,26 +2,32 @@ Technical debt and missing test fixtures
 
 ## v0.21 Zero-Budget Vercel + Supabase UAT
 
-Phase 1 audits and plans a KSh 0 UAT deployment without creating cloud resources or changing runtime behavior. Current deployment debt is classified in `docs/implementation/V0_21_PHASE_1_DEPLOYMENT_AUDIT.md`.
+**Current status:** Phase 6 hosted verification is complete at commit `28dea72`; Phase 7 release closure is in progress. The stable frontend and API are deployed as a UAT / Technical Preview with synthetic, non-confidential data and a read-only protected Documents workspace.
 
-Phase 2 adds safe environment examples, secret/ignore policy, deterministic API environment/CORS parsing without middleware activation, a bounded UAT label, and manual Supabase Auth/Storage/database preparation. No application table, migration, SDK, runtime call, hosted Auth, storage path, durable repository, or deployment exists. Owner-collected cloud values remain outside Git.
+The hosted foundation now includes Supabase email/password identity, one active RLS-constrained tenant membership, asymmetric JWT/JWKS verification, fixed server-side owner permissions, strict exact-origin CORS, safe public configuration validation, serialized session bootstrap, bound native browser fetch, and hosted bundle/secret/smoke verification.
 
-Phase 3 adds the explicit Vercel ASGI entrypoint, Python 3.12 pin, minimal API dependency/install boundary, bundle exclusions, strict environment-driven CORS activation, hosted local-demo authority rejection, and serverless startup tests. Deployment remains owner-deferred; Workflow Studio/query state remains ephemeral and API Auth/JWT integration remains incomplete.
+Retained v0.21 debt and intentional scope exclusions:
 
-Phase 4 adds app-local Vite/Vercel SPA routing, exact hosted API origin enforcement with no production-build localhost fallback, a fixed app-wide configuration error, Node/build/output declarations, source-map disablement, and dependency-free deployment/dist validation. Actual Project A/Project B deployment, exact cloud URL/CORS coordination, hosted Auth, and live authenticated smoke testing remain owner-deferred.
+- The minified frontend JavaScript is approximately 511 kB, above Vite's 500 kB advisory threshold. Code splitting is non-blocking follow-up debt.
+- The hosted frontend has no favicon. Its 404 is cosmetic and non-blocking.
+- Vercel may report a Node project-setting mismatch/override warning. The committed package and lockfile engines correctly require Node `>=22.12 <23`; keep the Vercel project on Node 22.x and reconcile the dashboard warning before a later platform upgrade.
+- The hosted application is intentionally read-only. Upload and other write operations are not activated.
+- There is no persistent hosted document store or object-storage workflow. The protected document listing is currently empty by design.
+- There is no asynchronous queue, worker, scheduled-job, or background-processing runtime suitable for serverless document work.
+- OCR and LLM extraction are not implemented or activated.
+- Vercel/Supabase free-tier cold starts, pauses, quotas, log retention, provider availability, and plan terms constrain UAT operation.
+- Workflow Studio and other process-local API state remain ephemeral across serverless recycle and deployment.
+- There is no production SLA, production monitoring/on-call coverage, automated recovery, backup commitment, or production support model.
+- TestClient transport coverage currently passes, but FastAPI emits one upstream Starlette deprecation warning recommending `httpx2`; dependency alignment remains non-blocking follow-up.
+- Tier 1 boundary verification remains compliant while still reporting the two pre-existing U+FEFF parse warnings in `src/alerts/alert_engine.py` and `src/entity_runtime/engine.py`.
 
-Phase 5 adds browser Auth, asymmetric JWT verification, RLS-constrained membership resolution, fixed UAT role mapping, and a minimal identity migration without a service-role key. Owner-operated migration application, one-user bootstrap, signing-key/redirect/CORS verification, rate limiting, MFA, recovery, invitations, urgent JWKS cache purge, and hosted smoke testing remain deferred to later authorization.
+Required before pilot/production: approved durable tenant-aware repositories and migrations, private storage/retention policy, transactional persistence, rate limiting, operational monitoring/recovery, backups and service objectives, queue/workers for bounded long jobs, production identity/security review, and separately approved processing or integration activation.
 
-Blocking or required before hosted UAT:
+References:
 
-- Owner confirmation that the intended UAT is eligible for Vercel Hobby's personal, non-commercial terms; otherwise the KSh 0 target needs a different host
-- Create and configure Vercel Project B using the reviewed Phase 3 settings; do not deploy until the owner accepts the UAT/Auth/stateless limitations
-- Create and configure both Vercel projects using the reviewed settings and coordinate exact API/frontend origins without wildcard CORS
-- Real Supabase Auth/JWT identity and tenant composition before authenticated UAT
-
-Accepted only for bounded UAT: process-local Workflow Studio/query state, free-tier cold starts/pauses, no SLA, default unavailable preview, no background processing, and synthetic test data only.
-
-Required before pilot/production: PostgreSQL/Supabase repositories and migrations, RLS, transactional publication/audit persistence, private storage/retention, capability discovery, rate limiting, operational monitoring/recovery, backups/SLA, queue/workers for long jobs, and separately approved production execution/integrations.
+- `docs/implementation/V0_21_PHASE_6_HOSTED_UAT_CLOSEOUT.md`
+- `docs/releases/v0.21-zero-budget-hosted-uat.md`
+- `docs/implementation/V0_21_PHASE_7_RELEASE_HANDOFF.md`
 
 ## v0.20 Business Workflow / Rules Studio
 

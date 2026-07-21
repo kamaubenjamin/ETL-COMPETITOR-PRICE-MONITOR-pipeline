@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for v0.21. Phases 1-4 established the deployment, Supabase, API, and frontend compatibility foundations. Phase 5 prepares browser Auth, trusted JWT verification, and RLS tenant membership without deployment, remote migration, or cloud-user creation. No cloud action is authorized by this ADR alone.
+Accepted and implemented for the v0.21 UAT / Technical Preview boundary. Phase 6 verified the deployed Vercel frontend and API, Supabase browser Auth, asymmetric JWT verification, RLS-constrained active tenant membership, fixed owner permissions, exact-origin CORS, and protected read-only document access. Phase 7 release closure is in progress. No production activation or further cloud action is authorized by this ADR alone.
 
 ## Context
 

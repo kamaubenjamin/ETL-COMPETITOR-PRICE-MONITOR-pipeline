@@ -2,6 +2,15 @@
 
 This directory contains architecture documentation for the ETL Banking platform. It is the primary entry point for future agents and developers who need to understand runtime design, package boundaries, and implementation details.
 
+## v0.21 Zero-Budget Hosted UAT
+
+- [Deployment architecture](./ZERO_BUDGET_UAT_DEPLOYMENT_V1_PLAN.md)
+- [Seven-phase implementation plan](./ZERO_BUDGET_UAT_DEPLOYMENT_V1_IMPLEMENTATION_PLAN.md)
+- [ADR-026](../adr/ADR-026-zero-budget-vercel-supabase-uat.md)
+- [Phase 6 hosted verification](../implementation/V0_21_PHASE_6_HOSTED_UAT_CLOSEOUT.md)
+- [Phase 7 release handoff](../implementation/V0_21_PHASE_7_RELEASE_HANDOFF.md)
+- [v0.21 release notes](../releases/v0.21-zero-budget-hosted-uat.md)
+
 ## Platform Overview
 
 The current runtime stack includes:

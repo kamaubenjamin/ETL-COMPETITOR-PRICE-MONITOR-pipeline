@@ -137,10 +137,10 @@ Uploads, object-storage activation, content staging, OCR, LLM extraction, durabl
 - [x] Public configuration and credential-pattern scans pass, subject only to the non-credential `sb_secret_` rejection guard noted above.
 - [x] Frontend validation, typecheck, production build, auth/dist checks, Vercel/dist checks, and affected API tests pass.
 - [x] Known limitations, security cleanup, resolved incidents, and deferred capabilities are documented.
-- [x] Phase 7 closure and tag work is identified as the next milestone step.
+- [x] Phase 7 closure and tag work was identified as the next milestone step and is now in progress.
 
 ## Handoff Into Phase 7
 
-Phase 7 is the next step. It should align the final architecture and implementation summary, release notes, verification evidence, roadmap, debt register, and changelog; confirm the zero-budget and synthetic-data constraints; obtain owner approval for credential rotation and release actions; and recommend the v0.21 tag.
+Phase 7 release closure is now in progress. It aligns the final architecture and implementation summary, release notes, verification evidence, roadmap, debt register, and changelog; confirms the zero-budget and synthetic-data constraints; prepares the credential-rotation reminder and release actions for owner approval; and recommends the v0.21 tag.
 
 No commit, push, deployment, credential rotation, or tag is part of this Phase 6 closeout task.

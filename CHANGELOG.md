@@ -1,6 +1,12 @@
-.\venv\Scripts\Activate.ps1# Changelog
+# Changelog
 
 ## Unreleased
+
+- **Added:** Prepared v0.21 Zero-Budget Hosted UAT release closure with final release notes and owner handoff covering the verified Vercel frontend/FastAPI split, Supabase identity and tenant foundation, protected read-only Documents workspace, validation evidence, rollback guidance, and the proposed `v0.21-zero-budget-hosted-uat` tag.
+- **Changed:** Marked Phase 6 complete and Phase 7 release closure in progress across the roadmap, implementation plan, ADR status, documentation indexes, and technical-debt register. The hosted surface remains UAT / Technical Preview, synthetic/non-confidential-data-only, and read-only.
+- **Fixed:** Recorded the resolved literal `VITE_SUPABASE_PUBLISHABLE_KEY` deployment, transient-as-forbidden classification, overlapping session bootstrap, detached Firefox fetch receiver, FastAPI import-chain/bundle overflow, and frontend lockfile synchronization incidents.
+- **Security:** Confirmed asymmetric Supabase JWT verification, RLS-constrained active membership resolution, fixed server-side owner permissions, strict exact-origin CORS, public configuration validation, and tracked-file/diff secret scanning. No privileged key belongs in the frontend or Git.
+- **Known limitations:** No hosted uploads, object-storage workflow, document persistence, asynchronous jobs, OCR, LLM extraction, production SLA, or production monitoring. Free-tier limits and process-local state apply; the missing favicon and frontend bundle larger than 500 kB remain non-blocking debt.
 
 - Fixed the v0.21 Phase 6 Vercel API bundle overflow by making the `src.workflow_runtime` public facade lazy, preventing API startup from importing pandas/NumPy while preserving explicit runtime and transformation imports. Restored the three-package API manifest and expanded clean-import, no-I/O, required-route, prohibited-dependency, and explicit transformation regression coverage. No Auth, CORS, route, schema, Supabase/RLS, business behavior, deployment, commit, push, or tag change was made.
 

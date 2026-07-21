@@ -105,7 +105,7 @@ No browser secret, service-role key, local identity masquerading as hosted authe
 - Added official Supabase browser Auth for existing users only, protected routing, bounded session restoration, safe sign-in/out, and bearer propagation without custom token storage.
 - Added asymmetric JWT verification with issuer/audience/time checks, bounded JWKS caching/timeouts, RLS-constrained Data API membership lookup, fixed role permissions, and a safe session endpoint.
 - Added the minimal `app_tenants` and `app_tenant_memberships` migration with read-only authenticated RLS and owner-only bootstrap writes.
-- Added deterministic JWT, membership, and migration tests plus the Phase 5 owner runbook. Hosted smoke testing remains Phase 6.
+- Added deterministic JWT, membership, and migration tests plus the Phase 5 owner runbook. Hosted smoke testing was reserved for Phase 6 and is now complete.
 
 ### Deliverables
 
@@ -134,7 +134,7 @@ No service-role key in the frontend, wildcard tenant access, production user, cu
 
 ## Phase 7: Closure And Tag
 
-**Status:** Next - no v0.21 commit, push, deployment, or tag is authorized by the Phase 6 closeout.
+**Status:** In progress - final release notes, changelog, debt alignment, security handoff, and owner closure commands are prepared locally. No v0.21 commit, push, deployment, or tag is authorized without owner approval.
 
 ### Deliverables
 
