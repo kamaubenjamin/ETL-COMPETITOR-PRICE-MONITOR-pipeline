@@ -77,13 +77,64 @@ export function isRetryableSessionFailure(error) {
   return kind === undefined || kind === "unavailable";
 }
 
-export async function resolveSessionProfile(operation) {
-  try {
-    return await operation();
-  } catch (error) {
-    if (!isRetryableSessionFailure(error)) throw error;
-    return operation();
+export class SessionBootstrapTimeoutError extends Error {
+  constructor() {
+    super("Session bootstrap timed out");
+    this.name = "SessionBootstrapTimeoutError";
   }
+}
+
+const delay = (milliseconds) => new Promise((resolve) => globalThis.setTimeout(resolve, milliseconds));
+
+async function boundedSessionAttempt(operation, timeoutMs) {
+  const controller = new AbortController();
+  let timer;
+  const timeout = new Promise((_, reject) => {
+    timer = globalThis.setTimeout(() => {
+      controller.abort();
+      reject(new SessionBootstrapTimeoutError());
+    }, timeoutMs);
+  });
+  try {
+    return await Promise.race([operation(controller.signal), timeout]);
+  } finally {
+    globalThis.clearTimeout(timer);
+  }
+}
+
+export async function resolveSessionProfile(
+  operation,
+  { attempts = 2, timeoutMs = 8000, retryDelayMs = 250 } = {},
+) {
+  if (!Number.isInteger(attempts) || attempts < 1 || attempts > 3 || timeoutMs < 1 || retryDelayMs < 0) {
+    throw new TypeError("Invalid session bootstrap policy");
+  }
+  let failure;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      return await boundedSessionAttempt(operation, timeoutMs);
+    } catch (error) {
+      failure = error;
+      if (!isRetryableSessionFailure(error) || attempt === attempts) throw error;
+      if (retryDelayMs) await delay(retryDelayMs);
+    }
+  }
+  throw failure;
+}
+
+export function createKeyedSingleFlight(operation) {
+  const inFlight = new Map();
+  return (key, ...args) => {
+    const existing = inFlight.get(key);
+    if (existing) return existing;
+    const request = Promise.resolve().then(() => operation(key, ...args));
+    inFlight.set(key, request);
+    void request.then(
+      () => { if (inFlight.get(key) === request) inFlight.delete(key); },
+      () => { if (inFlight.get(key) === request) inFlight.delete(key); },
+    );
+    return request;
+  };
 }
 
 export function mapSupabaseSignInError(error) {

@@ -67,7 +67,7 @@ export class DocumentIntelligenceApiClient {
     };
   }
 
-  async get<T>(endpoint: ApiEndpoint, query: ApiQuery = {}): Promise<ApiEnvelope<T>> {
+  async get<T>(endpoint: ApiEndpoint, query: ApiQuery = {}, signal?: AbortSignal): Promise<ApiEnvelope<T>> {
     const url = new URL(`${this.baseUrl}${endpoint}`);
     appendQuery(url, query);
 
@@ -79,6 +79,7 @@ export class DocumentIntelligenceApiClient {
         headers,
         cache: "no-store",
         credentials: "omit",
+        ...(signal ? { signal } : {}),
       });
     } catch {
       throw ApiClientError.unavailable();

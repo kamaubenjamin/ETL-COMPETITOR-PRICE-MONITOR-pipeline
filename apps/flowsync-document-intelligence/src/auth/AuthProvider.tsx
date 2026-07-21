@@ -1,4 +1,4 @@
-import { createContext, useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
+import { createContext, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { createApiClient } from "../api/client";
 import { API_ENDPOINTS } from "../api/endpoints";
@@ -7,6 +7,7 @@ import { getSupabaseBrowserClient, SupabaseBrowserConfigurationError } from "./s
 import {
   accessTokenProviderForSession,
   AUTH_DIAGNOSTIC_CODES,
+  createKeyedSingleFlight,
   performPasswordSignIn,
   resolveSessionProfile,
   sessionFailureStatus,
@@ -31,6 +32,7 @@ export interface AuthContextValue {
 
 export const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 const SESSION_TIMEOUT_MS = 8000;
+const SESSION_RETRY_DELAY_MS = 250;
 const bounded = <T,>(operation: Promise<T>): Promise<T> => Promise.race([
   operation,
   new Promise<T>((_, reject) => window.setTimeout(() => reject(new Error("Authentication unavailable")), SESSION_TIMEOUT_MS)),
@@ -39,48 +41,54 @@ const bounded = <T,>(operation: Promise<T>): Promise<T> => Promise.race([
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<AuthStatus>("loading");
   const [profile, setProfile] = useState<SafeSessionProfile>();
+  const resolutionGeneration = useRef(0);
 
   const clearAccess = useCallback(() => {
     configureWorkflowPermissionHints([]);
     setProfile(undefined);
   }, []);
 
+  const loadSessionProfile = useMemo(() => createKeyedSingleFlight(
+    (_sessionKey: string, session: Session) => {
+      const client = createApiClient(accessTokenProviderForSession(session));
+      return resolveSessionProfile(
+        (signal) => client.get<SafeSessionProfile>(API_ENDPOINTS.session, {}, signal),
+        { attempts: 2, timeoutMs: SESSION_TIMEOUT_MS, retryDelayMs: SESSION_RETRY_DELAY_MS },
+      );
+    },
+  ), []);
+
   const resolveSession = useCallback(async (session: Session | null) => {
+    const generation = resolutionGeneration.current + 1;
+    resolutionGeneration.current = generation;
     clearAccess();
     if (!session) {
       setStatus("unauthenticated");
       return;
     }
     setStatus("loading");
-    const loadProfile = () => bounded(
-      createApiClient(accessTokenProviderForSession(session)).get<SafeSessionProfile>(API_ENDPOINTS.session),
-    );
     try {
-      const result = await resolveSessionProfile(loadProfile);
+      const sessionKey = `${session.user.id}:${session.expires_at ?? 0}`;
+      const result = await loadSessionProfile(sessionKey, session);
+      if (generation !== resolutionGeneration.current) return;
       if (!result.data?.authenticated) throw new Error("Session unavailable");
       configureWorkflowPermissionHints(result.data.permissions);
       setProfile(result.data);
       setStatus("authenticated");
     } catch (error) {
+      if (generation !== resolutionGeneration.current) return;
       const failureStatus = sessionFailureStatus(error);
       if (failureStatus === "unauthenticated") {
         try { await getSupabaseBrowserClient().auth.signOut({ scope: "local" }); } catch { /* fixed safe state below */ }
       }
       setStatus(failureStatus);
     }
-  }, [clearAccess]);
+  }, [clearAccess, loadSessionProfile]);
 
   useEffect(() => {
     let active = true;
     try {
       const client = getSupabaseBrowserClient();
-      void bounded(client.auth.getSession())
-        .then(({ data, error }) => {
-          if (!active) return;
-          if (error) setStatus("unauthenticated");
-          else void resolveSession(data.session);
-        })
-        .catch(() => { if (active) setStatus("unauthenticated"); });
       const { data: listener } = client.auth.onAuthStateChange((_event, session) => {
         // Supabase Auth callbacks must return before another auth-dependent operation begins.
         // Deferring also prevents the protected API token provider from re-entering the auth lock.
@@ -97,7 +105,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const result = await bounded(performPasswordSignIn(getSupabaseBrowserClient().auth, email, password));
       if (!result.success || !result.session) return { success: false, code: result.code };
-      await resolveSession(result.session);
+      setStatus("loading");
       return { success: true, code: result.code };
     } catch (error) {
       return {
@@ -107,7 +115,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           : AUTH_DIAGNOSTIC_CODES.unavailable,
       };
     }
-  }, [resolveSession]);
+  }, []);
 
   const signOut = useCallback(async () => {
     clearAccess();

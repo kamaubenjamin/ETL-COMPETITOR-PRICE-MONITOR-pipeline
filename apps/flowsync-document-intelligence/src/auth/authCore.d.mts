@@ -13,7 +13,14 @@ export const AUTH_DIAGNOSTIC_CODES: Readonly<{
 export type SessionFailureStatus = "unauthenticated" | "unauthorized" | "configuration_error" | "unavailable";
 export function sessionFailureStatus(error: unknown): SessionFailureStatus;
 export function isRetryableSessionFailure(error: unknown): boolean;
-export function resolveSessionProfile<T>(operation: () => Promise<T>): Promise<T>;
+export class SessionBootstrapTimeoutError extends Error {}
+export function resolveSessionProfile<T>(
+  operation: (signal: AbortSignal) => Promise<T>,
+  options?: Readonly<{ attempts?: number; timeoutMs?: number; retryDelayMs?: number }>,
+): Promise<T>;
+export function createKeyedSingleFlight<Key, Args extends unknown[], Result>(
+  operation: (key: Key, ...args: Args) => Promise<Result>,
+): (key: Key, ...args: Args) => Promise<Result>;
 export function resolveSupabasePublicConfiguration(
   rawUrl: unknown,
   rawKey: unknown,

@@ -5,11 +5,13 @@ import test from "node:test";
 import {
   accessTokenProviderForSession,
   AUTH_DIAGNOSTIC_CODES,
+  createKeyedSingleFlight,
   mapSupabaseSignInError,
   performPasswordSignIn,
   resolveSupabasePublicConfiguration,
   resolveSessionProfile,
   sessionFailureStatus,
+  SessionBootstrapTimeoutError,
   staleAuthFragmentReplacement,
   SupabaseBrowserConfigurationError,
 } from "../../src/auth/authCore.mjs";
@@ -85,8 +87,11 @@ test("confirmed session composition calls the protected API with the correct VIT
   const client = readFileSync(resolve(root, "src/auth/supabaseClient.ts"), "utf8");
   assert.match(client, /import\.meta\.env\.VITE_SUPABASE_URL/);
   assert.match(client, /import\.meta\.env\.VITE_SUPABASE_PUBLISHABLE_KEY/);
-  assert.match(provider, /createApiClient\(accessTokenProviderForSession\(session\)\)\.get<SafeSessionProfile>\(API_ENDPOINTS\.session\)/);
+  assert.match(provider, /createApiClient\(accessTokenProviderForSession\(session\)\)/);
+  assert.match(provider, /client\.get<SafeSessionProfile>\(API_ENDPOINTS\.session, \{\}, signal\)/);
   assert.doesNotMatch(provider, /createApiClient\(\)\.get<SafeSessionProfile>\(API_ENDPOINTS\.session\)/);
+  assert.doesNotMatch(provider, /client\.auth\.getSession\(\)/);
+  assert.doesNotMatch(provider, /await resolveSession\(result\.session\)/);
 });
 
 test("authenticated owner session survives one transient protected-route failure", async () => {
@@ -101,7 +106,7 @@ test("authenticated owner session survives one transient protected-route failure
     attempts += 1;
     if (attempts === 1) throw new Error("transient session request failure");
     return { data: owner };
-  });
+  }, { timeoutMs: 50, retryDelayMs: 0 });
   assert.equal(attempts, 2);
   assert.equal(resolved.data, owner);
   assert.equal(resolved.data.authenticated, true);
@@ -118,6 +123,54 @@ test("only a genuine API forbidden result becomes the protected-route unauthoriz
   await assert.rejects(resolveSessionProfile(async () => {
     attempts += 1;
     throw forbidden;
-  }), (error) => error === forbidden);
+  }, { timeoutMs: 50, retryDelayMs: 0 }), (error) => error === forbidden);
   assert.equal(attempts, 1);
+  const unauthorized = { safe: { kind: "unauthorized" } };
+  attempts = 0;
+  await assert.rejects(resolveSessionProfile(async () => {
+    attempts += 1;
+    throw unauthorized;
+  }, { timeoutMs: 50, retryDelayMs: 0 }), (error) => error === unauthorized);
+  assert.equal(attempts, 1);
+});
+
+test("delayed session response succeeds within the bounded bootstrap attempt", async () => {
+  const owner = { authenticated: true, role: "owner", permissions: ["workflow:read"] };
+  const resolved = await resolveSessionProfile(
+    () => new Promise((resolve) => setTimeout(() => resolve({ data: owner }), 15)),
+    { attempts: 2, timeoutMs: 50, retryDelayMs: 0 },
+  );
+  assert.equal(resolved.data, owner);
+});
+
+test("session bootstrap times out after all bounded attempts and aborts each request", async () => {
+  let attempts = 0;
+  const signals = [];
+  await assert.rejects(resolveSessionProfile(
+    (signal) => {
+      attempts += 1;
+      signals.push(signal);
+      return new Promise(() => {});
+    },
+    { attempts: 2, timeoutMs: 10, retryDelayMs: 0 },
+  ), SessionBootstrapTimeoutError);
+  assert.equal(attempts, 2);
+  assert.equal(signals.every((signal) => signal.aborted), true);
+});
+
+test("single-flight session bootstrap coalesces duplicate requests", async () => {
+  let requests = 0;
+  let release;
+  const operation = createKeyedSingleFlight(async () => {
+    requests += 1;
+    await new Promise((resolve) => { release = resolve; });
+    return { authenticated: true };
+  });
+  const first = operation("same-session");
+  const second = operation("same-session");
+  await Promise.resolve();
+  assert.equal(requests, 1);
+  assert.equal(first, second);
+  release();
+  await Promise.all([first, second]);
 });
