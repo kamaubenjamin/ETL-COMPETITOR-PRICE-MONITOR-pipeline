@@ -15,6 +15,7 @@ EXPECTED_DOMAIN_PATHS = {
     "/api/v1/documents/{document_id}/processing",
     "/api/v1/documents/{document_id}/validation",
     "/api/v1/documents/{document_id}/matching", "/api/v1/review-cases",
+    "/api/v1/documents/{document_id}/purchase-order",
     "/api/v1/review-cases/{review_case_id}",
     "/api/v1/review-cases/{review_case_id}/corrections",
     "/api/v1/reprocess-plans", "/api/v1/workflow-runs", "/api/v1/audit-events",

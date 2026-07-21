@@ -24,6 +24,26 @@ from ..errors import DocumentIntelligenceAPIError
 Record = dict[str, Any]
 T = TypeVar("T")
 
+_SYNTHETIC_LINEAGE = {"source_type": "synthetic_fixture", "source_name": "fictional-purchase-order-demo", "ingestion_id": "synthetic-ingestion-001", "pipeline_run_id": "synthetic-run-001", "extraction_rule": "purchase_order_v1", "page_count": 1, "line_number": None}
+_SYNTHETIC_PURCHASE_ORDER: Record = {
+    "document_type": "purchase_order", "purchase_order_number": "PO-FICTION-2042",
+    "buyer": "Northstar Example Markets Ltd", "supplier": "Fictional Meridian Supply Co", "ship_to": "Example Distribution Centre",
+    "order_date": "2026-07-10", "delivery_date": "2026-07-18", "currency": "KES",
+    "subtotal": "400.00", "tax": "64.00", "total": "464.00",
+    "line_items": [
+        {"item_code": "DEMO-A10", "barcode": "9900000000011", "description": "Fictional archive cartons with reinforced handles", "unit": "CTN", "quantity": "2.00", "unit_price": "125.00", "net_amount": "250.00", "source_lineage": {**_SYNTHETIC_LINEAGE, "line_number": 1}},
+        {"item_code": "DEMO-B20", "barcode": "9900000000028", "description": "Fictional document sleeves", "unit": "PKT", "quantity": "4.00", "unit_price": "37.50", "net_amount": "150.00", "source_lineage": {**_SYNTHETIC_LINEAGE, "line_number": 2}},
+    ],
+    "terms": "Fictional demonstration terms: delivery during example business hours.", "source_lineage": _SYNTHETIC_LINEAGE,
+    "validation": {"status": "valid", "is_valid": True, "tolerance": "0.01", "findings": [], "checks": {"purchase_order_number_present": True, "order_date_valid": True, "delivery_date_valid": True, "delivery_not_before_order": True, "line_items_present": True, "item_codes_unique": True, "subtotal_matches_lines": True, "total_matches_subtotal_and_tax": True, "currency_valid": True}},
+    "extraction_warnings": [],
+}
+
+
+def synthetic_purchase_order() -> Record:
+    """Return an isolated copy through JSON-compatible container copying."""
+    return {**_SYNTHETIC_PURCHASE_ORDER, "line_items": [{**item, "source_lineage": dict(item["source_lineage"])} for item in _SYNTHETIC_PURCHASE_ORDER["line_items"]], "source_lineage": dict(_SYNTHETIC_LINEAGE), "validation": {**_SYNTHETIC_PURCHASE_ORDER["validation"], "findings": [], "checks": dict(_SYNTHETIC_PURCHASE_ORDER["validation"]["checks"])}, "extraction_warnings": []}
+
 
 def _api_error(error: QueryFacadeError) -> DocumentIntelligenceAPIError:
     status_codes = {
@@ -138,6 +158,13 @@ class FacadeDocumentIntelligenceProvider:
             }
             for model in models
         ]
+
+    def get_purchase_order(self, document_id: str, *, tenant_id: str | None = None) -> Record | None:
+        """Return the bounded fictional result for the existing synthetic PO record."""
+        document = self.get_document(document_id, tenant_id=tenant_id)
+        if document is None or document.get("document_type") != "purchase_order" or document_id != "doc-002":
+            return None
+        return synthetic_purchase_order()
 
     def list_review_cases(self, *, status: str | None = None, priority: str | None = None, tenant_id: str | None = None) -> list[Record]:
         query = ReviewCaseQuery(status=status, priority=priority)

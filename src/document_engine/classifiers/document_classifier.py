@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Dict
 
 from src.document_engine.contracts.document import Document
+from src.purchase_order.extractor import classify_purchase_order
 
 
 def classify_document(document: Document) -> Dict[str, object]:
@@ -32,9 +33,15 @@ def classify_document(document: Document) -> Dict[str, object]:
         confidence = 0.85
         reason = "text_extension"
     elif extension == ".pdf":
-        document_type = "pdf"
-        confidence = 0.95
-        reason = "pdf_extension"
+        purchase_order = classify_purchase_order(content)
+        if purchase_order["document_type"] == "purchase_order":
+            document_type = "purchase_order"
+            confidence = float(purchase_order["confidence"])
+            reason = str(purchase_order["reason"])
+        else:
+            document_type = "pdf"
+            confidence = 0.95
+            reason = "pdf_extension"
     elif "subject:" in content.lower() and "from:" in content.lower():
         document_type = "email"
         confidence = 0.75

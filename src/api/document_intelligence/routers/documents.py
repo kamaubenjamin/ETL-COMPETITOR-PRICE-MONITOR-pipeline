@@ -39,6 +39,16 @@ def get_document(document_id: str, request: Request) -> dict[str, object]:
     return success_response(_require_document(document_id, request, tenant_id=scope.tenant_id), request_id=request.state.request_id)
 
 
+@router.get("/documents/{document_id}/purchase-order")
+def get_purchase_order(document_id: str, request: Request) -> dict[str, object]:
+    scope = authorize_read(request, Permission.DOCUMENT_READ, resource_type="document", resource_id=document_id, conceal_unauthorized_resource=True)
+    _require_document(document_id, request, tenant_id=scope.tenant_id)
+    result = get_document_intelligence_provider(request).get_purchase_order(document_id, tenant_id=scope.tenant_id)
+    if result is None:
+        raise DocumentIntelligenceAPIError("purchase_order_not_found", "Purchase-order result was not found.", status_code=404)
+    return success_response(result, request_id=request.state.request_id)
+
+
 @router.get("/documents/{document_id}/processing")
 def get_processing(document_id: str, request: Request, limit: int = Query(DEFAULT_PAGE_SIZE, ge=1, le=MAX_PAGE_SIZE), offset: int = Query(0, ge=0)) -> dict[str, object]:
     scope = authorize_read(request, Permission.DOCUMENT_READ, resource_type="document", resource_id=document_id, conceal_unauthorized_resource=True)

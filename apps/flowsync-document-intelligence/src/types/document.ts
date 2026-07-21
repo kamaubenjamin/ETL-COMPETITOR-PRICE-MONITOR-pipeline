@@ -57,6 +57,44 @@ export interface DocumentListQuery {
   offset?: number;
 }
 
+export interface PurchaseOrderLineItem {
+  item_code: string | null; barcode: string | null; description: string | null; unit: string | null;
+  quantity: string | null; unit_price: string | null; net_amount: string | null;
+}
+
+export interface PurchaseOrderFinding {
+  severity: "warning" | "error"; code: string; field: string; message: string;
+}
+
+export interface PurchaseOrderResult {
+  document_type: "purchase_order";
+  purchase_order_number: string | null; buyer: string | null; supplier: string | null; ship_to: string | null;
+  order_date: string | null; delivery_date: string | null; currency: string | null;
+  subtotal: string | null; tax: string | null; total: string | null;
+  line_items: PurchaseOrderLineItem[]; terms: string | null;
+  source_lineage: { source_type: string; source_name: string; extraction_rule: string; page_count: number | null };
+  validation: { status: string; is_valid: boolean; tolerance: string; findings: PurchaseOrderFinding[] };
+  extraction_warnings: PurchaseOrderFinding[];
+}
+
+function nullableBoundedString(value: unknown, maxLength = 512): value is string | null {
+  return value === null || isBoundedString(value, maxLength);
+}
+
+export function parsePurchaseOrderResult(value: unknown): PurchaseOrderResult | null {
+  if (!isRecord(value) || value.document_type !== "purchase_order" || !Array.isArray(value.line_items) || !isRecord(value.source_lineage) || !isRecord(value.validation) || !Array.isArray(value.validation.findings) || !Array.isArray(value.extraction_warnings)) return null;
+  const scalarFields = ["purchase_order_number", "buyer", "supplier", "ship_to", "order_date", "delivery_date", "currency", "subtotal", "tax", "total", "terms"] as const;
+  if (scalarFields.some((field) => !nullableBoundedString(value[field]))) return null;
+  const lineItems = value.line_items.map((item) => {
+    if (!isRecord(item)) return null;
+    const fields = ["item_code", "barcode", "description", "unit", "quantity", "unit_price", "net_amount"] as const;
+    return fields.every((field) => nullableBoundedString(item[field])) ? item : null;
+  });
+  const parseFinding = (finding: unknown) => isRecord(finding) && (finding.severity === "warning" || finding.severity === "error") && isBoundedString(finding.code, 64) && isBoundedString(finding.field, 128) && isBoundedString(finding.message, 256) ? finding : null;
+  if (lineItems.includes(null) || value.validation.findings.map(parseFinding).includes(null) || value.extraction_warnings.map(parseFinding).includes(null) || !isBoundedString(value.source_lineage.source_type, 64) || !isBoundedString(value.source_lineage.source_name, 128) || !isBoundedString(value.source_lineage.extraction_rule, 128) || !isBoundedString(value.validation.status, 64) || typeof value.validation.is_valid !== "boolean" || !isBoundedString(value.validation.tolerance, 32)) return null;
+  return value as unknown as PurchaseOrderResult;
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }

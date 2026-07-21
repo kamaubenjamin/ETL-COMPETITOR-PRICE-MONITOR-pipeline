@@ -7,6 +7,7 @@ import {
   getDocumentMatching,
   getDocumentProcessing,
   getDocumentValidation,
+  getPurchaseOrder,
 } from "../api/documents";
 import { DocumentMetadataPanel } from "../components/DocumentMetadataPanel";
 import { DocumentSectionCard } from "../components/DocumentSectionCard";
@@ -14,16 +15,19 @@ import { EmptyState } from "../components/EmptyState";
 import { ExportReadinessPanel } from "../components/ExportReadinessPanel";
 import { LoadingState } from "../components/LoadingState";
 import { ProcessingStatusPanel } from "../components/ProcessingStatusPanel";
+import { PurchaseOrderPanel } from "../components/PurchaseOrderPanel";
 import { SafeErrorState } from "../components/SafeErrorState";
 import { StatusChip } from "../components/StatusChip";
 import { toDocumentDetailViewModel } from "../state/documentViewModels";
 import { isRequestFailure, malformedRequestState, notFoundRequestState, toRequestFailure, type RequestState } from "../state/requestState";
 import type { DocumentDetailViewModel } from "../types/viewModels";
+import type { PurchaseOrderResult } from "../types/document";
 
 export function DocumentDetailPage() {
   const { documentId } = useParams<{ documentId: string }>();
   const [reloadKey, setReloadKey] = useState(0);
   const [state, setState] = useState<RequestState<DocumentDetailViewModel>>({ status: "loading" });
+  const [purchaseOrder, setPurchaseOrder] = useState<PurchaseOrderResult | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -46,6 +50,13 @@ export function DocumentDetailPage() {
         if (!document.data || !processing.data || !validation.data || !matching.data) {
           setState(malformedRequestState(document.request_id));
           return;
+        }
+        if (document.data.document_type === "purchase_order") {
+          const result = await getPurchaseOrder(client, documentId);
+          if (!active) return;
+          setPurchaseOrder(result.data ?? null);
+        } else {
+          setPurchaseOrder(null);
         }
         setState({
           status: "success",
@@ -89,6 +100,8 @@ export function DocumentDetailPage() {
       </nav>
 
       <DocumentMetadataPanel document={document} />
+
+      {purchaseOrder ? <PurchaseOrderPanel order={purchaseOrder} /> : null}
 
       <section className="document-section-grid" aria-label="Document summaries">
         <DocumentSectionCard title="Validation" value={String(document.validationIssueCount)} detail={`${document.validationErrorCount} error issue${document.validationErrorCount === 1 ? "" : "s"}`} icon={<ListChecks size={20} />} />

@@ -29,6 +29,7 @@ export const API_ENDPOINTS = Object.freeze({
   documentProcessingStatus: (documentId: string) =>
     endpoint(`/api/v1/documents/${segment(documentId)}/processing-status`),
   document: (documentId: string) => endpoint(`/api/v1/documents/${segment(documentId)}`),
+  purchaseOrder: (documentId: string) => endpoint(`/api/v1/documents/${segment(documentId)}/purchase-order`),
   processing: (documentId: string) =>
     endpoint(`/api/v1/documents/${segment(documentId)}/processing`),
   validation: (documentId: string) =>

@@ -5,12 +5,14 @@ import type {
   DocumentSummary,
   MatchingResult,
   ProcessingStatus,
+  PurchaseOrderResult,
   ValidationIssue,
 } from "../types/document";
 import {
   parseDocumentSummary,
   parseMatchingResult,
   parseProcessingStatus,
+  parsePurchaseOrderResult,
   parseValidationIssue,
 } from "../types/document";
 import { ApiClientError } from "./errors";
@@ -28,6 +30,12 @@ function mapEnvelopeList<T>(
     throw ApiClientError.invalidResponse(envelope.request_id);
   }
   return { ...envelope, data: data as T[] };
+}
+
+function mapEnvelopeItem<T>(envelope: ApiEnvelope<unknown>, parser: (value: unknown) => T | null): ApiEnvelope<T> {
+  const data = parser(envelope.data);
+  if (!data) throw ApiClientError.invalidResponse(envelope.request_id);
+  return { ...envelope, data } as ApiEnvelope<T>;
 }
 
 export async function listDocuments(client: DocumentIntelligenceApiClient, query: DocumentListQuery = {}) {
@@ -55,4 +63,9 @@ export async function getDocumentValidation(client: DocumentIntelligenceApiClien
 export async function getDocumentMatching(client: DocumentIntelligenceApiClient, documentId: string) {
   const envelope = await client.get<unknown>(API_ENDPOINTS.matching(documentId));
   return mapEnvelopeList<MatchingResult>(envelope, parseMatchingResult);
+}
+
+export async function getPurchaseOrder(client: DocumentIntelligenceApiClient, documentId: string) {
+  const envelope = await client.get<unknown>(API_ENDPOINTS.purchaseOrder(documentId));
+  return mapEnvelopeItem<PurchaseOrderResult>(envelope, parsePurchaseOrderResult);
 }

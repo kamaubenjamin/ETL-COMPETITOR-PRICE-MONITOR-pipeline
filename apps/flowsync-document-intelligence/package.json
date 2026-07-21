@@ -16,7 +16,7 @@
     "validate:auth:dist": "node scripts/validate-supabase-auth.mjs --dist",
     "validate:vercel": "node scripts/validate-vercel-deployment.mjs",
     "validate:vercel:dist": "node scripts/validate-vercel-deployment.mjs --dist",
-    "test": "node scripts/validate-workflow-studio.mjs",
+    "test": "node --test scripts/tests/*.test.mjs && node scripts/validate-workflow-studio.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
