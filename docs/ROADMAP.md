@@ -532,24 +532,27 @@ Status:
 - Phase 3 compatibility complete: explicit ASGI entrypoint, Python 3.12, minimal serverless dependencies, strict CORS, hosted runtime guards, and stateless verification; deployment intentionally deferred
 - Phase 4 compatibility complete: app-local SPA routing, strict hosted API URL enforcement, safe configuration state, UAT labeling, Project A settings, and deployment validation; deployment intentionally deferred
 - Phase 5 implementation preparation complete: official browser Auth, protected routing, asymmetric API JWT verification, RLS-constrained tenant membership, fixed permissions, minimal identity migration, and owner bootstrap procedure; cloud user, migration application, and deployment intentionally deferred
-- No Vercel deployment, migration, Supabase integration, production activation, commit, push, or tag
+- Phase 6 complete: stable Vercel frontend and API deployments, Supabase Auth, active owner membership, asymmetric JWT verification, fixed permissions, exact-origin CORS, protected read-only document access, Firefox compatibility, hosted smoke verification, and UAT closeout
+- Phase 7 next: closure alignment, release notes, final security handoff, and owner tag recommendation
+- No production activation or v0.21 tag
 - Target: separate Vercel FlowSync and FastAPI projects plus one Supabase Free UAT project
-- Current blockers: Vercel Hobby eligibility confirmation, authorized Project B/Project A deployment, exact hosted URL/CORS coordination, and hosted identity
+- Current constraints: UAT / Technical Preview, synthetic non-confidential data, read-only behavior, free-tier limits, and no production SLA
 
 Phases:
 1. Deployment audit and plan - complete
 2. Supabase UAT project, service inventory, and environment preparation - complete
 3. FastAPI serverless compatibility - complete; API deployment deferred to owner action
 4. FlowSync Vercel compatibility and hosted API URL safety - complete; deployment deferred to owner action
-5. Hosted Auth, tenant bootstrap, and environment separation
-6. Smoke, CORS/security/privacy verification, and UAT handoff
-7. Closure, release notes, and tag recommendation
+5. Hosted Auth, tenant bootstrap, and environment separation - complete
+6. Smoke, CORS/security/privacy verification, and UAT handoff - complete
+7. Closure, release notes, and tag recommendation - next
 
 References:
 - `docs/architecture/ZERO_BUDGET_UAT_DEPLOYMENT_V1_PLAN.md`
 - `docs/architecture/ZERO_BUDGET_UAT_DEPLOYMENT_V1_IMPLEMENTATION_PLAN.md`
 - `docs/adr/ADR-026-zero-budget-vercel-supabase-uat.md`
 - `docs/implementation/V0_21_PHASE_1_DEPLOYMENT_AUDIT.md`
+- `docs/implementation/V0_21_PHASE_6_HOSTED_UAT_CLOSEOUT.md`
 
 ## Prior Milestone Context
 

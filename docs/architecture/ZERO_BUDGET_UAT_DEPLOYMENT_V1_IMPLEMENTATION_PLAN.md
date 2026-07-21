@@ -122,6 +122,8 @@ No service-role key in the frontend, wildcard tenant access, production user, cu
 
 ## Phase 6: Hosted Verification And Handoff
 
+**Status:** Complete - hosted frontend/API, authentication, authorization, CORS, protected read-only access, browser compatibility, security scans, and handoff evidence verified. See `docs/implementation/V0_21_PHASE_6_HOSTED_UAT_CLOSEOUT.md`.
+
 ### Deliverables
 
 - Health, docs-policy, auth, tenant concealment, role, CORS preflight, SPA deep-link, preview, lifecycle, privacy, and safe-error smoke tests.
@@ -131,6 +133,8 @@ No service-role key in the frontend, wildcard tenant access, production user, cu
 - Produce UAT runbook, access list, test-data policy, limitations, and teardown instructions.
 
 ## Phase 7: Closure And Tag
+
+**Status:** Next - no v0.21 commit, push, deployment, or tag is authorized by the Phase 6 closeout.
 
 ### Deliverables
 
