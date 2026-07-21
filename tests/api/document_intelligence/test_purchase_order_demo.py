@@ -6,6 +6,8 @@ from src.api.document_intelligence.app import create_document_intelligence_app
 from src.api.document_intelligence.config import APIAuthConfig, APIAuthMode
 from src.api.document_intelligence.routers.documents import get_purchase_order
 from src.security.providers import create_local_demo_provider
+from src.workflow_runtime.query_facade import InMemoryWorkflowQueryFacade
+from tests.api.document_intelligence.supabase_auth_helpers import TENANT_ID, application as uat_application, token as uat_token
 
 
 def _client(tenant_id: str) -> TestClient:
@@ -50,8 +52,8 @@ def test_read_only_route_returns_canonical_safe_schema():
     }
 
 
-def test_flowsync_uat_owner_scope_lists_filters_and_opens_purchase_order():
-    client = _client("flowsync-uat")
+def test_local_fixture_namespace_lists_filters_and_opens_purchase_order():
+    client = _client("tenant-uat")
     listed = client.get("/api/v1/documents", headers=OWNER_HEADERS)
     filtered = client.get("/api/v1/documents?document_type=purchase_order", headers=OWNER_HEADERS)
     detail = client.get("/api/v1/documents/doc-002", headers=OWNER_HEADERS)
@@ -62,6 +64,8 @@ def test_flowsync_uat_owner_scope_lists_filters_and_opens_purchase_order():
     assert [(item["document_id"], item["document_type"]) for item in filtered.json()["data"]] == [("doc-002", "purchase_order")]
     assert (detail.json()["data"]["document_id"], detail.json()["data"]["document_type"]) == ("doc-002", "purchase_order")
     assert purchase_order.json()["data"]["document_type"] == "purchase_order"
+    for suffix in ("processing", "validation", "matching"):
+        assert client.get(f"/api/v1/documents/doc-002/{suffix}", headers=OWNER_HEADERS).status_code == 200
 
 
 def test_wrong_tenant_and_nonexistent_documents_remain_concealed():
@@ -73,3 +77,48 @@ def test_wrong_tenant_and_nonexistent_documents_remain_concealed():
         response = wrong_tenant.get(path, headers=OWNER_HEADERS)
         assert response.status_code == 404
         assert response.json()["error"]["code"] in {"resource_not_found", "document_not_found"}
+
+
+def test_exact_hosted_uat_supabase_configuration_exposes_all_purchase_order_reads():
+    application = uat_application()
+    client = TestClient(application)
+    headers = {"Authorization": f"Bearer {uat_token()}"}
+    assert application.state.document_intelligence_provider is facade_provider
+    assert application.state.document_intelligence_environment["app_env"] == "uat"
+    assert application.state.platform_runtime_summary == {"mode": "compatibility_default", "composed": False}
+
+    listed = client.get("/api/v1/documents", headers=headers)
+    filtered = client.get("/api/v1/documents?document_type=purchase_order", headers=headers)
+    detail = client.get("/api/v1/documents/doc-002", headers=headers)
+    purchase_order = client.get("/api/v1/documents/doc-002/purchase-order", headers=headers)
+
+    assert listed.status_code == filtered.status_code == detail.status_code == purchase_order.status_code == 200
+    assert [(item["document_id"], item["document_type"]) for item in listed.json()["data"]] == [("doc-002", "purchase_order")]
+    assert [(item["document_id"], item["document_type"]) for item in filtered.json()["data"]] == [("doc-002", "purchase_order")]
+    assert (detail.json()["data"]["document_id"], detail.json()["data"]["document_type"]) == ("doc-002", "purchase_order")
+    assert purchase_order.json()["data"]["document_type"] == "purchase_order"
+    for suffix in ("processing", "validation", "matching"):
+        assert client.get(f"/api/v1/documents/doc-002/{suffix}", headers=headers).status_code == 200
+
+
+def test_hosted_uat_tenant_name_alias_is_authoritative_and_bounded():
+    other_membership = [{
+        "tenant_id": "33333333-3333-4333-8333-333333333333",
+        "role": "owner",
+        "status": "active",
+        "app_tenants": {"name": "Other UAT", "status": "active"},
+    }]
+    application = uat_application(rows=other_membership)
+    client = TestClient(application)
+    headers = {"Authorization": f"Bearer {uat_token()}"}
+    listed = client.get("/api/v1/documents?document_type=purchase_order", headers=headers)
+    detail = client.get("/api/v1/documents/doc-002", headers=headers)
+    purchase_order = client.get("/api/v1/documents/doc-002/purchase-order", headers=headers)
+    assert listed.status_code == 200
+    assert listed.json()["data"] == []
+    assert detail.status_code == purchase_order.status_code == 404
+
+
+def test_tenant_name_aliases_are_disabled_for_ordinary_composed_providers():
+    provider = facade_provider.__class__(InMemoryWorkflowQueryFacade())
+    assert provider.list_documents(tenant_id=TENANT_ID, tenant_name="FlowSync UAT") == []

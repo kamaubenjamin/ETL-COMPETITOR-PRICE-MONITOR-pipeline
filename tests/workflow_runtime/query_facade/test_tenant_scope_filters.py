@@ -13,7 +13,9 @@ def test_in_memory_facade_applies_optional_tenant_narrowing():
     assert facade.list_documents(DocumentQuery(), PageRequest()).total == 3
     demo = facade.list_documents(DocumentQuery(tenant_id="tenant-demo"), PageRequest())
     alternate = facade.list_documents(DocumentQuery(tenant_id="tenant-alt"), PageRequest())
-    assert [item.document_id for item in demo.items] == ["doc-001", "doc-002"]
+    uat = facade.list_documents(DocumentQuery(tenant_id="tenant-uat"), PageRequest())
+    assert [item.document_id for item in demo.items] == ["doc-001"]
+    assert [item.document_id for item in uat.items] == ["doc-002"]
     assert [item.document_id for item in alternate.items] == ["doc-003"]
     assert all(item.tenant_id == "tenant-demo" for item in demo.items)
 

@@ -35,6 +35,7 @@ class AuthorizedReadScope:
     enabled: bool
     tenant_id: str | None = None
     principal_id: str | None = None
+    tenant_name: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -199,7 +200,10 @@ def _authorized_scope(
             status_code=401 if unauthenticated else 403,
             concealed=conceal_unauthorized_resource and not unauthenticated,
         )
-    return AuthorizedReadScope(True, requested_tenant, principal.principal_id)
+    tenant_name = principal.metadata.get("tenant_name")
+    if not isinstance(tenant_name, str) or not tenant_name or len(tenant_name) > 128:
+        tenant_name = None
+    return AuthorizedReadScope(True, requested_tenant, principal.principal_id, tenant_name)
 
 
 def authorize_read(

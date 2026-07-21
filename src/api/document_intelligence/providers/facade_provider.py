@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from typing import Any, TypeVar
 
 from src.workflow_runtime.query_facade import (
@@ -80,14 +80,38 @@ def _all_pages(read: Callable[[PageRequest], PageResult[T]]) -> tuple[T, ...]:
 class FacadeDocumentIntelligenceProvider:
     """Read-only API provider backed only by the facade public contract."""
 
-    def __init__(self, facade: WorkflowQueryFacadePort) -> None:
+    def __init__(self, facade: WorkflowQueryFacadePort, *, tenant_name_aliases: Mapping[str, str] | None = None) -> None:
         if not isinstance(facade, WorkflowQueryFacadePort):
             raise ValueError("facade must implement WorkflowQueryFacadePort")
+        aliases = dict(tenant_name_aliases or {})
+        if any(
+            not isinstance(name, str) or not name or len(name) > 128
+            or name != "-".join(name.strip().casefold().split())
+            or not isinstance(target, str) or not target or len(target) > 128
+            for name, target in aliases.items()
+        ):
+            raise ValueError("tenant_name_aliases must contain bounded names and targets")
         self._facade = facade
+        self._tenant_name_aliases = aliases
 
-    def list_documents(self, *, status: str | None = None, document_type: str | None = None, tenant_id: str | None = None) -> list[Record]:
-        query = DocumentQuery(status=status, document_type=document_type, tenant_id=tenant_id)
-        models = _all_pages(lambda page: self._facade.list_documents(query, page))
+    def _tenant_keys(self, tenant_id: str | None, tenant_name: str | None) -> tuple[str | None, ...]:
+        keys: list[str | None] = [tenant_id]
+        if tenant_id is not None and tenant_name is not None:
+            alias = "-".join(tenant_name.strip().casefold().split())
+            target = self._tenant_name_aliases.get(alias)
+            if target is not None and target not in keys:
+                keys.append(target)
+        return tuple(keys)
+
+    def list_documents(self, *, status: str | None = None, document_type: str | None = None, tenant_id: str | None = None, tenant_name: str | None = None) -> list[Record]:
+        models = []
+        seen: set[str] = set()
+        for tenant_key in self._tenant_keys(tenant_id, tenant_name):
+            query = DocumentQuery(status=status, document_type=document_type, tenant_id=tenant_key)
+            for model in _all_pages(lambda page: self._facade.list_documents(query, page)):
+                if model.document_id not in seen:
+                    seen.add(model.document_id)
+                    models.append(model)
         return [
             {
                 "document_id": model.document_id,
@@ -101,17 +125,17 @@ class FacadeDocumentIntelligenceProvider:
             for model in models
         ]
 
-    def get_document(self, document_id: str, *, tenant_id: str | None = None) -> Record | None:
-        try:
-            model = (
-                self._facade.get_document(document_id)
-                if tenant_id is None
-                else self._facade.get_document(document_id, tenant_id=tenant_id)
-            )
-        except QueryFacadeError as exc:
-            if exc.code == "not_found":
-                return None
-            raise _api_error(exc) from None
+    def get_document(self, document_id: str, *, tenant_id: str | None = None, tenant_name: str | None = None) -> Record | None:
+        model = None
+        for tenant_key in self._tenant_keys(tenant_id, tenant_name):
+            try:
+                model = self._facade.get_document(document_id) if tenant_key is None else self._facade.get_document(document_id, tenant_id=tenant_key)
+                break
+            except QueryFacadeError as exc:
+                if exc.code != "not_found":
+                    raise _api_error(exc) from None
+        if model is None:
+            return None
         return {
             "document_id": model.document_id,
             "filename": model.filename,
@@ -122,14 +146,14 @@ class FacadeDocumentIntelligenceProvider:
             "received_at": model.received_at,
         }
 
-    def list_processing(self, document_id: str, *, tenant_id: str | None = None) -> list[Record]:
-        if self.get_document(document_id, tenant_id=tenant_id) is None:
+    def list_processing(self, document_id: str, *, tenant_id: str | None = None, tenant_name: str | None = None) -> list[Record]:
+        if self.get_document(document_id, tenant_id=tenant_id, tenant_name=tenant_name) is None:
             return []
         models = _all_pages(lambda page: self._facade.list_processing(document_id, page))
         return [{"stage": model.stage, "status": model.status, "occurred_at": model.occurred_at} for model in models]
 
-    def list_validation(self, document_id: str, *, tenant_id: str | None = None) -> list[Record]:
-        if self.get_document(document_id, tenant_id=tenant_id) is None:
+    def list_validation(self, document_id: str, *, tenant_id: str | None = None, tenant_name: str | None = None) -> list[Record]:
+        if self.get_document(document_id, tenant_id=tenant_id, tenant_name=tenant_name) is None:
             return []
         models = _all_pages(lambda page: self._facade.list_validation_issues(document_id, page))
         return [
@@ -144,8 +168,8 @@ class FacadeDocumentIntelligenceProvider:
             for model in models
         ]
 
-    def list_matching(self, document_id: str, *, tenant_id: str | None = None) -> list[Record]:
-        if self.get_document(document_id, tenant_id=tenant_id) is None:
+    def list_matching(self, document_id: str, *, tenant_id: str | None = None, tenant_name: str | None = None) -> list[Record]:
+        if self.get_document(document_id, tenant_id=tenant_id, tenant_name=tenant_name) is None:
             return []
         models = _all_pages(lambda page: self._facade.list_matching_results(document_id, page))
         return [
@@ -159,9 +183,9 @@ class FacadeDocumentIntelligenceProvider:
             for model in models
         ]
 
-    def get_purchase_order(self, document_id: str, *, tenant_id: str | None = None) -> Record | None:
+    def get_purchase_order(self, document_id: str, *, tenant_id: str | None = None, tenant_name: str | None = None) -> Record | None:
         """Return the bounded fictional result for the existing synthetic PO record."""
-        document = self.get_document(document_id, tenant_id=tenant_id)
+        document = self.get_document(document_id, tenant_id=tenant_id, tenant_name=tenant_name)
         if document is None or document.get("document_type") != "purchase_order" or document_id != "doc-002":
             return None
         return synthetic_purchase_order()
@@ -248,4 +272,7 @@ class FacadeDocumentIntelligenceProvider:
         ]
 
 
-facade_provider = FacadeDocumentIntelligenceProvider(InMemoryWorkflowQueryFacade())
+facade_provider = FacadeDocumentIntelligenceProvider(
+    InMemoryWorkflowQueryFacade(),
+    tenant_name_aliases={"flowsync-uat": "tenant-uat"},
+)
