@@ -4,8 +4,23 @@ __pycache__/
 *.pyd
 
 .env
+.env.*
+!.env.example
 .venv/
 venv/
+venv*/
+
+.pytest_cache/
+.coverage
+coverage/
+
+node_modules/
+.next/
+dist/
+build/
+
+.vercel/
+playwright_profiles/
 
 *.db
 *.sqlite3
